@@ -1,0 +1,13 @@
+execute if score #group lh_ctx matches 2 run scoreboard players set #r2 lh_ctx 0
+execute if score #group lh_ctx matches 3 run scoreboard players set #r3 lh_ctx 0
+execute if score #group lh_ctx matches 4 run scoreboard players set #r4 lh_ctx 0
+execute if score #group lh_ctx matches 5 run scoreboard players set #r5 lh_ctx 0
+execute if score #group lh_ctx matches 6 run scoreboard players set #r6 lh_ctx 0
+execute if score #group lh_ctx matches 7 run scoreboard players set #r7 lh_ctx 0
+execute if score #group lh_ctx matches 8 run scoreboard players set #r8 lh_ctx 0
+execute if score #group lh_ctx matches 9 run scoreboard players set #r9 lh_ctx 0
+execute if score #group lh_ctx matches 10 run scoreboard players set #r10 lh_ctx 0
+execute if score #group lh_ctx matches 11 run scoreboard players set #r11 lh_ctx 0
+execute if score #group lh_ctx matches 12 run scoreboard players set #r12 lh_ctx 0
+execute if score #group lh_ctx matches 13 run scoreboard players set #r13 lh_ctx 0
+execute if score #group lh_ctx matches 14 run scoreboard players set #r14 lh_ctx 0

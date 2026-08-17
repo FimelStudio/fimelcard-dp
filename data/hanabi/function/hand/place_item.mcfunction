@@ -1,0 +1,4 @@
+scoreboard players set #occupied hb_ctx 0
+$execute if items entity @a[tag=hb.item_owner,limit=1] hotbar.$(hotbar) * run scoreboard players set #occupied hb_ctx 1
+$execute unless score #occupied hb_ctx matches 1 run item replace entity @a[tag=hb.item_owner,limit=1] hotbar.$(hotbar) with minecraft:paper[minecraft:item_model="$(model)",minecraft:item_name="$(name)",minecraft:custom_data={hanabi:{card:1b,table:$(table),id:$(id),seat:$(seat),slot:$(slot),color:$(color),rank:$(rank),known_color:$(known_color)b,known_rank:$(known_rank)b,reward:$(reward)}},minecraft:max_stack_size=1]
+$execute if score #occupied hb_ctx matches 1 run give @a[tag=hb.item_owner,limit=1] minecraft:paper[minecraft:item_model="$(model)",minecraft:item_name="$(name)",minecraft:custom_data={hanabi:{card:1b,table:$(table),id:$(id),seat:$(seat),slot:$(slot),color:$(color),rank:$(rank),known_color:$(known_color)b,known_rank:$(known_rank)b,reward:$(reward)}},minecraft:max_stack_size=1]

@@ -1,0 +1,1 @@
+$execute as @e[type=minecraft:item,distance=..3,sort=nearest] if items entity @s contents minecraft:paper[minecraft:custom_data~{hanabi:{card:1b,table:$(table),seat:$(seat)}}] run function hanabi:input/tag_drop

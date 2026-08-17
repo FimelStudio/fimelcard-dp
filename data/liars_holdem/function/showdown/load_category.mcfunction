@@ -1,0 +1,10 @@
+execute if score @s lh_cat matches 10 run data modify storage liars_holdem:showdown category set value {text:"皇家同花顺",color:"gold",bold:true}
+execute if score @s lh_cat matches 9 run data modify storage liars_holdem:showdown category set value {text:"同花顺",color:"red",bold:true}
+execute if score @s lh_cat matches 8 run data modify storage liars_holdem:showdown category set value {text:"四条",color:"red"}
+execute if score @s lh_cat matches 7 run data modify storage liars_holdem:showdown category set value {text:"葫芦",color:"light_purple"}
+execute if score @s lh_cat matches 6 run data modify storage liars_holdem:showdown category set value {text:"同花",color:"aqua"}
+execute if score @s lh_cat matches 5 run data modify storage liars_holdem:showdown category set value {text:"顺子",color:"green"}
+execute if score @s lh_cat matches 4 run data modify storage liars_holdem:showdown category set value {text:"三条",color:"blue"}
+execute if score @s lh_cat matches 3 run data modify storage liars_holdem:showdown category set value {text:"两对",color:"dark_aqua"}
+execute if score @s lh_cat matches 2 run data modify storage liars_holdem:showdown category set value {text:"一对",color:"white"}
+execute if score @s lh_cat matches 1 run data modify storage liars_holdem:showdown category set value {text:"高牌",color:"gray"}

@@ -1,0 +1,1 @@
+$dialog show @s {type:"minecraft:notice",title:{text:"奖励牌 · 完全提示",color:"aqua",bold:true},body:[{type:"minecraft:plain_message",width:520,contents:[{text:"目标：",color:"gray"},$(full_hint_name),{text:"\n点击一张牌，立即同时公开它的颜色和数字。\n",color:"gray"},$(full_hint_cards)]}],pause:false,can_close_with_escape:false}

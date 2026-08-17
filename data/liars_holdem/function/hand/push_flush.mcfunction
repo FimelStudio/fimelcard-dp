@@ -1,0 +1,13 @@
+function liars_holdem:hand/push_rank {source:"#f14",rank:14}
+function liars_holdem:hand/push_rank {source:"#f13",rank:13}
+function liars_holdem:hand/push_rank {source:"#f12",rank:12}
+function liars_holdem:hand/push_rank {source:"#f11",rank:11}
+function liars_holdem:hand/push_rank {source:"#f10",rank:10}
+function liars_holdem:hand/push_rank {source:"#f9",rank:9}
+function liars_holdem:hand/push_rank {source:"#f8",rank:8}
+function liars_holdem:hand/push_rank {source:"#f7",rank:7}
+function liars_holdem:hand/push_rank {source:"#f6",rank:6}
+function liars_holdem:hand/push_rank {source:"#f5",rank:5}
+function liars_holdem:hand/push_rank {source:"#f4",rank:4}
+function liars_holdem:hand/push_rank {source:"#f3",rank:3}
+function liars_holdem:hand/push_rank {source:"#f2",rank:2}

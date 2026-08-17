@@ -1,0 +1,1 @@
+$tellraw @a[tag=lh.audience] [{text:"第$(place)名　",color:"white"},{selector:"@s",color:"yellow",bold:true},{text:"（",color:"gray"},{score:{name:"@s",objective:"lh_seat"},color:"gold"},{text:"号座位）",color:"gray"}]

@@ -1,0 +1,1 @@
+$execute as @e[type=minecraft:item,distance=..3,sort=nearest] if items entity @s contents minecraft:firework_star[minecraft:custom_data~{hanabi:{action:"hint",table:$(table)}}] run function hanabi:input/tag_drop

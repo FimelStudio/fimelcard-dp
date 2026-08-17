@@ -1,0 +1,9 @@
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place)}] run data modify storage liars_holdem:showdown line append value {text:"\n第$(place)名：",color:"white"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=1}] run data modify storage liars_holdem:showdown line append value {selector:"@a[tag=lh.player,scores={lh_id=$(table),lh_seat=1}]",color:"yellow"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=1}] run data modify storage liars_holdem:showdown line append value {text:"　"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=2}] run data modify storage liars_holdem:showdown line append value {selector:"@a[tag=lh.player,scores={lh_id=$(table),lh_seat=2}]",color:"yellow"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=2}] run data modify storage liars_holdem:showdown line append value {text:"　"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=3}] run data modify storage liars_holdem:showdown line append value {selector:"@a[tag=lh.player,scores={lh_id=$(table),lh_seat=3}]",color:"yellow"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=3}] run data modify storage liars_holdem:showdown line append value {text:"　"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=4}] run data modify storage liars_holdem:showdown line append value {selector:"@a[tag=lh.player,scores={lh_id=$(table),lh_seat=4}]",color:"yellow"}
+$execute if entity @a[tag=lh.player,scores={lh_id=$(table),lh_in_showdown=1,lh_place=$(place),lh_seat=4}] run data modify storage liars_holdem:showdown line append value {text:"　"}

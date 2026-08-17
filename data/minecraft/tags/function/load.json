@@ -1,0 +1,8 @@
+{
+  "values": [
+    "cardtable:load",
+    "fast_card:load",
+    "liars_holdem:load",
+    "hanabi:load"
+  ]
+}

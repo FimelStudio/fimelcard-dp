@@ -1,0 +1,1 @@
+$item replace entity @e[type=minecraft:item_display,tag=lh.new_community,limit=1] contents with minecraft:paper[minecraft:item_model="$(model)",minecraft:item_name="$(name)",minecraft:custom_data={liars_holdem:{community:1b,id:$(id),rank:$(rank),suit:$(suit)}},minecraft:max_stack_size=1]

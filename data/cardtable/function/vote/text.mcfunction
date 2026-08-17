@@ -1,0 +1,5 @@
+# 北、东、南、西玩家视角中的右侧分别对应西、北、东、南
+summon minecraft:text_display ~-1.00 ~0.58 ~-1.515 {data:{cardtable:{new_vote:1b}},text:{text:'结束游戏',color:'red'},billboard:'fixed',Rotation:[180f,0f],alignment:'center',line_width:120,background:0,shadow:1b,see_through:0b,view_range:20f,brightness:{block:15,sky:15}}
+summon minecraft:text_display ~1.515 ~0.58 ~-1.00 {data:{cardtable:{new_vote:1b}},text:{text:'结束游戏',color:'red'},billboard:'fixed',Rotation:[-90f,0f],alignment:'center',line_width:120,background:0,shadow:1b,see_through:0b,view_range:20f,brightness:{block:15,sky:15}}
+summon minecraft:text_display ~1.00 ~0.58 ~1.515 {data:{cardtable:{new_vote:1b}},text:{text:'结束游戏',color:'red'},billboard:'fixed',Rotation:[0f,0f],alignment:'center',line_width:120,background:0,shadow:1b,see_through:0b,view_range:20f,brightness:{block:15,sky:15}}
+summon minecraft:text_display ~-1.515 ~0.58 ~1.00 {data:{cardtable:{new_vote:1b}},text:{text:'结束游戏',color:'red'},billboard:'fixed',Rotation:[90f,0f],alignment:'center',line_width:120,background:0,shadow:1b,see_through:0b,view_range:20f,brightness:{block:15,sky:15}}

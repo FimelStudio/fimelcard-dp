@@ -1,0 +1,1 @@
+$dialog show @s {type:"minecraft:notice",title:{text:"奖励牌 · 弃牌恢复",color:"green",bold:true},body:[{type:"minecraft:plain_message",width:430,contents:{text:"必须立即选择一张弃牌放回剩余牌库。牌面按弃牌先后排列，每行五张。",color:"gray"}},{type:"minecraft:plain_message",width:430,contents:$(restore_view)}],pause:false,can_close_with_escape:false}

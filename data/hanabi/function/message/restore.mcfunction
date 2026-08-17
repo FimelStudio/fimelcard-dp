@@ -1,0 +1,1 @@
+$tellraw @a[tag=hb.audience] [{text:"[花火] ",color:"light_purple"},{selector:"@a[tag=hb.action_actor,limit=1]",color:"yellow"},{text:" 将弃牌堆中的 ",color:"gray"},{text:"$(name)",color:"green",bold:true},{text:" 放回了牌库。",color:"gray"}]

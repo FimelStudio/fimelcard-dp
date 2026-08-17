@@ -1,0 +1,8 @@
+{
+  "values": [
+    "cardtable:tick",
+    "fast_card:tick",
+    "liars_holdem:tick",
+    "hanabi:tick"
+  ]
+}

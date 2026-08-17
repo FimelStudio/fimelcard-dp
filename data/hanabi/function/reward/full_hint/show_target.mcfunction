@@ -1,0 +1,1 @@
+$dialog show @s {type:"minecraft:notice",title:{text:"奖励牌 · 完全提示",color:"aqua",bold:true},body:[{type:"minecraft:plain_message",width:430,contents:$(full_hint_target_body)}],pause:false,can_close_with_escape:false}

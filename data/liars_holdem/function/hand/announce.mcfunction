@@ -1,0 +1,11 @@
+# 当前执行者是已完成评估的摊牌玩家，lh.audience只包含本桌玩家
+execute if score @s lh_cat matches 10 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：皇家同花顺',color:'gold',bold:true}]
+execute if score @s lh_cat matches 9 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：同花顺（',color:'red'},{score:{name:'@s',objective:'lh_k1'},color:'gold'},{text:'高）',color:'red'}]
+execute if score @s lh_cat matches 8 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：四条',color:'red'}]
+execute if score @s lh_cat matches 7 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：葫芦',color:'light_purple'}]
+execute if score @s lh_cat matches 6 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：同花',color:'aqua'}]
+execute if score @s lh_cat matches 5 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：顺子（',color:'green'},{score:{name:'@s',objective:'lh_k1'},color:'gold'},{text:'高）',color:'green'}]
+execute if score @s lh_cat matches 4 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：三条',color:'blue'}]
+execute if score @s lh_cat matches 3 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：两对',color:'dark_aqua'}]
+execute if score @s lh_cat matches 2 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：一对',color:'white'}]
+execute if score @s lh_cat matches 1 run tellraw @a[tag=lh.audience] [{selector:'@s',color:'yellow'},{text:'：高牌',color:'gray'}]

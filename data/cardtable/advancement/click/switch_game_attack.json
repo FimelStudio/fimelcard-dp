@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "click": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_scores",
+            "entity": "this",
+            "scores": {
+              "ct_kind": 21
+            }
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "function": "cardtable:click/switch_game"
+  }
+}

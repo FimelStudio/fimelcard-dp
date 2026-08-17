@@ -1,0 +1,1 @@
+$tellraw @a[tag=hb.audience] [{text:"[花火] ",color:"light_purple"},{selector:"@a[tag=hb.action_actor,limit=1]",color:"yellow"},{text:" 打错了 ",color:"red"},{text:"$(name)",color:"white"},{text:"，获得一次失误！",color:"red"}]
