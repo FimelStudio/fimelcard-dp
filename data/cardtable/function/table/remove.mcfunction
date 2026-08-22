@@ -3,6 +3,7 @@ function cardtable:log {text:"管理员请求移除牌桌会话"}
 execute if score @s ct_state matches 1 if score @s ct_game matches 1 run function fast_card:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 2 run function liars_holdem:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 3 run function hanabi:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 4 run function abraca:game/abort
 
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player

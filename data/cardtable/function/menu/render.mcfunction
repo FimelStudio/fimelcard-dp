@@ -8,7 +8,8 @@ execute as @e[tag=ct.menu] if score @s ct_id = #ctx_id ct_ctx run kill @s
 execute if score @s ct_game matches 1 run function cardtable:menu/game_name_fast_card
 execute if score @s ct_game matches 2 run function cardtable:menu/game_name_liars_holdem
 execute if score @s ct_game matches 3 run function cardtable:menu/game_name_hanabi
-execute unless score @s ct_game matches 1..3 run function cardtable:menu/game_name_unknown
+execute if score @s ct_game matches 4 run function cardtable:menu/game_name_abraca
+execute unless score @s ct_game matches 1..4 run function cardtable:menu/game_name_unknown
 execute if score @s ct_joined matches 0 run function cardtable:menu/people_0
 execute if score @s ct_joined matches 1 run function cardtable:menu/people_1
 execute if score @s ct_joined matches 2 run function cardtable:menu/people_2

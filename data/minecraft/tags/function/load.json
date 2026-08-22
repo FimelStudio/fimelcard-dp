@@ -3,6 +3,7 @@
     "cardtable:load",
     "fast_card:load",
     "liars_holdem:load",
-    "hanabi:load"
+    "hanabi:load",
+    "abraca:load"
   ]
 }

@@ -5,6 +5,7 @@ scoreboard players set @s ct_start 0
 execute if score @s ct_game matches 1 run function fast_card:game/start
 execute if score @s ct_game matches 2 run function liars_holdem:game/start
 execute if score @s ct_game matches 3 run function hanabi:game/start
+execute if score @s ct_game matches 4 run function abraca:game/start
 execute unless score @s ct_start matches 1 run return fail
 
 # 游戏确认成功后才隐藏中央菜单并生成结束投票按钮

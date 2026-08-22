@@ -1,0 +1,26 @@
+scoreboard objectives add ab_id dummy
+scoreboard objectives add ab_state dummy
+scoreboard objectives add ab_turn dummy
+scoreboard objectives add ab_round dummy
+scoreboard objectives add ab_hp dummy
+scoreboard objectives add ab_score dummy
+scoreboard objectives add ab_last dummy
+scoreboard objectives add ab_seat dummy
+scoreboard objectives add ab_card dummy
+scoreboard objectives add ab_spell dummy
+scoreboard objectives add ab_owner dummy
+scoreboard objectives add ab_secret dummy
+scoreboard objectives add ab_deck_count dummy
+scoreboard objectives add ab_action trigger
+scoreboard objectives add ab_set_table dummy
+scoreboard objectives add ab_settings trigger
+scoreboard objectives add ab_play_1 dummy
+scoreboard objectives add ab_play_2 dummy
+scoreboard objectives add ab_play_3 dummy
+scoreboard objectives add ab_play_4 dummy
+scoreboard objectives add ab_play_5 dummy
+scoreboard objectives add ab_play_6 dummy
+scoreboard objectives add ab_play_7 dummy
+scoreboard objectives add ab_play_8 dummy
+scoreboard players set #version ab_ctx 2
+tellraw @a [{text:'[出包魔法师] ',color:'dark_purple'},{text:'游戏模块安装完成（咒语石资源为占位）。',color:'green'}]

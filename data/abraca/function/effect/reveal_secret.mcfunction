@@ -1,0 +1,8 @@
+execute if score @s ab_spell matches 1 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：1号 古代巨龙。',color:'yellow'}]
+execute if score @s ab_spell matches 2 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：2号 黑暗幽灵。',color:'yellow'}]
+execute if score @s ab_spell matches 3 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：3号 甜蜜的梦。',color:'yellow'}]
+execute if score @s ab_spell matches 4 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：4号 猫头鹰。',color:'yellow'}]
+execute if score @s ab_spell matches 5 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：5号 闪电暴风雨。',color:'yellow'}]
+execute if score @s ab_spell matches 6 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：6号 暴风雪。',color:'yellow'}]
+execute if score @s ab_spell matches 7 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：7号 火球。',color:'yellow'}]
+execute if score @s ab_spell matches 8 run tellraw @a[tag=ab.actor,limit=1] [{text:'[猫头鹰] ',color:'gold'},{text:'你获得并查看了一枚秘密咒语石：8号 魔法药水。',color:'yellow'}]

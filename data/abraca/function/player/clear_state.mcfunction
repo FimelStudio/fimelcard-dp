@@ -1,0 +1,12 @@
+clear @s minecraft:paper[minecraft:custom_data~{abraca:{stone:1b}}]
+tag @s remove ab.player
+tag @s remove ab.turn
+tag @s remove ab.actor
+tag @s remove ab.knocked
+scoreboard players reset @s ab_id
+scoreboard players reset @s ab_hp
+scoreboard players reset @s ab_score
+scoreboard players reset @s ab_last
+scoreboard players reset @s ab_seat
+scoreboard players reset @s ab_secret
+scoreboard players reset @s ab_action
