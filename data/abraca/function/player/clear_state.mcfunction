@@ -5,6 +5,9 @@ tag @s remove ab.turn
 tag @s remove ab.actor
 tag @s remove ab.audience
 tag @s remove ab.knocked
+tag @s remove ab.effect_caster
+tag @s remove ab.round_winner
+tag @s remove ab.win_hand
 scoreboard players reset @s ab_id
 scoreboard players reset @s ab_hp
 scoreboard players reset @s ab_score

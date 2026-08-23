@@ -1,6 +1,6 @@
 # 成功石留作公开“已施放”记录，而不是删除。
 scoreboard players operation #ctx ab_ctx = @s ab_id
-tag @a[tag=ab.audience] remove ab.audience
+execute as @a[tag=ab.audience] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.audience
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.audience
 tag @e[tag=ab.chosen,limit=1] remove ab.hand
 tag @e[tag=ab.chosen,limit=1] add ab.played
@@ -23,6 +23,9 @@ execute if score #spell ab_ctx matches 5 run function abraca:sound/storm
 execute if score #spell ab_ctx matches 6 run function abraca:sound/blizzard
 execute if score #spell ab_ctx matches 7 run function abraca:sound/fireball
 execute if score #spell ab_ctx matches 8 run function abraca:sound/potion
+# 此标签只在本次成功施法的伤害结算期间存在，用于识别“击倒其他玩家”的胜者。
+execute as @a[tag=ab.effect_caster] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.effect_caster
+tag @a[tag=ab.actor,limit=1] add ab.effect_caster
 execute if score #spell ab_ctx matches 1 run function abraca:effect/dragon
 execute if score #spell ab_ctx matches 2 run function abraca:effect/ghost
 execute if score #spell ab_ctx matches 3 run function abraca:effect/dream
@@ -34,7 +37,11 @@ execute if score #spell ab_ctx matches 8 run function abraca:effect/potion
 function abraca:effect/clamp_health
 function abraca:hud/update
 function abraca:title/update_all
-tag @a[tag=ab.audience] remove ab.audience
+execute as @a[tag=ab.audience] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.audience
+# 手中最后一枚咒语石成功打出时，该玩家立即以“打空手牌”获胜。
+function abraca:game/check_empty_hand
+execute if score @s ab_state matches 0 run return 0
 function abraca:effect/check_knockout
+execute as @a[tag=ab.effect_caster] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.effect_caster
 execute if score @s ab_state matches 0 run return 0
 function abraca:turn/continue
