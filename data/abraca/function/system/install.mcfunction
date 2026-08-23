@@ -22,5 +22,7 @@ scoreboard objectives add ab_play_5 dummy
 scoreboard objectives add ab_play_6 dummy
 scoreboard objectives add ab_play_7 dummy
 scoreboard objectives add ab_play_8 dummy
-scoreboard players set #version ab_ctx 2
+scoreboard objectives add ab_panel dummy
+scoreboard objectives add ab_prev_panel dummy
+scoreboard players set #version ab_ctx 3
 tellraw @a [{text:'[出包魔法师] ',color:'dark_purple'},{text:'游戏模块安装完成（咒语石资源为占位）。',color:'green'}]

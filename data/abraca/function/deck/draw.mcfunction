@@ -6,6 +6,6 @@ execute unless entity @e[tag=ab.drawn,limit=1] run return 0
 execute as @e[tag=ab.drawn,limit=1] run scoreboard players operation @s ab_owner = #seat ab_ctx
 execute as @e[tag=ab.drawn,limit=1] run tag @s remove ab.deck
 execute as @e[tag=ab.drawn,limit=1] run tag @s add ab.hand
-# 【资源包待补】改为 card:abraca/back；当前只给持有者无牌面信息的纸张占位。
-give @s minecraft:paper[minecraft:item_name='未知咒语石',minecraft:custom_data={abraca:{stone:1b}},minecraft:max_stack_size=1]
+# 持有者始终只看到咒语石背面；真实牌面仅在其他观察者的BetterTitle面板中显示。
+give @s minecraft:paper[minecraft:item_model='card:abraca/back',minecraft:item_name='未知咒语石',minecraft:custom_data={abraca:{stone:1b}},minecraft:max_stack_size=1]
 execute as @e[tag=ab.drawn] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.drawn

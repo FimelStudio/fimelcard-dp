@@ -12,4 +12,7 @@ execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx run scoreboard player
 execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_action 0
 execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx run scoreboard players enable @s ab_action
 execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx run function abraca:ui/open_cast
-execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tellraw @s [{text:'[出包魔法师] ',color:'dark_purple'},{text:'本桌下一位玩家正在施法。',color:'gray'}]
+tag @a[tag=ab.announce] remove ab.announce
+execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.announce
+execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx run tellraw @a[tag=ab.announce] [{text:'[出包魔法师] ',color:'dark_purple'},{selector:'@s',color:'gold'},{text:' 正在施法。',color:'gray'}]
+tag @a[tag=ab.announce] remove ab.announce

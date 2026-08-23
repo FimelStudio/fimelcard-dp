@@ -27,5 +27,6 @@ function abraca:deck/create_secret
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run function abraca:deck/draw_five
 function abraca:hud/spawn
 function abraca:hud/update
+function abraca:title/update_all
 scoreboard players set @s ct_start 1
 function abraca:turn/begin
