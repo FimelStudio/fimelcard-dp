@@ -1,4 +1,5 @@
 scoreboard players operation #ctx ab_ctx = @s ab_id
+function abraca:log {text:"本轮结束，开始结算胜者与存活奖励"}
 # 建立本桌接收者，保证同时进行的其他牌桌不会收到结算消息。
 tag @a[tag=ab.audience] remove ab.audience
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.audience

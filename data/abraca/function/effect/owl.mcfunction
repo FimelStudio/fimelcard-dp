@@ -4,6 +4,12 @@ scoreboard players operation #seat ab_ctx = @a[tag=ab.actor,limit=1] ab_seat
 execute as @e[tag=ab.secret_pick] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.secret_pick
 tag @e[tag=ab.secret_candidate] remove ab.secret_candidate
 execute as @e[type=minecraft:marker,tag=ab.secret_stone,scores={ab_owner=0}] if score @s ab_id = #ctx ab_ctx run tag @s add ab.secret_candidate
+scoreboard players set #secret_available ab_ctx 0
+execute as @e[tag=ab.secret_candidate] run scoreboard players add #secret_available ab_ctx 1
+execute store result storage abraca:debug id int 1 run scoreboard players get #ctx ab_ctx
+execute store result storage abraca:debug seat int 1 run scoreboard players get #seat ab_ctx
+execute store result storage abraca:debug available int 1 run scoreboard players get #secret_available ab_ctx
+function abraca:debug/log_owl with storage abraca:debug
 execute as @e[type=minecraft:marker,tag=ab.secret_candidate,sort=random,limit=1] run tag @s add ab.secret_pick
 tag @e[tag=ab.this_secret_pick] remove ab.this_secret_pick
 execute as @e[tag=ab.secret_pick] if score @s ab_id = #ctx ab_ctx run tag @s add ab.this_secret_pick

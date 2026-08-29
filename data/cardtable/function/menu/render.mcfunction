@@ -1,6 +1,8 @@
 # 只重建本桌的中央菜单，更新发生在入座、离座和牌局结束时
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @e[tag=ct.menu] if score @s ct_id = #ctx_id ct_ctx run kill @s
+# 旧版本或外部修改留下的异常编号回退到首个已注册游戏，不显示“未注册游戏”。
+execute unless score @s ct_game matches 1..4 run scoreboard players set @s ct_game 1
 
 # 菜单由文字展示实体负责显示，由同位置的交互实体负责点击
 # 26.2的text_display不可在世界内被选取，文本click_event不能替代此点击层
@@ -9,7 +11,6 @@ execute if score @s ct_game matches 1 run function cardtable:menu/game_name_fast
 execute if score @s ct_game matches 2 run function cardtable:menu/game_name_liars_holdem
 execute if score @s ct_game matches 3 run function cardtable:menu/game_name_hanabi
 execute if score @s ct_game matches 4 run function cardtable:menu/game_name_abraca
-execute unless score @s ct_game matches 1..4 run function cardtable:menu/game_name_unknown
 execute if score @s ct_joined matches 0 run function cardtable:menu/people_0
 execute if score @s ct_joined matches 1 run function cardtable:menu/people_1
 execute if score @s ct_joined matches 2 run function cardtable:menu/people_2

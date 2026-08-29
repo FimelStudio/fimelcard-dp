@@ -1,1 +1,0 @@
-summon minecraft:text_display ~ ~3.00 ~ {data:{cardtable:{new_ui:1b}},text:{text:'未注册游戏',color:'red',bold:true},billboard:'vertical',alignment:'center',line_width:200,background:0,shadow:1b,see_through:0b,view_range:24f,brightness:{block:15,sky:15}}

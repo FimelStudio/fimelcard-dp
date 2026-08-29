@@ -89,12 +89,13 @@ Minecraft 26.2 的 `text_display` 在世界中不可被选取，文本组件的 
 /tag @s remove ct.debug
 ```
 
-只要有玩家带有该标签，牌桌通用事件会以 `[牌桌 Debug]` 开头，游戏事件会分别以 `[Fast Card Debug]`或`[赌命德州扑克 Debug]`开头。日志通过 `say` 同时进入聊天和服务端控制台。也可以手动调用：
+只要有玩家带有该标签，牌桌通用事件会以 `[牌桌 Debug]` 开头，游戏事件会分别以 `[Fast Card Debug]`、`[赌命德州扑克 Debug]`、`[花火 Debug]` 或 `[出包魔法师 Debug]` 开头。也可以手动调用：
 
 ```mcfunction
 /function cardtable:log {text:"测试牌桌日志"}
 /function fast_card:log {text:"测试游戏日志"}
 /function liars_holdem:log {text:"测试赌命德州扑克日志"}
+/function abraca:log {text:"测试出包魔法师日志"}
 ```
 
 动态日志使用 storage 传入宏参数，再由事件宏调用统一日志入口。例如 `cardtable:debug/log_join` 和 `fast_card:debug/log_pass`。
