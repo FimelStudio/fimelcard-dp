@@ -15,6 +15,7 @@ execute if score #spell ab_ctx matches 1 run scoreboard players add @s ab_play_1
 execute if score #spell ab_ctx matches 2 run scoreboard players add @s ab_play_2 1
 execute if score #spell ab_ctx matches 3 run scoreboard players add @s ab_play_3 1
 execute if score #spell ab_ctx matches 4 run scoreboard players add @s ab_play_4 1
+execute if score #spell ab_ctx matches 4 run scoreboard players add @a[tag=ab.actor,limit=1] ab_owl 1
 execute if score #spell ab_ctx matches 5 run scoreboard players add @s ab_play_5 1
 execute if score #spell ab_ctx matches 6 run scoreboard players add @s ab_play_6 1
 execute if score #spell ab_ctx matches 7 run scoreboard players add @s ab_play_7 1
@@ -53,8 +54,8 @@ function abraca:title/update_all
 execute as @a[tag=ab.audience] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.audience
 # 手中最后一枚咒语石成功打出时，该玩家立即以“打空手牌”获胜。
 function abraca:game/check_empty_hand
-execute if score @s ab_state matches 0 run return 0
+execute unless score @s ab_state matches 2 run return 0
 function abraca:effect/check_knockout
 execute as @a[tag=ab.effect_caster] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.effect_caster
-execute if score @s ab_state matches 0 run return 0
+execute unless score @s ab_state matches 2 run return 0
 function abraca:turn/continue

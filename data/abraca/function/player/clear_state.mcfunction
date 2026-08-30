@@ -14,4 +14,5 @@ scoreboard players reset @s ab_score
 scoreboard players reset @s ab_last
 scoreboard players reset @s ab_seat
 scoreboard players reset @s ab_secret
+scoreboard players reset @s ab_owl
 scoreboard players reset @s ab_action

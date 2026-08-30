@@ -10,6 +10,7 @@ execute as @a[tag=hb.hint_choice_name,limit=1] at @s run function hanabi:name/re
 data modify storage hanabi:dialog target_name set value {text:"",color:"aqua",bold:true,extra:[]}
 data modify storage hanabi:dialog target_name.extra append from storage hanabi:name resolved
 data modify storage hanabi:dialog target_hand set value {text:"",font:"card:hanabi_ui",shadow_color:0,extra:[]}
+data modify storage hanabi:dialog target_status set value {text:"",color:"gray",extra:[]}
 scoreboard players set #target_added hb_ctx 0
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=1}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #row_seat hb_ctx run function hanabi:dialog/hint/append_target
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=2}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #row_seat hb_ctx run function hanabi:dialog/hint/append_target

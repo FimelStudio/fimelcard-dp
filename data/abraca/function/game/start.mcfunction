@@ -28,6 +28,7 @@ execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard play
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_hp 6
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_score 0
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_secret 0
+execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_owl 0
 function abraca:deck/create
 function abraca:deck/create_secret
 execute store result storage abraca:debug id int 1 run scoreboard players get @s ab_id
