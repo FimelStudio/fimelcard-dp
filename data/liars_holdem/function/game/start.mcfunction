@@ -51,6 +51,17 @@ execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run scoreboard p
 execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run function cardtable:seat/mount
 execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run function liars_holdem:player/protect
 
+# 首局庄家从实际存活玩家中随机抽取；round/begin 的轮转会先落在这名玩家。
+tag @a[tag=lh.first_pool] remove lh.first_pool
+tag @a[tag=lh.first_dealer] remove lh.first_dealer
+execute as @a[tag=lh.player,scores={lh_alive=1}] if score @s lh_id = #ctx_id lh_ctx run tag @s add lh.first_pool
+tag @a[tag=lh.first_pool,sort=random,limit=1] add lh.first_dealer
+scoreboard players operation @s lh_dealer = @a[tag=lh.first_dealer,limit=1] lh_seat
+scoreboard players remove @s lh_dealer 1
+execute if score @s lh_dealer matches ..0 run scoreboard players set @s lh_dealer 4
+tag @a[tag=lh.first_pool] remove lh.first_pool
+tag @a[tag=lh.first_dealer] remove lh.first_dealer
+
 # 所有初始化完成后再向通用牌桌提交成功握手
 scoreboard players set @s ct_start 1
 function liars_holdem:log {text:"开局检查通过，进入第一局"}

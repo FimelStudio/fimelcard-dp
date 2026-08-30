@@ -4,6 +4,7 @@
     "fast_card:load",
     "liars_holdem:load",
     "hanabi:load",
-    "abraca:load"
+    "abraca:load",
+    "bullshit:load"
   ]
 }

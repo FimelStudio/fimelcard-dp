@@ -29,6 +29,16 @@ execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard play
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_score 0
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_secret 0
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run scoreboard players set @s ab_owl 0
+# 随机抽取实际入座者作为首位施法者；回合扫描会从其前一座推进到该玩家。
+tag @a[tag=ab.first_pool] remove ab.first_pool
+tag @a[tag=ab.first_turn] remove ab.first_turn
+execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.first_pool
+tag @a[tag=ab.first_pool,sort=random,limit=1] add ab.first_turn
+scoreboard players operation @s ab_turn = @a[tag=ab.first_turn,limit=1] ab_seat
+scoreboard players remove @s ab_turn 1
+execute if score @s ab_turn matches ..0 run scoreboard players set @s ab_turn 4
+tag @a[tag=ab.first_pool] remove ab.first_pool
+tag @a[tag=ab.first_turn] remove ab.first_turn
 function abraca:deck/create
 function abraca:deck/create_secret
 execute store result storage abraca:debug id int 1 run scoreboard players get @s ab_id

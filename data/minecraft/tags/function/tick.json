@@ -4,6 +4,7 @@
     "fast_card:tick",
     "liars_holdem:tick",
     "hanabi:tick",
-    "abraca:tick"
+    "abraca:tick",
+    "bullshit:tick"
   ]
 }

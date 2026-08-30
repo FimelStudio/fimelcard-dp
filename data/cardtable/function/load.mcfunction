@@ -7,7 +7,7 @@ execute if score #version ct_ctx matches 1 run function cardtable:system/upgrade
 execute if score #version ct_ctx matches 2 run function cardtable:system/upgrade_v3
 
 # 当前注册3个游戏；编号必须从1连续排列
-scoreboard players set #game_count ct_ctx 4
+scoreboard players set #game_count ct_ctx 5
 
 # 重载时升级已加载牌桌；尚未加载的牌桌会由低频维护逻辑补做
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{menu_version:12}}} run function cardtable:table/migrate_v12

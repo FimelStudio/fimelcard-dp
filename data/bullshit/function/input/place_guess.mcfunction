@@ -1,0 +1,1 @@
+$item replace entity @s hotbar.8 with minecraft:lime_dye[minecraft:item_name='结束问答并指认（Q选择玩家）',minecraft:custom_data={bullshit:{card:1b,kind:'guess',table:$(table)}},minecraft:enchantment_glint_override=true,minecraft:max_stack_size=1]

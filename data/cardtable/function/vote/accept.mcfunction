@@ -17,3 +17,4 @@ execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 1 
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 2 run function liars_holdem:game/end_vote
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 3 run function hanabi:game/end_vote
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 4 run function abraca:game/end_vote
+execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 5 run function bullshit:game/end_vote
