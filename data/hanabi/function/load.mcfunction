@@ -12,6 +12,7 @@ execute if score #version hb_ctx matches 4 run function hanabi:system/upgrade_v5
 execute if score #version hb_ctx matches 5 run function hanabi:system/upgrade_v6
 execute if score #version hb_ctx matches 6 run function hanabi:system/upgrade_v7
 execute if score #version hb_ctx matches 7 run function hanabi:system/upgrade_v8
+execute if score #version hb_ctx matches 8 run function hanabi:system/upgrade_v9
 
 tellraw @a[tag=hb.player] [{text:'[花火] ',color:'light_purple'},{text:'数据包已重新加载，正在恢复当前牌局。',color:'yellow'}]
 title @a[tag=hb.player] actionbar {text:""}

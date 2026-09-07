@@ -9,6 +9,7 @@ execute as @a[tag=hb.player] if items entity @s weapon.offhand minecraft:paper[m
 execute as @a[tag=hb.player] if items entity @s weapon.offhand minecraft:firework_star[minecraft:custom_data~{hanabi:{action:"hint"}}] at @s run function hanabi:input/hint_f_reject
 execute as @a[tag=hb.player,scores={hb_drop_card=1..}] at @s run function hanabi:input/card_q
 execute as @a[tag=hb.player,scores={hb_drop_hint=1..}] at @s run function hanabi:input/hint_q
+execute as @a[tag=hb.player,scores={hb_drop_reward=1..}] at @s run function hanabi:input/reopen_reward
 
 # 26.2中丢弃统计与物品实体可能不在同一刻可见；仅在附近存在掉落物时补扫一次
 # 手牌内含桌号、座位号和牌位，扫描不会误收别桌玩家或普通纸张

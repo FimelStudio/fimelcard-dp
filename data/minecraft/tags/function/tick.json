@@ -5,6 +5,8 @@
     "liars_holdem:tick",
     "hanabi:tick",
     "abraca:tick",
-    "bullshit:tick"
+    "bullshit:tick",
+    "decrypto:tick",
+    "critical_point:tick"
   ]
 }

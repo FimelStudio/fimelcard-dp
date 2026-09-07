@@ -16,4 +16,5 @@ execute as @e[type=minecraft:marker,tag=hb.controller] if score @s hb_id = #ctx_
 execute if score #discard_max hb_ctx matches 1.. run function hanabi:dialog/restore/scan
 # 末行后补足牌面向下伸出的高度，防止只显示上半张牌
 execute if score #restore_added hb_ctx matches 1.. run data modify storage hanabi:dialog restore_view.extra append value {text:"\n\n\n\n\n\n\n\n",font:"minecraft:default"}
+function hanabi:input/give_reward_reopen
 function hanabi:dialog/restore/show with storage hanabi:dialog

@@ -1,0 +1,5 @@
+tellraw @s [{text:'—— 敌方笔记·白队 ——',color:'white',bold:true}]
+tellraw @s [{text:'1：',color:'gold'},{nbt:'black.1[]',storage:'decrypto:notes',interpret:true,separator:{text:'、',color:'gray'}}]
+tellraw @s [{text:'2：',color:'gold'},{nbt:'black.2[]',storage:'decrypto:notes',interpret:true,separator:{text:'、',color:'gray'}}]
+tellraw @s [{text:'3：',color:'gold'},{nbt:'black.3[]',storage:'decrypto:notes',interpret:true,separator:{text:'、',color:'gray'}}]
+tellraw @s [{text:'4：',color:'gold'},{nbt:'black.4[]',storage:'decrypto:notes',interpret:true,separator:{text:'、',color:'gray'}}]

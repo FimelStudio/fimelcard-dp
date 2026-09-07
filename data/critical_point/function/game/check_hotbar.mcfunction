@@ -1,0 +1,9 @@
+execute if items entity @s hotbar.0 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.1 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.2 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.3 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.4 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.5 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.6 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.7 * run scoreboard players set #blocked cp_ctx 1
+execute if items entity @s hotbar.8 * run scoreboard players set #blocked cp_ctx 1

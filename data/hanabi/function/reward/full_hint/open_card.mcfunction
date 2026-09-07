@@ -21,5 +21,6 @@ execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=3}] if score @s 
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=4}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #target_seat hb_ctx run function hanabi:reward/full_hint/append_card {action:1204}
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=5}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #target_seat hb_ctx run function hanabi:reward/full_hint/append_card {action:1205}
 data modify storage hanabi:reward full_hint_cards.extra append value {text:"\n\n\n\n\n\n\n\n",font:"minecraft:default"}
+execute as @a[tag=hb.reward_actor,limit=1] run function hanabi:input/give_reward_reopen
 execute as @a[tag=hb.reward_actor,limit=1] run function hanabi:reward/full_hint/show_card with storage hanabi:reward
 tag @a[tag=hb.full_hint_target] remove hb.full_hint_target

@@ -5,6 +5,8 @@
     "liars_holdem:load",
     "hanabi:load",
     "abraca:load",
-    "bullshit:load"
+    "bullshit:load",
+    "decrypto:load",
+    "critical_point:load"
   ]
 }

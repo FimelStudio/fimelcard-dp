@@ -4,6 +4,8 @@ execute if entity @s[tag=lh.player] run function liars_holdem:player/clear_state
 execute if entity @s[tag=hb.player] run function hanabi:player/clear_state
 execute if entity @s[tag=ab.player] run function abraca:player/clear_state
 execute if entity @s[tag=bw.player] run function bullshit:player/clear_state
+execute if entity @s[tag=dc.player] run function decrypto:player/clear_state
+execute if entity @s[tag=cp.player] run function critical_point:game/player_left
 
 # 离线即视为离开牌桌；保持静默，不发送入座或离座提示
 function cardtable:seat/remove_player

@@ -19,6 +19,7 @@ scoreboard players remove @s hb_reward_left 1
 tag @a[tag=hb.action_actor,limit=1] add hb.reward_pending
 execute as @a[tag=hb.action_actor,limit=1] run function hanabi:input/clear_actions
 execute as @a[tag=hb.action_actor,limit=1] run function hanabi:hand/sync
+execute as @a[tag=hb.action_actor,limit=1] run function hanabi:input/give_reward_reopen
 dialog clear @a[tag=hb.action_actor,limit=1]
 
 function hanabi:player/tag_audience

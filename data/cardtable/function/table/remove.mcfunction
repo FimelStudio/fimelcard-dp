@@ -5,6 +5,8 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 2 run functio
 execute if score @s ct_state matches 1 if score @s ct_game matches 3 run function hanabi:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 4 run function abraca:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 5 run function bullshit:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 6 run function decrypto:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 7 run function critical_point:game/abort
 
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player

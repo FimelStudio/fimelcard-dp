@@ -15,7 +15,9 @@ execute if score #spell ab_ctx matches 1 run scoreboard players add @s ab_play_1
 execute if score #spell ab_ctx matches 2 run scoreboard players add @s ab_play_2 1
 execute if score #spell ab_ctx matches 3 run scoreboard players add @s ab_play_3 1
 execute if score #spell ab_ctx matches 4 run scoreboard players add @s ab_play_4 1
-execute if score #spell ab_ctx matches 4 run scoreboard players add @a[tag=ab.actor,limit=1] ab_owl 1
+# 猫头鹰次数必须记在本桌当前施法者身上，不能被其他牌桌或残留actor标签截走。
+execute if score #spell ab_ctx matches 4 as @a[tag=ab.actor] if score @s ab_id = #ctx ab_ctx run scoreboard players add @s ab_owl 1
+execute if score #spell ab_ctx matches 4 as @a[tag=ab.actor] if score @s ab_id = #ctx ab_ctx run tellraw @s [{text:'[猫头鹰] ',color:'gold'},{text:'本局猫头鹰奖励已记录；若结算时存活，将额外前进1层。',color:'green'}]
 execute if score #spell ab_ctx matches 5 run scoreboard players add @s ab_play_5 1
 execute if score #spell ab_ctx matches 6 run scoreboard players add @s ab_play_6 1
 execute if score #spell ab_ctx matches 7 run scoreboard players add @s ab_play_7 1

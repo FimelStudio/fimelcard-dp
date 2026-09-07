@@ -9,4 +9,5 @@ execute store result storage hanabi:reward strikes int 1 run scoreboard players 
 execute store result storage hanabi:reward strike_max int 1 run scoreboard players get @s hb_strike_max
 scoreboard players set @a[tag=hb.reward_actor,limit=1] hb_action 0
 scoreboard players enable @a[tag=hb.reward_actor,limit=1] hb_action
+execute as @a[tag=hb.reward_actor,limit=1] run function hanabi:input/give_reward_reopen
 execute as @a[tag=hb.reward_actor,limit=1] run function hanabi:reward/risk/show with storage hanabi:reward

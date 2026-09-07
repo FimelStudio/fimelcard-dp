@@ -7,6 +7,7 @@ execute unless entity @a[tag=hb.reward_actor,limit=1] run return run function ha
 scoreboard players operation #slot hb_ctx = @s hb_pending_slot
 scoreboard players operation #actor_seat hb_ctx = @a[tag=hb.reward_actor,limit=1] hb_seat
 dialog clear @a[tag=hb.reward_actor,limit=1]
+clear @a[tag=hb.reward_actor,limit=1] minecraft:purple_dye[minecraft:custom_data~{hanabi:{action:'reward_reopen'}}]
 tag @a[tag=hb.reward_actor,limit=1] remove hb.reward_pending
 tag @a[tag=hb.reward_actor,limit=1] remove hb.restore_pending
 scoreboard players set @a[tag=hb.reward_actor,limit=1] hb_target 0
