@@ -39,4 +39,9 @@ scoreboard objectives add dc_bset dummy
 scoreboard objectives add dc_round_limit dummy
 scoreboard objectives add dc_settings trigger
 scoreboard objectives add dc_set_table dummy
-scoreboard players set #version dc_ctx 8
+scoreboard objectives add dc_panel dummy
+scoreboard objectives add dc_prev_panel dummy
+scoreboard objectives add dc_page dummy
+scoreboard objectives add dc_pages dummy
+scoreboard objectives add dc_page_tick dummy
+scoreboard players set #version dc_ctx 10

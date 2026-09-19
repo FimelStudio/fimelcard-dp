@@ -15,11 +15,7 @@ scoreboard players set @s dc_we 0
 scoreboard players set @s dc_be 0
 scoreboard players set @s dc_mode 4
 execute if score @s ct_joined matches 3 run scoreboard players set @s dc_mode 3
-# 每局从60组题库中为两队各抽一组，四人局保证双方词组不同。
-execute store result score @s dc_wset run random value 1..60
-execute store result score @s dc_bset run random value 1..60
-execute if score @s dc_bset = @s dc_wset run scoreboard players add @s dc_bset 1
-execute if score @s dc_bset matches 61.. run scoreboard players set @s dc_bset 1
+function decrypto:words/draw
 function decrypto:game/cleanup_drops
 function decrypto:notes/init
 function decrypto:marker/update
@@ -60,11 +56,10 @@ tag @a[tag=dc.encoder_pick] remove dc.encoder_pick
 function decrypto:player/announce_roles
 function decrypto:player/announce_public
 function decrypto:hud/load_keywords
-execute as @a[tag=dc.player,scores={dc_team=1}] if score @s dc_id = #ctx dc_ctx run tellraw @s [{text:'[白队关键字] ',color:'white',bold:true},{nbt:'white',storage:'decrypto:hud',color:'aqua'}]
-execute if score @s dc_mode matches 4 as @a[tag=dc.player,scores={dc_team=2}] if score @s dc_id = #ctx dc_ctx run tellraw @s [{text:'[黑队关键字] ',color:'dark_gray',bold:true},{nbt:'black',storage:'decrypto:hud',color:'light_purple'}]
-function decrypto:hud/keywords
+function decrypto:title/activate_all
 execute if score @s dc_mode matches 3 run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'三人模式：系统已随机分配合作队与截密者。截密或合作队传讯失败累计2次，截密者获胜；第5轮结束仍未达成则合作队获胜。',color:'yellow'}]
 execute if score @s dc_mode matches 4 run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'四人模式：本局回合上限为 ',color:'yellow'},{score:{name:'@s',objective:'dc_round_limit'},color:'gold'},{text:' 轮；任一队提前达成标记胜负条件时仍会立即结束。',color:'yellow'}]
-tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'第一轮开始：系统已为白队加密者生成密码。',color:'yellow'}]
+function decrypto:round/announce_start
+function decrypto:words/announce_private
 function decrypto:round/start_white_prompt
 scoreboard players set @s ct_start 1

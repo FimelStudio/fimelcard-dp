@@ -1,15 +1,13 @@
+# 保存完整原文，并为新增提示建立36字符换行缓存。
 data modify storage decrypto:input name set from storage decrypto:round black.1
-execute if score @s dc_b1 matches 1 run data modify storage decrypto:notes white.1 append from storage decrypto:input name
-execute if score @s dc_b1 matches 2 run data modify storage decrypto:notes white.2 append from storage decrypto:input name
-execute if score @s dc_b1 matches 3 run data modify storage decrypto:notes white.3 append from storage decrypto:input name
-execute if score @s dc_b1 matches 4 run data modify storage decrypto:notes white.4 append from storage decrypto:input name
+execute store result storage decrypto:wrap args.digit int 1 run scoreboard players get @s dc_b1
+data modify storage decrypto:wrap args.side set value "white"
+function decrypto:notes/record with storage decrypto:wrap args
 data modify storage decrypto:input name set from storage decrypto:round black.2
-execute if score @s dc_b2 matches 1 run data modify storage decrypto:notes white.1 append from storage decrypto:input name
-execute if score @s dc_b2 matches 2 run data modify storage decrypto:notes white.2 append from storage decrypto:input name
-execute if score @s dc_b2 matches 3 run data modify storage decrypto:notes white.3 append from storage decrypto:input name
-execute if score @s dc_b2 matches 4 run data modify storage decrypto:notes white.4 append from storage decrypto:input name
+execute store result storage decrypto:wrap args.digit int 1 run scoreboard players get @s dc_b2
+data modify storage decrypto:wrap args.side set value "white"
+function decrypto:notes/record with storage decrypto:wrap args
 data modify storage decrypto:input name set from storage decrypto:round black.3
-execute if score @s dc_b3 matches 1 run data modify storage decrypto:notes white.1 append from storage decrypto:input name
-execute if score @s dc_b3 matches 2 run data modify storage decrypto:notes white.2 append from storage decrypto:input name
-execute if score @s dc_b3 matches 3 run data modify storage decrypto:notes white.3 append from storage decrypto:input name
-execute if score @s dc_b3 matches 4 run data modify storage decrypto:notes white.4 append from storage decrypto:input name
+execute store result storage decrypto:wrap args.digit int 1 run scoreboard players get @s dc_b3
+data modify storage decrypto:wrap args.side set value "white"
+function decrypto:notes/record with storage decrypto:wrap args

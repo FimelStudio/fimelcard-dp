@@ -1,4 +1,4 @@
-# 在铁砧正上方显示双方公开战况；每次计分后原地重建。
+# 在桌心上方显示双方公开战况；每次计分后原地重建。
 scoreboard players operation #ctx dc_ctx = @s dc_id
 execute as @e[tag=dc.marker] if score @s dc_id = #ctx dc_ctx run kill @s
 kill @e[tag=dc.marker,distance=..4]

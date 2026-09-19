@@ -1,20 +1,3 @@
-execute if score @s dc_wi matches 2.. run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'白队获得第2枚拦截指示物，白队获胜！',color:'gold'}]
-execute if score @s dc_bi matches 2.. run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'黑队获得第2枚拦截指示物，黑队获胜！',color:'gold'}]
-execute if score @s dc_we matches 2.. run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'白队累计2次错误传讯，黑队获胜！',color:'gold'}]
-execute if score @s dc_be matches 2.. run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'黑队累计2次错误传讯，白队获胜！',color:'gold'}]
-execute if score @s dc_wi matches 2.. run function decrypto:game/finish
-execute if score @s dc_wi matches 2.. run return 0
-execute if score @s dc_bi matches 2.. run function decrypto:game/finish
-execute if score @s dc_bi matches 2.. run return 0
-execute if score @s dc_we matches 2.. run function decrypto:game/finish
-execute if score @s dc_we matches 2.. run return 0
-execute if score @s dc_be matches 2.. run function decrypto:game/finish
-execute if score @s dc_be matches 2.. run return 0
-scoreboard players operation #threat dc_ctx = @s dc_bi
-scoreboard players operation #threat dc_ctx += @s dc_we
-execute if score @s dc_mode matches 3 if score #threat dc_ctx matches 2.. run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'截密者累计获得2次有效成果，截密者获胜！',color:'gold'}]
-execute if score @s dc_mode matches 3 if score #threat dc_ctx matches 2.. run function decrypto:game/finish
-execute if score @s dc_mode matches 3 if score #threat dc_ctx matches 2.. run return 0
 scoreboard players add @s dc_round 1
 execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'五轮结束，合作队获胜！',color:'gold'}]
 execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run function decrypto:game/finish
@@ -22,7 +5,9 @@ execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run retur
 execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'已完成设定的 ',color:'yellow'},{score:{name:'@s',objective:'dc_round_limit'},color:'gold'},{text:' 轮，回合数耗尽，本局结束。',color:'yellow'}]
 execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run function decrypto:game/finish
 execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run return 0
-execute if score @s dc_mode matches 4 run tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'第 ',color:'yellow'},{score:{name:'@s',objective:'dc_round'},color:'gold'},{text:' / ',color:'gray'},{score:{name:'@s',objective:'dc_round_limit'},color:'gold'},{text:' 轮开始。',color:'yellow'}]
+# 整局沿用开局词条和累计电报记录；回合间只生成新数字密码。
+function decrypto:round/announce_start
+function decrypto:words/announce_private
 scoreboard players set @s dc_state 1
 scoreboard players set @s dc_pos 1
 scoreboard players set @s dc_clue 0
@@ -44,5 +29,4 @@ function decrypto:round/generate_code
 scoreboard players operation @s dc_w1 = #code1 dc_ctx
 scoreboard players operation @s dc_w2 = #code2 dc_ctx
 scoreboard players operation @s dc_w3 = #code3 dc_ctx
-function decrypto:hud/keywords
 function decrypto:round/start_white_prompt

@@ -1,3 +1,5 @@
+# 旧版整组映射，仅保留作参考，现行抽词流程不再调用。
+# 现行词库维护入口：decrypto:words/pool。
 # 1-18为用户提供的词组，19-60为扩充词组。
 execute if score #wordset dc_ctx matches 1 run data modify storage decrypto:hud current set value '1 黑色　2 蜻蜓　3 鸡尾酒　4 墨西哥帽'
 execute if score #wordset dc_ctx matches 2 run data modify storage decrypto:hud current set value '1 古董　2 骨头　3 早晨　4 噩梦'

@@ -1,0 +1,3 @@
+# 当前执行者为本桌控制器；三人局与四人局必须使用各自独立的胜负规则。
+execute if score @s dc_mode matches 3 run return run function decrypto:game/check_win_three
+execute if score @s dc_mode matches 4 run return run function decrypto:game/check_win_four
