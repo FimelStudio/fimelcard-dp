@@ -1,0 +1,1 @@
+$data modify entity @s data.skull.seats.s$(seat) set value {owned:[{"slot":1,"type":0,"model":"card:poker/c_a","name":"花牌 · 黑桃A"},{"slot":2,"type":0,"model":"card:poker/c_a","name":"花牌 · 黑桃A"},{"slot":3,"type":0,"model":"card:poker/c_a","name":"花牌 · 黑桃A"},{"slot":4,"type":1,"model":"card:poker/joker","name":"骷髅牌 · 小丑牌"}],hand:[],stack:[]}

@@ -1,0 +1,1 @@
+dialog show @a[tag=ct.settings_actor,limit=1] {type:"minecraft:notice",title:{text:"骷髅牌·设置",color:"gold"},body:[{type:"minecraft:plain_message",width:450,contents:{text:"采用标准固定规则：2至4人，每人3张花牌（黑桃A）和1张骷髅牌（小丑牌）；累计成功两次或成为唯一存活玩家获胜。暂无可调整设置。"}}],pause:false}

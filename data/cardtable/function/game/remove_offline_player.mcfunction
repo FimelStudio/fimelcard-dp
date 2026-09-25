@@ -7,5 +7,8 @@ execute if entity @s[tag=bw.player] run function bullshit:player/clear_state
 execute if entity @s[tag=dc.player] run function decrypto:player/clear_state
 execute if entity @s[tag=cp.player] run function critical_point:game/player_left
 
+execute if entity @s[tag=wq.player] run function wenfei:player/clear_state
+
 # 离线即视为离开牌桌；保持静默，不发送入座或离座提示
+execute if entity @s[tag=sk.player] run function skull:player/clear_state
 function cardtable:seat/remove_player

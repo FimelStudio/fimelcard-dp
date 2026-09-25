@@ -15,5 +15,9 @@ execute if score @s ct_game matches 6 run tellraw @a[tag=ct.switch_actor,limit=1
 execute if score @s ct_game matches 6 run function cardtable:log {text:"切换游戏：谍报风云"}
 execute if score @s ct_game matches 7 run tellraw @a[tag=ct.switch_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'已选择：',color:'gray'},{text:'临界点',color:'red'}]
 execute if score @s ct_game matches 7 run function cardtable:log {text:"切换游戏：临界点"}
+execute if score @s ct_game matches 8 run tellraw @a[tag=ct.switch_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'已选择：问非所答',color:'gold'}]
+execute if score @s ct_game matches 9 run tellraw @a[tag=ct.switch_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'已选择：骷髅牌',color:'gold'}]
+execute if score @s ct_game matches 8 run function cardtable:log {text:"切换游戏：问非所答"}
+execute if score @s ct_game matches 9 run function cardtable:log {text:"切换游戏：骷髅牌"}
 function cardtable:game/init_selected
 function cardtable:menu/render

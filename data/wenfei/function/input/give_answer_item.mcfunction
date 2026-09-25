@@ -1,0 +1,1 @@
+$give @s minecraft:writable_book[minecraft:item_name="秘密答案（第一页填写，完成后Q提交）",minecraft:custom_data={wenfei:{tool:"answer",table:$(table)}},minecraft:writable_book_content={pages:[""]},minecraft:lore=[{text:"只写答案，不抄题目；完成后按Q，不要签名。",color:"yellow"}]]

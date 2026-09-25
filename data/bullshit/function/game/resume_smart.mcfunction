@@ -1,0 +1,5 @@
+# 不补回已用掉的扯淡指认机会。
+execute store result storage bullshit:input table int 1 run scoreboard players get @s bw_id
+execute if score @s bw_action matches 0 run scoreboard players enable @s bw_action
+execute if score @s bw_used matches 0 unless items entity @s hotbar.* minecraft:paper[minecraft:custom_data~{bullshit:{card:1b,kind:'call'}}] unless items entity @s inventory.* minecraft:paper[minecraft:custom_data~{bullshit:{card:1b,kind:'call'}}] unless items entity @s weapon.offhand minecraft:paper[minecraft:custom_data~{bullshit:{card:1b,kind:'call'}}] run function bullshit:input/place_call with storage bullshit:input
+execute unless items entity @s hotbar.* minecraft:lime_dye[minecraft:custom_data~{bullshit:{card:1b,kind:'guess'}}] unless items entity @s inventory.* minecraft:lime_dye[minecraft:custom_data~{bullshit:{card:1b,kind:'guess'}}] unless items entity @s weapon.offhand minecraft:lime_dye[minecraft:custom_data~{bullshit:{card:1b,kind:'guess'}}] run function bullshit:input/place_guess with storage bullshit:input

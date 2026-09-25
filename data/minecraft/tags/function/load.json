@@ -7,6 +7,8 @@
     "abraca:load",
     "bullshit:load",
     "decrypto:load",
-    "critical_point:load"
+    "critical_point:load",
+    "wenfei:load",
+    "skull:load"
   ]
 }

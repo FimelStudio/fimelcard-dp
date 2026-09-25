@@ -8,5 +8,5 @@ execute if score #version ab_ctx matches 1 run function abraca:system/upgrade_v2
 execute if score #version ab_ctx matches 2 run function abraca:system/upgrade_v3
 execute if score #version ab_ctx matches 3 run function abraca:system/upgrade_v4
 execute if score #version ab_ctx matches 4 run function abraca:system/upgrade_v5
-tellraw @a[tag=ab.player] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'数据包已重新加载。当前牌局将安全结束。',color:'yellow'}]
-execute as @e[type=minecraft:marker,tag=ab.controller] at @s run function abraca:game/abort
+tellraw @a[tag=ab.player] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'数据包已重新加载，当前对局已保留。',color:'yellow'}]
+execute as @e[type=minecraft:marker,tag=ab.controller] at @s run function abraca:game/resume

@@ -1,0 +1,1 @@
+$give @s minecraft:$(item)[minecraft:custom_name={text:"$(points) 分 · Q丢出评分",color:"$(color)",italic:false},minecraft:custom_data={wenfei:{tool:"score",table:$(table),epoch:$(epoch),points:$(points)}},minecraft:lore=[{text:"给聊天栏当前候选问题评分，提交后不可更改。",color:"gray",italic:false}]] 1

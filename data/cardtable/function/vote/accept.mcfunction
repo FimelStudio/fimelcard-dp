@@ -20,3 +20,5 @@ execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 4 
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 5 run function bullshit:game/end_vote
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 6 run function decrypto:game/end_vote
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 7 run function critical_point:game/end_vote
+execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 8 run function wenfei:game/end_vote
+execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 9 run function skull:game/end_vote

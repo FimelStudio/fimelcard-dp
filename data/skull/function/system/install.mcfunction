@@ -1,0 +1,26 @@
+scoreboard objectives add sk_id dummy
+scoreboard objectives add sk_seat dummy
+scoreboard objectives add sk_state dummy
+scoreboard objectives add sk_round dummy
+scoreboard objectives add sk_first dummy
+scoreboard objectives add sk_turn dummy
+scoreboard objectives add sk_lead dummy
+scoreboard objectives add sk_bid dummy
+scoreboard objectives add sk_total dummy
+scoreboard objectives add sk_flipped dummy
+scoreboard objectives add sk_source dummy
+scoreboard objectives add sk_epoch dummy
+scoreboard objectives add sk_timer dummy
+scoreboard objectives add sk_players dummy
+scoreboard objectives add sk_alive dummy
+scoreboard objectives add sk_wins dummy
+scoreboard objectives add sk_count dummy
+scoreboard objectives add sk_done dummy
+scoreboard objectives add sk_pass dummy
+scoreboard objectives add sk_left dummy
+scoreboard objectives add sk_ui_table dummy
+scoreboard objectives add sk_deal_seat dummy
+scoreboard objectives add sk_deal_slot dummy
+scoreboard objectives add sk_deal_time dummy
+scoreboard objectives add sk_action trigger
+scoreboard players set #version sk_ctx 1

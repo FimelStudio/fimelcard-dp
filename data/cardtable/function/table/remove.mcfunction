@@ -8,6 +8,9 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 5 run functio
 execute if score @s ct_state matches 1 if score @s ct_game matches 6 run function decrypto:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 7 run function critical_point:game/abort
 
+execute if score @s ct_state matches 1 if score @s ct_game matches 8 run function wenfei:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 9 run function skull:game/abort
+
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player
 execute as @e[tag=ct.part] if score @s ct_id = #ctx_id ct_ctx run kill @s

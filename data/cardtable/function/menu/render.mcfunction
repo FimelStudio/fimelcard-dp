@@ -2,7 +2,7 @@
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @e[tag=ct.menu] if score @s ct_id = #ctx_id ct_ctx run kill @s
 # 旧版本或外部修改留下的异常编号回退到首个已注册游戏，不显示“未注册游戏”。
-execute unless score @s ct_game matches 1..7 run scoreboard players set @s ct_game 1
+execute unless score @s ct_game matches 1..9 run scoreboard players set @s ct_game 1
 
 # 菜单由文字展示实体负责显示，由同位置的交互实体负责点击
 # 26.2的text_display不可在世界内被选取，文本click_event不能替代此点击层
@@ -14,6 +14,8 @@ execute if score @s ct_game matches 4 run function cardtable:menu/game_name_abra
 execute if score @s ct_game matches 5 run function cardtable:menu/game_name_bullshit
 execute if score @s ct_game matches 6 run function cardtable:menu/game_name_decrypto
 execute if score @s ct_game matches 7 run function cardtable:menu/game_name_critical_point
+execute if score @s ct_game matches 8 run function cardtable:menu/game_name_wenfei
+execute if score @s ct_game matches 9 run function cardtable:menu/game_name_skull
 execute if score @s ct_joined matches 0 run function cardtable:menu/people_0
 execute if score @s ct_joined matches 1 run function cardtable:menu/people_1
 execute if score @s ct_joined matches 2 run function cardtable:menu/people_2

@@ -1,0 +1,1 @@
+$give @s minecraft:paper[minecraft:item_model="$(model)",minecraft:item_name="$(name)",minecraft:custom_data={skull:{card:1b,table:$(table),owner:$(seat),epoch:$(epoch),slot:$(slot),id:$(seat)$(slot)}},minecraft:max_stack_size=1]

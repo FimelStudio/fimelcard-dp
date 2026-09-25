@@ -6,3 +6,5 @@ execute if score @s ct_game matches 4 run function abraca:game/init_table
 execute if score @s ct_game matches 5 run function bullshit:game/init_table
 execute if score @s ct_game matches 6 run function decrypto:game/init_table
 execute if score @s ct_game matches 7 run function critical_point:game/init_table
+execute if score @s ct_game matches 8 run function wenfei:game/init_table
+execute if score @s ct_game matches 9 run function skull:game/init_table

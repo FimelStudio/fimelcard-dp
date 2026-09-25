@@ -1,0 +1,22 @@
+scoreboard objectives add wq_id dummy
+scoreboard objectives add wq_state dummy
+scoreboard objectives add wq_players dummy
+scoreboard objectives add wq_round dummy
+scoreboard objectives add wq_total dummy
+scoreboard objectives add wq_turn dummy
+scoreboard objectives add wq_seat dummy
+scoreboard objectives add wq_guess dummy
+scoreboard objectives add wq_score dummy
+scoreboard objectives add wq_done dummy
+scoreboard objectives add wq_cat dummy
+scoreboard objectives add wq_index dummy
+scoreboard objectives add wq_gain dummy
+scoreboard objectives add wq_epoch dummy
+scoreboard objectives add wq_ui_table dummy
+scoreboard objectives add wq_duo dummy
+scoreboard objectives add wq_multi dummy
+scoreboard objectives add wq_settable dummy
+scoreboard objectives add wq_rank dummy
+scoreboard objectives add wq_action trigger
+scoreboard objectives add wq_settings trigger
+scoreboard players set #version wq_ctx 1
