@@ -9,6 +9,7 @@ scoreboard players set @a[tag=wq.audience] wq_done 0
 execute as @a[tag=wq.audience] if score @s wq_seat = #turn wq_ctx run scoreboard players set @s wq_guess 1
 clear @a[tag=wq.audience] minecraft:writable_book[minecraft:custom_data~{wenfei:{tool:"answer"}}]
 clear @a[tag=wq.audience] minecraft:written_book[minecraft:custom_data~{wenfei:{tool:"answer"}}]
+clear @a[tag=wq.audience] minecraft:purple_dye[minecraft:custom_data~{wenfei:{tool:"answer_dialog"}}]
 data modify entity @s data.wenfei.answers set value {}
 data modify entity @s data.wenfei.placed set value []
 data modify entity @s data.wenfei.used set value {}

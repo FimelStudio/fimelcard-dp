@@ -1,6 +1,11 @@
-execute unless score @s ct_joined matches 2..4 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'需要2至4名玩家入座；当前四座牌桌暂不支持原规则的5人局。',color:'yellow'}]
-execute unless score @s ct_joined matches 2..4 run return fail
+execute if score @s ct_joined > @s ct_capacity run return fail
+execute unless score @s ct_joined matches 2..5 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'需要2至5名玩家入座；五人局请使用八座桌。',color:'yellow'}]
+execute unless score @s ct_joined matches 2..5 run return fail
 scoreboard players operation #ctx ab_ctx = @s ct_id
+scoreboard players set #cast_blocked ab_ctx 0
+execute as @a[tag=ct.player] if score @s ct_id = #ctx ab_ctx run function abraca:game/check_cast_slots
+execute if score #cast_blocked ab_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'开始前请所有玩家清空快捷栏全部9格，用于放置施法牌和结束回合染料。',color:'yellow'}]
+execute if score #cast_blocked ab_ctx matches 1 run return fail
 # 上一局留下的最终生命面板只展示到下一局开始。
 execute as @e[type=minecraft:text_display,tag=ab.final_info] if score @s ab_id = #ctx ab_ctx run kill @s
 tag @s add ab.controller
@@ -36,7 +41,7 @@ execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.f
 tag @a[tag=ab.first_pool,sort=random,limit=1] add ab.first_turn
 scoreboard players operation @s ab_turn = @a[tag=ab.first_turn,limit=1] ab_seat
 scoreboard players remove @s ab_turn 1
-execute if score @s ab_turn matches ..0 run scoreboard players set @s ab_turn 4
+execute if score @s ab_turn matches ..0 run scoreboard players set @s ab_turn 8
 tag @a[tag=ab.first_pool] remove ab.first_pool
 tag @a[tag=ab.first_turn] remove ab.first_turn
 function abraca:deck/create

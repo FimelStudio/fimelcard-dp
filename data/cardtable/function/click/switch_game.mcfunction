@@ -4,6 +4,7 @@ execute unless entity @s[tag=ct.player] run tellraw @s [{text:'[牌桌] ',color:
 execute unless entity @s[tag=ct.player] run return fail
 
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
+tag @a[tag=ct.switch_actor] remove ct.switch_actor
 tag @s add ct.switch_actor
 tag @e[tag=ct.switch_controller] remove ct.switch_controller
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_state=0}] if score @s ct_id = #ctx_id ct_ctx run tag @s add ct.switch_controller

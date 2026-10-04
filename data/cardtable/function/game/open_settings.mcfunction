@@ -8,5 +8,6 @@ execute if score @s ct_game matches 6 run return run function decrypto:settings/
 execute if score @s ct_game matches 7 run return run function critical_point:settings/open
 execute if score @s ct_game matches 8 run return run function wenfei:settings/open
 execute if score @s ct_game matches 9 run return run function skull:settings/open
+execute if score @s ct_game matches 10 run return run function doudizhu:settings/open
 
 tellraw @a[tag=ct.settings_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供设置界面。',color:'yellow'}]

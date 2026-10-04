@@ -24,6 +24,10 @@ execute unless score #actor_seat hb_ctx matches 1 run function hanabi:dialog/mai
 execute unless score #actor_seat hb_ctx matches 2 run function hanabi:dialog/main/append_row {seat:2}
 execute unless score #actor_seat hb_ctx matches 3 run function hanabi:dialog/main/append_row {seat:3}
 execute unless score #actor_seat hb_ctx matches 4 run function hanabi:dialog/main/append_row {seat:4}
+execute unless score #actor_seat hb_ctx matches 5 run function hanabi:dialog/main/append_row {seat:5}
+execute unless score #actor_seat hb_ctx matches 6 run function hanabi:dialog/main/append_row {seat:6}
+execute unless score #actor_seat hb_ctx matches 7 run function hanabi:dialog/main/append_row {seat:7}
+execute unless score #actor_seat hb_ctx matches 8 run function hanabi:dialog/main/append_row {seat:8}
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=1}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #actor_seat hb_ctx run function hanabi:dialog/main/append {play:101,discard:201}
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=2}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #actor_seat hb_ctx run function hanabi:dialog/main/append {play:102,discard:202}
 execute as @e[type=minecraft:marker,tag=hb.hand,scores={hb_slot=3}] if score @s hb_id = #ctx_id hb_ctx if score @s hb_seat = #actor_seat hb_ctx run function hanabi:dialog/main/append {play:103,discard:203}

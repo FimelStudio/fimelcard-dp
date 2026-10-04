@@ -1,5 +1,5 @@
-execute unless score @s ct_joined matches 3..4 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[临界点] ',color:'red'},{text:'需要3至4名玩家入座。',color:'red'}]
-execute unless score @s ct_joined matches 3..4 run return fail
+execute unless score @s ct_joined matches 3..6 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[临界点] ',color:'red'},{text:'需要3至6名玩家入座。',color:'red'}]
+execute unless score @s ct_joined matches 3..6 run return fail
 scoreboard players operation #ctx cp_ctx = @s ct_id
 scoreboard players set #blocked cp_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #ctx cp_ctx run function critical_point:game/check_hotbar
@@ -26,8 +26,7 @@ execute as @a[tag=cp.player] if score @s cp_id = #ctx cp_ctx run function critic
 function critical_point:player/mark_audience
 tellraw @a[tag=cp.audience,scores={cp_role=1}] [{text:'[临界点] ',color:'red'},{text:'你的身份是村民。合作控制总点数，并找出狼人。',color:'green'}]
 tellraw @a[tag=cp.audience,scores={cp_role=2}] [{text:'[临界点] ',color:'red'},{text:'你的身份是狼人。隐藏自己，并寻找制造危机的时机。',color:'dark_red',bold:true}]
-execute if score @s ct_joined matches 3 run tellraw @a[tag=cp.audience] [{text:'[临界点] ',color:'red'},{text:'当前为3人实验局，安全线11点。',color:'yellow'}]
-execute if score @s ct_joined matches 4 run tellraw @a[tag=cp.audience] [{text:'[临界点] ',color:'red'},{text:'当前为4人标准局，安全线14点。',color:'yellow'}]
+tellraw @a[tag=cp.audience] [{text:'[临界点] ',color:'red'},{text:'当前人数：',color:'yellow'},{score:{name:'@s',objective:'ct_joined'}},{text:'；安全线：',color:'yellow'},{score:{name:'@s',objective:'cp_threshold'},color:'aqua'},{text:'点。',color:'yellow'}]
 tag @a[tag=cp.audience] remove cp.audience
 scoreboard players set @s ct_start 1
 function critical_point:round/begin

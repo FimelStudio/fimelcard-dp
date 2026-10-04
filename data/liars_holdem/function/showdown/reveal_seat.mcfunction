@@ -26,6 +26,12 @@ execute if score @s lh_show_count matches 1 run data modify storage liars_holdem
 execute if score @s lh_show_count matches 2 run data modify storage liars_holdem:showdown spawn.y set value "2.10"
 execute if score @s lh_show_count matches 3 run data modify storage liars_holdem:showdown spawn.y set value "2.65"
 execute if score @s lh_show_count matches 4 run data modify storage liars_holdem:showdown spawn.y set value "3.20"
+# 两种桌型统一在桌心单列排列，行距与四人桌相同。
+execute if score @s lh_show_count matches 5 run data modify storage liars_holdem:showdown spawn.y set value "3.75"
+execute if score @s lh_show_count matches 6 run data modify storage liars_holdem:showdown spawn.y set value "4.30"
+execute if score @s lh_show_count matches 7 run data modify storage liars_holdem:showdown spawn.y set value "4.85"
+execute if score @s lh_show_count matches 8 run data modify storage liars_holdem:showdown spawn.y set value "5.40"
 data modify storage liars_holdem:showdown spawn.line set from storage liars_holdem:showdown line
+scoreboard players set #display_rank lh_ctx 0
 function liars_holdem:showdown/summon_line with storage liars_holdem:showdown spawn
 tag @a[tag=lh.reveal_actor] remove lh.reveal_actor

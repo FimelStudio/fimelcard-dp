@@ -29,7 +29,7 @@ execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.f
 tag @a[tag=ab.first_pool,sort=random,limit=1] add ab.first_turn
 scoreboard players operation @s ab_turn = @a[tag=ab.first_turn,limit=1] ab_seat
 scoreboard players remove @s ab_turn 1
-execute if score @s ab_turn matches ..0 run scoreboard players set @s ab_turn 4
+execute if score @s ab_turn matches ..0 run scoreboard players set @s ab_turn 8
 tag @a[tag=ab.first_pool] remove ab.first_pool
 tag @a[tag=ab.first_turn] remove ab.first_turn
 

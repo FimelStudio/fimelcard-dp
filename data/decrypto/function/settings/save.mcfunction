@@ -1,6 +1,17 @@
 # 锁定本次提交值并立即归零，避免后续刻重复处理。
 scoreboard players operation #settings_rounds dc_ctx = @s dc_settings
 scoreboard players set @s dc_settings 0
+# 新编码为回合数×100+输入方式×10+7，旧窗口的回合数提交会被拒绝。
+execute unless score #settings_rounds dc_ctx matches 107..3217 run return fail
+scoreboard players set #settings_ten dc_ctx 10
+scoreboard players operation #settings_marker dc_ctx = #settings_rounds dc_ctx
+scoreboard players operation #settings_marker dc_ctx %= #settings_ten dc_ctx
+execute unless score #settings_marker dc_ctx matches 7 run return fail
+scoreboard players operation #settings_rounds dc_ctx /= #settings_ten dc_ctx
+scoreboard players operation #settings_input dc_ctx = #settings_rounds dc_ctx
+scoreboard players operation #settings_input dc_ctx %= #settings_ten dc_ctx
+scoreboard players operation #settings_rounds dc_ctx /= #settings_ten dc_ctx
+execute unless score #settings_input dc_ctx matches 0..1 run return fail
 scoreboard players operation #settings_table dc_ctx = @s dc_set_table
 
 execute unless entity @s[type=minecraft:player,tag=ct.player] run return fail
@@ -18,7 +29,10 @@ execute unless entity @e[tag=dc.settings_controller,limit=1] run tag @s remove c
 execute unless entity @e[tag=dc.settings_controller,limit=1] run return fail
 
 execute as @e[tag=dc.settings_controller,limit=1] run scoreboard players operation @s dc_round_limit = #settings_rounds dc_ctx
-tellraw @s [{text:'[谍报风云] ',color:'aqua'},{text:'当前牌桌的四人模式回合数已设为 ',color:'green'},{score:{name:'#settings_rounds',objective:'dc_ctx'},color:'yellow'},{text:' 轮。',color:'green'}]
+execute as @e[tag=dc.settings_controller,limit=1] run scoreboard players operation @s dc_input = #settings_input dc_ctx
+execute if score #settings_input dc_ctx matches 0 run tellraw @s {text:'提示输入方式：书。',color:'green'}
+execute if score #settings_input dc_ctx matches 1 run tellraw @s {text:'提示输入方式：对话框（加密者提交需要OP权限）。',color:'yellow'}
+tellraw @s [{text:'[谍报风云] ',color:'aqua'},{text:'当前牌桌的分队模式（4至8人）回合数已设为 ',color:'green'},{score:{name:'#settings_rounds',objective:'dc_ctx'},color:'yellow'},{text:' 轮。',color:'green'}]
 tag @e[tag=dc.settings_controller] remove dc.settings_controller
 tag @s remove ct.settings_actor
 scoreboard players set @s dc_set_table 0

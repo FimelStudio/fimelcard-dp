@@ -1,7 +1,8 @@
+execute if score @s ct_joined > @s ct_capacity run return fail
 function wenfei:log {text:"开始开局检查"}
-execute unless score @s ct_joined matches 2..4 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[问非所答] 需要2至4名玩家入座。",color:"red"}
-execute unless score @s ct_joined matches 2..4 run function wenfei:log {text:"拒绝开局：人数不在2至4人范围内"}
-execute unless score @s ct_joined matches 2..4 run return fail
+execute unless score @s ct_joined matches 2..8 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[问非所答] 需要2至8名玩家入座。",color:"red"}
+execute unless score @s ct_joined matches 2..8 run function wenfei:log {text:"拒绝开局：人数不在2至8人范围内"}
+execute unless score @s ct_joined matches 2..8 run return fail
 scoreboard players operation #ctx wq_ctx = @s ct_id
 scoreboard players set #online wq_ctx 0
 scoreboard players set #blocked wq_ctx 0

@@ -7,10 +7,14 @@ execute unless entity @e[tag=ct.mount_target,limit=1] run return fail
 
 ride @s dismount
 tp @s @e[tag=ct.mount_target,limit=1]
-execute if score @s ct_seat matches 1 run tp @s ~ ~ ~ 0 0
-execute if score @s ct_seat matches 2 run tp @s ~ ~ ~ 90 0
-execute if score @s ct_seat matches 3 run tp @s ~ ~ ~ 180 0
-execute if score @s ct_seat matches 4 run tp @s ~ ~ ~ -90 0
+execute unless entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 1 at @s run tp @s ~ ~ ~ 0 0
+execute unless entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 2 at @s run tp @s ~ ~ ~ 90 0
+execute unless entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 3 at @s run tp @s ~ ~ ~ 180 0
+execute unless entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 4 at @s run tp @s ~ ~ ~ -90 0
+execute if entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 1..2 at @s run tp @s ~ ~ ~ 0 0
+execute if entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 3..4 at @s run tp @s ~ ~ ~ 90 0
+execute if entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 5..6 at @s run tp @s ~ ~ ~ 180 0
+execute if entity @e[tag=ct.mount_target,tag=ct.seat8,limit=1] if score @s ct_seat matches 7..8 at @s run tp @s ~ ~ ~ -90 0
 ride @s mount @e[tag=ct.mount_target,limit=1]
 
 tag @e[tag=ct.mount_target] remove ct.mount_target

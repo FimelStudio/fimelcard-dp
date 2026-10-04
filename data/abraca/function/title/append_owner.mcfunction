@@ -4,8 +4,9 @@ $execute as @a[tag=ab.player,scores={ab_seat=$(seat)}] if score @s ab_id = #ctx 
 execute unless entity @a[tag=ab.title_owner,limit=1] run return 0
 scoreboard players add #row ab_ctx 1
 scoreboard players set #y ab_ctx -18
-execute if score #row ab_ctx matches 2 run scoreboard players set #y ab_ctx -80
-execute if score #row ab_ctx matches 3 run scoreboard players set #y ab_ctx -142
+execute if score #row ab_ctx matches 2 run scoreboard players set #y ab_ctx -72
+execute if score #row ab_ctx matches 3 run scoreboard players set #y ab_ctx -126
+execute if score #row ab_ctx matches 4 run scoreboard players set #y ab_ctx -180
 execute as @a[tag=ab.title_owner,limit=1] at @s run function hanabi:name/resolve
 # 昵称使用原版字体；先包一层以清除名字组件遗留的点击/阴影样式。
 data modify storage abraca:title owner_name set value {text:"",color:"aqua",shadow_color:0,extra:[]}

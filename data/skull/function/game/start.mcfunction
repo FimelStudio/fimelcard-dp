@@ -1,6 +1,6 @@
 function skull:log {text:"开始开局检查"}
-execute unless score @s ct_joined matches 2..4 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[骷髅牌] 需要2至4名玩家入座。",color:"red"}
-execute unless score @s ct_joined matches 2..4 run return fail
+execute unless score @s ct_joined matches 2..6 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[骷髅牌] 需要2至6名玩家入座。",color:"red"}
+execute unless score @s ct_joined matches 2..6 run return fail
 scoreboard players operation #ctx sk_ctx = @s ct_id
 scoreboard players set #online sk_ctx 0
 scoreboard players set #blocked sk_ctx 0

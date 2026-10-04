@@ -12,7 +12,7 @@ execute if score @s fc_deal matches 16 run scoreboard players operation #deal_se
 scoreboard players operation #deal_index fc_ctx = @s fc_deal
 scoreboard players add #deal_index fc_ctx 1
 execute store result storage fast_card:deal index int 1 run scoreboard players get #deal_index fc_ctx
-execute store result storage fast_card:deal seat int 1 run scoreboard players get #deal_seat fc_ctx
+execute as @a[tag=fc.player] if score @s fc_id = #ctx_id fc_ctx if score @s fc_seat = #deal_seat fc_ctx store result storage fast_card:deal seat int 1 run scoreboard players get @s ct_seat
 function cardtable:animation/deal/sound
 
 # 从牌盒上方生成真实纸牌，并让它飞向本次接收玩家

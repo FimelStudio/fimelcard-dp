@@ -17,4 +17,12 @@ function skull:ui/bid_button {number:13,choice:23}
 function skull:ui/bid_button {number:14,choice:24}
 function skull:ui/bid_button {number:15,choice:25}
 function skull:ui/bid_button {number:16,choice:26}
+function skull:ui/bid_button {number:17,choice:27}
+function skull:ui/bid_button {number:18,choice:28}
+function skull:ui/bid_button {number:19,choice:29}
+function skull:ui/bid_button {number:20,choice:70}
+function skull:ui/bid_button {number:21,choice:71}
+function skull:ui/bid_button {number:22,choice:72}
+function skull:ui/bid_button {number:23,choice:73}
+function skull:ui/bid_button {number:24,choice:74}
 execute if score @s sk_state matches 3 run function skull:ui/button {choice:30,label:"放弃竞标"}

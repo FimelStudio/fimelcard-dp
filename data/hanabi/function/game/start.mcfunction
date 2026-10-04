@@ -1,9 +1,10 @@
-# 标准花火支持2至4人；四座牌桌暂不接入五人玩法
+execute if score @s ct_joined > @s ct_capacity run return fail
+# 标准花火支持2至5人；五人局使用八座桌
 function hanabi:log {text:"开始执行花火开局检查"}
 function hanabi:game/init_table
-execute unless score @s ct_joined matches 2..4 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[花火] ',color:'light_purple'},{text:'需要2至4名玩家入座。',color:'yellow'}]
-execute unless score @s ct_joined matches 2..4 run function hanabi:log {text:"开局失败：入座人数不在2至4人范围内"}
-execute unless score @s ct_joined matches 2..4 run return fail
+execute unless score @s ct_joined matches 2..5 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[花火] ',color:'light_purple'},{text:'需要2至5名玩家入座。',color:'yellow'}]
+execute unless score @s ct_joined matches 2..5 run function hanabi:log {text:"开局失败：入座人数不在2至5人范围内"}
+execute unless score @s ct_joined matches 2..5 run return fail
 
 scoreboard players operation #ctx_id hb_ctx = @s ct_id
 scoreboard players set #online hb_ctx 0
@@ -47,7 +48,7 @@ scoreboard players set @s hb_pending_slot 0
 scoreboard players set @s hb_discard_count 0
 
 scoreboard players set @s hb_hand_size 5
-execute if score @s hb_players matches 4 run scoreboard players set @s hb_hand_size 4
+execute if score @s hb_players matches 4..5 run scoreboard players set @s hb_hand_size 4
 scoreboard players operation @s hb_total = @s hb_players
 scoreboard players operation @s hb_total *= @s hb_hand_size
 

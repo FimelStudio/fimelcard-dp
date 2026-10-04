@@ -1,7 +1,12 @@
 scoreboard players set @s dc_state 2
 function decrypto:title/update_all
 scoreboard players set @s dc_clue 0
-execute if score @s dc_mode matches 4 as @a[tag=dc.player,scores={dc_team=1,dc_encoder=1}] run function decrypto:input/give_book
-execute if score @s dc_mode matches 3 as @a[tag=dc.player,scores={dc_encoder=1}] run function decrypto:input/give_book
-execute as @a[tag=dc.player,scores={dc_team=1,dc_encoder=1}] run tellraw @s [{text:'[本轮密码] ',color:'gold'},{score:{name:'@e[tag=dc.controller,limit=1]',objective:'dc_w1'}},{text:' - '},{score:{name:'@e[tag=dc.controller,limit=1]',objective:'dc_w2'}},{text:' - '},{score:{name:'@e[tag=dc.controller,limit=1]',objective:'dc_w3'}}]
-tellraw @a[tag=dc.player] [{text:'[阶段：白队加密] ',color:'aqua',bold:true},{selector:'@a[tag=dc.player,scores={dc_team=1,dc_encoder=1},limit=1]',color:'gold'},{text:' 正在作为白队加密者，在提示册中填写三条提示（每页一条，完成后按Q提交）。',color:'yellow'}]
+scoreboard players operation #ctx dc_ctx = @s dc_id
+scoreboard players operation #prompt_input dc_ctx = @s dc_input
+# 保留原有私密密码聊天提示，仅发给本桌当前加密者。
+tag @a[tag=dc.prompt_audience] remove dc.prompt_audience
+execute as @a[tag=dc.player,scores={dc_team=1,dc_encoder=1}] if score @s dc_id = #ctx dc_ctx run tag @s add dc.prompt_audience
+tellraw @a[tag=dc.prompt_audience] [{text:'[本轮密码] ',color:'gold'},{score:{name:'@s',objective:'dc_w1'}},{text:' - '},{score:{name:'@s',objective:'dc_w2'}},{text:' - '},{score:{name:'@s',objective:'dc_w3'}}]
+tag @a[tag=dc.prompt_audience] remove dc.prompt_audience
+execute as @a[tag=dc.player,scores={dc_team=1,dc_encoder=1}] if score @s dc_id = #ctx dc_ctx run function decrypto:prompt/give_selected
+execute as @a[tag=dc.player] if score @s dc_id = #ctx dc_ctx run tellraw @s [{text:'[谍报风云] ',color:'aqua'},{text:'现在由白队加密者填写并提交三条提示。',color:'yellow'}]

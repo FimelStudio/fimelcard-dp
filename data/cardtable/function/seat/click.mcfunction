@@ -6,9 +6,9 @@ execute if entity @s[tag=ct.player] run function cardtable:seat/remount_click
 execute if entity @s[tag=ct.player] run tag @e[tag=ct.clicked_seat] remove ct.clicked_seat
 execute if entity @s[tag=ct.player] run return 1
 
-# 旧存档可能残留桌号错误的座椅；以座椅两格内最近的控制器为权威来源即时修复。
+# 旧存档可能残留桌号错误的座椅；以座椅三格内最近的控制器为权威来源即时修复。
 tag @e[tag=ct.seat_controller] remove ct.seat_controller
-execute at @e[tag=ct.clicked_seat,limit=1] run tag @e[type=minecraft:marker,tag=ct.controller,distance=..2.3,sort=nearest,limit=1] add ct.seat_controller
+execute at @e[tag=ct.clicked_seat,limit=1] run tag @e[type=minecraft:marker,tag=ct.controller,distance=..3,sort=nearest,limit=1] add ct.seat_controller
 execute if entity @e[tag=ct.seat_controller,limit=1] run scoreboard players operation @e[tag=ct.clicked_seat,limit=1] ct_id = @e[tag=ct.seat_controller,limit=1] ct_id
 tag @e[tag=ct.seat_controller] remove ct.seat_controller
 

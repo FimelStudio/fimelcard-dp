@@ -13,7 +13,17 @@ data modify storage liars_holdem:showdown rank.place set value 3
 function liars_holdem:showdown/append_place with storage liars_holdem:showdown rank
 data modify storage liars_holdem:showdown rank.place set value 4
 function liars_holdem:showdown/append_place with storage liars_holdem:showdown rank
-data modify storage liars_holdem:showdown spawn.y set value "3.75"
+data modify storage liars_holdem:showdown rank.place set value 5
+function liars_holdem:showdown/append_place with storage liars_holdem:showdown rank
+data modify storage liars_holdem:showdown rank.place set value 6
+function liars_holdem:showdown/append_place with storage liars_holdem:showdown rank
+data modify storage liars_holdem:showdown rank.place set value 7
+function liars_holdem:showdown/append_place with storage liars_holdem:showdown rank
+data modify storage liars_holdem:showdown rank.place set value 8
+function liars_holdem:showdown/append_place with storage liars_holdem:showdown rank
+# 最终排名固定在桌面上方、第一行摊牌下方，不随人数升高。
+data modify storage liars_holdem:showdown spawn.y set value "1.05"
+scoreboard players set #display_rank lh_ctx 1
 data modify storage liars_holdem:showdown spawn.line set from storage liars_holdem:showdown line
 function liars_holdem:showdown/summon_line with storage liars_holdem:showdown spawn
 function liars_holdem:sound/ranking
@@ -25,6 +35,10 @@ execute as @a[tag=lh.rank_member,scores={lh_place=1}] run function liars_holdem:
 execute as @a[tag=lh.rank_member,scores={lh_place=2}] run function liars_holdem:showdown/announce_place {place:2}
 execute as @a[tag=lh.rank_member,scores={lh_place=3}] run function liars_holdem:showdown/announce_place {place:3}
 execute as @a[tag=lh.rank_member,scores={lh_place=4}] run function liars_holdem:showdown/announce_place {place:4}
+execute as @a[tag=lh.rank_member,scores={lh_place=5}] run function liars_holdem:showdown/announce_place {place:5}
+execute as @a[tag=lh.rank_member,scores={lh_place=6}] run function liars_holdem:showdown/announce_place {place:6}
+execute as @a[tag=lh.rank_member,scores={lh_place=7}] run function liars_holdem:showdown/announce_place {place:7}
+execute as @a[tag=lh.rank_member,scores={lh_place=8}] run function liars_holdem:showdown/announce_place {place:8}
 tag @a[tag=lh.audience] remove lh.audience
 tag @a[tag=lh.rank_member] remove lh.rank_member
 function liars_holdem:log {text:"最佳五张牌展示完毕，已输出最终牌型排名"}

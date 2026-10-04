@@ -7,8 +7,8 @@ execute if score #reward_type hb_ctx matches 2 if score #action hb_ctx matches 8
 execute if score #reward_type hb_ctx matches 2 if score #action hb_ctx matches 801..999 run scoreboard players remove #restore_option hb_ctx 800
 execute if score #reward_type hb_ctx matches 2 if score #action hb_ctx matches 801..999 as @e[tag=hb.action_controller,limit=1] at @s run function hanabi:action/reward/restore/select
 
-execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1101..1104 run scoreboard players set #reward_handled hb_ctx 1
-execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1101..1104 as @e[tag=hb.action_controller,limit=1] at @s run function hanabi:reward/full_hint/select_target
+execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1101..1108 run scoreboard players set #reward_handled hb_ctx 1
+execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1101..1108 as @e[tag=hb.action_controller,limit=1] at @s run function hanabi:reward/full_hint/select_target
 execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1199 run scoreboard players set #reward_handled hb_ctx 1
 execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1199 as @e[tag=hb.action_controller,limit=1] at @s run function hanabi:reward/finish
 execute if score #reward_type hb_ctx matches 3 if score #action hb_ctx matches 1201..1205 run scoreboard players set #reward_handled hb_ctx 1

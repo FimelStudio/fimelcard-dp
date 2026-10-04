@@ -1,5 +1,7 @@
 scoreboard players operation #bid sk_ctx = #choice sk_ctx
-scoreboard players remove #bid sk_ctx 10
+# 20至24张使用70至74，保留30的放弃动作，兼容重载前的旧按钮。
+execute if score #choice sk_ctx matches 11..29 run scoreboard players remove #bid sk_ctx 10
+execute if score #choice sk_ctx matches 70..74 run scoreboard players remove #bid sk_ctx 50
 execute unless score #bid sk_ctx > @s sk_bid run return 0
 execute if score #bid sk_ctx > @s sk_total run return 0
 execute if score #bid sk_ctx < @a[tag=sk.actor,limit=1] sk_count run return 0

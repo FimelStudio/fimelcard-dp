@@ -1,4 +1,4 @@
-# 当前执行者是控制器；#action为1101..1104
+# 当前执行者是控制器；#action为1101..1108
 scoreboard players operation #reward_target hb_ctx = #action hb_ctx
 scoreboard players remove #reward_target hb_ctx 1100
 scoreboard players operation #ctx_id hb_ctx = @s hb_id

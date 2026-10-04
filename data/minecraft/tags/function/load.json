@@ -9,6 +9,7 @@
     "decrypto:load",
     "critical_point:load",
     "wenfei:load",
-    "skull:load"
+    "skull:load",
+    "doudizhu:load"
   ]
 }

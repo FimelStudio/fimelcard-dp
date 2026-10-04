@@ -6,5 +6,4 @@ scoreboard players operation #ctx ab_ctx = @s ab_id
 scoreboard players operation #resume_turn ab_ctx = @s ab_turn
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s remove ab.turn
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx if score @s ab_seat = #resume_turn ab_ctx run tag @s add ab.turn
-execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx if score @s ab_action matches 0 run scoreboard players enable @s ab_action
 execute as @a[tag=ab.turn] if score @s ab_id = #ctx ab_ctx run function abraca:ui/open_cast

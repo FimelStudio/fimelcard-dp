@@ -10,6 +10,7 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 7 run functio
 
 execute if score @s ct_state matches 1 if score @s ct_game matches 8 run function wenfei:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 9 run function skull:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 10 run function doudizhu:game/abort
 
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player

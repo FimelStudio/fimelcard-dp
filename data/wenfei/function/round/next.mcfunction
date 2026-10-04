@@ -1,5 +1,5 @@
 scoreboard players add @s wq_turn 1
-execute if score @s wq_turn matches 5.. run scoreboard players set @s wq_turn 1
+execute if score @s wq_turn matches 9.. run scoreboard players set @s wq_turn 1
 function wenfei:player/mark_audience
 scoreboard players operation #turn wq_ctx = @s wq_turn
 scoreboard players set #found wq_ctx 0

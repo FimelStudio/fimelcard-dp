@@ -1,7 +1,7 @@
 scoreboard players add #hops sk_ctx 1
-execute if score #hops sk_ctx matches 5.. run return run function skull:game/player_left
+execute if score #hops sk_ctx matches 9.. run return run function skull:game/player_left
 scoreboard players add @s sk_turn 1
-execute if score @s sk_turn matches 5.. run scoreboard players set @s sk_turn 1
+execute if score @s sk_turn matches 9.. run scoreboard players set @s sk_turn 1
 function skull:player/audience
 scoreboard players operation #turn sk_ctx = @s sk_turn
 scoreboard players set #found sk_ctx 0

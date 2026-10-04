@@ -1,9 +1,6 @@
 scoreboard players set @s cp_drop_reopen 0
-tag @e[tag=cp.reopen_drop] remove cp.reopen_drop
-execute at @s as @e[type=minecraft:item,distance=..3,sort=nearest] if items entity @s contents minecraft:purple_dye[minecraft:custom_data~{critical_point:{tool:'vote_reopen'}}] run tag @s add cp.reopen_drop
-execute unless entity @e[tag=cp.reopen_drop,limit=1] run return 0
-kill @e[tag=cp.reopen_drop,distance=..3,sort=nearest,limit=1]
-tag @e[tag=cp.reopen_drop] remove cp.reopen_drop
+execute unless entity @e[tag=cp.input_drop,limit=1] run return 0
+kill @e[tag=cp.input_drop,limit=1]
 execute if score @s cp_locked matches 1 run return 0
 scoreboard players operation #ctx cp_ctx = @s cp_id
 tag @e[tag=cp.current] remove cp.current

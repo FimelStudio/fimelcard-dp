@@ -4,3 +4,7 @@ function liars_holdem:turn/dealer_scan_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:turn/dealer_scan_once

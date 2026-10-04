@@ -9,3 +9,7 @@ execute if data entity @s data.skull.seats.s1.stack[-1] run function skull:ui/ta
 execute if data entity @s data.skull.seats.s2.stack[-1] run function skull:ui/target_button {seat:2,choice:42}
 execute if data entity @s data.skull.seats.s3.stack[-1] run function skull:ui/target_button {seat:3,choice:43}
 execute if data entity @s data.skull.seats.s4.stack[-1] run function skull:ui/target_button {seat:4,choice:44}
+execute if data entity @s data.skull.seats.s5.stack[-1] run function skull:ui/target_button {seat:5,choice:45}
+execute if data entity @s data.skull.seats.s6.stack[-1] run function skull:ui/target_button {seat:6,choice:46}
+execute if data entity @s data.skull.seats.s7.stack[-1] run function skull:ui/target_button {seat:7,choice:47}
+execute if data entity @s data.skull.seats.s8.stack[-1] run function skull:ui/target_button {seat:8,choice:48}

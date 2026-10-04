@@ -5,6 +5,10 @@ function liars_holdem:deal/scan_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:deal/scan_once
 execute unless score #found lh_ctx matches 1 run return fail
 
 function liars_holdem:deal/one

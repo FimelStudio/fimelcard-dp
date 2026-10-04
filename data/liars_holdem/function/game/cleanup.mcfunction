@@ -18,6 +18,10 @@ scoreboard players reset @s lh_a1
 scoreboard players reset @s lh_a2
 scoreboard players reset @s lh_a3
 scoreboard players reset @s lh_a4
+scoreboard players reset @s lh_a5
+scoreboard players reset @s lh_a6
+scoreboard players reset @s lh_a7
+scoreboard players reset @s lh_a8
 tag @s remove lh.controller
 function cardtable:table/recount_players
 function cardtable:game/return_lobby

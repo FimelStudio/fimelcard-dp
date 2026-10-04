@@ -5,4 +5,8 @@ function liars_holdem:hud/check_seat {seat:1}
 function liars_holdem:hud/check_seat {seat:2}
 function liars_holdem:hud/check_seat {seat:3}
 function liars_holdem:hud/check_seat {seat:4}
+function liars_holdem:hud/check_seat {seat:5}
+function liars_holdem:hud/check_seat {seat:6}
+function liars_holdem:hud/check_seat {seat:7}
+function liars_holdem:hud/check_seat {seat:8}
 execute if score #hud_dirty lh_ctx matches 1 run function liars_holdem:hud/update

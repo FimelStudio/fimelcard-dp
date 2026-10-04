@@ -11,9 +11,10 @@ execute if score @a[tag=ab.actor,limit=1] ab_last > #spell ab_ctx run function a
 # 失败若使玩家倒地，round_finish会直接创建新局并把ab_state切到发牌状态；此时必须终止上一局的施法链。
 execute unless score @s ab_state matches 2 run return 0
 execute if score @a[tag=ab.actor,limit=1] ab_last > #spell ab_ctx run return 0
+scoreboard players operation #ctx ab_ctx = @s ab_id
 scoreboard players operation #seat ab_ctx = @a[tag=ab.actor,limit=1] ab_seat
 tag @e[tag=ab.chosen] remove ab.chosen
-execute as @e[type=minecraft:marker,tag=ab.hand] if score @s ab_id = @e[type=minecraft:marker,tag=ab.controller,limit=1] ab_id if score @s ab_owner = #seat ab_ctx if score @s ab_spell = #spell ab_ctx run tag @s add ab.chosen
+execute as @e[type=minecraft:marker,tag=ab.hand] if score @s ab_id = #ctx ab_ctx if score @s ab_owner = #seat ab_ctx if score @s ab_spell = #spell ab_ctx run tag @s add ab.chosen
 execute unless entity @e[tag=ab.chosen,limit=1] run function abraca:action/fail
 # 缺牌失败完成后无论是否触发换局，都不能继续落入后面的成功施法分支。
 execute unless entity @e[tag=ab.chosen,limit=1] run return 0

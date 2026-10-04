@@ -1,0 +1,59 @@
+data modify storage doudizhu:ui hand set value {text:"",shadow_color:0,extra:[]}
+data modify storage doudizhu:ui buttons set value []
+scoreboard players set #previous dd_ctx 0
+scoreboard players set #depth dd_ctx 0
+scoreboard players set #count dd_ctx 0
+execute as @e[tag=dd.hand,scores={dd_card=54}] run function doudizhu:hand/append {id:54,rank:17,glyph:"",name:"大王",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=53}] run function doudizhu:hand/append {id:53,rank:16,glyph:"",name:"小王",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=49}] run function doudizhu:hand/append {id:49,rank:15,glyph:"",name:"黑桃2",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=50}] run function doudizhu:hand/append {id:50,rank:15,glyph:"",name:"方块2",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=51}] run function doudizhu:hand/append {id:51,rank:15,glyph:"",name:"梅花2",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=52}] run function doudizhu:hand/append {id:52,rank:15,glyph:"",name:"红桃2",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=45}] run function doudizhu:hand/append {id:45,rank:14,glyph:"",name:"黑桃A",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=46}] run function doudizhu:hand/append {id:46,rank:14,glyph:"",name:"方块A",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=47}] run function doudizhu:hand/append {id:47,rank:14,glyph:"",name:"梅花A",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=48}] run function doudizhu:hand/append {id:48,rank:14,glyph:"",name:"红桃A",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=41}] run function doudizhu:hand/append {id:41,rank:13,glyph:"",name:"黑桃K",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=42}] run function doudizhu:hand/append {id:42,rank:13,glyph:"",name:"方块K",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=43}] run function doudizhu:hand/append {id:43,rank:13,glyph:"",name:"梅花K",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=44}] run function doudizhu:hand/append {id:44,rank:13,glyph:"",name:"红桃K",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=37}] run function doudizhu:hand/append {id:37,rank:12,glyph:"",name:"黑桃Q",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=38}] run function doudizhu:hand/append {id:38,rank:12,glyph:"",name:"方块Q",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=39}] run function doudizhu:hand/append {id:39,rank:12,glyph:"",name:"梅花Q",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=40}] run function doudizhu:hand/append {id:40,rank:12,glyph:"",name:"红桃Q",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=33}] run function doudizhu:hand/append {id:33,rank:11,glyph:"",name:"黑桃J",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=34}] run function doudizhu:hand/append {id:34,rank:11,glyph:"",name:"方块J",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=35}] run function doudizhu:hand/append {id:35,rank:11,glyph:"",name:"梅花J",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=36}] run function doudizhu:hand/append {id:36,rank:11,glyph:"",name:"红桃J",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=29}] run function doudizhu:hand/append {id:29,rank:10,glyph:"",name:"黑桃10",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=30}] run function doudizhu:hand/append {id:30,rank:10,glyph:"",name:"方块10",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=31}] run function doudizhu:hand/append {id:31,rank:10,glyph:"",name:"梅花10",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=32}] run function doudizhu:hand/append {id:32,rank:10,glyph:"",name:"红桃10",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=25}] run function doudizhu:hand/append {id:25,rank:9,glyph:"",name:"黑桃9",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=26}] run function doudizhu:hand/append {id:26,rank:9,glyph:"",name:"方块9",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=27}] run function doudizhu:hand/append {id:27,rank:9,glyph:"",name:"梅花9",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=28}] run function doudizhu:hand/append {id:28,rank:9,glyph:"",name:"红桃9",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=21}] run function doudizhu:hand/append {id:21,rank:8,glyph:"",name:"黑桃8",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=22}] run function doudizhu:hand/append {id:22,rank:8,glyph:"",name:"方块8",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=23}] run function doudizhu:hand/append {id:23,rank:8,glyph:"",name:"梅花8",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=24}] run function doudizhu:hand/append {id:24,rank:8,glyph:"",name:"红桃8",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=17}] run function doudizhu:hand/append {id:17,rank:7,glyph:"",name:"黑桃7",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=18}] run function doudizhu:hand/append {id:18,rank:7,glyph:"",name:"方块7",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=19}] run function doudizhu:hand/append {id:19,rank:7,glyph:"",name:"梅花7",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=20}] run function doudizhu:hand/append {id:20,rank:7,glyph:"",name:"红桃7",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=13}] run function doudizhu:hand/append {id:13,rank:6,glyph:"",name:"黑桃6",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=14}] run function doudizhu:hand/append {id:14,rank:6,glyph:"",name:"方块6",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=15}] run function doudizhu:hand/append {id:15,rank:6,glyph:"",name:"梅花6",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=16}] run function doudizhu:hand/append {id:16,rank:6,glyph:"",name:"红桃6",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=9}] run function doudizhu:hand/append {id:9,rank:5,glyph:"",name:"黑桃5",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=10}] run function doudizhu:hand/append {id:10,rank:5,glyph:"",name:"方块5",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=11}] run function doudizhu:hand/append {id:11,rank:5,glyph:"",name:"梅花5",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=12}] run function doudizhu:hand/append {id:12,rank:5,glyph:"",name:"红桃5",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=5}] run function doudizhu:hand/append {id:5,rank:4,glyph:"",name:"黑桃4",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=6}] run function doudizhu:hand/append {id:6,rank:4,glyph:"",name:"方块4",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=7}] run function doudizhu:hand/append {id:7,rank:4,glyph:"",name:"梅花4",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=8}] run function doudizhu:hand/append {id:8,rank:4,glyph:"",name:"红桃4",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=1}] run function doudizhu:hand/append {id:1,rank:3,glyph:"",name:"黑桃3",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=2}] run function doudizhu:hand/append {id:2,rank:3,glyph:"",name:"方块3",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=3}] run function doudizhu:hand/append {id:3,rank:3,glyph:"",name:"梅花3",slices:["","","","","","","",""]}
+execute as @e[tag=dd.hand,scores={dd_card=4}] run function doudizhu:hand/append {id:4,rank:3,glyph:"",name:"红桃3",slices:["","","","","","","",""]}

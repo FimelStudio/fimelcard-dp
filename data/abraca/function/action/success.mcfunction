@@ -4,7 +4,6 @@ execute as @a[tag=ab.audience] if score @s ab_id = #ctx ab_ctx run tag @s remove
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run tag @s add ab.audience
 tag @e[tag=ab.chosen,limit=1] remove ab.hand
 tag @e[tag=ab.chosen,limit=1] add ab.played
-clear @a[tag=ab.actor,limit=1] minecraft:paper[minecraft:custom_data~{abraca:{stone:1b}}] 1
 scoreboard players operation @a[tag=ab.actor,limit=1] ab_last = #spell ab_ctx
 execute store result storage abraca:debug id int 1 run scoreboard players get @s ab_id
 execute store result storage abraca:debug seat int 1 run scoreboard players get @a[tag=ab.actor,limit=1] ab_seat

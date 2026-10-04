@@ -1,1 +1,1 @@
-$data modify entity @s text set value [{text:'生命\n',color:'red',bold:true},$(line1),{text:'：$(hp1)/6\n',color:'white'},$(line2),{text:'：$(hp2)/6\n',color:'white'},$(line3),{text:'：$(hp3)/6\n',color:'white'},$(line4),{text:'：$(hp4)/6',color:'white'}]
+$data modify entity @s text set value $(text)

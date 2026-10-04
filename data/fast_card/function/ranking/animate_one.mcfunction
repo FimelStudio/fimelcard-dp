@@ -14,7 +14,7 @@ execute unless entity @a[tag=fc.rank_pick,limit=1] run return fail
 
 # 将数字转成宏参数；玩家通过固定座位号识别中央排行
 execute store result storage fast_card:transition line.rank int 1 run scoreboard players get @s fc_rank
-execute store result storage fast_card:transition line.seat int 1 run scoreboard players get @a[tag=fc.rank_pick,limit=1] fc_seat
+execute store result storage fast_card:transition line.seat int 1 run scoreboard players get @a[tag=fc.rank_pick,limit=1] ct_seat
 execute store result storage fast_card:transition line.score int 1 run scoreboard players get @a[tag=fc.rank_pick,limit=1] fc_score
 execute store result storage fast_card:transition line.delta int 1 run scoreboard players get @a[tag=fc.rank_pick,limit=1] fc_delta
 

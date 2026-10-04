@@ -19,6 +19,10 @@ function hanabi:turn/scan_once
 execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
 execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
 execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:turn/scan_once
 execute unless score #found hb_ctx matches 1 run scoreboard players set @s hb_reason 4
 execute unless score #found hb_ctx matches 1 run return run function hanabi:game/finish
 scoreboard players operation @s hb_turn = @s hb_scan

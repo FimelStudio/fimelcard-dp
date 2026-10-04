@@ -44,4 +44,6 @@ scoreboard objectives add dc_prev_panel dummy
 scoreboard objectives add dc_page dummy
 scoreboard objectives add dc_pages dummy
 scoreboard objectives add dc_page_tick dummy
-scoreboard players set #version dc_ctx 10
+scoreboard objectives add dc_input dummy
+scoreboard objectives add dc_form dummy
+function decrypto:system/upgrade_v12

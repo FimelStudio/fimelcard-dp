@@ -8,6 +8,10 @@ function liars_holdem:gun/scan_pending_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
 execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
+execute if score #found lh_ctx matches 0 run function liars_holdem:gun/scan_pending_once
 execute unless score #found lh_ctx matches 1 run return run function liars_holdem:round/end
 
 scoreboard players set @a[tag=lh.gun_target,limit=1] lh_pending_gun 0

@@ -1,6 +1,6 @@
 execute if score #found hb_ctx matches 1 run return 0
 scoreboard players add @s hb_scan 1
-execute if score @s hb_scan matches 5.. run scoreboard players set @s hb_scan 1
+execute if score @s hb_scan matches 9.. run scoreboard players set @s hb_scan 1
 scoreboard players operation #target_seat hb_ctx = @s hb_scan
 # 牌库见底后手牌会逐渐减少；已经没有普通手牌的座位自动跳过
 scoreboard players set #seat_cards hb_ctx 0

@@ -23,6 +23,6 @@ execute if score @s fc_card matches 16 run item replace entity @e[type=minecraft
 execute if score @s fc_card matches 17 run item replace entity @e[type=minecraft:item,tag=fc.new_dealt_card,limit=1] contents with minecraft:paper[minecraft:item_model="card:poker/joker",minecraft:item_name="小丑牌",minecraft:custom_data={fast_card:{card:1b,id:17,rank:0,suit:"joker"}},minecraft:max_stack_size=1]
 
 # 把目标座位交给公共发牌接口；牌堆标记已由deal/one在调用前移除
-execute store result storage cardtable:deal seat int 1 run scoreboard players get #deal_seat fc_ctx
+data modify storage cardtable:deal seat set from storage fast_card:deal seat
 function cardtable:animation/deal/launch with storage cardtable:deal
 tag @e[type=minecraft:item,tag=fc.new_dealt_card,distance=..2] remove fc.new_dealt_card

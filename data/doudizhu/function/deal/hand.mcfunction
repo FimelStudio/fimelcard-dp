@@ -1,0 +1,17 @@
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat
+scoreboard players operation @e[tag=dd.pool,scores={dd_owner=0},sort=random,limit=1] dd_owner = @s dd_seat

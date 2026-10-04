@@ -1,4 +1,7 @@
+function decrypto:player/audience
 scoreboard players operation #phase dc_ctx = @s dc_state
+execute if score #phase dc_ctx matches 6 run function decrypto:hud/clear_clues
+execute if score #phase dc_ctx matches 8 run function decrypto:hud/clear_clues
 scoreboard players set #correct dc_ctx 1
 execute if score @s dc_state matches 5 unless score @s dc_guess1 = @s dc_w1 run scoreboard players set #correct dc_ctx 0
 execute if score @s dc_state matches 5 unless score @s dc_guess2 = @s dc_w2 run scoreboard players set #correct dc_ctx 0
@@ -27,12 +30,12 @@ execute if score #phase dc_ctx matches 8 unless score #correct dc_ctx matches 1 
 execute if score #phase dc_ctx matches 8 unless score @s dc_round matches 1 if score @s dc_winter matches 1 run scoreboard players add @s dc_wi 1
 execute if score #phase dc_ctx matches 6 run function decrypto:round/announce_result
 execute if score #phase dc_ctx matches 8 run function decrypto:round/announce_result
-execute if score #phase dc_ctx matches 6 if score #correct dc_ctx matches 1 run tellraw @a[tag=dc.player] [{text:'白队成功解码。',color:'green'}]
-execute if score #phase dc_ctx matches 6 unless score #correct dc_ctx matches 1 run tellraw @a[tag=dc.player] [{text:'白队错误传讯，获得1枚红色标记。',color:'red'}]
-execute if score #phase dc_ctx matches 6 unless score @s dc_round matches 1 if score @s dc_binter matches 1 run tellraw @a[tag=dc.player] [{text:'黑队成功拦截，获得1枚绿色标记。',color:'green'}]
-execute if score #phase dc_ctx matches 8 if score #correct dc_ctx matches 1 run tellraw @a[tag=dc.player] [{text:'黑队成功解码。',color:'green'}]
-execute if score #phase dc_ctx matches 8 unless score #correct dc_ctx matches 1 run tellraw @a[tag=dc.player] [{text:'黑队错误传讯，获得1枚红色标记。',color:'red'}]
-execute if score #phase dc_ctx matches 8 unless score @s dc_round matches 1 if score @s dc_winter matches 1 run tellraw @a[tag=dc.player] [{text:'白队成功拦截，获得1枚绿色标记。',color:'green'}]
+execute if score #phase dc_ctx matches 6 if score #correct dc_ctx matches 1 run tellraw @a[tag=dc.audience] [{text:'白队成功解码。',color:'green'}]
+execute if score #phase dc_ctx matches 6 unless score #correct dc_ctx matches 1 run tellraw @a[tag=dc.audience] [{text:'白队错误传讯，获得1枚红色标记。',color:'red'}]
+execute if score #phase dc_ctx matches 6 unless score @s dc_round matches 1 if score @s dc_binter matches 1 run tellraw @a[tag=dc.audience] [{text:'黑队成功拦截，获得1枚绿色标记。',color:'green'}]
+execute if score #phase dc_ctx matches 8 if score #correct dc_ctx matches 1 run tellraw @a[tag=dc.audience] [{text:'黑队成功解码。',color:'green'}]
+execute if score #phase dc_ctx matches 8 unless score #correct dc_ctx matches 1 run tellraw @a[tag=dc.audience] [{text:'黑队错误传讯，获得1枚红色标记。',color:'red'}]
+execute if score #phase dc_ctx matches 8 unless score @s dc_round matches 1 if score @s dc_winter matches 1 run tellraw @a[tag=dc.audience] [{text:'白队成功拦截，获得1枚绿色标记。',color:'green'}]
 function decrypto:marker/update
 execute if score #phase dc_ctx matches 6 run function decrypto:notes/add_white
 execute if score #phase dc_ctx matches 8 run function decrypto:notes/add_black

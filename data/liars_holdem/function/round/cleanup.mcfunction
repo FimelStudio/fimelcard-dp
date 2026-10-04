@@ -8,5 +8,6 @@ execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run dialog clear
 kill @e[type=minecraft:item_display,nbt={data:{liars_holdem:{new_community:1b}}},distance=..4]
 # 公共牌按接入规范同时校验lh.community和本桌lh_id，不依赖最近实体
 execute as @e[type=minecraft:item_display,tag=lh.community] if score @s lh_id = #ctx_id lh_ctx run kill @s
-execute as @e[tag=lh.game_entity,distance=..4] if score @s lh_id = #ctx_id lh_ctx run kill @s
+# 八人单列摊牌可高于4格，清理只按本游戏标签和桌号限定，不能按距离漏掉高行。
+execute as @e[tag=lh.game_entity] if score @s lh_id = #ctx_id lh_ctx run kill @s
 execute as @e[type=minecraft:item,distance=..4] run function liars_holdem:util/kill_if_item

@@ -5,6 +5,7 @@ scoreboard objectives add ct_game dummy
 scoreboard objectives add ct_kind dummy
 scoreboard objectives add ct_seat dummy
 scoreboard objectives add ct_joined dummy
+scoreboard objectives add ct_capacity dummy
 scoreboard objectives add ct_online dummy
 scoreboard objectives add ct_anim dummy
 
@@ -18,6 +19,6 @@ scoreboard players set #next_id ct_ctx 0
 scoreboard players set #clock ct_ctx 0
 scoreboard players set #game_count ct_ctx 1
 scoreboard players set @a[tag=ct.player] ct_online 1
-scoreboard players set #version ct_ctx 3
+scoreboard players set #version ct_ctx 4
 
 tellraw @a [{text:'[牌桌] ',color:'dark_aqua'},{text:'通用牌桌模块安装完成。',color:'green'}]

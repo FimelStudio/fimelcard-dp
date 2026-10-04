@@ -6,6 +6,7 @@ execute unless score #version lh_ctx matches 1.. run function liars_holdem:syste
 execute if score #version lh_ctx matches 1 run function liars_holdem:system/upgrade_v2
 execute if score #version lh_ctx matches 2 run function liars_holdem:system/upgrade_v3
 execute if score #version lh_ctx matches 3 run function liars_holdem:system/upgrade_v4
+execute if score #version lh_ctx matches 4 run function liars_holdem:system/upgrade_v5
 scoreboard players set #two lh_ctx 2
 scoreboard players set #twenty lh_ctx 20
 scoreboard players set #base lh_ctx 15
@@ -14,5 +15,9 @@ scoreboard players set #base lh_ctx 15
 kill @e[type=minecraft:item_display,nbt={data:{liars_holdem:{new_community:1b}}}]
 # 旧版子弹通过临时data反查实体，异常中断时可能留下未注册实体；新版不再使用该标记
 kill @e[type=minecraft:item_display,nbt={data:{liars_holdem:{new_bullet:1b}}}]
+
+# 先清除已结束牌局的遗留展示，再修复仍在进行中的两种牌桌。
+execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function liars_holdem:showdown/cleanup_inactive
+execute as @e[type=minecraft:marker,tag=lh.controller] at @s run function liars_holdem:showdown/repair_layout
 
 tellraw @a[tag=lh.player] [{text:'[赌命德州扑克] ',color:'red'},{text:'数据包已重新加载，正在恢复当前牌局。',color:'yellow'}]

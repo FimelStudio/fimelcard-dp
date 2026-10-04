@@ -5,6 +5,10 @@ function wenfei:title/compile {seat:1}
 function wenfei:title/compile {seat:2}
 function wenfei:title/compile {seat:3}
 function wenfei:title/compile {seat:4}
+function wenfei:title/compile {seat:5}
+function wenfei:title/compile {seat:6}
+function wenfei:title/compile {seat:7}
+function wenfei:title/compile {seat:8}
 scoreboard players set @s wq_page 0
 scoreboard players set @s wq_ptick 0
 function wenfei:title/render

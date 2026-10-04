@@ -1,7 +1,7 @@
 scoreboard players operation #target cp_ctx = @s cp_action
 scoreboard players remove #target cp_ctx 200
 scoreboard players set @s cp_action 0
-execute unless score #target cp_ctx matches 1..4 run return 0
+execute unless score #target cp_ctx matches 1..8 run return 0
 execute if score @s cp_locked matches 1 run tellraw @s [{text:'[临界点] ',color:'red'},{text:'你已经完成投票。',color:'yellow'}]
 execute if score @s cp_locked matches 1 run return 0
 scoreboard players operation #ctx cp_ctx = @s cp_id

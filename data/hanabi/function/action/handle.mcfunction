@@ -36,7 +36,7 @@ execute if score #action hb_ctx matches 201..205 run scoreboard players remove #
 execute if score #action hb_ctx matches 201..205 as @e[tag=hb.action_controller,limit=1] at @s run function hanabi:action/discard
 
 execute if score #action hb_ctx matches 300 run function hanabi:dialog/hint/target
-execute if score #action hb_ctx matches 301..304 run function hanabi:action/hint/select_target
+execute if score #action hb_ctx matches 301..308 run function hanabi:action/hint/select_target
 execute if score #action hb_ctx matches 390 run function hanabi:input/cancel_hint
 execute if score #action hb_ctx matches 401..406 run scoreboard players operation #hint_value hb_ctx = #action hb_ctx
 execute if score #action hb_ctx matches 401..406 run scoreboard players remove #hint_value hb_ctx 400

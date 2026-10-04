@@ -1,3 +1,5 @@
+function bullshit:question/hide_answer
+title @s actionbar {text:''}
 clear @s minecraft:paper[minecraft:custom_data~{bullshit:{card:1b}}]
 clear @s minecraft:lime_dye[minecraft:custom_data~{bullshit:{card:1b}}]
 tag @s remove bw.player

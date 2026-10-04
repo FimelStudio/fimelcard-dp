@@ -5,7 +5,7 @@ scoreboard players set @s wq_state 2
 function wenfei:input/clear_category_menu
 function wenfei:round/new_epoch
 function wenfei:player/mark_audience
-tellraw @a[tag=wq.audience] {text:"[问非所答] 类别已选定。其他玩家秘密看题并用书与笔提交答案；全部提交后才公开。",color:"yellow"}
+tellraw @a[tag=wq.audience] {text:"[问非所答] 类别已选定。其他玩家秘密看题，按本桌设置用书或对话框提交答案；全部提交后才公开。",color:"yellow"}
 execute as @a[tag=wq.audience,scores={wq_guess=0}] run function wenfei:input/give_answer
 function wenfei:log {text:"抽取五题完成：开始秘密回答"}
 function wenfei:hud/update

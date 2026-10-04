@@ -3,14 +3,8 @@
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @e[tag=ct.vote] if score @s ct_id = #ctx_id ct_ctx run kill @s
 
-function cardtable:vote/text
-
-# 点击区Y比旧版提高0.0925格，并沿文字朝向轴向桌心移动0.39格
-# 北、东、南、西四面的结束游戏点击区
-summon minecraft:interaction ~-1.00 ~0.5625 ~-1.125 {data:{cardtable:{new_vote:1b,end_vote:1b}},width:0.80f,height:0.22f,response:1b}
-summon minecraft:interaction ~1.125 ~0.5625 ~-1.00 {data:{cardtable:{new_vote:1b,end_vote:1b}},width:0.80f,height:0.22f,response:1b}
-summon minecraft:interaction ~1.00 ~0.5625 ~1.125 {data:{cardtable:{new_vote:1b,end_vote:1b}},width:0.80f,height:0.22f,response:1b}
-summon minecraft:interaction ~-1.125 ~0.5625 ~1.00 {data:{cardtable:{new_vote:1b,end_vote:1b}},width:0.80f,height:0.22f,response:1b}
+execute unless score @s ct_capacity matches 8 run function cardtable:vote/spawn4
+execute if score @s ct_capacity matches 8 run function cardtable:vote/spawn8
 
 execute as @e[nbt={data:{cardtable:{new_vote:1b}}},distance=..3] run tag @s add ct.new_vote
 tag @e[tag=ct.new_vote,distance=..3] add ct.vote

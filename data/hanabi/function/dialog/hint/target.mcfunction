@@ -13,6 +13,10 @@ function hanabi:dialog/hint/append_option {seat:1,action:301}
 function hanabi:dialog/hint/append_option {seat:2,action:302}
 function hanabi:dialog/hint/append_option {seat:3,action:303}
 function hanabi:dialog/hint/append_option {seat:4,action:304}
+function hanabi:dialog/hint/append_option {seat:5,action:305}
+function hanabi:dialog/hint/append_option {seat:6,action:306}
+function hanabi:dialog/hint/append_option {seat:7,action:307}
+function hanabi:dialog/hint/append_option {seat:8,action:308}
 
 execute unless score #option_added hb_ctx matches 1.. run data modify storage hanabi:dialog target_body.extra append value {text:"当前没有可提示的其他参与者。",color:"red"}
 function hanabi:dialog/hint/show_target with storage hanabi:dialog

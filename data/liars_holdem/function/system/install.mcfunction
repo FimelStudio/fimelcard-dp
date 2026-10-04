@@ -17,11 +17,15 @@ scoreboard objectives add lh_allin dummy
 scoreboard objectives add lh_auto dummy
 scoreboard objectives add lh_return dummy
 
-# 四个座位的整场存活状态保存在控制器上，便于处理离线玩家
+# 八个座位的整场存活状态保存在控制器上，便于处理离线玩家
 scoreboard objectives add lh_a1 dummy
 scoreboard objectives add lh_a2 dummy
 scoreboard objectives add lh_a3 dummy
 scoreboard objectives add lh_a4 dummy
+scoreboard objectives add lh_a5 dummy
+scoreboard objectives add lh_a6 dummy
+scoreboard objectives add lh_a7 dummy
+scoreboard objectives add lh_a8 dummy
 
 # 卡牌实体和临时计算
 scoreboard objectives add lh_card dummy
@@ -86,5 +90,5 @@ scoreboard players set #clock lh_ctx 0
 scoreboard players set #two lh_ctx 2
 scoreboard players set #twenty lh_ctx 20
 scoreboard players set #base lh_ctx 15
-scoreboard players set #version lh_ctx 4
+scoreboard players set #version lh_ctx 5
 tellraw @a [{text:'[赌命德州扑克] ',color:'red'},{text:'游戏模块安装完成。',color:'green'}]

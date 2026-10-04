@@ -28,3 +28,10 @@ scoreboard players reset @s dc_encoder
 scoreboard players reset @s dc_drop
 scoreboard players reset @s dc_drop_book
 scoreboard players reset @s dc_drop_guess
+clear @s minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'prompt'}}]
+
+scoreboard players reset @s dc_role
+scoreboard players reset @s dc_index
+scoreboard players reset @s dc_size
+tag @s remove dc.audience
+tag @s remove dc.guesser

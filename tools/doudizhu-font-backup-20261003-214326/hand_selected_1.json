@@ -1,0 +1,18 @@
+{
+  "providers": [
+    {
+      "height": 64,
+      "chars": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "type": "bitmap",
+      "ascent": 52,
+      "file": "card:font/doudizhu/selected.png"
+    }
+  ]
+}

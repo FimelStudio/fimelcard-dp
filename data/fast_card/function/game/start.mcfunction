@@ -24,7 +24,7 @@ scoreboard players operation @s fc_id = @s ct_id
 scoreboard players operation @s fc_joined = @s ct_joined
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id fc_ctx run tag @s add fc.player
 execute as @a[tag=fc.player] if score @s ct_id = #ctx_id fc_ctx run scoreboard players operation @s fc_id = @s ct_id
-execute as @a[tag=fc.player] if score @s ct_id = #ctx_id fc_ctx run scoreboard players operation @s fc_seat = @s ct_seat
+function fast_card:player/map_seats
 
 # 通知通用层所有前置检查已通过
 function fast_card:log {text:"开局检查通过，初始化玩家、牌组和按钮"}

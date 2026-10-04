@@ -1,0 +1,4 @@
+# 第9格固定放结束回合染料；若旧局升级时该格有其他物品，保留原物品并把工具放入空位。
+$execute unless items entity @s hotbar.8 * run item replace entity @s hotbar.8 with minecraft:black_dye[minecraft:item_name='结束回合',minecraft:lore=[{text:'按Q结束本回合，补牌并交给下一位玩家',color:'gray',italic:false}],minecraft:custom_data={abraca:{cast:1b,spell:9,table:$(table),epoch:$(epoch)}},minecraft:max_stack_size=1]
+$execute unless items entity @s hotbar.8 minecraft:black_dye[minecraft:custom_data~{abraca:{cast:1b,spell:9}}] run give @s minecraft:black_dye[minecraft:item_name='结束回合',minecraft:lore=[{text:'按Q结束本回合，补牌并交给下一位玩家',color:'gray',italic:false}],minecraft:custom_data={abraca:{cast:1b,spell:9,table:$(table),epoch:$(epoch)}},minecraft:max_stack_size=1]
+execute unless items entity @s hotbar.8 minecraft:black_dye[minecraft:custom_data~{abraca:{cast:1b,spell:9}}] run tellraw @s [{text:'[出包魔法师] ',color:'dark_purple'},{text:'第9格有其他物品，结束回合染料已放入背包空位，请移到第9格使用。',color:'yellow'}]

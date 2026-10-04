@@ -5,6 +5,10 @@ function hanabi:deal/scan_once
 execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
 execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
 execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
+execute if score #found hb_ctx matches 0 run function hanabi:deal/scan_once
 execute unless score #found hb_ctx matches 1 run return fail
 
 function hanabi:deal/one

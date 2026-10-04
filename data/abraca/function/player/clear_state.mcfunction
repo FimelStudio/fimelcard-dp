@@ -1,4 +1,6 @@
 clear @s minecraft:paper[minecraft:custom_data~{abraca:{stone:1b}}]
+function abraca:input/clear_tools
+tag @s remove ab.q_input
 function abraca:title/deactivate_player
 tag @s remove ab.player
 tag @s remove ab.turn

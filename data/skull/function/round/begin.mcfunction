@@ -14,6 +14,10 @@ function skull:round/reset_seat {seat:1}
 function skull:round/reset_seat {seat:2}
 function skull:round/reset_seat {seat:3}
 function skull:round/reset_seat {seat:4}
+function skull:round/reset_seat {seat:5}
+function skull:round/reset_seat {seat:6}
+function skull:round/reset_seat {seat:7}
+function skull:round/reset_seat {seat:8}
 tellraw @a[tag=sk.audience] [{text:"[骷髅牌] 第 ",color:"gold"},{score:{name:"@s",objective:"sk_round"}},{text:" 轮：每人选中一张手牌按Q秘密扣下；紫色染料按Q打开叫号等操作界面。"}]
 execute as @a[tag=sk.audience] run function skull:hand/sync
 function skull:hud/update

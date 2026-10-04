@@ -7,6 +7,7 @@ execute as @e[type=minecraft:item_display,tag=dc.history] if score @s dc_id = #c
 execute if block ~ ~1 ~ minecraft:anvil run setblock ~ ~1 ~ air
 execute if block ~ ~1 ~ minecraft:chipped_anvil run setblock ~ ~1 ~ air
 execute if block ~ ~1 ~ minecraft:damaged_anvil run setblock ~ ~1 ~ air
+data remove entity @s data.decrypto.player_count
 data remove entity @s data.decrypto.note_lines
 scoreboard players reset @s dc_page
 scoreboard players reset @s dc_pages

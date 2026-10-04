@@ -7,8 +7,9 @@ $execute unless entity @a[tag=hb.title_owner,scores={hb_seat=$(seat)},limit=1] r
 scoreboard players add #title_row hb_ctx 1
 # BetterTitle 的上方锚点以负 Y 表示向屏幕下方移动。
 scoreboard players set #title_y hb_ctx -18
-execute if score #title_row hb_ctx matches 2 run scoreboard players set #title_y hb_ctx -80
-execute if score #title_row hb_ctx matches 3 run scoreboard players set #title_y hb_ctx -142
+execute if score #title_row hb_ctx matches 2 run scoreboard players set #title_y hb_ctx -72
+execute if score #title_row hb_ctx matches 3 run scoreboard players set #title_y hb_ctx -126
+execute if score #title_row hb_ctx matches 4 run scoreboard players set #title_y hb_ctx -180
 
 # 玩家名也预先解析为静态文本，避免Actionbar或Dialog保留原始选择器。
 $execute as @a[tag=hb.title_owner,scores={hb_seat=$(seat)},limit=1] at @s run function hanabi:name/resolve

@@ -1,3 +1,4 @@
+execute if score @s ct_capacity matches 8 run return run function cardtable:table/spawn_seats8
 # 仅生成牌桌实体逻辑，不放置或修改任何方块
 # 四个座位锚点对应中心北、东、南、西各2格，适用于默认桌椅和相同布局的自定义桌椅
 

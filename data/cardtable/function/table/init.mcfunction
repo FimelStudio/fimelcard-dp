@@ -1,8 +1,10 @@
 # 控制器固定在牌桌中央；普通创建放置结构，现有桌模式只生成实体逻辑
 scoreboard players add #next_id ct_ctx 1
 scoreboard players operation @s ct_id = #next_id ct_ctx
+execute unless score @s ct_capacity matches 8 run scoreboard players set @s ct_capacity 4
 scoreboard players set @s ct_state 0
 scoreboard players set @s ct_game 1
+execute if score @s ct_capacity matches 8 run scoreboard players set @s ct_game 8
 scoreboard players set @s ct_joined 0
 scoreboard players set @s ct_votes 0
 
@@ -32,4 +34,4 @@ function cardtable:menu/render
 function cardtable:rules/render
 
 # 新牌桌直接使用当前结构版本；后续菜单刷新不得改写迁移状态
-data merge entity @s {data:{cardtable:{menu_version:12}}}
+data merge entity @s {data:{cardtable:{menu_version:13}}}

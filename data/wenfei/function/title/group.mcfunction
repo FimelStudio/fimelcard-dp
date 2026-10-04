@@ -1,4 +1,8 @@
 $execute unless data storage wenfei:panel lines.s$(seat) run return 0
+scoreboard players operation #answer_batch wq_ctx = #answer_index wq_ctx
+scoreboard players operation #answer_batch wq_ctx /= #four wq_ctx
+scoreboard players add #answer_index wq_ctx 1
+execute unless score #answer_batch wq_ctx = #batch wq_ctx run return 0
 $data modify storage wenfei:panel rows set from storage wenfei:panel lines.s$(seat)
 execute store result score #rows wq_ctx run data get storage wenfei:panel rows
 scoreboard players add #rows wq_ctx 1

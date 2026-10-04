@@ -10,6 +10,10 @@ function hanabi:reward/full_hint/append_target {seat:1,action:1101}
 function hanabi:reward/full_hint/append_target {seat:2,action:1102}
 function hanabi:reward/full_hint/append_target {seat:3,action:1103}
 function hanabi:reward/full_hint/append_target {seat:4,action:1104}
+function hanabi:reward/full_hint/append_target {seat:5,action:1105}
+function hanabi:reward/full_hint/append_target {seat:6,action:1106}
+function hanabi:reward/full_hint/append_target {seat:7,action:1107}
+function hanabi:reward/full_hint/append_target {seat:8,action:1108}
 
 execute unless score #option_added hb_ctx matches 1.. run data modify storage hanabi:reward full_hint_target_body.extra append value {text:"当前没有可选择的其他玩家，本次奖励将无效果结算。",color:"yellow",click_event:{action:"run_command",command:"trigger hb_action set 1199"}}
 function hanabi:reward/full_hint/show_target with storage hanabi:reward

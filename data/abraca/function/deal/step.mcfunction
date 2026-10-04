@@ -6,6 +6,10 @@ function abraca:deal/scan_once
 execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
 execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
 execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
+execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
+execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
+execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
+execute if score #found ab_ctx matches 0 run function abraca:deal/scan_once
 execute unless score #found ab_ctx matches 1 run function abraca:game/abort
 execute unless score #found ab_ctx matches 1 run return 0
 function abraca:deck/deal_one

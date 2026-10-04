@@ -1,8 +1,9 @@
-# 赌命德州扑克允许任意2至4个座位开局；空座位不会被加入发牌、轮转和存活统计
+execute if score @s ct_joined > @s ct_capacity run return fail
+# 赌命德州扑克允许任意2至8个座位开局；空座位不会被加入发牌、轮转和存活统计
 function liars_holdem:log {text:"开始执行赌命德州扑克开局检查"}
-execute unless score @s ct_joined matches 2..4 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[赌命德州扑克] ',color:'red'},{text:'需要2至4名玩家入座。',color:'yellow'}]
-execute unless score @s ct_joined matches 2..4 run function liars_holdem:log {text:"开局失败：入座人数不在2至4人范围内"}
-execute unless score @s ct_joined matches 2..4 run return fail
+execute unless score @s ct_joined matches 2..8 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[赌命德州扑克] ',color:'red'},{text:'需要2至8名玩家入座。',color:'yellow'}]
+execute unless score @s ct_joined matches 2..8 run function liars_holdem:log {text:"开局失败：入座人数不在2至8人范围内"}
+execute unless score @s ct_joined matches 2..8 run return fail
 
 scoreboard players operation #ctx_id lh_ctx = @s ct_id
 scoreboard players set #online lh_ctx 0
@@ -26,6 +27,10 @@ scoreboard players set @s lh_a1 0
 scoreboard players set @s lh_a2 0
 scoreboard players set @s lh_a3 0
 scoreboard players set @s lh_a4 0
+scoreboard players set @s lh_a5 0
+scoreboard players set @s lh_a6 0
+scoreboard players set @s lh_a7 0
+scoreboard players set @s lh_a8 0
 
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id lh_ctx run tag @s add lh.player
 execute as @a[tag=lh.player] if score @s ct_id = #ctx_id lh_ctx run scoreboard players operation @s lh_id = @s ct_id
@@ -43,6 +48,18 @@ execute if score #occupied lh_ctx matches 1 run scoreboard players set @s lh_a3 
 scoreboard players set #occupied lh_ctx 0
 execute as @a[tag=lh.player,scores={lh_seat=4}] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set #occupied lh_ctx 1
 execute if score #occupied lh_ctx matches 1 run scoreboard players set @s lh_a4 1
+scoreboard players set #occupied lh_ctx 0
+execute as @a[tag=lh.player,scores={lh_seat=5}] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set #occupied lh_ctx 1
+execute if score #occupied lh_ctx matches 1 run scoreboard players set @s lh_a5 1
+scoreboard players set #occupied lh_ctx 0
+execute as @a[tag=lh.player,scores={lh_seat=6}] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set #occupied lh_ctx 1
+execute if score #occupied lh_ctx matches 1 run scoreboard players set @s lh_a6 1
+scoreboard players set #occupied lh_ctx 0
+execute as @a[tag=lh.player,scores={lh_seat=7}] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set #occupied lh_ctx 1
+execute if score #occupied lh_ctx matches 1 run scoreboard players set @s lh_a7 1
+scoreboard players set #occupied lh_ctx 0
+execute as @a[tag=lh.player,scores={lh_seat=8}] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set #occupied lh_ctx 1
+execute if score #occupied lh_ctx matches 1 run scoreboard players set @s lh_a8 1
 execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set @s lh_fold 0
 execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set @s lh_wait 0
 execute as @a[tag=lh.player] if score @s lh_id = #ctx_id lh_ctx run scoreboard players set @s lh_drop_card 0
@@ -58,7 +75,7 @@ execute as @a[tag=lh.player,scores={lh_alive=1}] if score @s lh_id = #ctx_id lh_
 tag @a[tag=lh.first_pool,sort=random,limit=1] add lh.first_dealer
 scoreboard players operation @s lh_dealer = @a[tag=lh.first_dealer,limit=1] lh_seat
 scoreboard players remove @s lh_dealer 1
-execute if score @s lh_dealer matches ..0 run scoreboard players set @s lh_dealer 4
+execute if score @s lh_dealer matches ..0 run scoreboard players set @s lh_dealer 8
 tag @a[tag=lh.first_pool] remove lh.first_pool
 tag @a[tag=lh.first_dealer] remove lh.first_dealer
 

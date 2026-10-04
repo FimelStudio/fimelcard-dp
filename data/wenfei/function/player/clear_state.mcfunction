@@ -16,3 +16,5 @@ scoreboard players reset @s wq_ready
 scoreboard players reset @s wq_action
 scoreboard players reset @s wq_ui_table
 scoreboard players reset @s wq_rank
+clear @s minecraft:purple_dye[minecraft:custom_data~{wenfei:{tool:"answer_dialog"}}]
+scoreboard players reset @s wq_form

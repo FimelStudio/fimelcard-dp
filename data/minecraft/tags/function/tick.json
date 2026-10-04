@@ -9,6 +9,7 @@
     "decrypto:tick",
     "critical_point:tick",
     "wenfei:tick",
-    "skull:tick"
+    "skull:tick",
+    "doudizhu:tick"
   ]
 }

@@ -5,3 +5,7 @@ function abraca:effect/find_right
 execute if score #found ab_ctx matches 0 run function abraca:effect/find_right
 execute if score #found ab_ctx matches 0 run function abraca:effect/find_right
 execute if score #found ab_ctx matches 0 run function abraca:effect/find_right
+execute if score #found ab_ctx matches 0 run function abraca:effect/find_right
+execute if score #found ab_ctx matches 0 run function abraca:effect/find_right
+execute if score #found ab_ctx matches 0 run function abraca:effect/find_right
+execute if score #found ab_ctx matches 0 run function abraca:effect/find_right

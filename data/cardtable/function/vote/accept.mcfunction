@@ -6,6 +6,11 @@ scoreboard players set @a[tag=ct.voter,limit=1] ct_voted 1
 scoreboard players add @s ct_votes 1
 scoreboard players operation #vote_need ct_ctx = @s ct_joined
 execute if score #vote_need ct_ctx matches 3.. run scoreboard players set #vote_need ct_ctx 3
+# 五人及以上需要严格过半；原四座桌的2人2票、3至4人3票保持不变。
+execute if score @s ct_joined matches 5.. run scoreboard players operation #vote_need ct_ctx = @s ct_joined
+scoreboard players set #two ct_ctx 2
+execute if score @s ct_joined matches 5.. run scoreboard players operation #vote_need ct_ctx /= #two ct_ctx
+execute if score @s ct_joined matches 5.. run scoreboard players add #vote_need ct_ctx 1
 execute store result storage cardtable:debug votes int 1 run scoreboard players get @s ct_votes
 function cardtable:debug/log_vote with storage cardtable:debug
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
@@ -22,3 +27,4 @@ execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 6 
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 7 run function critical_point:game/end_vote
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 8 run function wenfei:game/end_vote
 execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 9 run function skull:game/end_vote
+execute if score @s ct_votes >= #vote_need ct_ctx if score @s ct_game matches 10 run function doudizhu:game/end_vote

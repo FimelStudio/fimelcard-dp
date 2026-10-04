@@ -16,8 +16,10 @@ execute if score @s dc_team matches 2 run function decrypto:title/load_black_not
 
 # BetterTitle会持续接管Actionbar，因此把原本的己方词库和加密者密码一并放入左上角面板。
 execute if score @s dc_team matches 1 run function decrypto:title/append_white_status
-# 四人局黑队显示己方词库；三人局截密者没有己方词库，只保留合作队的敌方笔记。
+# 分队局黑队显示己方词库；三人局截密者没有己方词库，只保留合作队的敌方笔记。
 execute if score @s dc_team matches 2 unless entity @s[tag=dc.interceptor] run function decrypto:title/append_black_status
+# 底部电报追加到同一个面板，不能单独 title actionbar 覆盖已有笔记。
+execute as @e[type=minecraft:marker,tag=dc.controller,tag=dc.title_controller,scores={dc_state=5..8}] if score @s dc_id = #ctx dc_ctx if data entity @s data.decrypto.active_clues run function decrypto:title/append_clues
 scoreboard players operation panel_id title.io = @s dc_panel
 function title:replace_panel
 scoreboard players operation @s title.panel_id = @s dc_panel

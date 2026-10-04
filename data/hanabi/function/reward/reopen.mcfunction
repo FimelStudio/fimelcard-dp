@@ -6,6 +6,6 @@ execute unless entity @a[tag=hb.reward_actor,limit=1] run return fail
 execute as @a[tag=hb.reward_actor,limit=1] run function hanabi:input/give_reward_reopen
 
 execute if score @s hb_reward_pending matches 2 run return run execute as @a[tag=hb.reward_actor,limit=1] run function hanabi:dialog/restore/open
-execute if score @s hb_reward_pending matches 3 if score @a[tag=hb.reward_actor,limit=1] hb_target matches 1..4 run return run function hanabi:reward/full_hint/open_card
+execute if score @s hb_reward_pending matches 3 if score @a[tag=hb.reward_actor,limit=1] hb_target matches 1..8 run return run function hanabi:reward/full_hint/open_card
 execute if score @s hb_reward_pending matches 3 run return run function hanabi:reward/full_hint/open_target
 execute if score @s hb_reward_pending matches 4 run return run function hanabi:reward/risk/open

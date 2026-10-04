@@ -4,6 +4,7 @@ clear @s minecraft:lime_dye[minecraft:custom_data~{critical_point:{}}]
 clear @s minecraft:purple_dye[minecraft:custom_data~{critical_point:{}}]
 clear @s minecraft:black_dye[minecraft:custom_data~{critical_point:{}}]
 clear @s minecraft:white_dye[minecraft:custom_data~{critical_point:{}}]
+tag @s remove cp.signal_used
 tag @s remove cp.player
 tag @s remove cp.wolf
 scoreboard players reset @s cp_id

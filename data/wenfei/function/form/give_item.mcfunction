@@ -1,0 +1,1 @@
+$give @s minecraft:purple_dye[minecraft:item_name="填写秘密答案（Q打开）",minecraft:custom_data={wenfei:{tool:"answer_dialog",table:$(table)}},minecraft:max_stack_size=1,minecraft:enchantment_glint_override=true]
