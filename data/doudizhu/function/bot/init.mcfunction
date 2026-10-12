@@ -5,3 +5,4 @@ $scoreboard players set @s dd_seat $(seat)
 $data merge entity @s {CustomName:{text:"测试人机$(seat)",color:"aqua"}}
 scoreboard players set @s dd_plays 0
 scoreboard players set @s dd_points 0
+scoreboard players set @s dd_total 0

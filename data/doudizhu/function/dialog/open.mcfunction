@@ -2,6 +2,7 @@ function doudizhu:action/context
 execute unless entity @e[tag=dd.current,limit=1] run return 0
 execute if score @e[tag=dd.current,limit=1] dd_state matches 1 run tellraw @s {text:"正在发牌，请稍候。",color:"gray"}
 execute if score @e[tag=dd.current,limit=1] dd_state matches 1 run return run function doudizhu:action/clear_context
+execute unless score @e[tag=dd.current,limit=1] dd_state matches 2..3 run return run function doudizhu:action/clear_context
 execute unless score @s dd_seat = @e[tag=dd.current,limit=1] dd_turn run return run function doudizhu:input/reject
 scoreboard players set @s dd_action 0
 scoreboard players enable @s dd_action

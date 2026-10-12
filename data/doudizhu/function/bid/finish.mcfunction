@@ -6,6 +6,7 @@ execute as @e[tag=dd.card,scores={dd_owner=0}] if score @s dd_id = #ctx dd_ctx r
 scoreboard players operation @s dd_turn = @s dd_lord
 scoreboard players set @s dd_state 3
 execute as @e[tag=dd.actors] if score @s dd_seat = @e[tag=dd.current,limit=1] dd_lord run tellraw @a[tag=dd.audience] [{text:"地主：",color:"gold"},{selector:"@s",color:"yellow"},{text:"。底牌已加入地主手牌。",color:"gray"}]
+tag @e[tag=dd.bottom] add dd.bottom_card
 tag @e[tag=dd.hand] remove dd.hand
 tag @e[tag=dd.bottom] add dd.hand
 scoreboard players set @e[tag=dd.bottom] dd_selected 1

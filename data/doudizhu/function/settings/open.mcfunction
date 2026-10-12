@@ -1,1 +1,8 @@
-dialog show @a[tag=ct.settings_actor,limit=1] {type:"minecraft:notice",title:{text:"经典斗地主 · 设置"},body:[{type:"minecraft:plain_message",width:430,contents:{text:"1至3名真人，不足三人自动补测试人机；三人叫分制，底分1至3；炸弹、王炸、春天翻倍。手牌按Q打开，出牌前可多选／取消。"}}],pause:false}
+function doudizhu:game/init_table
+execute store result storage doudizhu:settings initial int 1 run scoreboard players get @s dd_max
+scoreboard players operation @a[tag=ct.settings_actor,limit=1] dd_set_table = @s ct_id
+scoreboard players set @a[tag=ct.settings_actor,limit=1] dd_settings 0
+scoreboard players enable @a[tag=ct.settings_actor,limit=1] dd_settings
+# 保留给对话框提交时展开的输入占位符。
+data modify storage doudizhu:settings rounds set value "$(rounds)"
+function doudizhu:settings/show with storage doudizhu:settings

@@ -9,6 +9,9 @@ execute as @a[tag=ct.player] if score @s ct_id = #ctx dd_ctx if items entity @s 
 execute unless score #online dd_ctx = @s ct_joined run return fail
 execute if score #blocked dd_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {text:"请所有玩家腾空快捷栏第9格，用于打开手牌。",color:"red"}
 execute if score #blocked dd_ctx matches 1 run return fail
+function doudizhu:game/init_table
+scoreboard players set @s dd_round 1
+scoreboard players operation @s dd_limit = @s dd_max
 tag @s add dd.controller
 scoreboard players operation @s dd_id = @s ct_id
 scoreboard players operation @s dd_humans = @s ct_joined

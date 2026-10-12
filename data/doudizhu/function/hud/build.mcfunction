@@ -11,11 +11,12 @@ execute if score #hud_down dd_ctx matches 9 run function doudizhu:hud/wrap_down
 data modify storage title:io panel_buffer set value []
 data modify storage title:io text_buffer set value []
 data modify storage title:io neg_text_buffer set value []
+function doudizhu:hud/bottom
 data modify storage doudizhu:hud label set value "上家 "
-data modify storage title:io y set value -18.0d
+data modify storage title:io y set value -48.0d
 execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx if score @s dd_seat = #hud_up dd_ctx at @s run function doudizhu:hud/row
 data modify storage doudizhu:hud label set value "下家 "
-data modify storage title:io y set value -52.0d
+data modify storage title:io y set value -126.0d
 execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx if score @s dd_seat = #hud_down dd_ctx at @s run function doudizhu:hud/row
 # Hand contains per-card fonts; explicitly replace them only in the invisible half-width rewind.
 data modify storage title:io text set from storage doudizhu:ui hand

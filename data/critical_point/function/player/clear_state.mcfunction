@@ -1,3 +1,5 @@
+dialog clear @s
+tag @s remove cp.audience
 clear @s minecraft:paper[minecraft:custom_data~{critical_point:{}}]
 clear @s minecraft:red_dye[minecraft:custom_data~{critical_point:{}}]
 clear @s minecraft:lime_dye[minecraft:custom_data~{critical_point:{}}]

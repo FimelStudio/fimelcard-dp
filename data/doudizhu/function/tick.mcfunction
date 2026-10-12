@@ -1,3 +1,5 @@
+execute as @a[scores={dd_settings=1..}] run function doudizhu:settings/save
+execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=4}] at @s run function doudizhu:game/intermission
 execute as @a[tag=dd.player,scores={dd_drop_dye=1..}] at @s run function doudizhu:input/drop
 execute as @a[tag=dd.player,scores={dd_action=1..}] run function doudizhu:action/handle
 execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=1}] at @s run function doudizhu:deal/tick

@@ -7,4 +7,5 @@ scoreboard players reset @s cp_round
 scoreboard players reset @s cp_threshold
 scoreboard players reset @s cp_timer
 scoreboard players reset @s cp_vote_used
-function cardtable:game/return_lobby
+# 返回大厅会生成菜单实体，必须以牌桌控制器的位置为准。
+execute at @s run function cardtable:game/return_lobby

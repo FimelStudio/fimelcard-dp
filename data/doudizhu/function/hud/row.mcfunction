@@ -18,7 +18,4 @@ function title:new_text
 
 execute store result storage doudizhu:hud seat int 1 run scoreboard players get @s dd_seat
 function doudizhu:hud/read_play with storage doudizhu:hud
-data modify storage title:io text set value {text:"本轮：",color:"gray",shadow_color:0,extra:[]}
-data modify storage title:io text.extra append from storage doudizhu:hud shown_play
-data modify storage title:io dy set value -12.0d
-function title:new_text
+function doudizhu:hud/play_images
