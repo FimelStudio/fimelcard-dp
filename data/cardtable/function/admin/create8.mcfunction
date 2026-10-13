@@ -5,5 +5,5 @@ execute if entity @e[type=minecraft:marker,tag=ct.controller,distance=..9] run r
 tag @a[tag=ct.creator] remove ct.creator
 tag @s add ct.creator
 # 偶数边长的桌心对齐方块交界点；执行位置即为桌面方块层。
-execute align xyz summon minecraft:marker run function cardtable:admin/create/init8
+execute align xyz summon minecraft:marker run function cardtable:table/setup8
 tag @s remove ct.creator

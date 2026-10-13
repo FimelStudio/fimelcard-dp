@@ -1,0 +1,11 @@
+{
+    "criteria": {
+        "1": {
+            "trigger": "tick",
+            "conditions": {}
+        }
+    },
+    "rewards": {
+        "function": "fimel_anim_text:_player_/count"
+    }
+}

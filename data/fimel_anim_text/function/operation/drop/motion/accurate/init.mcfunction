@@ -1,0 +1,1 @@
+$execute positioned .0 .0 .0 positioned ^ ^ ^$(motion) summon marker run function fimel_anim_text:operation/drop/motion/accurate/store

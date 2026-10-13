@@ -1,0 +1,5 @@
+data modify entity @s text set value "1234"
+
+data modify entity @s interpolation_duration set value 20
+
+data modify entity @s transformation set value [1.0f,0.0f,0.0f,1.0f,0.0f,1.0f,0.0f,1.0f,0.0f,0.0f,1.0f,1.0f,0.0f,0.0f,0.0f,1.0f]

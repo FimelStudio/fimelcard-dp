@@ -148,7 +148,7 @@ assert.ok(read('title/rows').includes('wq_id=$(table),wq_seat=$(seat)'));
 assert.ok(read('title/build').includes('panel_buffer set value []'));
 assert.ok(read('title/rows').includes('text append from storage wenfei:panel rows'));
 assert.ok(!read('title/rows').includes('nbt:'));
-assert.ok(read('title/release').includes('title.panel_id = @s wq_prev_panel'));
+assert.ok(read('title/release').includes('fbt_panel = @s wq_prev_panel'));
 for(const file of ['round/begin','player/clear_state'])assert.ok(read(file).includes('function wenfei:title/release'));
 assert.ok(read('load').includes('function wenfei:title/resume'));
 assert.match(read('title/tick'),/wq_ptick matches 100/);

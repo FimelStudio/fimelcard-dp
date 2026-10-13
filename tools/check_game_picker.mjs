@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const read=n=>fs.readFileSync('data/cardtable/function/'+n+'.mcfunction','utf8');
 const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主'];
-const min=[4,2,2,2,3,3,3,2,2,3],max=[4,8,5,5,8,8,6,8,6,3];
+const min=[4,2,2,2,3,3,3,2,2,1],max=[4,8,5,5,8,8,6,8,6,3];
 for(const cap of [4,8]){
  const src=read('menu/picker/show'+cap);
  const d=JSON.parse(src.slice(src.indexOf('{')));
@@ -10,7 +10,8 @@ for(const cap of [4,8]){
  assert.equal(d.actions.length,10);assert.equal(d.exit_action.action,undefined);
  for(const [i,a]of d.actions.entries()){
   const upper=Math.min(cap,max[i]),range=min[i]===upper?min[i]:min[i]+'–'+upper;
-  assert.equal(a.label.text,names[i]+'（'+range+'人）');
+  // 斗地主支持不足三名真人时补人机，其余游戏仍按实际人数范围检查。
+  assert.equal(a.label.text,names[i]+'（'+range+'人'+(i===9?'+人机':'')+'）');
   assert.equal(a.action.type,'minecraft:run_command');
   assert.equal(a.action.command,'trigger ct_game_pick set $(p'+(i+1)+')');
  }

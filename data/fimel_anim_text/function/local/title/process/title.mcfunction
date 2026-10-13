@@ -1,0 +1,1 @@
+title @s title {storage:"fimel_anim_text:runtime",nbt:"local.title.template",interpret:true}

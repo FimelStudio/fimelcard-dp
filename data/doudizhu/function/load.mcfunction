@@ -10,5 +10,5 @@ scoreboard players reset * dd_settings
 scoreboard players reset * dd_set_table
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=10}] run function doudizhu:game/init_table
 execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:game/ensure_match
-execute unless data storage title:io panels run function title:code/load
+execute unless data storage fimel_title:io panels run function fimel_title:code/load
 execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:input/sync

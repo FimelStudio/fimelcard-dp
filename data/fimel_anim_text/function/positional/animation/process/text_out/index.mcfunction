@@ -1,0 +1,12 @@
+execute if score #positional.animation.style fca_store matches 0..24 run return run function fimel_anim_text:positional/animation/animation/0/animation_out
+execute if score #positional.animation.style fca_store matches 25 run return run function fimel_anim_text:positional/animation/animation/25/animation_out
+execute if score #positional.animation.style fca_store matches 26 run return run function fimel_anim_text:positional/animation/animation/26/animation_out
+execute if score #positional.animation.style fca_store matches 27 run return run function fimel_anim_text:positional/animation/animation/27/animation_out
+execute if score #positional.animation.style fca_store matches 28 run return run function fimel_anim_text:positional/animation/animation/28/animation_out
+execute if score #positional.animation.style fca_store matches 29 run return run function fimel_anim_text:positional/animation/animation/29/animation_out
+execute if score #positional.animation.style fca_store matches 30 run return run function fimel_anim_text:positional/animation/animation/30/animation_out
+execute if score #positional.animation.style fca_store matches 31 run return run function fimel_anim_text:positional/animation/animation/31/animation_out
+execute if score #positional.animation.style fca_store matches 32 run return run function fimel_anim_text:positional/animation/animation/32/animation_out
+execute if score #positional.animation.style fca_store matches 33 run return run function fimel_anim_text:positional/animation/animation/33/animation_out
+execute if score #positional.animation.style fca_store matches 34 run return run function fimel_anim_text:positional/animation/animation/34/animation_out
+execute if score #positional.animation.style fca_store matches 35 run return run function fimel_anim_text:positional/animation/animation/35/animation_out

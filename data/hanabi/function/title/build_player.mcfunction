@@ -4,9 +4,9 @@ scoreboard players operation #title_viewer hb_ctx = @s hb_seat
 scoreboard players set #title_row hb_ctx 0
 
 # BetterTitle接口使用公共缓冲区；每次完整构建前必须显式清空。
-data modify storage title:io panel_buffer set value []
-data modify storage title:io text_buffer set value []
-data modify storage title:io neg_text_buffer set value []
+data modify storage fimel_title:io panel_buffer set value []
+data modify storage fimel_title:io text_buffer set value []
+data modify storage fimel_title:io neg_text_buffer set value []
 
 function hanabi:title/append_owner {seat:1}
 function hanabi:title/append_owner {seat:2}
@@ -17,7 +17,7 @@ function hanabi:title/append_owner {seat:6}
 function hanabi:title/append_owner {seat:7}
 function hanabi:title/append_owner {seat:8}
 
-scoreboard players operation panel_id title.io = @s hb_panel
-function title:replace_panel
-scoreboard players operation @s title.panel_id = @s hb_panel
+scoreboard players operation panel_id fbt_io = @s hb_panel
+function fimel_title:replace_panel
+scoreboard players operation @s fbt_panel = @s hb_panel
 tag @a[tag=hb.title_owner] remove hb.title_owner

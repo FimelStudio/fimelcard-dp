@@ -1,0 +1,11 @@
+
+show_form (form_id, storage)
+
+form 格式
+form [
+    {type:"int",key(,max,min,bg,default)}
+    {type:"radio",key,values[](,bg_0,bg_1)}
+    {type:"checkbox",key,values[](,bg_0,bg_1)}
+    {type:"color",key}
+]
+

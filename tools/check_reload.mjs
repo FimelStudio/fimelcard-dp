@@ -7,7 +7,8 @@ const read=id=>fs.readFileSync(path.join(root,'data',id.replace(':','/function/'
 const protectedScore=/^(?:ab_(?:state|phase|timer|turn|last|hp|score)|bw_(?:state|timer|round|turn|question|role|used|bs|score)|dc_(?:state|mode|round|pos|guess[123]|[wb][123]|page|pages|page_tick|team|encoder)|cp_(?:state|timer|round|locked|play|ready|vote|vote_used))$/;
 const visited=new Set();
 function visit(id){
- if(visited.has(id)||id.startsWith('title:'))return;
+ // BetterTitle 的渲染库不属于游戏恢复状态机；兼容前置合并后的独立命名空间。
+ if(visited.has(id)||id.startsWith('title:')||id.startsWith('fimel_title:'))return;
  visited.add(id);
  assert.ok(!/:(?:game\/(?:abort|start|return_lobby)|round\/(?:begin|start)|vote\/start|turn\/begin|input\/give_book)(?:$|_)/.test(id),'恢复路径不能推进/清空游戏: '+id);
  const source=read(id);

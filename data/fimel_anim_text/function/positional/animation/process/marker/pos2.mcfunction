@@ -1,0 +1,1 @@
+$execute positioned ^-$(amount) ^ ^ run function fimel_anim_text:positional/animation/process/marker/next

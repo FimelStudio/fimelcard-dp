@@ -1,0 +1,45 @@
+
+TextAnimator    用于播放文本动画
+
+需要实现的功能：
+
+1. 给定开始的码位，总帧数，生成一个文本展示实体，播放文本动画，播放完毕自动删除该实体
+
+{
+    config:{
+        tags: [],
+        scale: 1,
+        color: 16777215,
+        start: 0,
+        time: 0,
+    }
+}
+
+physical 带有物理效果的
+
+平抛运动，斜抛运动，任意实体均可
+方向为实体面朝的方向
+
+
+
+{
+    config: {
+        v: 0,
+        g: 0,
+        t: 1,
+        tick_cmdv: [],
+        cmdv:[],
+    }
+}
+
+
+
+
+summon minecraft:text_display ~ ~1 ~ {Tags:["TEXT"],text:'[{"type":"text","text":"1","color":"red","clickEvent":{action:"run_command",command:"tellraw @a \"114\""}}]',billboard:fixed,alignment:left}
+/tellraw @a [{"type":"text","text":"1","color":"#66CCFF","clickEvent":{"action":"run_command","value":"/tellraw @a \"114\""}}]
+
+summon minecraft:text_display ~ ~1 ~ {Tags:["TEXT"],text:'[{"type":"text","text":"1","color":"red","clickEvent":{action:"run_command",command:"say 1"}}]',billboard:fixed,alignment:left}
+/tellraw @a [{"type":"text","text":"1","color":"#66CCFF","clickEvent":{"action":"run_command","value":"say 1"}}]
+
+
+summon minecraft:text_display ~ ~1 ~ {Tags:["TEXT"],text:'"114"'}

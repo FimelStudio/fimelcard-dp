@@ -1,0 +1,192 @@
+
+Skapi Arrays Ver1.0
+
+
+𒊹 IO 输入输出，给定源与目标，将目标的值设为源的值
+    sklibs:skapi_arrays/native/io/io
+        {
+            //输入源
+            input:{     
+                // 源的类型，三选一，有且只能有一个
+                score:"",       //计分板，例如"player object"代表object计分板中player的值
+                data:"",        //数据，例如"storage minecraft:test a"
+                value:0,        //值，直接写一个值，例如[1,1,4,5,1,4]，0，"text"
+                // 输入倍率，仅在源为data类型，目标为score类型时有效，可以不写，默认为1
+                // 倍率为0时自动省略这个参数，可用于获取字符串或数组的长度
+                scale:1         
+            },
+            //输出目标
+            output:{    
+                // 目标的类型，二选一，有且只能有一个
+                score:"",       //计分板，例如"player object"代表object计分板中player的值
+                data:"",        //数据，例如"storage minecraft:test a"
+                // 输出倍率，仅在源为score类型，目标为data类型时有效，可以不写，默认为1
+                scale:1,
+                // 输出的数据类型，仅在源为score类型，目标为data类型时有效，可以不写，默认为"int"
+                dataType:"int"
+            }
+        }
+    例如: 将计分板test中a的值存储到数据存储minecraft:test的b中，倍率为0.01，数据类型为双精度浮点
+    /function sklibs:skapi_arrays/native/io/io {
+        input:{score:"a test"},
+        output:{
+            data:"storage minecraft:test b",
+            scale:0.01,
+            dataType:"double"
+        }} 
+
+𒊹 IO dataType 检查数据类型
+    sklibs:skapi_arrays/native/io/io.datatype
+        {
+            format:0,   // 目标类型
+            input:" ",  // 输入，一个数据路径
+            output" ":  // 输出，计分板，通过为1，不通过为0
+        }
+    例如：判断"storage temp a" 是不是double类型，将结果返回到计分板 "test result"
+    sklibs:skapi_arrays/native/io/io.datatype
+        {
+            format:0d,
+            input:"storage temp a",
+            output:"test result"
+        }
+
+⯁ Range 创建一个数字序列
+    输入
+    rangeStart skapi.arrays.temp
+    rangeStop skapi.arrays.temp
+    rangeStep skapi.arrays.temp
+    执行
+    sklibs:skapi_arrays/range
+    输出
+    storage skapi.arrays temp.rangeOutput
+
+⯁ forEach 遍历列表
+    输入
+    storage skapi.arrays temp.foreachTarget
+    storage skapi.arrays temp.foreachTemp.cmd
+    <data> storage skapi.arrays temp.foreachTemp.i
+    执行
+    sklibs:skapi_arrays/foreach
+    输出
+    storage skapi.arrays temp.foreachI.value
+
+
+⯁ Loop 给定次数循环
+    输入
+    loopI skapi.arrays.temp
+    storage skapi.arrays temp.loopcmd
+    执行
+    sklibs:skapi_arrays/loop
+
+⯁ break 跳出循环
+    执行
+    return run function sklibs:skapi_arrays/break
+
+⯁ continue 跳到下一个循环
+    执行
+    return run function sklibs:skapi_arrays/continue
+
+⯁ Equal 比较两组数据是否完全一样
+    sklibs:skapi_arrays/equal
+        (io)a
+        (io)b
+        (io)output     测试结果，1为通过，0为不通过
+
+⯁ Find 查找数组中是否存在指定元素
+    sklibs:skapi_arrays/find
+        (io)find      查找内容
+        (io)target    查找对象
+        (io)output    测试结果，1为通过，0为不通过
+
+⯁ Search 搜索数组中的指定元素
+    sklibs:skapi_arrays/search
+        (io)find      搜索内容
+        (io)target    搜索对象
+        (io)output    返回一个索引数组
+
+⯁ SearchWithArray 搜索数组中的指定元素,提供的搜索内容为一个列表，逐一排查每一项
+    sklibs:skapi_arrays/searchwitharray
+        (io)find      搜索内容
+        (io)target    搜索对象
+        (io)output    返回一个索引数组
+
+⯁ Extend 连接数组,将b拼接在a的后面
+    输入
+    storage skapi.arrays temp.extendA
+    storage skapi.arrays temp.extendB
+    运行
+    sklibs:skapi_arrays/extend
+    输出
+    storage skapi.arrays temp.extendA
+
+
+⯁ Strcat 连接字符串,将b拼接在a的后面
+    sklibs:skapi_arrays/strcat
+        (io)a
+        (io)b
+
+⯁ SearchCount 查找数组中的指定元素出现的次数
+    sklibs:skapi_arrays/searchcount
+        (io)find      搜索内容
+        (io)target    搜索对象
+        (io)output    结果
+
+⯁ stringToList 将字符串转换为列表
+    输入
+    storage skapi.arrays temp.s2aInput
+    执行
+    sklibs:skapi_arrays/string2list
+    输出
+    storage skapi.arrays temp.s2aOutput
+
+⯁ ListToString 将列表转换为字符串
+    输入
+    storage skapi.arrays temp.l2s
+    执行
+    sklibs:skapi_arrays/list2string
+    输出
+    storage skapi.arrays temp.l2sA
+
+⯁ runCmds 执行多条命令，执行对象不变
+    输入
+    storage skapi.arrays temp.runcmds
+    执行
+    sklibs:skapi_arrays/runcmds
+
+⯁ runCmdv 执行多条命令，参数分离
+    输入
+    storage skapi.arrays temp.runcmdv
+    [{cmd:"",args:{}}]
+    执行
+    sklibs:skapi_arrays/runcmdv
+
+⯁ newArray 创建新数组，并用一个指定值填充
+    输入
+    newarrLength skapi.arrays.temp
+    storage skapi.arrays temp.newarrFill
+    运行
+    sklibs:skapi_arrays/newarray
+    输出
+    storage skapi.arrays temp.newarrOutput
+
+⯁ toString 转为字符串
+    sklibs:skapi_arrays/tostring
+        (io)input     输入
+        (io)string    输出字符串
+
+⯁ 把文本组件解析为字符串
+目前只能解析{"type":"text"}类型
+    输入
+    storage skapi.arrays temp.jsontext.v
+    运行
+    sklibs:skapi_arrays/jsontext2string
+    输出
+    storage skapi.arrays temp.jsontextOutput
+
+⯁ 获取字符串的显示宽度
+    输入
+    storage skapi.arrays temp.strwid
+    运行
+    sklibs:skapi_arrays/strwid
+    输出
+    strwid0 skapi.arrays.temp

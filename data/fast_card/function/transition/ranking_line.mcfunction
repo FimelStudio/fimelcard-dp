@@ -5,8 +5,8 @@ execute if score @a[tag=fc.rank_pick,limit=1] fc_delta matches 0 run function fa
 
 # typewriter实例只有一个展示实体，直接记录其牌桌编号即可
 scoreboard players operation #ctx_id fc_ctx = @s fc_id
-scoreboard players operation @e[type=minecraft:text_display,tag=cgt_anim_text.positional.typewriter,tag=!fc.transition,distance=..0.05,sort=nearest,limit=1] fc_id = #ctx_id fc_ctx
-tag @e[type=minecraft:text_display,tag=cgt_anim_text.positional.typewriter,tag=!fc.transition,distance=..0.05,sort=nearest,limit=1] add fc.transition
-tag @e[type=minecraft:text_display,tag=cgt_anim_text.positional.typewriter,tag=fc.transition,distance=..0.05,sort=nearest,limit=1] add fc.transition.root
+scoreboard players operation @e[type=minecraft:text_display,tag=fimel.anim_text.positional.typewriter,tag=!fc.transition,distance=..0.05,sort=nearest,limit=1] fc_id = #ctx_id fc_ctx
+tag @e[type=minecraft:text_display,tag=fimel.anim_text.positional.typewriter,tag=!fc.transition,distance=..0.05,sort=nearest,limit=1] add fc.transition
+tag @e[type=minecraft:text_display,tag=fimel.anim_text.positional.typewriter,tag=fc.transition,distance=..0.05,sort=nearest,limit=1] add fc.transition.root
 
 execute as @a[tag=fc.player] if score @s fc_id = #ctx_id fc_ctx at @s run playsound minecraft:block.note_block.hat master @s ~ ~ ~ 0.35 1.3

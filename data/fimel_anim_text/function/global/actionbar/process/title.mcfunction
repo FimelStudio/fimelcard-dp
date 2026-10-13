@@ -1,0 +1,1 @@
+title @a[tag=!fimel.anim_text.replace.actionbar] actionbar {storage:"fimel_anim_text:runtime",nbt:"global.actionbar.template",interpret:true}

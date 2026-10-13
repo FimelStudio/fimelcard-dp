@@ -6,8 +6,8 @@ execute unless score @s hb_prev_panel matches 0.. run function hanabi:title/save
 
 # 花火使用BetterTitle持续接管Actionbar；阻止文本动画库的全局Actionbar覆盖牌面。
 # 仅在标签原本不存在时记录所有权，退出游戏时不会误删其他系统预先设置的排除标签。
-execute unless entity @s[tag=cgt_anim_text.replace.actionbar] run tag @s add hb.owns_actionbar_block
-tag @s add cgt_anim_text.replace.actionbar
+execute unless entity @s[tag=fimel.anim_text.replace.actionbar] run tag @s add hb.owns_actionbar_block
+tag @s add fimel.anim_text.replace.actionbar
 
-function title:new_panel {id:"@s hb_panel"}
-scoreboard players operation @s title.panel_id = @s hb_panel
+function fimel_title:new_panel {id:"@s hb_panel"}
+scoreboard players operation @s fbt_panel = @s hb_panel

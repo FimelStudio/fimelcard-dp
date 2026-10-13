@@ -1,0 +1,52 @@
+
+Skapi Math
+    
+⯁ 十进制转16进制
+
+    输入:   dec.input skapi.math
+    转换:   sklibs:skapi_math/dec2hex
+    输出:   storage skapi.math temp.hexString
+
+⯁ UUID数组转带连词符的字符串
+    原作者： ka__er
+
+    输入:   storage skapi.math uuid_list_for_hyphen.input
+    执行:   sklibs:skapi_math/uuidarray2string
+    输出:   storage skapi.math uuid_list_for_hyphen.output
+    
+
+
+Skapi Player
+    
+⯁ motion 更改玩家的动量
+    sklibs:skapi_player/motion
+    原理：使用末地水晶的爆炸使玩家产生动量
+    示例：在相对玩家(0,-1,0)的位置生成1个末地水晶从而产生动量
+        /function sklibs:skapi_player/motion {x:0,y:-1,z:0,v:1}
+
+
+
+Skapi Schedule
+
+⯁ Schedule 添加计划命令，执行者是Server
+你问我为啥不用不用原版的schedule，因为原版只能指定执行一个函数，还不让传参，没法动态解析
+
+    sklibs:skapi_schedule/schedule
+        {
+            cmd:    "say 延迟了400刻",
+            time:   400
+        }
+
+
+
+Skapi Tools
+
+⯁ 坐标工具
+    /give @s minecraft:command_block[minecraft:block_entity_data={id:"minecraft:command_block",Command:"function sklibs:skapi_tools/postool",auto:1b,},custom_name="坐标工具"]
+    /function sklibs:skapi_tools/postool
+
+Skapi
+
+⯁ 定时杀死实体
+
+    /function sklibs:skapi/deathtimer/register {time:0}

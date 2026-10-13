@@ -14,5 +14,5 @@ tag @e[type=minecraft:marker,nbt={data:{cardtable:{new_controller:1b}}},distance
 # create_safe调用者会带此临时标签；把“跳过结构”选项传给新控制器
 execute if entity @s[tag=ct.create_no_blocks] run tag @e[type=minecraft:marker,tag=ct.new_controller,distance=..1,sort=nearest,limit=1] add ct.no_structure
 execute as @e[type=minecraft:marker,nbt={data:{cardtable:{new_controller:1b}}},distance=..1,sort=nearest,limit=1] run data remove entity @s data.cardtable
-execute as @e[type=minecraft:marker,tag=ct.new_controller,distance=..1,sort=nearest,limit=1] at @s run function cardtable:admin/create/init_controller
+execute as @e[type=minecraft:marker,tag=ct.new_controller,distance=..1,sort=nearest,limit=1] at @s run function cardtable:table/setup4
 tag @s remove ct.creator

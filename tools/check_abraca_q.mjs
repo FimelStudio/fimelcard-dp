@@ -1,5 +1,8 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import path from 'node:path';
+// 默认定位同一 Minecraft 版本目录的资源包；其他部署可通过环境变量指定。
+const resourcePack=process.env.FIMEL_CARD_RESOURCEPACK??path.resolve('../../../../resourcepacks/fimelcard-rp');
 const read=n=>fs.readFileSync('data/abraca/function/'+n+'.mcfunction','utf8');
 const cards=read('input/give_cards').trim().split(/\r?\n/);
 assert.equal(cards.length,8);
@@ -7,7 +10,7 @@ for(const [i,line]of cards.entries()){
  assert.ok(line.includes("item_model='card:abraca/spell_"+(i+1)+"'"));
  assert.ok(line.includes('cast:1b,spell:'+(i+1)+',table:$(table),epoch:$(epoch)'));
  assert.ok(line.includes('minecraft:max_stack_size=1'));
- assert.ok(fs.existsSync('C:/Users/Chen Yuru/Desktop/fimelcard-rp/assets/card/items/abraca/spell_'+(i+1)+'.json'));
+ assert.ok(fs.existsSync(path.join(resourcePack,'assets/card/items/abraca/spell_'+(i+1)+'.json')));
 }
 for(const n of ['deck/deal_one','deck/draw']){
  assert.ok(!read(n).includes('stone:1b'),'不能再发放实际物品牌背');

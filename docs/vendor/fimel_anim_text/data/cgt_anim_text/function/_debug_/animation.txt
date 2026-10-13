@@ -1,0 +1,26 @@
+#data modify entity @s interpolation_duration set value 1
+
+scoreboard players add @s fca_timer 1
+
+execute if score @s fca_timer matches 2 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-0.1028,1.0,-0.9743, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 3 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-0.4011,1.0,-0.8997, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 4 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-0.8657,1.0,-0.7836, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 5 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-1.4511,1.0,-0.6372, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 6 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-2.1,1.0,-0.475, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 7 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-2.7489,1.0,-0.3128, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 8 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-3.3343,1.0,-0.1664, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 9 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-3.7989,1.0,-0.0503, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 10 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-4.0972,1.0,0.0243, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 11 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-4.2,1.0,0.05, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 12 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-3.9972,1.0,0.025, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 13 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-3.5989,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 14 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-3.1343,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 15 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-2.5489,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 16 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-1.9,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 17 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-1.2511,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 18 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-0.6657,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 19 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,-0.2011,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 20 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.0972,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 21 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.2,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 22 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.1,1.0,0.0, 0.0,0.0,0.0,1.0]
+execute if score @s fca_timer matches 23 run data modify entity @s transformation set value [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.0,1.0,0.0, 0.0,0.0,0.0,1.0]

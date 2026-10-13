@@ -3,7 +3,7 @@
 
 function hanabi:title/ensure_library
 execute unless entity @s[tag=hb.title_test_active] run scoreboard players set @s hb_test_prev 0
-execute unless entity @s[tag=hb.title_test_active] if score @s title.panel_id matches 1.. run scoreboard players operation @s hb_test_prev = @s title.panel_id
+execute unless entity @s[tag=hb.title_test_active] if score @s fbt_panel matches 1.. run scoreboard players operation @s hb_test_prev = @s fbt_panel
 tag @s add hb.title_test_active
 tag @s add hb.title_test_direct
 

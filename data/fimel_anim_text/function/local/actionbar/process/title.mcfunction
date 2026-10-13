@@ -1,0 +1,1 @@
+title @s actionbar {storage:"fimel_anim_text:runtime",nbt:"local.actionbar.template",interpret:true}

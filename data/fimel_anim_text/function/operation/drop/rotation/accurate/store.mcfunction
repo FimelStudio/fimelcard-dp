@@ -1,0 +1,1 @@
+data modify storage fimel_anim_text:runtime operation.drop.rotation.output set from storage fimel_anim_text:runtime operation.drop.input.direction.rotation

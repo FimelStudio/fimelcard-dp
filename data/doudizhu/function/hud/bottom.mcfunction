@@ -1,5 +1,5 @@
 # Bottom identities persist on the original card markers until this deal is cleared.
-data modify storage title:io text set value {text:"底牌：",color:"gray",shadow_color:0,extra:[]}
+data modify storage fimel_title:io text set value {text:"底牌：",color:"gray",shadow_color:0,extra:[]}
 scoreboard players set #hud_bottom_count dd_ctx 0
 execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 as @e[tag=dd.card,tag=dd.bottom_card,scores={dd_card=54}] if score @s dd_id = #hud_table dd_ctx run function doudizhu:hud/bottom_card {"glyph":"","selected_glyph":""}
 execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 as @e[tag=dd.card,tag=dd.bottom_card,scores={dd_card=53}] if score @s dd_id = #hud_table dd_ctx run function doudizhu:hud/bottom_card {"glyph":"","selected_glyph":""}
@@ -55,14 +55,14 @@ execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 as @e[tag=dd.c
 execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 as @e[tag=dd.card,tag=dd.bottom_card,scores={dd_card=2}] if score @s dd_id = #hud_table dd_ctx run function doudizhu:hud/bottom_card {"glyph":"","selected_glyph":""}
 execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 as @e[tag=dd.card,tag=dd.bottom_card,scores={dd_card=3}] if score @s dd_id = #hud_table dd_ctx run function doudizhu:hud/bottom_card {"glyph":"","selected_glyph":""}
 execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 as @e[tag=dd.card,tag=dd.bottom_card,scores={dd_card=4}] if score @s dd_id = #hud_table dd_ctx run function doudizhu:hud/bottom_card {"glyph":"","selected_glyph":""}
-execute unless score @e[tag=dd.current,limit=1] dd_state matches 3..4 run data modify storage title:io text.extra append value {text:"等待叫分结束",color:"gray"}
-execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 if score #hud_bottom_count dd_ctx matches 0 run data modify storage title:io text.extra append value {text:"本局未记录，下局生效",color:"gray"}
-data modify storage title:io font set value "card:doudizhu/hud"
-data modify storage title:io neg_font set value "card:doudizhu/hud_neg"
-data modify storage title:io x set value 8.0d
-data modify storage title:io y set value -18.0d
-data modify storage title:io dx set value 0.0d
-data modify storage title:io dy set value 0.0d
-data modify storage title:io align set value "left"
-data modify storage title:io origin set value "up-left"
-function title:new_text
+execute unless score @e[tag=dd.current,limit=1] dd_state matches 3..4 run data modify storage fimel_title:io text.extra append value {text:"等待叫分结束",color:"gray"}
+execute if score @e[tag=dd.current,limit=1] dd_state matches 3..4 if score #hud_bottom_count dd_ctx matches 0 run data modify storage fimel_title:io text.extra append value {text:"本局未记录，下局生效",color:"gray"}
+data modify storage fimel_title:io font set value "card:doudizhu/hud"
+data modify storage fimel_title:io neg_font set value "card:doudizhu/hud_neg"
+data modify storage fimel_title:io x set value 8.0d
+data modify storage fimel_title:io y set value -18.0d
+data modify storage fimel_title:io dx set value 0.0d
+data modify storage fimel_title:io dy set value 0.0d
+data modify storage fimel_title:io align set value "left"
+data modify storage fimel_title:io origin set value "up-left"
+function fimel_title:new_text

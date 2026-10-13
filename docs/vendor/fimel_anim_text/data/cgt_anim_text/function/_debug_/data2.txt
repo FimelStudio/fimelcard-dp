@@ -1,0 +1,26 @@
+[
+    {
+        color: "#D9AFD9",
+        text: "一"
+    },
+    {
+        color: "#CCB7DB",
+        text: "段"
+    },
+    {
+        color: "#BFC0DC",
+        text: "测"
+    },
+    {
+        color: "#B1C8DE",
+        text: "试"
+    },
+    {
+        color: "#A4D1DF",
+        text: "文"
+    },
+    {
+        color: "#97D9E1",
+        text: "字"
+    }
+]

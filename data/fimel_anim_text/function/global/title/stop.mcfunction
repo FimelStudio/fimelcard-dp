@@ -1,0 +1,1 @@
+function fimel_anim_text:global/title/stop/default

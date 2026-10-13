@@ -1,0 +1,1 @@
+$execute positioned as @s positioned ~$(2) ~ ~ summon marker run function fimel_math_light:calculation/add/comp/pos2_

@@ -1,0 +1,1 @@
+scoreboard players set #operation.punctuation fca_store 0

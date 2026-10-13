@@ -1,0 +1,1 @@
+data modify storage fimel_anim_text:runtime operation.drop.output set value [0.0,0.0,0.0]

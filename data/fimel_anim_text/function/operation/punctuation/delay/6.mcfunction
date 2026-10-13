@@ -1,0 +1,1 @@
+scoreboard players set #operation.delay fca_store 6

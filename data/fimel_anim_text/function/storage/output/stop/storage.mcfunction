@@ -1,0 +1,1 @@
+$data remove storage fimel_anim_text:runtime storage.output.output.$(id)

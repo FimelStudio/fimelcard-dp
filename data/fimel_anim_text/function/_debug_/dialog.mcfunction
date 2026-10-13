@@ -1,0 +1,1 @@
+$execute as @a if items entity @s weapon.mainhand stone run dialog show @s {type:"notice",title:"测试对话框",pause:false,body:[{type:"minecraft:plain_message",contents:$(2)},{type:"minecraft:plain_message",contents:{text:"点击关闭",click_event:{action:"run_command",command:"item replace entity @s weapon.mainhand with air"}}}]}

@@ -6,7 +6,7 @@ scoreboard players set #ten wq_ctx 10
 function wenfei:deck/catalog
 execute unless score #version wq_ctx matches 2.. run function wenfei:title/upgrade
 execute if score #version wq_ctx matches 2 run function wenfei:system/upgrade_v3
-execute unless data storage title:io panels run function title:code/load
+execute unless data storage fimel_title:io panels run function fimel_title:code/load
 # 只清理旧版本的提示工具；重载自动补发当前提示和剩余评分物品。
 clear @a *[minecraft:custom_data~{wenfei:{tool:"menu"}}]
 execute as @e[type=minecraft:item] if items entity @s contents *[minecraft:custom_data~{wenfei:{tool:"menu"}}] run kill @s

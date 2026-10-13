@@ -1,0 +1,1 @@
+execute as @e[tag=fimel.anim_text.debug] run function fimel_anim_text:_debug_/animation

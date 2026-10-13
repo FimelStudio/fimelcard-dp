@@ -1,0 +1,1 @@
+execute if score @s fca_timer >= @s fca_timer_total run function fimel_anim_text:positional/animation/process/center

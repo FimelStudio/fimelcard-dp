@@ -1,0 +1,530 @@
+
+
+效果，
+
+spread
+
+{
+    config:{
+        n: 0 //数量
+        pitch: [0,0],
+        yaw: [0,0],
+        t: [0,0],
+        v: 0,
+        g: 0,
+        cmdv: [{}],
+        tick_cmdv: [{}],
+    }
+}
+
+
+firework
+
+{
+    config:{
+        life: 0,
+        colors: {
+            from:[I;],
+            to:[I;]
+        },
+        shape: 0,
+        trail: 0,
+        twinkle: 0,
+        n: 0,
+        tags: []
+    }
+}
+
+示例：
+/execute positioned -661.00 23.95 -516.38 run function fimel_sklibs:skfirework/fx/spread 
+{
+    config:{
+        n:30,
+        cmdv:[{
+            cmd:"function fimel_sklibs:skfirework/fx/firework",
+            args:{config:{
+                shape:0,
+                colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16766720],to:[I;16777184]}],
+                n:1
+            }}
+        }],
+        tick_cmdv:[{cmd:"particle end_rod ~ ~ ~ 0 0 0 0 1 force"}],
+        v:0.5,
+        g:0.01
+    }
+}
+
+
+launch
+
+{
+    config:{
+        life:0,
+        cmdv:[{}],
+    }
+}
+
+
+示例：
+
+
+
+
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:30,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:30,
+                v:0.5,
+                g:0.01,
+                tick_cmdv:[{cmd:"particle end_rod ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"summon pig ~ ~ ~ {CustomName:\"猪猪\",CustomNameVisible:true}"},
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16766720],to:[I;16777184]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:30,
+                v:0.5,
+                g:0.01,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:30,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                t:[40,70],
+                n:6,
+                v:1,
+                g:0.02,
+                tick_cmdv:[{cmd:"particle dragon_breath ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+                    {cmd:"summon tnt ~ ~ ~"},
+                    {cmd:"function fimel_sklibs:skfirework/fx/spread",
+                    args:{config:{
+                        n:30,
+                        v:0.5,
+                        g:0.01,
+                        tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                        cmdv:[
+                            {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                            args:{config:{
+                            shape:0,
+                            twinkle: 1,
+                            colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16766720],to:[I;16777184]}],
+                            n:1
+                        }}}]
+                }}}]
+        }}}]
+    }
+}
+
+
+
+execute summon armor_stand run function fimel_sklibs:animator/new/physical {config:{v:0.5,g:-0.5,t:20,cmdv:[{}],tick_cmdv:[{cmd:"particle end_rod ~ ~ ~"}]}}
+
+
+execute positioned ~ ~50 ~ run 
+function fimel_sklibs:skfirework/fx/spread {config:{
+                n:60,
+                v:0.5,
+                g:0.01,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}]
+}}
+
+execute positioned ~ ~50 ~ run 
+function fimel_sklibs:skfirework/fx/spread {config:{
+                n:60,
+                v:0.5,
+                g:0.04,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}]
+}}
+
+execute positioned ~ ~50 ~ run 
+function fimel_sklibs:skfirework/fx/spread {config:{
+                yaw:[-50,-10],
+                pitch:[30, 80],
+                n:60,
+                v:0.5,
+                g:0.04,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}]
+}}
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:30,
+                v:0.5,
+                g:0.02,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:30,
+                v:0.5,
+                g:0.04,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+！！！！！！！！！！！！！！！！！！
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:30,
+                v:0.5,
+                g:0.04,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                yaw:[-50,-10],
+                pitch:[30, 80],
+                n:60,
+                v:0.5,
+                g:0.04,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+function fimel_sklibs:skfirework/fx/spread {
+    config:{
+        yaw:[-50,-10],
+        pitch:[30, 80],
+        n:60,
+        v:0.5,
+        g:0.04,
+        tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}]
+    }
+}
+
+
+
+
+
+
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:40,
+                v:0.8,
+                g:0.015,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    life:1,
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:40,
+                v:0.8,
+                g:0.015,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    life:1,
+                    shape:0,
+                    colors:[{from:[I;4286945],to:[I;4286945]},{from:[I;49151],to:[I;49151]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:40,
+                v:0.8,
+                g:0.015,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    life:1,
+                    shape:0,
+                    colors:[{from:[I;16776960],to:[I;8421376]},{from:[I;16747520],to:[I;13789470]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                n:40,
+                v:0.8,
+                g:0.015,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    life:1,
+                    shape:0,
+                    colors:[{from:[I;16711935],to:[I;8388736]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:50,
+        cmdv:[
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"summon tnt ~ ~ ~"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                pitch:[-180,180],
+                yaw:[-90,90],
+                n:400,
+                v:0.8,
+                g:0.001,
+                tick_cmdv:[{cmd:"particle end_rod ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"summon tnt ~ ~ ~"},
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    life:1,
+                    shape:0,
+                    colors:[{from:[I;16776960],to:[I;8421376]},{from:[I;16747520],to:[I;13789470]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:60,
+        cmdv:[
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                t:[40,60],
+                n:50,
+                v:0.8,
+                g:0.05,
+                tick_cmdv:[{cmd:"particle flame ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                    args:{config:{
+                    life:1,
+                    shape:0,
+                    colors:[{from:[I;13047173],to:[I;16761035]},{from:[I;16711680],to:[I;10824234]}],
+                    n:1
+                }}}]
+        }}}]
+    }
+}
+
+
+
+
+function fimel_sklibs:skfirework/fx/launch {
+    config:{
+        life:30,
+        cmdv:[
+            {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+            {cmd:"function fimel_sklibs:skfirework/fx/spread",
+            args:{config:{
+                t:[40,70],
+                n:6,
+                v:1,
+                g:0.02,
+                tick_cmdv:[{cmd:"particle end_rod ~ ~ ~ 0 0 0 0 1 force"}],
+                cmdv:[
+                    {cmd:"playsound minecraft:entity.firework_rocket.large_blast ambient @a ~ ~ ~ 1000"},
+                    {cmd:"summon tnt ~ ~ ~"},
+                    {cmd:"function fimel_sklibs:skfirework/fx/spread",
+                    args:{config:{
+                        n:30,
+                        v:0.5,
+                        g:0.01,
+                        tick_cmdv:[{cmd:"particle end_rod ~ ~ ~ 0 0 0 0 1 force"}],
+                        cmdv:[
+                            {cmd:"function fimel_sklibs:skfirework/fx/firework",
+                            args:{config:{
+                            life:1,
+                            shape:0,
+                            twinkle: 1,
+                            colors:[{from:[I;16776960],to:[I;8421376]},{from:[I;16747520],to:[I;13789470]}],
+                            n:1
+                        }}}]
+                }}}]
+        }}}]
+    }
+}
+
+
+
+
+
+
+                            lore=[\
+                                {text:"\
+                                \u00a7f升空时间: \u00a7e$(launch_time)\n\
+                                \u00a7f分散纸数: \u00a7e$(n_0)\n\
+                                \u00a7f叠加数量: \u00a7e$(n_1)\n\
+                                \u00a7f偏航角/俯仰角: [\u00a7e$(pitch_0)\u00a7f, \u00a7e$(pitch_1)\u00a7f] \
+                                                    [\u00a7e$(yaw_0)\u00a7f, \u00a7e$(yaw_1)\u00a7f]\n\
+                                \u00a7f随机爆炸时间: [\u00a7e$(time_0)\u00a7f, \u00a7e$(time_1)\u00a7f]\n\
+                                \u00a7f初速度/重力加速度: \u00a7e$(v)\u00a7f, \u00a7e$(g)\n\
+                                "},\
+                                {text:"\u00a7f颜色: "},\
+                                {text:"█",color:"#$(color_1_from_hex)"},\
+                                {text:"█",color:"#$(color_1_to_hex)"},\
+                                {text:"█",color:"#$(color_2_from_hex)"},\
+                                {text:"█",color:"#$(color_2_to_hex)"},\
+                                {text:"█",color:"#$(color_3_from_hex)"},\
+                                {text:"█",color:"#$(color_3_to_hex)"},\
+                            ],\
+
+

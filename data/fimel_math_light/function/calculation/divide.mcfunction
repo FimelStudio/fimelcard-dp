@@ -1,0 +1,1 @@
+execute summon text_display run function fimel_math_light:calculation/divide/set_entity

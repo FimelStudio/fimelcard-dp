@@ -1,0 +1,1 @@
+title @a[tag=!fimel.anim_text.replace.title] title {storage:"fimel_anim_text:runtime",nbt:"global.title.template",interpret:true}

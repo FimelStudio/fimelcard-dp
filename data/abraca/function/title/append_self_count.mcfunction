@@ -6,12 +6,12 @@ scoreboard players operation #footer_y ab_ctx = #row ab_ctx
 scoreboard players set #footer_step ab_ctx -54
 scoreboard players operation #footer_y ab_ctx *= #footer_step ab_ctx
 scoreboard players remove #footer_y ab_ctx 18
-data modify storage title:io font set value "minecraft:default_mod"
-data modify storage title:io neg_font set value "minecraft:default_neg"
-data modify storage title:io x set value 8.0d
-execute store result storage title:io y double 1 run scoreboard players get #footer_y ab_ctx
-data modify storage title:io dx set value 0.0d
-data modify storage title:io dy set value 0.0d
-data modify storage title:io align set value "left"
-data modify storage title:io origin set value "up-left"
-function title:new_text
+data modify storage fimel_title:io font set value "minecraft:default_mod"
+data modify storage fimel_title:io neg_font set value "minecraft:default_neg"
+data modify storage fimel_title:io x set value 8.0d
+execute store result storage fimel_title:io y double 1 run scoreboard players get #footer_y ab_ctx
+data modify storage fimel_title:io dx set value 0.0d
+data modify storage fimel_title:io dy set value 0.0d
+data modify storage fimel_title:io align set value "left"
+data modify storage fimel_title:io origin set value "up-left"
+function fimel_title:new_text

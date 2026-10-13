@@ -1,5 +1,6 @@
 {
   "values": [
+    "fimel_vendor:load",
     "cardtable:load",
     "fast_card:load",
     "liars_holdem:load",
