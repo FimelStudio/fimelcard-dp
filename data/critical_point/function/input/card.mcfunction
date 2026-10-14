@@ -1,6 +1,8 @@
 scoreboard players set @s cp_drop 0
 scoreboard players operation #ctx cp_ctx = @s cp_id
 execute unless entity @e[tag=cp.input_drop,limit=1] run return 0
+execute unless entity @s[tag=cp.signal_used] run function critical_point:input/return_card
+execute unless entity @s[tag=cp.signal_used] run return 0
 tag @e[tag=cp.current] remove cp.current
 execute as @e[type=minecraft:marker,tag=cp.controller,scores={cp_state=1}] if score @s cp_id = #ctx cp_ctx run tag @s add cp.current
 execute if score @s cp_locked matches 1 run function critical_point:input/return_card

@@ -8,6 +8,7 @@ execute as @e[type=minecraft:marker,tag=cp.controller,scores={cp_state=1}] if sc
 execute unless entity @e[type=minecraft:marker,tag=cp.current,limit=1] run return 0
 tag @s add cp.signal_used
 function critical_point:input/clear_signal_tools
+function critical_point:player/restore_cards
 tag @s add cp.signal_actor
 execute as @a[tag=cp.player] if score @s cp_id = #ctx cp_ctx run tag @s add cp.audience
 tellraw @a[tag=cp.audience] [{text:'[临界点] ',color:'red'},{selector:'@a[tag=cp.signal_actor,limit=1]',color:'yellow'},{text:'：我这把会出偏小的牌。',color:'gray'}]

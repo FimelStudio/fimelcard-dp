@@ -27,6 +27,9 @@ execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardta
 
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:rules/render
 
+# 八人桌结束按钮采用新的内收布局，保留已有票数。
+execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8,ct_state=1}] at @s run function cardtable:vote/render
+
 # 立即修复重载前已经存在的牌桌与游戏文本，避免必须重建牌桌才能获得方块遮挡
 function cardtable:display/repair_occlusion
 

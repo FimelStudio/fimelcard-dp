@@ -13,3 +13,8 @@ scoreboard players operation @e[tag=ct.new_vote,distance=..3] ct_id = @s ct_id
 execute as @e[type=minecraft:interaction,nbt={data:{cardtable:{end_vote:1b}}},distance=..3] run scoreboard players set @s ct_kind 30
 execute as @e[tag=ct.new_vote,distance=..3] run data remove entity @s data.cardtable
 tag @e[tag=ct.new_vote,distance=..3] remove ct.new_vote
+
+function cardtable:vote/refresh
+
+# 布局版本供已生成牌桌补做更新。
+data merge entity @s {data:{cardtable:{vote_version:1}}}

@@ -7,3 +7,6 @@ scoreboard players operation @s ct_joined = #joined ct_ctx
 
 # 仅大厅人数发生变化时重绘中央菜单
 execute if score @s ct_state matches 0 unless score #old_joined ct_ctx = @s ct_joined run function cardtable:menu/render
+
+# 游戏中同步人数门槛、有效票数与按钮文字。
+execute if score @s ct_state matches 1 run function cardtable:vote/refresh

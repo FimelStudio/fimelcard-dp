@@ -20,9 +20,11 @@ execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.c
 # 尚未加载的八人桌也补做座椅迁移，只执行一次。
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8}] at @s unless data entity @s {data:{cardtable:{chairs_version:1}}} run function cardtable:table/migrate_chairs8
 # 未加载区块中的旧按钮，在牌桌重新加载后只更新一次。
-execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{rules_version:4}}} run function cardtable:rules/render
+execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{rules_version:5}}} run function cardtable:rules/render
 # 玩家离线后补回缺座；重新上线带回旧载具后，只移除重复空座。
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:table/ensure_seats
+# 已加载的八人桌补做结束按钮布局更新，不重置投票。
+execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8,ct_state=1}] at @s unless data entity @s {data:{cardtable:{vote_version:1}}} run function cardtable:vote/render
 execute if score #clock ct_ctx matches 10.. run scoreboard players set #clock ct_ctx 0
 
 # 每刻末尾更新在线心跳；离线玩家的记分会保持为0

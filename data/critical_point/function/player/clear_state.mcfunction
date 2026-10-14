@@ -21,3 +21,9 @@ scoreboard players reset @s cp_drop
 scoreboard players reset @s cp_drop_red
 scoreboard players reset @s cp_drop_lime
 scoreboard players reset @s cp_drop_reopen
+
+tag @s remove cp.held_1
+tag @s remove cp.held_2
+tag @s remove cp.held_3
+tag @s remove cp.held_4
+tag @s remove cp.held_5

@@ -14,4 +14,4 @@ execute as @e[tag=ct.new_rules,distance=..4] run data remove entity @s data.card
 tag @e[tag=ct.new_rules,distance=..4] remove ct.new_rules
 
 # 独立记录规则布局版本，补做重载时尚未加载的桌子，不重建座位或游戏。
-data merge entity @s {data:{cardtable:{rules_version:4}}}
+data merge entity @s {data:{cardtable:{rules_version:5}}}

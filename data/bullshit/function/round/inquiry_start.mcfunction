@@ -4,7 +4,7 @@ scoreboard players operation #ctx bw_ctx = @s bw_id
 execute as @a[tag=bw.player,scores={bw_role=1}] if score @s bw_id = #ctx bw_ctx run tag @s add bw.smart
 execute as @a[tag=bw.player,scores={bw_role=2}] if score @s bw_id = #ctx bw_ctx run tag @s add bw.honest
 execute as @a[tag=bw.player,scores={bw_role=3}] if score @s bw_id = #ctx bw_ctx run tag @s add bw.bluffer
-execute as @a[tag=bw.player,scores={bw_role=2}] if score @s bw_id = #ctx bw_ctx run function bullshit:question/hide_answer
+execute as @a[tag=bw.player] if score @s bw_id = #ctx bw_ctx run function bullshit:question/hide_answer
 execute as @a[tag=bw.player] if score @s bw_id = #ctx bw_ctx run tellraw @s [{text:'════ 本轮身份公布 ════',color:'yellow',bold:true}]
 tag @a[tag=bw.announce] remove bw.announce
 execute as @a[tag=bw.player] if score @s bw_id = #ctx bw_ctx run tag @s add bw.announce

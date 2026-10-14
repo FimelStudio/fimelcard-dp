@@ -1,0 +1,10 @@
+execute if score @s ct_game matches 1 run return run function fast_card:game/end_vote
+execute if score @s ct_game matches 2 run return run function liars_holdem:game/end_vote
+execute if score @s ct_game matches 3 run return run function hanabi:game/end_vote
+execute if score @s ct_game matches 4 run return run function abraca:game/end_vote
+execute if score @s ct_game matches 5 run return run function bullshit:game/end_vote
+execute if score @s ct_game matches 6 run return run function decrypto:game/end_vote
+execute if score @s ct_game matches 7 run return run function critical_point:game/end_vote
+execute if score @s ct_game matches 8 run return run function wenfei:game/end_vote
+execute if score @s ct_game matches 9 run return run function skull:game/end_vote
+execute if score @s ct_game matches 10 run return run function doudizhu:game/end_vote

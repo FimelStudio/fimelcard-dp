@@ -124,7 +124,7 @@ for(const kind of ['load','tick']){
 const registrations={
  'game/init_selected':'wenfei:game/init_table','game/start':'wenfei:game/start',
  'game/open_settings':'wenfei:settings/open','game/open_rules':'wenfei:rules/show',
- 'vote/accept':'wenfei:game/end_vote','table/remove':'wenfei:game/abort',
+ 'vote/finish':'wenfei:game/end_vote','table/remove':'wenfei:game/abort',
  'game/remove_offline_player':'wenfei:player/clear_state','menu/render':'cardtable:menu/game_name_wenfei'
 };
 for(const [file,ref] of Object.entries(registrations))

@@ -159,8 +159,8 @@ for(let people=2;people<=8;people++){
   for(const seat of answers)for(let row=0;row<seat+1;row++)assert.ok(seen.has(seat+':'+row));
  }
 }
-for(let n=2;n<=8;n++)assert.equal(n<=4?Math.min(3,n):Math.floor(n/2)+1,[2,3,3,3,4,4,5][n-2]);
-assert.match(read('cardtable','vote/accept'),/ct_joined matches 5\.\. run scoreboard players operation #vote_need ct_ctx \/= #two/);
+for(let n=2;n<=8;n++)assert.equal(Math.floor(n/2)+1,[2,2,3,3,4,4,5][n-2]);
+assert.match(read('cardtable','vote/count'),/ct_capacity matches 8 run scoreboard players operation #vote_need ct_ctx \/= #two/);
 for(const game of [1,2,3,4,5,6,7,8,9]){
  let next=game%9+1;
  assert.equal(next,({1:2,2:3,3:4,4:5,5:6,6:7,7:8,8:9,9:1})[game]);

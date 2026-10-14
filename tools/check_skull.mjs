@@ -25,7 +25,7 @@ for(const file of files){
 }
 const objs=[...read('system/install').matchAll(/objectives add (\w+)/g)].map(m=>m[1]).concat('sk_ctx');
 assert.equal(new Set(objs).size,objs.length);assert.ok(objs.every(n=>n.length<=16));
-const routes={'game/init_selected':'game/init_table','game/start':'game/start','game/open_settings':'settings/open','game/open_rules':'rules/show','vote/accept':'game/end_vote','table/remove':'game/abort'};
+const routes={'game/init_selected':'game/init_table','game/start':'game/start','game/open_settings':'settings/open','game/open_rules':'rules/show','vote/finish':'game/end_vote','table/remove':'game/abort'};
 for(const [file,ref]of Object.entries(routes)){
  const source=fs.readFileSync(path.join(root,'data/cardtable/function',file+'.mcfunction'),'utf8');
  assert.ok(source.split(/\r?\n/).some(l=>l.includes('ct_game matches 9')&&l.includes('skull:'+ref)),file);
