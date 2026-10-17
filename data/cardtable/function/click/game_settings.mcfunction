@@ -13,6 +13,6 @@ execute unless entity @e[tag=ct.settings_controller,limit=1] run tellraw @s [{te
 execute unless entity @e[tag=ct.settings_controller,limit=1] run tag @s remove ct.settings_actor
 execute unless entity @e[tag=ct.settings_controller,limit=1] run return fail
 
-execute as @e[tag=ct.settings_controller,limit=1] at @s run function cardtable:game/open_settings
+execute as @e[tag=ct.settings_controller,limit=1] at @s run function cardtable:skin/open
 tag @e[tag=ct.settings_controller] remove ct.settings_controller
 tag @s remove ct.settings_actor

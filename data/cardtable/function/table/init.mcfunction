@@ -2,6 +2,7 @@
 scoreboard players add #next_id ct_ctx 1
 scoreboard players operation @s ct_id = #next_id ct_ctx
 execute unless score @s ct_capacity matches 8 run scoreboard players set @s ct_capacity 4
+scoreboard players set @s ct_skin 0
 scoreboard players set @s ct_state 0
 scoreboard players set @s ct_game 1
 execute if score @s ct_capacity matches 8 run scoreboard players set @s ct_game 8

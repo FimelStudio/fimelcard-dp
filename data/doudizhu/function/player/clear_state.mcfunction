@@ -1,3 +1,4 @@
+function doudizhu:music/stop
 dialog clear @s
 function doudizhu:hud/deactivate
 function doudizhu:input/clear

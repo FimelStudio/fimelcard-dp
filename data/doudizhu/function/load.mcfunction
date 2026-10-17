@@ -1,3 +1,4 @@
+scoreboard objectives add dd_audio dummy
 scoreboard objectives add dd_ctx dummy
 execute unless score #version dd_ctx matches 1.. run function doudizhu:system/install
 execute if score #version dd_ctx matches 1 run function doudizhu:system/upgrade_v2
@@ -12,3 +13,5 @@ execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=10}] run f
 execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:game/ensure_match
 execute unless data storage fimel_title:io panels run function fimel_title:code/load
 execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:input/sync
+
+function doudizhu:music/load

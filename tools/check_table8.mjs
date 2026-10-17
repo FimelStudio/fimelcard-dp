@@ -95,7 +95,7 @@ for(const group of ['rules','vote']){
  assert.equal(texts.length,4);
  for(const m of texts){
   assert.equal(Math.max(Math.abs(Number(m[1])),Math.abs(Number(m[2]))),2.015);
-  if(group==='rules')assert.equal(Math.min(Math.abs(Number(m[1])),Math.abs(Number(m[2]))),1.25);
+  if(group==='rules')assert.equal(Math.min(Math.abs(Number(m[1])),Math.abs(Number(m[2]))),1.4);
  }
  assert.ok(read('cardtable',group+'/render').includes('if score @s ct_capacity matches 8 run function'));
 }
@@ -105,13 +105,13 @@ assert.equal([...read('cardtable','rules/spawn8').matchAll(/width:0.50f/g)].leng
 for(const m of ruleClicks){
  const x=Number(m[1]),z=Number(m[2]);
  assert.equal(Math.max(Math.abs(x),Math.abs(z)),1.765);
- assert.equal(Math.min(Math.abs(x),Math.abs(z)),1.25);
+ assert.equal(Math.min(Math.abs(x),Math.abs(z)),1.4);
  assert.ok(Math.hypot(x,z,.5625)<4,'规则实体须在绑定范围内');
  for(const [sx,sz] of expected)assert.ok(Math.abs(x-sx)>.73||Math.abs(z-sz)>.73,'规则交互不能与椅子重叠');
 }
 assert.ok(read('cardtable','rules/render').includes('distance=..4'));
-assert.ok(read('cardtable','rules/render').includes('rules_version:4'));
-assert.ok(read('cardtable','tick').includes('rules_version:4'));
+assert.ok(read('cardtable','rules/render').includes('rules_version:5'));
+assert.ok(read('cardtable','tick').includes('rules_version:5'));
 // 使用源码中的轮换边界和扫描次数穷举稀疏座位，保证5至8号不会被跳过或卡住。
 const bwWrap=Number(read('bullshit','round/scan_smart').match(/bw_turn matches (\d+)\.\./)[1]);
 const bwScans=[...read('bullshit','round/begin').matchAll(/run function bullshit:round\/scan_smart|^function bullshit:round\/scan_smart/gm)].length;

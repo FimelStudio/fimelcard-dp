@@ -1,16 +1,1 @@
-$dialog show @a[tag=ct.settings_actor,limit=1] {\
-    type:"minecraft:confirmation",\
-    title:{text:"花火游戏设置",color:"light_purple",bold:true},\
-    body:[\
-        {type:"minecraft:plain_message",width:430,contents:{text:"这些设置只属于当前牌桌的花火游戏；游戏开始后不能修改。奖励牌固定为独立六张。",color:"gray"}},\
-        {type:"minecraft:plain_message",width:430,contents:[{text:"彩色风暴：",color:"light_purple",bold:true},{text:"向普通牌库加入彩色1～5各一张，并把目标扩展为六组烟花、满分30分。彩色牌可以单独获得“彩色”提示。",color:"white"}]}\
-    ],\
-    inputs:[\
-        {type:"minecraft:number_range",key:"clues",label:{text:"每局提示标记上限"},start:1,end:32,step:1,initial:$(clues_initial),width:320},\
-        {type:"minecraft:number_range",key:"strikes",label:{text:"本局允许的失误次数"},start:1,end:9,step:1,initial:$(strikes_initial),width:320},\
-        {type:"minecraft:boolean",key:"storm",label:{text:"启用“彩色风暴”扩展"},initial:$(storm_initial),on_true:"2",on_false:"1"}\
-    ],\
-    pause:false,\
-    yes:{label:{text:"保存",color:"green"},action:{type:"minecraft:dynamic/run_command",template:"trigger hb_settings set $(storm)$(strikes)$(clues)"}},\
-    no:{label:{text:"取消"},action:{type:"minecraft:run_command",command:"trigger hb_settings set 0"}}\
-}
+$dialog show @a[tag=ct.settings_actor,limit=1] {type:"minecraft:confirmation",title:{text:"花火游戏设置",color:"light_purple",bold:true},body:[{"type":"minecraft:plain_message","width":440,"contents":{"text":"【牌桌皮肤 · 点击选择】","color":"aqua","bold":true,"underlined":true,"click_event":{"action":"run_command","command":"trigger ct_skin_pick set 4"},"hover_event":{"action":"show_text","value":{"text":"打开默认／典雅皮肤选择；离开本页不会保存尚未提交的游戏设置。"}}}},{type:"minecraft:plain_message",width:430,contents:{text:"这些设置只属于当前牌桌的花火游戏；游戏开始后不能修改。奖励牌固定为独立六张。",color:"gray"}},{type:"minecraft:plain_message",width:430,contents:[{text:"彩色风暴：",color:"light_purple",bold:true},{text:"向普通牌库加入彩色1～5各一张，并把目标扩展为六组烟花、满分30分。彩色牌可以单独获得“彩色”提示。",color:"white"}]}],inputs:[{type:"minecraft:number_range",key:"clues",label:{text:"每局提示标记上限"},start:1,end:32,step:1,initial:$(clues_initial),width:320},{type:"minecraft:number_range",key:"strikes",label:{text:"本局允许的失误次数"},start:1,end:9,step:1,initial:$(strikes_initial),width:320},{type:"minecraft:boolean",key:"storm",label:{text:"启用“彩色风暴”扩展"},initial:$(storm_initial),on_true:"2",on_false:"1"}],pause:false,yes:{label:{text:"保存",color:"green"},action:{type:"minecraft:dynamic/run_command",template:"trigger hb_settings set $(storm)$(strikes)$(clues)"}},no:{label:{text:"取消"},action:{type:"minecraft:run_command",command:"trigger hb_settings set 0"}}}

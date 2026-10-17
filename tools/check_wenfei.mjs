@@ -26,12 +26,12 @@ const catalog=JSON.parse(read('deck/catalog').split('categories set value ')[1])
 assert.equal(catalog.length,6);
 const ids=new Set();
 for(const c of catalog){
- assert.equal(c.questions.length,50);
- assert.equal(new Set(c.questions.map(q=>q.text)).size,50);
+ assert.equal(c.questions.length,100);
+ assert.equal(new Set(c.questions.map(q=>q.text)).size,100);
  for(const q of c.questions){assert.ok(!ids.has(q.id));ids.add(q.id);assert.ok(q.text.length>0);}
 }
-assert.equal(ids.size,300);
-assert.equal(new Set(catalog.flatMap(c=>c.questions.map(q=>q.text))).size,300);
+assert.equal(ids.size,600);
+assert.equal(new Set(catalog.flatMap(c=>c.questions.map(q=>q.text))).size,600);
 const perms=a=>a.length===0?[[]]:a.flatMap((v,i)=>perms(a.filter((_,j)=>j!==i)).map(t=>[v,...t]));
 let placements=0;
 for(const order of perms([0,1,2,3,4])){
@@ -130,7 +130,7 @@ const registrations={
 for(const [file,ref] of Object.entries(registrations))
  assert.ok(fs.readFileSync(path.join(root,'data/cardtable/function',file+'.mcfunction'),'utf8').includes(ref),file);
 assert.match(fs.readFileSync(path.join(root,'data/cardtable/function/load.mcfunction'),'utf8'),/#game_count ct_ctx 10/);
-console.log('通过：'+files.length+'个函数的引用及结构、300道题、600种计分排列、'+rotations+'种座位轮换、36种设置组合。');
+console.log('通过：'+files.length+'个函数的引用及结构、600道题、600种计分排列、'+rotations+'种座位轮换、36种设置组合。');
 console.log('通过：交互序号及权限校验、秘密题展示边界、桌号隔离、重载保留、8号游戏全部分派和加载标签。');
 console.log('以上为静态检查与规则模型校验，不替代Minecraft联机实测。');
 

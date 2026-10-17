@@ -1,3 +1,4 @@
+execute if score @s ct_skin matches 1 run return 0
 # 仅从新建默认四人桌的 build 调用；已有四人桌及自定义桌椅不迁移。
 scoreboard players operation #seat_owner ct_ctx = @s ct_id
 execute as @e[type=minecraft:block_display,tag=ct.chair4] if score @s ct_id = #seat_owner ct_ctx run kill @s

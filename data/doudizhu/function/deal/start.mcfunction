@@ -1,5 +1,7 @@
 function doudizhu:game/ensure_match
 function doudizhu:player/audience
+tag @s remove dd.music_exciting
+execute unless score @s dd_audio matches 0 as @a[tag=dd.audience] run function doudizhu:music/start_normal
 # 新一局或全不叫重发时清除旧出牌记录，累计分数保持。
 data modify entity @s data.doudizhu set value {}
 execute as @e[tag=dd.actors] run scoreboard players set @s dd_action 0

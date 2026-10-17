@@ -1,14 +1,1 @@
-$dialog show @a[tag=ct.settings_actor,limit=1] {\
-    type:"minecraft:confirmation",\
-    title:{text:"谍报风云游戏设置",color:"aqua",bold:true},\
-    body:[\
-        {type:"minecraft:plain_message",width:410,contents:{text:"回合上限仅用于分队模式（4至8人）。若双方都未提前达成标记胜负条件，完成设定轮数后本局立即结束；三人模式仍固定为五轮。提示输入可选书或对话框；对话框提交需要加密者有OP权限，普通玩家请选择书。",color:"gray"}}\
-    ],\
-    inputs:[\
-        {type:"minecraft:number_range",key:"rounds",label:{text:"分队模式（4至8人）回合数"},start:1,end:32,step:1,initial:$(rounds_initial),width:320},\
-        {type:"minecraft:single_option",key:"input",label:{text:"提示输入方式"},width:320,options:[{id:"0",display:{text:"书（默认）"},initial:$(book_initial)},{id:"1",display:{text:"对话框（提交需要OP）"},initial:$(dialog_initial)}]}\
-    ],\
-    pause:false,\
-    yes:{label:{text:"保存",color:"green"},action:{type:"minecraft:dynamic/run_command",template:"trigger dc_settings set $(rounds)$(input)7"}},\
-    no:{label:{text:"取消"},action:{type:"minecraft:run_command",command:"trigger dc_settings set 0"}}\
-}
+$dialog show @a[tag=ct.settings_actor,limit=1] {type:"minecraft:confirmation",title:{text:"谍报风云游戏设置",color:"aqua",bold:true},body:[{"type":"minecraft:plain_message","width":440,"contents":{"text":"【牌桌皮肤 · 点击选择】","color":"aqua","bold":true,"underlined":true,"click_event":{"action":"run_command","command":"trigger ct_skin_pick set 4"},"hover_event":{"action":"show_text","value":{"text":"打开默认／典雅皮肤选择；离开本页不会保存尚未提交的游戏设置。"}}}},{type:"minecraft:plain_message",width:410,contents:{text:"回合上限仅用于分队模式（4至8人）。若双方都未提前达成标记胜负条件，完成设定轮数后本局立即结束；三人模式仍固定为五轮。提示输入可选书或对话框；对话框提交需要加密者有OP权限，普通玩家请选择书。",color:"gray"}}],inputs:[{type:"minecraft:number_range",key:"rounds",label:{text:"分队模式（4至8人）回合数"},start:1,end:32,step:1,initial:$(rounds_initial),width:320},{type:"minecraft:single_option",key:"input",label:{text:"提示输入方式"},width:320,options:[{id:"0",display:{text:"书（默认）"},initial:$(book_initial)},{id:"1",display:{text:"对话框（提交需要OP）"},initial:$(dialog_initial)}]}],pause:false,yes:{label:{text:"保存",color:"green"},action:{type:"minecraft:dynamic/run_command",template:"trigger dc_settings set $(rounds)$(input)7"}},no:{label:{text:"取消"},action:{type:"minecraft:run_command",command:"trigger dc_settings set 0"}}}

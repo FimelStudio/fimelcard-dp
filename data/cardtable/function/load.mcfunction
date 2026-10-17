@@ -37,3 +37,12 @@ function cardtable:display/repair_occlusion
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:animation/deal/box/cleanup_legacy
 
 tellraw @a[tag=ct.player] [{text:'[牌桌] ',color:'dark_aqua'},{text:'通用牌桌模块已重新加载。',color:'yellow'}]
+
+scoreboard objectives add ct_skin dummy
+scoreboard objectives add ct_skin_pick trigger
+scoreboard objectives add ct_skin_table dummy
+scoreboard players reset * ct_skin_pick
+scoreboard players reset * ct_skin_table
+
+# 旧典雅沙发转向，保留正在进行的游戏。
+execute as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.sofa_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/sofa"] run function cardtable:skin/rotate_sofa

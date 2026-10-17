@@ -1,0 +1,9 @@
+setblock ~0 ~0 ~0 minecraft:oak_planks
+setblock ~-1 ~0 ~-1 minecraft:oak_stairs[half=top,waterlogged=false,shape=outer_right,facing=east]
+setblock ~-1 ~0 ~0 minecraft:oak_stairs[half=top,waterlogged=false,shape=straight,facing=east]
+setblock ~-1 ~0 ~1 minecraft:oak_stairs[half=top,waterlogged=false,shape=outer_right,facing=north]
+setblock ~0 ~0 ~-1 minecraft:oak_stairs[half=top,waterlogged=false,shape=straight,facing=south]
+setblock ~0 ~0 ~1 minecraft:oak_stairs[half=top,waterlogged=false,shape=straight,facing=north]
+setblock ~1 ~0 ~-1 minecraft:oak_stairs[half=top,waterlogged=false,shape=outer_left,facing=west]
+setblock ~1 ~0 ~0 minecraft:oak_stairs[half=top,waterlogged=false,shape=straight,facing=west]
+setblock ~1 ~0 ~1 minecraft:oak_stairs[half=top,waterlogged=false,shape=outer_right,facing=west]

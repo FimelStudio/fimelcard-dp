@@ -10,3 +10,5 @@ execute if score #clock dd_ctx matches 20.. as @e[type=minecraft:marker,tag=dd.c
 execute if score #clock dd_ctx matches 20.. run scoreboard players set #clock dd_ctx 0
 
 execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:input/sync
+
+function doudizhu:music/tick

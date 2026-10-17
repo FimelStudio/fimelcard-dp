@@ -18,6 +18,8 @@ execute if score #winner dd_ctx = #lord dd_ctx run tellraw @a[tag=dd.audience] {
 execute unless score #winner dd_ctx = #lord dd_ctx run tellraw @a[tag=dd.audience] {text:"农民共同获胜！",color:"green",bold:true}
 execute if score #spring dd_ctx matches 1 run tellraw @a[tag=dd.audience] {text:"春天／反春天，倍数翻倍。",color:"yellow"}
 execute as @e[tag=dd.actors] run function doudizhu:game/score
+execute unless score @s dd_audio matches 0 as @a[tag=dd.audience,scores={dd_points=1..}] run function doudizhu:music/start_win
+execute unless score @s dd_audio matches 0 as @a[tag=dd.audience,scores={dd_points=..-1}] run function doudizhu:music/start_lose
 function doudizhu:log {text:"本局结算完成，累计分数已保存"}
 execute as @a[tag=dd.audience] run dialog clear @s
 function doudizhu:input/sync

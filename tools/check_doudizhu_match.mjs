@@ -27,7 +27,7 @@ function world(){
   for(const line of read(n).split(/\r?\n/))if(command(line,self))break;
  }
  function command(line,self){
-  if(!line||line.startsWith('#')||/^(tellraw|dialog|clear|data) /.test(line))return;
+  if(!line||line.startsWith('#')||/^(tellraw|dialog|clear|data|stopsound|playsound) /.test(line))return;
   if(line==='return 0')return true;
   if(line.startsWith('return run ')){command(line.slice(11),self);return true;}
   if(line.startsWith('execute ')){
@@ -48,7 +48,7 @@ function world(){
   if((m=line.match(/^function doudizhu:(\S+)/))){call(m[1],self);return;}
   if((m=line.match(/^tag (\S+) (add|remove) (\S+)$/))){for(const e of select(m[1],self))e.tags[m[2]==='add'?'add':'delete'](m[3]);return;}
   if((m=line.match(/^scoreboard players (set|add|remove|reset) (\S+) (\S+)(?: (-?\d+))?$/))){const [,op,key,obj,n]=m;put(key,obj,op==='reset'?undefined:op==='set'?Number(n):(get(key,obj,self)||0)+(op==='remove'?-1:1)*Number(n),self);return;}
-  if((m=line.match(/^scoreboard players operation (\S+) (\S+) (=|\+=|-=|\*=|>) (\S+) (\S+)$/))){const [,a,ao,op,b,bo]=m,x=get(a,ao,self)||0,y=get(b,bo,self);put(a,ao,op==='='?y:op==='+='?x+y:op==='-='?x-y:op==='*='?x*y:Math.max(x,y),self);return;}
+  if((m=line.match(/^scoreboard players operation (\S+) (\S+) (=|\+=|-=|\*=|\/=|%=|>) (\S+) (\S+)$/))){const [,a,ao,op,b,bo]=m,x=get(a,ao,self)||0,y=get(b,bo,self);put(a,ao,op==='='?y:op==='+='?x+y:op==='-='?x-y:op==='*='?x*y:op==='/='?Math.floor(x/y):op==='%='?((x%y)+y)%y:Math.max(x,y),self);return;}
   throw Error(line);
  }
  return {table,actors,other,fake,out,call};
@@ -61,6 +61,7 @@ for(const limit of [1,2,3,32])for(const lordSeat of [2,5,8]){
   const lordWins=r%2===1;w.fake['#winner:dd_ctx']=lordWins?lordSeat:w.actors.find(a=>a.s.dd_seat!==lordSeat).s.dd_seat;
   const spring=r%3===0;for(const a of w.actors)a.s.dd_plays=spring?(lordWins&&a.s.dd_seat!==lordSeat?0:!lordWins&&a.s.dd_seat===lordSeat?1:2):2;
   w.call('game/finish',w.table);
+  for(const a of w.actors.filter(a=>a.player)){assert.equal(a.s.dd_music,a.s.dd_points>0?3:4);assert.equal(a.s.dd_mtime,a.s.dd_points>0?76:60);}
   const unit=(r%3+1)*2*(spring?2:1);w.actors.forEach((a,i)=>expected[i]+=unit*(a.s.dd_seat===lordSeat?2:-1)*(lordWins?1:-1));
   assert.deepEqual(w.actors.map(a=>a.s.dd_total),expected);assert.equal(expected.reduce((a,b)=>a+b),0);
   w.call('game/finish',w.table);assert.deepEqual(w.actors.map(a=>a.s.dd_total),expected,'不得重复结算');
@@ -73,12 +74,12 @@ for(const limit of [1,2,3,32])for(const lordSeat of [2,5,8]){
  }
  assert.equal(w.other.s.dd_max,7);
 }
-for(const rounds of [0,1,16,32,33,999])for(const state of [0,1])for(const sameTable of [true,false])for(const game of [10,9]){
- const w=world(),p=w.actors[0];p.s.dd_settings=rounds;p.s.dd_set_table=sameTable?12:13;w.table.s.ct_state=state;w.table.s.ct_game=game;w.table.s.dd_max=1;
- w.call('settings/save',p);assert.equal(w.table.s.dd_max,rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?rounds:1);assert.equal(w.other.s.dd_max,7);assert.equal(p.s.dd_settings,undefined);
+for(const music of [0,1,2,9])for(const rounds of [0,1,16,32,33,999])for(const state of [0,1])for(const sameTable of [true,false])for(const game of [10,9]){
+ const w=world(),p=w.actors[0];p.s.dd_settings=rounds*10+music;p.s.dd_set_table=sameTable?12:13;w.table.s.ct_state=state;w.table.s.ct_game=game;w.table.s.dd_max=1;
+ w.call('settings/save',p);assert.equal(w.table.s.dd_max,music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?rounds:1);assert.equal(w.other.s.dd_max,7);assert.equal(p.s.dd_settings,undefined);assert.equal(w.table.s.dd_audio,music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?music:undefined);
 }
-const dialog=JSON.parse(read('settings/show').slice(read('settings/show').indexOf('{')).replace('$(initial)','1'));
-assert.equal(dialog.inputs[0].end,32);assert.equal(dialog.yes.action.template,'trigger dd_settings set $(rounds)');
+const dialog=JSON.parse(read('settings/show').slice(read('settings/show').indexOf('{')).replace('$(initial)','1').replace('$(enabled)','true').replace('$(disabled)','false'));
+assert.equal(dialog.inputs[0].end,32);assert.equal(dialog.yes.action.template,'trigger dd_settings set $(rounds)$(music)');
 assert.ok(!read('deal/start').includes('dd_total'));assert.ok(!read('game/abort').includes('reset @s dd_max'));
 assert.match(read('bid/finish'),/matches 0 run return run function doudizhu:deal\/start/);
 assert.match(read('deal/start'),/data.doudizhu set value \{\}/);
@@ -86,4 +87,7 @@ assert.match(read('load'),/matches 3 run function doudizhu:system\/upgrade_v4/);
 for(const p of ['player/init','bot/init'])assert.match(read(p),/set @s dd_total 0/);
 const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(p+'/'+e.name):[p+'/'+e.name]);
 for(const p of walk('data/doudizhu/function'))for(const m of fs.readFileSync(p,'utf8').matchAll(/\bfunction (doudizhu|cardtable):([\w/]+)/g))assert.ok(fs.existsSync('data/'+m[1]+'/function/'+m[2]+'.mcfunction'),p+' -> '+m[0]);
-console.log('通过：'+cases+'局实际结算指令、正负累计/春天/人机/防重复、100刻自动续局、整场总分、96种设置提交、重载保护及函数引用。');
+console.log('通过：'+cases+'局实际结算指令、正负累计/春天/人机/防重复、100刻自动续局、整场总分、384种设置提交、重载保护及函数引用。');
+
+for(const enabled of [0,1]){const w=world();w.table.s.dd_audio=enabled;w.fake['#winner:dd_ctx']=2;w.call('game/finish',w.table);for(const a of w.actors.filter(a=>a.player))assert.equal(a.s.dd_music,enabled?(a.s.dd_points>0?3:4):undefined);}
+console.log('通过：关闭音乐时不启动胜负音乐，开启时按阵营播放。');

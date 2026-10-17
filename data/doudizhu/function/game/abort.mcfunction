@@ -1,3 +1,4 @@
+tag @s remove dd.music_exciting
 scoreboard players operation #ctx dd_ctx = @s dd_id
 execute store result storage doudizhu:input table int 1 run scoreboard players get @s dd_id
 function doudizhu:input/clear_drops with storage doudizhu:input

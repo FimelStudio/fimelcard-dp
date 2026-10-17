@@ -1,3 +1,5 @@
+scoreboard players reset @s ct_skin_pick
+scoreboard players reset @s ct_skin_table
 ride @s dismount
 scoreboard players reset @s ct_game_pick
 scoreboard players reset @s ct_pick_table
