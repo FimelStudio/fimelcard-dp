@@ -30,10 +30,14 @@ scoreboard players set #remaining dd_ctx 0
 execute as @e[tag=dd.hand] if score @s dd_owner = #owner dd_ctx run scoreboard players add #remaining dd_ctx 1
 # 包括从三张直接出到一张的情况，机器人同样触发。
 # 本桌每局只提醒第一次，不受音乐开关影响。
-execute if score #remaining dd_ctx matches 1..2 unless entity @e[tag=dd.current,tag=dd.music_exciting,limit=1] run tellraw @a[tag=dd.audience] [{text:"[斗地主] 注意：",color:"gold"},{selector:"@s",color:"yellow"},{text:"仅剩 ",color:"gold"},{score:{name:"#remaining",objective:"dd_ctx"},color:"red",bold:true},{text:" 张牌！",color:"gold"}]
+execute if score #remaining dd_ctx matches 1..2 unless entity @e[tag=dd.current,tag=dd.low_cards_announced,limit=1] run tellraw @a[tag=dd.audience] [{text:"[斗地主] 注意：",color:"gold"},{selector:"@s",color:"yellow"},{text:"仅剩 ",color:"gold"},{score:{name:"#remaining",objective:"dd_ctx"},color:"red",bold:true},{text:" 张牌！",color:"gold"}]
+execute if score #remaining dd_ctx matches 1..2 run tag @e[tag=dd.current,limit=1] add dd.low_cards_announced
 execute if score #remaining dd_ctx matches 1..2 run tag @e[tag=dd.current,limit=1] add dd.music_exciting
+# 合法炸弹或王炸同样触发紧张音乐，保持到本局结束。
+execute if score #type dd_ctx matches 13..14 run tag @e[tag=dd.current,limit=1] add dd.music_exciting
 execute if score #remaining dd_ctx matches 0 run scoreboard players operation #winner dd_ctx = @s dd_seat
 execute if score #remaining dd_ctx matches 0 as @e[tag=dd.current,limit=1] at @s run return run function doudizhu:game/finish
+execute as @e[tag=dd.current,limit=1] run function doudizhu:music/table_tick
 execute as @e[tag=dd.current,limit=1] run function doudizhu:round/advance
 tag @a[tag=dd.audience] remove dd.audience
 tag @e[tag=dd.actors] remove dd.actors

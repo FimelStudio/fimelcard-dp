@@ -3,7 +3,10 @@ execute unless score @s ct_joined matches 3..8 run return fail
 # 兼容升级后尚未重新选择过游戏、也未打开设置的旧牌桌。
 execute unless score @s dc_round_limit matches 1..32 run scoreboard players set @s dc_round_limit 8
 execute unless score @s dc_input matches 0..1 run scoreboard players set @s dc_input 0
+execute unless score @s dc_team_mode matches 0..1 run scoreboard players set @s dc_team_mode 0
 scoreboard players operation #ctx dc_ctx = @s ct_id
+execute if score @s dc_team_mode matches 1 if score @s ct_joined matches 4.. run function decrypto:team/validate_fixed
+execute if score @s dc_team_mode matches 1 if score @s ct_joined matches 4.. unless score #fixed_valid dc_ctx matches 1 run return fail
 tag @s add dc.controller
 scoreboard players operation @s dc_id = @s ct_id
 execute store result entity @s data.decrypto.player_count int 1 run scoreboard players get @s ct_joined
