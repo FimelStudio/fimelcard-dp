@@ -15,8 +15,11 @@ function doudizhu:hud/bottom
 data modify storage doudizhu:hud label set value "上家 "
 data modify storage fimel_title:io y set value -48.0d
 execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx if score @s dd_seat = #hud_up dd_ctx at @s run function doudizhu:hud/row
-data modify storage doudizhu:hud label set value "下家 "
+data modify storage doudizhu:hud label set value "自己 "
 data modify storage fimel_title:io y set value -126.0d
+function doudizhu:hud/row
+data modify storage doudizhu:hud label set value "下家 "
+data modify storage fimel_title:io y set value -48.0d
 execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx if score @s dd_seat = #hud_down dd_ctx at @s run function doudizhu:hud/row
 # Hand contains per-card fonts; explicitly replace them only in the invisible half-width rewind.
 data modify storage fimel_title:io text set from storage doudizhu:ui hand

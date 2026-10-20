@@ -1,4 +1,4 @@
-execute if score @s ct_skin matches 1 run return 0
+execute if score @s ct_skin matches 1..6 run return 0
 # 控制器位置执行；方块展示实体与座位共用中心、桌号和座号。
 scoreboard players operation #seat_owner ct_ctx = @s ct_id
 execute as @e[type=minecraft:block_display,tag=ct.chair8] if score @s ct_id = #seat_owner ct_ctx run kill @s

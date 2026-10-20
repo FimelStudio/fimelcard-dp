@@ -14,6 +14,10 @@ data modify storage fimel_title:io dx set value 0.0d
 data modify storage fimel_title:io dy set value 0.0d
 data modify storage fimel_title:io align set value "left"
 data modify storage fimel_title:io origin set value "up-left"
+# 下家以屏幕右上角为锚点，姓名和两行牌面统一右对齐。
+execute if score #hud_owner dd_ctx = #hud_down dd_ctx run data modify storage fimel_title:io x set value -8.0d
+execute if score #hud_owner dd_ctx = #hud_down dd_ctx run data modify storage fimel_title:io align set value "right"
+execute if score #hud_owner dd_ctx = #hud_down dd_ctx run data modify storage fimel_title:io origin set value "up-right"
 function fimel_title:new_text
 
 execute store result storage doudizhu:hud seat int 1 run scoreboard players get @s dd_seat

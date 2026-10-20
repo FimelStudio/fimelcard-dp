@@ -69,8 +69,12 @@ function decode(raw){
   if(m&&!inRange(scores[m[1]+' '+m[2]],m[3]))return null;
  }
  const rounds=scores['#settings_rounds dc_ctx'];
- return rounds>=1&&rounds<=32?[rounds,scores['#settings_input dc_ctx']]:null;
+ return rounds>=1&&rounds<=32?[rounds,scores['#settings_input dc_ctx'],scores['#settings_teams dc_ctx']]:null;
 }
-for(let rounds=1;rounds<=32;rounds++)for(let mode=0;mode<=1;mode++)assert.deepEqual(decode(Number(`${rounds}${mode}7`)),[rounds,mode]);
+for(let rounds=1;rounds<=32;rounds++)for(let mode=0;mode<=1;mode++)for(let teams=0;teams<=1;teams++){
+ assert.deepEqual(decode(Number(`${rounds}${mode}${teams}8`)),[rounds,mode,teams]);
+ assert.equal(decode(Number(`${rounds}${mode}7`)),null);
+}
+for(const invalid of [1000,1028,1208,33008,0,-1])assert.equal(decode(invalid),null);
 for(let old=1;old<=32;old++)assert.equal(decode(old),null);
-console.log(`PASS: ${count} 个函数结构与引用、64种设置组合、旧窗口拒绝、两种输入路由、隐私与令牌校验；转义后命令最长 ${maxCommand} 字符。`);
+console.log(`PASS: ${count} 个函数结构与引用、128种设置组合、旧窗口拒绝、两种输入路由、隐私与令牌校验；转义后命令最长 ${maxCommand} 字符。`);

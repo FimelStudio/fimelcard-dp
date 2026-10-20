@@ -12,8 +12,8 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 8 run functio
 execute if score @s ct_state matches 1 if score @s ct_game matches 9 run function skull:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 10 run function doudizhu:game/abort
 
-execute if score @s ct_skin matches 1 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
-execute if score @s ct_skin matches 1 if score @s ct_capacity matches 8 run function cardtable:skin/default8
+execute if score @s ct_skin matches 1..6 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
+execute if score @s ct_skin matches 1..6 if score @s ct_capacity matches 8 run function cardtable:skin/default8
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player
 execute as @e[tag=ct.part] if score @s ct_id = #ctx_id ct_ctx run kill @s

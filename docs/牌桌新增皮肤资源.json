@@ -1,0 +1,692 @@
+{
+  "themes": [
+    {
+      "id": 2,
+      "key": "electro",
+      "name": "电子音乐",
+      "description": "磨制黑石桌面、青蓝沙发，四角分别为调音台、舞台音箱、抹茶芭菲和效果器。",
+      "table": [
+        10786
+      ],
+      "chair": [
+        25037,
+        3324110
+      ],
+      "corner": [
+        25041
+      ],
+      "props": [
+        [
+          153000
+        ],
+        [
+          153065
+        ],
+        [
+          153031
+        ],
+        [
+          153013
+        ]
+      ],
+      "models": {
+        "table": "electro_table",
+        "chair": "electro_chair",
+        "corner": "electro_corner",
+        "props": [
+          "electro_prop0",
+          "electro_prop1",
+          "electro_prop2",
+          "electro_prop3"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "key": "toys",
+      "name": "玩偶乐园",
+      "description": "樱花木木板桌面、粉色沙发，四角卡比与Fumo玩偶。",
+      "table": [
+        17015
+      ],
+      "chair": [
+        25037,
+        15700666
+      ],
+      "corner": [
+        25042
+      ],
+      "props": [
+        [
+          101013,
+          16095938
+        ],
+        [
+          101008
+        ]
+      ],
+      "models": {
+        "table": "toys_table",
+        "chair": "toys_chair",
+        "corner": "toys_corner",
+        "props": [
+          "toys_prop0",
+          "toys_prop1"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "key": "vintage",
+      "name": "欧式复古",
+      "description": "深色橡木木板桌面、棕色沙发，欧式茶几配台灯与留声机。",
+      "table": [
+        15015
+      ],
+      "chair": [
+        25037,
+        7950395
+      ],
+      "corner": [
+        25038
+      ],
+      "props": [
+        [
+          25033
+        ],
+        [
+          25046
+        ]
+      ],
+      "models": {
+        "table": "vintage_table",
+        "chair": "vintage_chair",
+        "corner": "vintage_corner",
+        "props": [
+          "vintage_prop0",
+          "vintage_prop1"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "key": "bamboo",
+      "name": "竹影茶室",
+      "description": "竹马赛克桌面、竹木扶手椅，四角竹盆栽与团状多肉盆栽。",
+      "table": [
+        20016
+      ],
+      "chair": [
+        20025,
+        9742186
+      ],
+      "chairOffset": 0,
+      "corner": [
+        20016
+      ],
+      "props": [
+        [
+          100011,
+          13943968
+        ],
+        [
+          100003,
+          13943968
+        ]
+      ],
+      "models": {
+        "table": "bamboo_table",
+        "chair": "bamboo_chair",
+        "corner": "bamboo_corner",
+        "props": [
+          "bamboo_prop0",
+          "bamboo_prop1"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "key": "garden",
+      "name": "春日花园",
+      "description": "去皮白桦原木桌面、薄荷绿扶手椅，四角雏菊与向日葵。",
+      "table": [
+        12014
+      ],
+      "chair": [
+        12025,
+        9420696
+      ],
+      "chairOffset": 0,
+      "corner": [
+        25042
+      ],
+      "props": [
+        [
+          100001,
+          16771261
+        ],
+        [
+          100010,
+          13887469
+        ]
+      ],
+      "models": {
+        "table": "garden_table",
+        "chair": "garden_chair",
+        "corner": "garden_corner",
+        "props": [
+          "garden_prop0",
+          "garden_prop1"
+        ]
+      }
+    }
+  ],
+  "models": [
+    {
+      "name": "electro_table",
+      "sourceModel": "item/nw/fun/x148",
+      "customModelData": 10786,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "name": "electro_chair",
+      "sourceModel": "item/nw/psfun/psfun37",
+      "customModelData": 25037,
+      "tint": 3324110,
+      "bounds": {
+        "min": [
+          -3.1433452621934865,
+          -0.6480502970952693,
+          0
+        ],
+        "max": [
+          19.143345262193485,
+          16.300262784033585,
+          19.305195726117038
+        ]
+      }
+    },
+    {
+      "name": "electro_corner",
+      "sourceModel": "item/nw/psfun/psfun41",
+      "customModelData": 25041,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          1,
+          0,
+          1
+        ],
+        "max": [
+          15,
+          16,
+          15
+        ]
+      }
+    },
+    {
+      "name": "electro_prop0",
+      "sourceModel": "item/nw/livehouse/adj_panel",
+      "customModelData": 153000,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          2,
+          1.2925526249318864e-7,
+          3.655388551994071
+        ],
+        "max": [
+          14,
+          7.3130231668508205,
+          12.344611295766603
+        ]
+      }
+    },
+    {
+      "name": "electro_prop1",
+      "sourceModel": "item/nw/livehouse/stage_speaker3",
+      "customModelData": 153065,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          2,
+          0,
+          5
+        ],
+        "max": [
+          14,
+          10.285714,
+          11
+        ]
+      }
+    },
+    {
+      "name": "electro_prop2",
+      "sourceModel": "item/nw/livehouse/maccha_parfait",
+      "customModelData": 153031,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          2.7717850000000004,
+          0.8,
+          4.015126666757438
+        ],
+        "max": [
+          13.228215064605813,
+          14.800000358590218,
+          11.984873333242561
+        ]
+      }
+    },
+    {
+      "name": "electro_prop3",
+      "sourceModel": "item/nw/livehouse/effector",
+      "customModelData": 153013,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          2,
+          9.295974767731252e-8,
+          2.5525020000000005
+        ],
+        "max": [
+          14,
+          7.539974725104521,
+          13.447498229512064
+        ]
+      }
+    },
+    {
+      "name": "toys_table",
+      "sourceModel": "item/nw/fun/m015",
+      "customModelData": 17015,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "name": "toys_chair",
+      "sourceModel": "item/nw/psfun/psfun37",
+      "customModelData": 25037,
+      "tint": 15700666,
+      "bounds": {
+        "min": [
+          -3.1433452621934865,
+          -0.6480502970952693,
+          0
+        ],
+        "max": [
+          19.143345262193485,
+          16.300262784033585,
+          19.305195726117038
+        ]
+      }
+    },
+    {
+      "name": "toys_corner",
+      "sourceModel": "item/nw/psfun/psfun42",
+      "customModelData": 25042,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          1,
+          0,
+          1
+        ],
+        "max": [
+          15,
+          16,
+          15
+        ]
+      }
+    },
+    {
+      "name": "toys_prop0",
+      "sourceModel": "item/nw/zhfun/zh011",
+      "customModelData": 101013,
+      "tint": 16095938,
+      "bounds": {
+        "min": [
+          2.0000004101019844,
+          1.686357957719764e-7,
+          4.50037
+        ],
+        "max": [
+          13.999999589898016,
+          8.935385,
+          11.49963
+        ]
+      }
+    },
+    {
+      "name": "toys_prop1",
+      "sourceModel": "item/nw/zhfun/zh006",
+      "customModelData": 101008,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          2.83346,
+          -3.98516035060581e-7,
+          4.7110623380359495
+        ],
+        "max": [
+          13.16654,
+          14,
+          11.288938
+        ]
+      }
+    },
+    {
+      "name": "vintage_table",
+      "sourceModel": "item/nw/fun/k015",
+      "customModelData": 15015,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "name": "vintage_chair",
+      "sourceModel": "item/nw/psfun/psfun37",
+      "customModelData": 25037,
+      "tint": 7950395,
+      "bounds": {
+        "min": [
+          -3.1433452621934865,
+          -0.6480502970952693,
+          0
+        ],
+        "max": [
+          19.143345262193485,
+          16.300262784033585,
+          19.305195726117038
+        ]
+      }
+    },
+    {
+      "name": "vintage_corner",
+      "sourceModel": "item/nw/psfun/psfun38",
+      "customModelData": 25038,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          1,
+          0,
+          1
+        ],
+        "max": [
+          15,
+          16,
+          15
+        ]
+      }
+    },
+    {
+      "name": "vintage_prop0",
+      "sourceModel": "item/nw/psfun/psfun33",
+      "customModelData": 25033,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          2.75,
+          0,
+          2.75
+        ],
+        "max": [
+          13.25,
+          14,
+          13.25
+        ]
+      }
+    },
+    {
+      "name": "vintage_prop1",
+      "sourceModel": "item/nw/psfun/psfun46",
+      "customModelData": 25046,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          1.9999997978983632,
+          0,
+          3.0294372864689407
+        ],
+        "max": [
+          13.999999713531059,
+          13.73977524076761,
+          12.97056271353106
+        ]
+      }
+    },
+    {
+      "name": "bamboo_table",
+      "sourceModel": "item/nw/fun/p016",
+      "customModelData": 20016,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "name": "bamboo_chair",
+      "sourceModel": "item/nw/fun/p025",
+      "customModelData": 20025,
+      "tint": 9742186,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          1
+        ],
+        "max": [
+          16,
+          16.683057989236115,
+          16.813207638524112
+        ]
+      }
+    },
+    {
+      "name": "bamboo_corner",
+      "sourceModel": "item/nw/fun/p016",
+      "customModelData": 20016,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "name": "bamboo_prop0",
+      "sourceModel": "item/nw/af/af011",
+      "customModelData": 100011,
+      "tint": 13943968,
+      "bounds": {
+        "min": [
+          2.060303038033,
+          0,
+          2.060303038033
+        ],
+        "max": [
+          13.939696961966998,
+          14,
+          13.939696961966998
+        ]
+      }
+    },
+    {
+      "name": "bamboo_prop1",
+      "sourceModel": "item/nw/af/af003",
+      "customModelData": 100003,
+      "tint": 13943968,
+      "bounds": {
+        "min": [
+          2.00000026462663,
+          0,
+          2.00000026462663
+        ],
+        "max": [
+          13.99999973537337,
+          12.727922,
+          13.99999973537337
+        ]
+      }
+    },
+    {
+      "name": "garden_table",
+      "sourceModel": "item/nw/fun/h014",
+      "customModelData": 12014,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "name": "garden_chair",
+      "sourceModel": "item/nw/fun/h025",
+      "customModelData": 12025,
+      "tint": 9420696,
+      "bounds": {
+        "min": [
+          0,
+          0,
+          1
+        ],
+        "max": [
+          16,
+          16.683057989236115,
+          16.813207638524112
+        ]
+      }
+    },
+    {
+      "name": "garden_corner",
+      "sourceModel": "item/nw/psfun/psfun42",
+      "customModelData": 25042,
+      "tint": 16777215,
+      "bounds": {
+        "min": [
+          1,
+          0,
+          1
+        ],
+        "max": [
+          15,
+          16,
+          15
+        ]
+      }
+    },
+    {
+      "name": "garden_prop0",
+      "sourceModel": "item/nw/af/af001",
+      "customModelData": 100001,
+      "tint": 16771261,
+      "bounds": {
+        "min": [
+          2.00000026462663,
+          0,
+          2.00000026462663
+        ],
+        "max": [
+          13.99999973537337,
+          13.113617,
+          13.99999973537337
+        ]
+      }
+    },
+    {
+      "name": "garden_prop1",
+      "sourceModel": "item/nw/af/af010",
+      "customModelData": 100010,
+      "tint": 13887469,
+      "bounds": {
+        "min": [
+          2.268713569399579,
+          0,
+          2.268713569399579
+        ],
+        "max": [
+          13.73128643060042,
+          14,
+          13.73128643060042
+        ]
+      }
+    }
+  ],
+  "textures": [
+    "card:table_skin/nyaa/psfun/sofa",
+    "card:table_skin/nyaa/psfun/deco5",
+    "card:table_skin/nyaa/livehouse/tiaoyintai1",
+    "card:table_skin/nyaa/livehouse/tiaoyintai2",
+    "card:table_skin/nyaa/livehouse/yinxiang",
+    "card:table_skin/nyaa/livehouse/mochabafei",
+    "card:table_skin/nyaa/livehouse/xiaoguoqi2",
+    "card:table_skin/nyaa/livehouse/xiaoguoqi1",
+    "card:table_skin/nyaa/psfun/deco2",
+    "card:table_skin/nyaa/zh/zh011",
+    "card:table_skin/nyaa/zh/zh006",
+    "card:table_skin/nyaa/psfun/deco1",
+    "card:table_skin/nyaa/psfun/taideng2",
+    "card:table_skin/nyaa/psfun/deco2a",
+    "card:table_skin/nyaa/af/af011",
+    "card:table_skin/nyaa/af/af003",
+    "card:table_skin/nyaa/af/af001",
+    "card:table_skin/nyaa/af/af010"
+  ]
+}

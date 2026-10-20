@@ -9,3 +9,13 @@ execute if score @s ct_skin matches 0 unless score @s ct_capacity matches 8 run 
 execute if score @s ct_skin matches 0 if score @s ct_capacity matches 8 run function cardtable:skin/default8
 execute if score @s ct_skin matches 0 unless score @s ct_capacity matches 8 run function cardtable:table/spawn_chairs4
 execute if score @s ct_skin matches 0 if score @s ct_capacity matches 8 run function cardtable:table/spawn_chairs8
+execute if score @s ct_skin matches 2 unless score @s ct_capacity matches 8 run function cardtable:skin/electro4
+execute if score @s ct_skin matches 2 if score @s ct_capacity matches 8 run function cardtable:skin/electro8
+execute if score @s ct_skin matches 3 unless score @s ct_capacity matches 8 run function cardtable:skin/toys4
+execute if score @s ct_skin matches 3 if score @s ct_capacity matches 8 run function cardtable:skin/toys8
+execute if score @s ct_skin matches 4 unless score @s ct_capacity matches 8 run function cardtable:skin/vintage4
+execute if score @s ct_skin matches 4 if score @s ct_capacity matches 8 run function cardtable:skin/vintage8
+execute if score @s ct_skin matches 5 unless score @s ct_capacity matches 8 run function cardtable:skin/bamboo4
+execute if score @s ct_skin matches 5 if score @s ct_capacity matches 8 run function cardtable:skin/bamboo8
+execute if score @s ct_skin matches 6 unless score @s ct_capacity matches 8 run function cardtable:skin/garden4
+execute if score @s ct_skin matches 6 if score @s ct_capacity matches 8 run function cardtable:skin/garden8

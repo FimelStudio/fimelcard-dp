@@ -27,6 +27,8 @@ execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.c
 # 已加载的八人桌补做结束按钮布局更新，不重置投票。
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8,ct_state=1}] at @s unless data entity @s {data:{cardtable:{vote_version:1}}} run function cardtable:vote/render
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.sofa_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/sofa"] run function cardtable:skin/rotate_sofa
+execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/bamboo_chair"] run function cardtable:skin/rotate_theme_chair
+execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/garden_chair"] run function cardtable:skin/rotate_theme_chair
 execute if score #clock ct_ctx matches 10.. run scoreboard players set #clock ct_ctx 0
 
 # 每刻末尾更新在线心跳；离线玩家的记分会保持为0
