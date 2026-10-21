@@ -13,6 +13,9 @@ execute as @e[type=minecraft:item,tag=ct.dealt_card] at @s run function cardtabl
 scoreboard players add #clock ct_ctx 1
 execute if score #clock ct_ctx matches 10.. as @a[tag=ct.player] at @s run function cardtable:seat/lobby_check
 
+# 在座位时按空格即可触发meme对话框
+execute as @a[tag=ct.player] if predicate cardtable:open_meme_dialog run function cardtable:meme/meme_dialog
+
 # 牌桌人数以当前在线且仍持有牌桌身份的玩家为准，离线后座位立即变为空闲
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:table/recount_players
 

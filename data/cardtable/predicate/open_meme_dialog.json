@@ -1,0 +1,14 @@
+{
+    "condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "type_specific/player": {
+            "input": {
+                "jump": true
+            }
+        },
+        "entity_tags": {
+            "all_of": ["ct.player"]
+        }
+    }
+}
