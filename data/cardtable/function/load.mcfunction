@@ -1,3 +1,8 @@
+scoreboard objectives add ct_meme trigger
+scoreboard objectives add ct_meme_cd dummy
+scoreboard objectives add ct_voice_cd dummy
+scoreboard players reset * ct_meme
+tag @a remove ct.meme_jump
 # 创建通用牌桌模块的安装标记
 scoreboard objectives add ct_ctx dummy
 

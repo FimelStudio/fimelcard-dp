@@ -9,6 +9,11 @@
         },
         "entity_tags": {
             "all_of": ["ct.player"]
+        },
+        "vehicle": {
+            "nbt": {
+                "Tags": ["ct.seat"]
+            }
         }
     }
 }
