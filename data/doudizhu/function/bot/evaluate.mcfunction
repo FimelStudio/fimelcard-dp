@@ -53,7 +53,8 @@ execute if score #have16 dd_ctx matches 1 if score #have17 dd_ctx matches 1 unle
 execute if score #type dd_ctx matches 11..13 run scoreboard players add #bot_cost dd_ctx 130
 execute if score #type dd_ctx matches 14 run scoreboard players add #bot_cost dd_ctx 180
 # 对手报单/报双时，单张/对子尽可能用大牌拦截。
-execute if score #bot_enemy_min dd_ctx matches 1 if score #type dd_ctx matches 1 run function doudizhu:bot/emergency
-execute if score #bot_enemy_min dd_ctx matches 2 if score #type dd_ctx matches 2 run function doudizhu:bot/emergency
+execute if score #bot_type dd_ctx matches 1.. if score #bot_enemy_min dd_ctx matches 1 if score #type dd_ctx matches 1 run function doudizhu:bot/emergency
+execute if score #bot_type dd_ctx matches 1.. if score #bot_enemy_min dd_ctx matches 2 if score #type dd_ctx matches 2 run function doudizhu:bot/emergency
+execute if score #bot_type dd_ctx matches 0 run function doudizhu:bot/lead_strategy
 # 能一手出完时优先级最高，不受保炸或拆牌惩罚影响。
 execute if score #n dd_ctx = #bot_total dd_ctx run scoreboard players set #bot_cost dd_ctx -100000

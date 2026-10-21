@@ -1,4 +1,5 @@
 execute unless score @e[tag=dd.current,limit=1] dd_state matches 2 run return 0
+execute if score @e[tag=dd.current,limit=1] dd_bidmode matches 1..2 run return 0
 execute unless score @s dd_seat = @e[tag=dd.current,limit=1] dd_turn run return run function doudizhu:action/not_turn
 scoreboard players operation #bid dd_ctx = #action dd_ctx
 scoreboard players remove #bid dd_ctx 200

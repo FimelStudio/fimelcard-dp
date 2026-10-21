@@ -1,3 +1,12 @@
+scoreboard objectives add dd_counter dummy
+scoreboard objectives add dd_bidmode dummy
+scoreboard objectives add dd_bidphase dummy
+scoreboard objectives add dd_firstcall dummy
+scoreboard objectives add dd_bidleft dummy
+scoreboard objectives add dd_eligible dummy
+scoreboard objectives add dd_counts dummy
+scoreboard objectives add dd_autopass dummy
+scoreboard objectives add dd_auto_seat dummy
 scoreboard objectives add dd_audio dummy
 scoreboard objectives add dd_ctx dummy
 execute unless score #version dd_ctx matches 1.. run function doudizhu:system/install

@@ -12,6 +12,10 @@ scoreboard players set @s dd_state 1
 scoreboard players set @s dd_timer 0
 scoreboard players set @s dd_bid 0
 scoreboard players set @s dd_bidcount 0
+scoreboard players set @s dd_bidphase 0
+scoreboard players set @s dd_firstcall 0
+scoreboard players set @s dd_bidleft 0
+execute as @e[tag=dd.actors] run scoreboard players set @s dd_eligible 0
 scoreboard players set @s dd_lord 0
 scoreboard players set @s dd_last 0
 scoreboard players set @s dd_passes 0
