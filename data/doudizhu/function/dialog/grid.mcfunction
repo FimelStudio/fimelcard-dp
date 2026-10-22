@@ -4,6 +4,7 @@ data modify storage doudizhu:ui stack_columns set value []
 data modify storage doudizhu:ui stack_queue set from storage doudizhu:ui buttons
 scoreboard players set #stack_previous dd_ctx 0
 execute if data storage doudizhu:ui stack_queue[0] run function doudizhu:dialog/stack_group
+# 全部15种点数放在同一排；9条切片行仅用于原尺寸牌面及同点数堆叠。
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:0}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:0}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:2,line:0}
@@ -13,6 +14,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:0}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:0}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:0}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:0}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:0}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:0}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:0}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:0}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:0}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:1}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:1}
@@ -23,6 +30,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:1}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:1}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:1}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:1}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:1}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:1}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:1}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:1}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:1}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:2}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:2}
@@ -33,6 +46,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:2}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:2}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:2}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:2}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:2}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:2}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:2}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:2}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:2}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:3}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:3}
@@ -43,6 +62,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:3}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:3}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:3}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:3}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:3}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:3}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:3}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:3}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:3}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:4}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:4}
@@ -53,6 +78,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:4}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:4}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:4}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:4}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:4}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:4}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:4}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:4}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:4}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:5}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:5}
@@ -63,6 +94,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:5}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:5}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:5}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:5}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:5}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:5}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:5}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:5}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:5}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:6}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:6}
@@ -73,6 +110,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:6}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:6}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:6}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:6}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:6}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:6}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:6}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:6}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:6}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:7}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:7}
@@ -83,6 +126,12 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:7}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:7}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:7}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:7}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:7}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:7}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:7}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:7}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:7}
 execute if data storage doudizhu:ui stack_columns[0] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:0,line:8}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:1,line:8}
@@ -93,93 +142,9 @@ execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialo
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:6,line:8}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:7,line:8}
 execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:8,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:0}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:1}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:2}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:3}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:4}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:5}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:6}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:7}
-execute if data storage doudizhu:ui stack_columns[9] run data modify storage doudizhu:ui grid.extra append value {text:"\n",font:"minecraft:default"}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:9,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:10,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:11,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:12,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:13,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:14,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:15,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:16,line:8}
-execute if data storage doudizhu:ui stack_columns[9] run function doudizhu:dialog/stack_cell {column:17,line:8}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:9,line:8}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:10,line:8}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:11,line:8}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:12,line:8}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:13,line:8}
+execute if data storage doudizhu:ui stack_columns[0] run function doudizhu:dialog/stack_cell {column:14,line:8}

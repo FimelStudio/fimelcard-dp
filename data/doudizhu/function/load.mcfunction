@@ -1,3 +1,4 @@
+scoreboard objectives add dd_speed_time dummy
 scoreboard objectives add dd_counter dummy
 scoreboard objectives add dd_bidmode dummy
 scoreboard objectives add dd_bidphase dummy

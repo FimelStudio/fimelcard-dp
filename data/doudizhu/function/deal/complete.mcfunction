@@ -1,4 +1,5 @@
 function cardtable:animation/deal/clear
+scoreboard players set @s dd_speed_time 0
 scoreboard players set @s dd_state 2
 function doudizhu:round/announce
 function doudizhu:system/refresh
