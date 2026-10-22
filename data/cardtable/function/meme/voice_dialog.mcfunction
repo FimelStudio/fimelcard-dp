@@ -1,2 +1,1 @@
-scoreboard players enable @s ct_meme
-dialog show @s {"type":"minecraft:multi_action","title":{"text":"发送语音","color":"white","bold":true},"body":[{"type":"minecraft:plain_message","contents":{"text":"附近16格可听 · 冷却5秒","color":"gray"},"width":400}],"columns":2,"actions":[{"label":{"text":"得得得得得"},"action":{"type":"minecraft:run_command","command":"trigger ct_meme set 101"}},{"label":{"text":"奶龙大笑"},"action":{"type":"minecraft:run_command","command":"trigger ct_meme set 102"}},{"label":{"text":"返回分类"},"action":{"type":"minecraft:run_command","command":"trigger ct_meme set 200"}}],"exit_action":{"label":"关闭"},"pause":false}
+function cardtable:meme/voice_page_0

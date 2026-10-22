@@ -13,8 +13,10 @@ execute if score #meme ct_ctx matches 3001 run return run function cardtable:mem
 
 execute if score #meme ct_ctx matches 3002 run return run function cardtable:meme/picture_page_2
 
-execute if score #meme ct_ctx matches 3003 run return run function cardtable:meme/picture_page_3
 
-execute if score #meme ct_ctx matches 3004 run return run function cardtable:meme/picture_page_4
 
-execute if score #meme ct_ctx matches 3005 run return run function cardtable:meme/picture_page_5
+
+execute if score #meme ct_ctx matches 1001..1034 run return run function cardtable:meme/voice
+execute if score #meme ct_ctx matches 4000 run return run function cardtable:meme/voice_page_0
+execute if score #meme ct_ctx matches 4001 run return run function cardtable:meme/voice_page_1
+execute if score #meme ct_ctx matches 4002 run return run function cardtable:meme/voice_page_2

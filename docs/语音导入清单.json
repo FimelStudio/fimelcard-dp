@@ -1,0 +1,240 @@
+[
+  {
+    "id": 1001,
+    "source": "[P17]bilibili破坏跑.mp4",
+    "label": "bilibili破坏跑",
+    "event": "voice_ac093435d58d",
+    "sound": "imported/voice_ac093435d58d"
+  },
+  {
+    "id": 1002,
+    "source": "[P20]GG游戏结束啦.mp4",
+    "label": "GG游戏结束啦",
+    "event": "voice_33e87149c79f",
+    "sound": "imported/voice_33e87149c79f"
+  },
+  {
+    "id": 1003,
+    "source": "[P42]阿姨 你K都不要吗.mp4",
+    "label": "阿姨 你K都不要吗",
+    "event": "voice_9e33922e9d9a",
+    "sound": "imported/voice_9e33922e9d9a"
+  },
+  {
+    "id": 1004,
+    "source": "[P44]阿姨 你快点啊 别磨磨蹭蹭的啊.mp4",
+    "label": "阿姨 你快点啊 别磨磨蹭蹭的啊",
+    "event": "voice_5b15a3465457",
+    "sound": "imported/voice_5b15a3465457"
+  },
+  {
+    "id": 1005,
+    "source": "[P47]-单走一个六.mp4",
+    "label": "单走一个六",
+    "event": "voice_325d586c6afe",
+    "sound": "imported/voice_325d586c6afe"
+  },
+  {
+    "id": 1006,
+    "source": "[P56]-玩游戏一定要笑.mp4",
+    "label": "玩游戏一定要笑",
+    "event": "voice_cc658ffebfe6",
+    "sound": "imported/voice_cc658ffebfe6"
+  },
+  {
+    "id": 1007,
+    "source": "三天之内心想事成.mp3",
+    "label": "三天之内心想事成",
+    "event": "voice_050a6ff2002c",
+    "sound": "imported/voice_050a6ff2002c"
+  },
+  {
+    "id": 1008,
+    "source": "不要！.mp3",
+    "label": "不要！",
+    "event": "voice_54f03f890051",
+    "sound": "imported/voice_54f03f890051"
+  },
+  {
+    "id": 1009,
+    "source": "不讲武德.wav",
+    "label": "不讲武德",
+    "event": "voice_5705df7b184a",
+    "sound": "imported/voice_5705df7b184a"
+  },
+  {
+    "id": 1010,
+    "source": "乖乖站好！！（王）.mp3",
+    "label": "乖乖站好！！（王）",
+    "event": "voice_43c93434b714",
+    "sound": "imported/voice_43c93434b714"
+  },
+  {
+    "id": 1011,
+    "source": "也别想活着.mp3",
+    "label": "也别想活着",
+    "event": "voice_1e93dd6c5fa8",
+    "sound": "imported/voice_1e93dd6c5fa8"
+  },
+  {
+    "id": 1012,
+    "source": "什么叫噩梦缠绕.mp3",
+    "label": "什么叫噩梦缠绕",
+    "event": "voice_346f12ac7933",
+    "sound": "imported/voice_346f12ac7933"
+  },
+  {
+    "id": 1013,
+    "source": "你吼那么大声干什么.mp3",
+    "label": "你吼那么大声干什么",
+    "event": "voice_5a9394b1879b",
+    "sound": "imported/voice_5a9394b1879b"
+  },
+  {
+    "id": 1014,
+    "source": "你咋这么自私？.mp3",
+    "label": "你咋这么自私？",
+    "event": "voice_6b01793d6ce8",
+    "sound": "imported/voice_6b01793d6ce8"
+  },
+  {
+    "id": 1015,
+    "source": "你干嘛哈哈哟.wav",
+    "label": "你干嘛哈哈哟",
+    "event": "voice_ed1015ac581b",
+    "sound": "imported/voice_ed1015ac581b"
+  },
+  {
+    "id": 1016,
+    "source": "你很勇嘛.mp3",
+    "label": "你很勇嘛",
+    "event": "voice_374afe243a4a",
+    "sound": "imported/voice_374afe243a4a"
+  },
+  {
+    "id": 1017,
+    "source": "你是一个一个一个.mp3",
+    "label": "你是一个一个一个",
+    "event": "voice_4fe254fe95b5",
+    "sound": "imported/voice_4fe254fe95b5"
+  },
+  {
+    "id": 1018,
+    "source": "全体起立.mp4",
+    "label": "全体起立",
+    "event": "voice_b644826732b9",
+    "sound": "imported/voice_b644826732b9"
+  },
+  {
+    "id": 1019,
+    "source": "听话，让我康康！.mp3",
+    "label": "听话，让我康康！",
+    "event": "voice_a26f97823a93",
+    "sound": "imported/voice_a26f97823a93"
+  },
+  {
+    "id": 1020,
+    "source": "啊！！.mp3",
+    "label": "啊！！",
+    "event": "voice_f0b923ab1fda",
+    "sound": "imported/voice_f0b923ab1fda"
+  },
+  {
+    "id": 1021,
+    "source": "对不起（日语）.mp3",
+    "label": "对不起（日语）",
+    "event": "voice_66f3f7dc5537",
+    "sound": "imported/voice_66f3f7dc5537"
+  },
+  {
+    "id": 1022,
+    "source": "欢快.mp3",
+    "label": "欢快",
+    "event": "voice_a312adc7a69d",
+    "sound": "imported/voice_a312adc7a69d"
+  },
+  {
+    "id": 1023,
+    "source": "汤姆惨叫.mp3",
+    "label": "汤姆惨叫",
+    "event": "voice_af94656fe8ca",
+    "sound": "imported/voice_af94656fe8ca"
+  },
+  {
+    "id": 1024,
+    "source": "猫叫.mp3",
+    "label": "猫叫",
+    "event": "voice_c7e2d2c6bcb3",
+    "sound": "imported/voice_c7e2d2c6bcb3"
+  },
+  {
+    "id": 1025,
+    "source": "疑问音效.mp3",
+    "label": "疑问音效",
+    "event": "voice_846b428b4197",
+    "sound": "imported/voice_846b428b4197"
+  },
+  {
+    "id": 1026,
+    "source": "给我玩阴的是吧.mp3",
+    "label": "给我玩阴的是吧",
+    "event": "voice_45eb4feeb5e7",
+    "sound": "imported/voice_45eb4feeb5e7"
+  },
+  {
+    "id": 1027,
+    "source": "蜘蛛感应.mp3",
+    "label": "蜘蛛感应",
+    "event": "voice_98d92cdeb6d9",
+    "sound": "imported/voice_98d92cdeb6d9"
+  },
+  {
+    "id": 1028,
+    "source": "诡异音效.mp3",
+    "label": "诡异音效",
+    "event": "voice_457b4193e4a7",
+    "sound": "imported/voice_457b4193e4a7"
+  },
+  {
+    "id": 1029,
+    "source": "都是你害得啦！.mp3",
+    "label": "都是你害得啦！",
+    "event": "voice_7d2f1b0ab782",
+    "sound": "imported/voice_7d2f1b0ab782"
+  },
+  {
+    "id": 1030,
+    "source": "野兽惨叫.mp3",
+    "label": "野兽惨叫",
+    "event": "voice_9b3ef597f9eb",
+    "sound": "imported/voice_9b3ef597f9eb"
+  },
+  {
+    "id": 1031,
+    "source": "鸡你太美.wav",
+    "label": "鸡你太美",
+    "event": "voice_bbf42ad1c231",
+    "sound": "imported/voice_bbf42ad1c231"
+  },
+  {
+    "id": 1032,
+    "source": "（刀）咬个打火机.aac",
+    "label": "（刀）咬个打火机",
+    "event": "voice_a5cd84f485b4",
+    "sound": "imported/voice_a5cd84f485b4"
+  },
+  {
+    "id": 1033,
+    "source": "（刀）老二次元了.aac",
+    "label": "（刀）老二次元了",
+    "event": "voice_2b74c02422b5",
+    "sound": "imported/voice_2b74c02422b5"
+  },
+  {
+    "id": 1034,
+    "source": "（团长）你根本没在动物园.aac",
+    "label": "（团长）你根本没在动物园",
+    "event": "voice_c057382ba509",
+    "sound": "imported/voice_c057382ba509"
+  }
+]

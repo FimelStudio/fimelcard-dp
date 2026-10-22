@@ -74,12 +74,12 @@ for(const limit of [1,2,3,32])for(const lordSeat of [2,5,8]){
  }
  assert.equal(w.other.s.dd_max,7);
 }
-for(const music of [0,1,2,9])for(const rounds of [0,1,16,32,33,999])for(const state of [0,1])for(const sameTable of [true,false])for(const game of [10,9]){
- const w=world(),p=w.actors[0];p.s.dd_settings=rounds*10+music;p.s.dd_set_table=sameTable?12:13;w.table.s.ct_state=state;w.table.s.ct_game=game;w.table.s.dd_max=1;
- w.call('settings/save',p);assert.equal(w.table.s.dd_max,music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?rounds:1);assert.equal(w.other.s.dd_max,7);assert.equal(p.s.dd_settings,undefined);assert.equal(w.table.s.dd_audio,music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?music:undefined);
+for(const counter of [0,1,2])for(const counts of [0,1,2])for(const mode of [0,1,2,3])for(const music of [0,1,2,9])for(const rounds of [0,1,16,32,33,999])for(const state of [0,1])for(const sameTable of [true,false])for(const game of [10,9]){
+ const w=world(),p=w.actors[0];p.s.dd_settings=rounds*100000+music*10000+mode*1000+counts*100+counter*10+9;p.s.dd_set_table=sameTable?12:13;w.table.s.ct_state=state;w.table.s.ct_game=game;w.table.s.dd_max=1;
+ w.call('settings/save',p);assert.equal(w.table.s.dd_counter,counter<=1&&counts<=1&&mode<=2&&music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?counter:undefined);assert.equal(w.table.s.dd_max,counter<=1&&counts<=1&&mode<=2&&music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?rounds:1);assert.equal(w.other.s.dd_max,7);assert.equal(p.s.dd_settings,undefined);assert.equal(w.table.s.dd_audio,counter<=1&&counts<=1&&mode<=2&&music<=1&&rounds>=1&&rounds<=32&&state===0&&sameTable&&game===10?music:undefined);
 }
-const dialog=JSON.parse(read('settings/show').slice(read('settings/show').indexOf('{')).replace('$(initial)','1').replace('$(enabled)','true').replace('$(disabled)','false'));
-assert.equal(dialog.inputs[0].end,32);assert.equal(dialog.yes.action.template,'trigger dd_settings set $(rounds)$(music)');
+const dialog=JSON.parse(read('settings/show').slice(read('settings/show').indexOf('{')).replace('$(initial)','1').replace('$(enabled)','true').replace('$(disabled)','false').replace('$(score_mode)','true').replace('$(rob_mode)','false').replace('$(speed_mode)','false').replace('$(counts_on)','true').replace('$(counts_off)','false').replace('$(counter_on)','false').replace('$(counter_off)','true'));
+assert.equal(dialog.inputs[0].end,32);assert.equal(dialog.yes.action.template,'trigger dd_settings set $(rounds)$(music)$(mode)$(counts)$(counter)9');
 assert.ok(!read('deal/start').includes('dd_total'));assert.ok(!read('game/abort').includes('reset @s dd_max'));
 assert.match(read('bid/finish'),/matches 0 run return run function doudizhu:deal\/start/);
 assert.match(read('deal/start'),/data.doudizhu set value \{\}/);
@@ -87,7 +87,14 @@ assert.match(read('load'),/matches 3 run function doudizhu:system\/upgrade_v4/);
 for(const p of ['player/init','bot/init'])assert.match(read(p),/set @s dd_total 0/);
 const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(p+'/'+e.name):[p+'/'+e.name]);
 for(const p of walk('data/doudizhu/function'))for(const m of fs.readFileSync(p,'utf8').matchAll(/\bfunction (doudizhu|cardtable):([\w/]+)/g))assert.ok(fs.existsSync('data/'+m[1]+'/function/'+m[2]+'.mcfunction'),p+' -> '+m[0]);
-console.log('通过：'+cases+'局实际结算指令、正负累计/春天/人机/防重复、100刻自动续局、整场总分、384种设置提交、重载保护及函数引用。');
+console.log('通过：'+cases+'局实际结算指令、正负累计/春天/人机/防重复、100刻自动续局、整场总分、13824种设置提交、重载保护及函数引用。');
 
 for(const enabled of [0,1]){const w=world();w.table.s.dd_audio=enabled;w.fake['#winner:dd_ctx']=2;w.call('game/finish',w.table);for(const a of w.actors.filter(a=>a.player))assert.equal(a.s.dd_music,enabled?(a.s.dd_points>0?3:4):undefined);}
 console.log('通过：关闭音乐时不启动胜负音乐，开启时按阵营播放。');
+
+// 执行实际记牌器计数指令：包含人机座位、出过的牌、未分配牌与其他桌。
+for(const viewer of [2,5,8]){const w=world();w.fake['#hud_table:dd_ctx']=12;w.fake['#hud_viewer:dd_ctx']=viewer;for(const [i,a] of w.actors.entries()){a.tags.add('dd.card');a.s.dd_owner=a.s.dd_seat;a.s.dd_rank=15;}w.other.tags.add('dd.card');w.other.s.dd_id=13;w.other.s.dd_owner=5;w.other.s.dd_rank=15;w.call('hud/counter_count',w.table);assert.equal(w.fake['#counter_15:dd_ctx'],2);assert.equal(w.fake['#counter_17:dd_ctx'],0);w.actors.find(a=>a.s.dd_seat!==viewer).s.dd_owner=-1;w.call('hud/counter_count',w.table);assert.equal(w.fake['#counter_15:dd_ctx'],1);for(const a of w.actors)a.s.dd_owner=0;w.call('hud/counter_count',w.table);assert.equal(w.fake['#counter_15:dd_ctx'],0);}
+console.log('通过：记牌器按观看者分别统计、排除自身/已出/未分配/跨桌牌。');
+
+for(let rank=3;rank<=17;rank++){const w=world();w.fake['#hud_table:dd_ctx']=12;w.fake['#hud_viewer:dd_ctx']=2;for(const a of w.actors){a.tags.add('dd.card');a.s.dd_owner=a.s.dd_seat;a.s.dd_rank=rank;}w.call('hud/counter_count',w.table);for(let r=3;r<=17;r++)assert.equal(w.fake['#counter_'+r+':dd_ctx'],r===rank?2:0);}
+console.log('通过：全部15种点数计数与设置开关保存。');

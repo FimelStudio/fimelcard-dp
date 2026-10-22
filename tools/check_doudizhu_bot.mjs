@@ -59,3 +59,35 @@ assert.equal(simulate([3,3,4],{type:1,len:1,high:14,lord:2,last:3,probe:true}).c
 assert.equal(simulate([3,3,3,3,5],{type:2,len:2,high:14,lord:2,last:3,probe:true}).canPlay,1);
 assert.equal(simulate([16,17,5],{type:13,len:4,high:15,lord:2,last:3,probe:true}).canPlay,1);
 console.log('PASS: 玩家能压单4、队友/对手身份、真实无牌可压、炸弹/王炸应牌和已有选牌恢复。');
+
+// 普通局面仅炸弹/王炸能压时可主动不出，玩家仍可合法出牌。
+const bombHand=[3,3,3,3,5,7,9,11,13];
+const rocketHand=[3,5,7,9,11,16,17];
+for(const hand of [bombHand,rocketHand]){
+ assert.deepEqual(simulate(hand,{type:2,len:2,high:15,enemy:8}).chosen,[]);
+ assert.equal(simulate(hand,{type:2,len:2,high:15,enemy:8,probe:true}).canPlay,1);
+ assert.ok(simulate(hand,{type:2,len:2,high:15,enemy:1}).chosen.length>=2);
+ assert.ok(simulate(hand,{type:2,len:2,high:15,enemy:2}).chosen.length>=2);
+ assert.ok(simulate(hand).chosen.length>0,'领出不能为了保炸而不出');
+}
+assert.deepEqual(simulate(bombHand,{type:1,len:1,high:6,enemy:8}).chosen,[7]);
+// 唯一可压单张来自完整炸弹或王炸时，平时不拆，紧急时仍拦截。
+const splitBomb=[15,15,15,15,3,5,7];
+assert.deepEqual(simulate(splitBomb,{type:1,len:1,high:14,enemy:8}).chosen,[]);
+assert.deepEqual(simulate(splitBomb,{type:1,len:1,high:14,enemy:1}).chosen,[15]);
+assert.deepEqual(simulate([3,5,7,9,11,16,17],{type:1,len:1,high:15,enemy:8}).chosen,[]);
+assert.deepEqual(simulate([3,3,3,3],{type:2,len:2,high:15,enemy:8}).chosen,[3,3,3,3]);
+console.log('PASS: 非紧急保炸/保王、保留普通应牌、报单报双拦截、残局出炸、领出与玩家合法性不受影响。');
+
+// 主动领出应先处理小散牌，不能把报双拦截权重误用为领出对2。
+for(const enemy of [2,8]){
+ assert.deepEqual(simulate([3,15,15],{enemy}).chosen,[3]);
+ assert.deepEqual(simulate([3,4,15,15],{enemy}).chosen,[3]);
+ assert.deepEqual(simulate([3,14,14],{enemy}).chosen,[3]);
+ assert.deepEqual(simulate([3,5,7,15,15],{enemy}).chosen,[3]);
+}
+assert.deepEqual(simulate([3,15,15],{enemy:1}).chosen,[15,15],'报单时避免小单直接放走对手');
+assert.deepEqual(simulate([15,15]).chosen,[15,15],'可直接出完的大对子不保留');
+assert.deepEqual(simulate([3,15,15],{type:2,len:2,high:14,enemy:2}).chosen,[15,15],'跟牌仍应使用对2拦截');
+assert.deepEqual(simulate([10,11,12,13,14]).chosen,[10,11,12,13,14],'整手顺子不受控制牌惩罚');
+console.log('PASS: 领出先处理小单、保留A/2控制牌、报单非单张领出、报双跟牌拦截和直接出完。');
