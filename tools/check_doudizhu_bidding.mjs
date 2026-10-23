@@ -55,7 +55,7 @@ function world(){
  return {table,actors,other,fake,out,call};
 }
 
-function setup(mode,start=2){const w=world();w.table.tags.add('dd.current');Object.assign(w.table.s,{dd_state:2,dd_bidmode:mode,dd_bid:0,dd_bidcount:0,dd_bidphase:0,dd_firstcall:0,dd_bidleft:0,dd_mult:1,dd_lord:0,dd_turn:start});for(const a of w.actors)a.s.dd_eligible=0;return w;}
+function setup(mode,start=2){const w=world();w.table.tags.add('dd.current');Object.assign(w.table.s,{dd_state:2,dd_speed_time:0,dd_bidmode:mode,dd_bid:0,dd_bidcount:0,dd_bidphase:0,dd_firstcall:0,dd_bidleft:0,dd_mult:1,dd_lord:0,dd_turn:start});for(const a of w.actors)a.s.dd_eligible=0;return w;}
 function submit(w,seat,action,fn='bid/rob_submit'){w.fake['#action:dd_ctx']=action;w.call(fn,w.actors.find(a=>a.s.dd_seat===seat));}
 let paths=0;
 for(const firstSeat of [2,5,8])for(let mask=0;mask<8;mask++){
@@ -83,7 +83,7 @@ for(const firstSeat of [2,5,8])for(let mask=0;mask<8;mask++){
 }
 for(const seat of [2,5,8]){
  const w=setup(2);submit(w,seat,207,'bid/speed_submit');assert.equal(w.out.lord,seat);
- for(const a of w.actors)submit(w,a.s.dd_seat,207,'bid/speed_submit');assert.equal(w.out.lord,seat,'手速制仅首个提交生效');assert.equal(w.table.s.dd_mult,1);
+ for(const a of w.actors)submit(w,a.s.dd_seat,207,'bid/speed_submit');assert.equal(w.out.lord,seat,'手速制仅首个提交生效');assert.equal(w.table.s.dd_mult,4);
 }
 const wrong=setup(1);submit(wrong,5,204);assert.equal(wrong.table.s.dd_bid,0);submit(wrong,2,205);assert.equal(wrong.table.s.dd_bid,0);submit(wrong,2,201,'bid/submit');assert.equal(wrong.table.s.dd_bid,0);
 const scores=setup(0);submit(scores,2,201,'bid/submit');submit(scores,5,202,'bid/submit');submit(scores,8,203,'bid/submit');assert.equal(scores.out.lord,8);assert.equal(scores.table.s.dd_bid,3);
@@ -92,3 +92,5 @@ assert.match(read('input/sync_player'),/unless score #tool_turn dd_ctx matches -
 assert.match(read('bot/speed_tick'),/dd_bot_timer matches 60/);
 assert.match(read('bot/speed_tick'),/dd_id = #speed_table dd_ctx/);
 console.log('PASS: '+paths+'条叫抢路径（首位抢即结束/末位自动当选/放弃/跳过/倍数/全不叫）、三人手速竞争、旧叫分回归、越权拒绝与道具路由。');
+
+for(const [ticks,mult] of [[0,4],[39,4],[40,4],[41,2],[60,2],[99,2],[100,2],[101,1],[299,1],[300,1]]){const w=setup(2);w.table.s.dd_speed_time=ticks;submit(w,5,207,'bid/speed_submit');assert.equal(w.table.s.dd_mult,mult);assert.equal(w.out.lord,5);}const timeout=setup(2);for(let i=0;i<300;i++)timeout.call('bid/speed_tick',timeout.table);assert.equal(timeout.out.deals,0);timeout.call('bid/speed_tick',timeout.table);assert.equal(timeout.out.deals,1);assert.equal(timeout.table.s.dd_round,1);submit(timeout,2,207,'bid/speed_submit');assert.equal(timeout.out.lord,undefined);for(const mode of [0,1]){const w=setup(mode);w.call('bid/speed_tick',w.table);assert.equal(w.table.s.dd_speed_time,0);}const late=setup(2);late.table.s.dd_speed_time=301;submit(late,2,207,'bid/speed_submit');assert.equal(late.out.lord,undefined);console.log('PASS: 手速计时0/40/41/100/101/300刻倍数、301刻无人叫重发、不计局数、迟到提交拒绝、其他叫地主模式隔离。');

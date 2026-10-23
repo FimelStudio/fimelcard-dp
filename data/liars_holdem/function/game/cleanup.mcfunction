@@ -23,5 +23,7 @@ scoreboard players reset @s lh_a6
 scoreboard players reset @s lh_a7
 scoreboard players reset @s lh_a8
 tag @s remove lh.controller
+# 清理已完成，先退出游戏状态，避免人数重算再次触发已通过的结束投票。
+scoreboard players set @s ct_state 0
 function cardtable:table/recount_players
 function cardtable:game/return_lobby

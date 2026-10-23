@@ -36,5 +36,7 @@ scoreboard players reset @s hb_reward_pending
 tag @s remove hb.reward_external_wait
 tag @s remove hb.controller
 
+# 清理已完成，先退出游戏状态，避免人数重算再次触发已通过的结束投票。
+scoreboard players set @s ct_state 0
 function cardtable:table/recount_players
 function cardtable:game/return_lobby
