@@ -1,1 +1,7 @@
-dialog show @a[tag=ct.settings_actor,limit=1] {"type":"minecraft:notice","title":{"text":"出包魔法师 · 游戏设置","color":"gold"},"body":[{"type":"minecraft:plain_message","width":440,"contents":{"text":"【牌桌皮肤 · 点击选择】","color":"aqua","bold":true,"underlined":true,"click_event":{"action":"run_command","command":"trigger ct_skin_pick set 4"},"hover_event":{"action":"show_text","value":{"text":"打开默认／典雅皮肤选择；离开本页不会保存尚未提交的游戏设置。"}}}},{"type":"minecraft:plain_message","width":440,"contents":{"text":"固定规则：2至5人，初始生命6点、隐藏手牌5张，先到塔顶8层获胜。当前没有可调整的游戏参数。"}}],"pause":false}
+function abraca:settings/init
+scoreboard players operation @a[tag=ct.settings_actor,limit=1] ab_set_table = @s ct_id
+scoreboard players set @a[tag=ct.settings_actor,limit=1] ab_settings 0
+scoreboard players enable @a[tag=ct.settings_actor,limit=1] ab_settings
+execute store result storage abraca:settings initial int 1 run scoreboard players get @s ab_goal
+data modify storage abraca:settings goal set value "$(goal)"
+function abraca:settings/show with storage abraca:settings

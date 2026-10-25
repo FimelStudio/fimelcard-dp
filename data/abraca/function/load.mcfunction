@@ -1,3 +1,9 @@
+scoreboard objectives add ab_goal dummy
+scoreboard objectives add ab_settings trigger
+scoreboard objectives add ab_set_table dummy
+scoreboard players reset * ab_settings
+scoreboard players reset * ab_set_table
+execute as @e[tag=ct.controller] run function abraca:settings/init
 # 出包魔法师（2至5人）：真实手牌保存在后台，Q键操作牌使用现有咒语牌面。
 scoreboard objectives add ab_ctx dummy
 function abraca:title/ensure_library

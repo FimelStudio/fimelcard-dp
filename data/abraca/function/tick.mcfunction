@@ -1,3 +1,4 @@
+execute as @a[scores={ab_settings=1..}] run function abraca:settings/save
 # 使用掉落物origin分派Q键施法；不依赖可能漏报的丢弃统计。
 execute as @e[type=minecraft:item] if items entity @s contents minecraft:paper[minecraft:custom_data~{abraca:{cast:1b}}] run function abraca:input/drop
 execute as @e[type=minecraft:item] if items entity @s contents minecraft:black_dye[minecraft:custom_data~{abraca:{cast:1b}}] run function abraca:input/drop

@@ -1,6 +1,6 @@
 scoreboard players operation #ctx ab_ctx = @s ab_id
 scoreboard players add @s ab_round 1
-function abraca:log {text:"无人达到8层，重置牌局并开始下一局"}
+function abraca:log {text:"无人达到目标分数，重置牌局并开始下一局"}
 
 # 清理上一局牌库、手牌、按钮和面板；玩家累计塔层不清零。
 execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run function abraca:game/reset_player_round
@@ -35,5 +35,5 @@ tag @a[tag=ab.first_turn] remove ab.first_turn
 
 function abraca:deck/create
 function abraca:deck/create_secret
-tellraw @a[tag=ab.player] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'第 ',color:'yellow'},{score:{name:'@s',objective:'ab_round'},color:'gold'},{text:' 局开始；塔层继续累计，率先达到8层者获胜。',color:'yellow'}]
+tellraw @a[tag=ab.player] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'第 ',color:'yellow'},{score:{name:'@s',objective:'ab_round'},color:'gold'},{text:' 局开始；塔层继续累计，率先达到目标分数者获胜。',color:'yellow'}]
 function abraca:deal/start

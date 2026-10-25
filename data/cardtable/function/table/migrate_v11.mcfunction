@@ -1,7 +1,7 @@
 # 第十一版牌桌：按空间归属修复旧座椅桌号，避免同一张空闲牌桌只有部分座位可加入。
 execute unless data entity @s {data:{cardtable:{menu_version:10}}} run function cardtable:table/migrate_v10
 
-# 默认四座都在桌心水平距离2格处；9格建桌间距保证2.3格内只会命中本桌座椅。
+# 默认四座都在桌心水平距离2格处；6格建桌间距保证2.3格内只会命中本桌座椅。
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @e[type=minecraft:interaction,tag=ct.seat,distance=..2.3] run scoreboard players operation @s ct_id = #ctx_id ct_ctx
 scoreboard players set @e[type=minecraft:interaction,tag=ct.seat,scores={ct_seat=1},distance=..2.3] ct_kind 11

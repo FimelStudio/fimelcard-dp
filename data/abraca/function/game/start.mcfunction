@@ -1,3 +1,4 @@
+function abraca:settings/init
 execute if score @s ct_joined > @s ct_capacity run return fail
 execute unless score @s ct_joined matches 2..5 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'需要2至5名玩家入座；五人局请使用八座桌。',color:'yellow'}]
 execute unless score @s ct_joined matches 2..5 run return fail

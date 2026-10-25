@@ -2,8 +2,8 @@
 execute unless entity @s[type=minecraft:player] run return fail
 
 # 防止两张牌桌过近而导致座位和菜单交互范围重叠
-execute if entity @e[type=minecraft:marker,tag=ct.controller,distance=..9] run tellraw @s [{text:'[牌桌] ',color:'dark_aqua'},{text:'附近已有牌桌，请至少间隔9格。',color:'red'}]
-execute if entity @e[type=minecraft:marker,tag=ct.controller,distance=..9] run return fail
+execute if entity @e[type=minecraft:marker,tag=ct.controller,distance=..5.99] run tellraw @s [{text:'[牌桌] ',color:'dark_aqua'},{text:'附近已有牌桌，请至少间隔6格。',color:'red'}]
+execute if entity @e[type=minecraft:marker,tag=ct.controller,distance=..5.99] run return fail
 
 # 用临时标签保留创建者，并把5×5结构的中心对齐到方块中央
 tag @e[type=minecraft:marker,tag=ct.new_controller] remove ct.new_controller

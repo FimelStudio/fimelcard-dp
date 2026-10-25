@@ -1,8 +1,1 @@
-# 校正当前牌桌设置，并把初始值交给Dialog宏
-function liars_holdem:game/init_table
-execute store result storage liars_holdem:settings gun_time int 1 run scoreboard players get @s lh_gun_time
-
-scoreboard players operation @a[tag=ct.settings_actor,limit=1] lh_set_table = @s ct_id
-scoreboard players set @a[tag=ct.settings_actor,limit=1] lh_settings 0
-scoreboard players enable @a[tag=ct.settings_actor,limit=1] lh_settings
-function liars_holdem:settings/open_dialog with storage liars_holdem:settings
+dialog show @a[tag=ct.settings_actor,limit=1] {"type":"minecraft:notice","title":{"text":"德州扑克 · 游戏设置","color":"gold"},"body":[{"type":"minecraft:plain_message","width":440,"contents":{"text":"【牌桌皮肤 · 点击选择】","color":"aqua","bold":true,"underlined":true,"click_event":{"action":"run_command","command":"trigger ct_skin_pick set 4"},"hover_event":{"action":"show_text","value":{"text":"选择本桌皮肤；离开本页不会保存尚未提交的游戏设置。"}}}},{"type":"minecraft:plain_message","width":440,"contents":{"text":"当前游戏没有可用设置。","color":"gray"}}],"pause":false}

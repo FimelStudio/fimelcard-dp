@@ -54,3 +54,6 @@ execute as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.sofa_v2] at @s if 
 
 execute as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/bamboo_chair"] run function cardtable:skin/rotate_theme_chair
 execute as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/garden_chair"] run function cardtable:skin/rotate_theme_chair
+
+# 关闭已有牌桌家具的亮度覆盖。
+function cardtable:display/repair_furniture_brightness

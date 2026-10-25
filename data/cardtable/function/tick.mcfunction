@@ -32,6 +32,7 @@ execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.c
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.sofa_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/sofa"] run function cardtable:skin/rotate_sofa
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/bamboo_chair"] run function cardtable:skin/rotate_theme_chair
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/garden_chair"] run function cardtable:skin/rotate_theme_chair
+execute if score #clock ct_ctx matches 10.. run function cardtable:display/repair_furniture_brightness
 execute if score #clock ct_ctx matches 10.. run scoreboard players set #clock ct_ctx 0
 
 # 每刻末尾更新在线心跳；离线玩家的记分会保持为0

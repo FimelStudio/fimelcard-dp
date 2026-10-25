@@ -45,11 +45,11 @@ function importModel(name,id,tint=0xffffff,fit=null){
  models.push({name,sourceModel:src,customModelData:id,tint,bounds:b});return name;
 }
 const themes=[
- {id:2,key:'electro',name:'电子音乐',description:'磨制黑石桌面、青蓝沙发，四角分别为调音台、舞台音箱、抹茶芭菲和效果器。',table:[10786],chair:[25037,0x32b8ce],corner:[25041],props:[[153000],[153065],[153031],[153013]]},
- {id:3,key:'toys',name:'玩偶乐园',description:'樱花木木板桌面、粉色沙发，四角卡比与Fumo玩偶。',table:[17015],chair:[25037,0xef92ba],corner:[25042],props:[[101013,0xf59ac2],[101008]]},
- {id:4,key:'vintage',name:'欧式复古',description:'深色橡木木板桌面、棕色沙发，欧式茶几配台灯与留声机。',table:[15015],chair:[25037,0x79503b],corner:[25038],props:[[25033],[25046]]},
- {id:5,key:'bamboo',name:'竹影茶室',description:'竹马赛克桌面、竹木扶手椅，四角竹盆栽与团状多肉盆栽。',table:[20016],chair:[20025,0x94a76a],chairOffset:0,corner:[20016],props:[[100011,0xd4c4a0],[100003,0xd4c4a0]]},
- {id:6,key:'garden',name:'春日花园',description:'去皮白桦原木桌面、薄荷绿扶手椅，四角雏菊与向日葵。',table:[12014],chair:[12025,0x8fbf98],chairOffset:0,corner:[25042],props:[[100001,0xffe8bd],[100010,0xd3e7ed]]}
+ {id:2,key:'electro',name:'电音',description:'磨制黑石桌面、青蓝沙发，四角分别为调音台、舞台音箱、抹茶芭菲和效果器。',table:[10786],chair:[25037,0x32b8ce],corner:[25041],props:[[153000],[153065],[153031],[153013]]},
+ {id:3,key:'toys',name:'玩偶',description:'樱花木木板桌面、粉色沙发，四角卡比与Fumo玩偶。',table:[17015],chair:[25037,0xef92ba],corner:[25042],props:[[101013,0xf59ac2],[101008]]},
+ {id:4,key:'vintage',name:'复古',description:'深色橡木木板桌面、棕色沙发，欧式茶几配台灯与留声机。',table:[15015],chair:[25037,0x79503b],corner:[25038],props:[[25033],[25046]]},
+ {id:5,key:'bamboo',name:'竹影',description:'竹马赛克桌面、竹木扶手椅，四角竹盆栽与团状多肉盆栽。',table:[20016],chair:[20025,0x94a76a],chairOffset:0,corner:[20016],props:[[100011,0xd4c4a0],[100003,0xd4c4a0]]},
+ {id:6,key:'garden',name:'春日',description:'去皮白桦原木桌面、薄荷绿扶手椅，四角雏菊与向日葵。',table:[12014],chair:[12025,0x8fbf98],chairOffset:0,corner:[25042],props:[[100001,0xffe8bd],[100010,0xd3e7ed]]}
 ];
 for(const t of themes){
  t.models={table:importModel(t.key+'_table',...t.table),chair:importModel(t.key+'_chair',...t.chair),corner:importModel(t.key+'_corner',t.corner[0],t.corner[1],{width:16,height:16}),props:t.props.map((p,i)=>importModel(t.key+'_prop'+i,p[0],p[1],{width:12,height:14}))};

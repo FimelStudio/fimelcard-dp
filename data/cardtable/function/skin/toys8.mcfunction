@@ -1,4 +1,4 @@
-# 玩偶乐园：保留座位交互和桌号，装饰仅位于四角。
+# 玩偶：保留座位交互和桌号，装饰仅位于四角。
 fill ~-2 ~ ~-2 ~1 ~ ~1 minecraft:barrier
 execute positioned ~-1.5 ~0.5 ~-1.5 summon minecraft:item_display run function cardtable:skin/item {model:"toys_table",yaw:0}
 execute positioned ~-1.5 ~0.5 ~-0.5 summon minecraft:item_display run function cardtable:skin/item {model:"toys_table",yaw:0}
