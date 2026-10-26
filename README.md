@@ -1,8 +1,10 @@
-# Fimel Cards 26.2
+# Fimel Cards 26.2 v1.0
+
+版本分支：`26.2`，请配套使用资源包的同名分支。
 
 Minecraft Java 26.2 多人卡牌桌游数据包。作者：歪浪Ylong、水晶Cesmos。
 
-[下载](https://studiofimel.com/#/works/fimel-card) · [配套资源包](https://github.com/FimelStudio/fimelcard-rp) · [完整文档](docs/README.md) · [仓库](https://github.com/FimelStudio/fimelcard-dp)
+[下载](https://studiofimel.com/#/works/fimel-card) · [配套资源包](https://github.com/FimelStudio/fimelcard-rp/tree/26.2) · [完整文档](docs/README.md) · [仓库](https://github.com/FimelStudio/fimelcard-dp)
 
 ## 安装与游玩前提
 
