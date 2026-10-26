@@ -1,8 +1,10 @@
-# Fimel Cards 26.2
+# Fimel Cards 26.1 / 26.1.1 / 26.1.2 v1.0
 
-Minecraft Java 26.2 多人卡牌桌游数据包。作者：歪浪Ylong、水晶Cesmos。
+版本分支：`26.1-26.1.1-26.1.2`。请配套使用资源包的 `26.1-26.1.1-26.1.2` 分支。
 
-[下载](https://studiofimel.com/#/works/fimel-card) · [配套资源包](https://github.com/FimelStudio/fimelcard-rp) · [完整文档](docs/README.md) · [仓库](https://github.com/FimelStudio/fimelcard-dp)
+Minecraft Java 26.1、26.1.1、26.1.2 多人卡牌桌游数据包。作者：歪浪Ylong、水晶Cesmos。
+
+[下载](https://studiofimel.com/#/works/fimel-card) · [配套资源包](https://github.com/FimelStudio/fimelcard-rp/tree/26.1-26.1.1-26.1.2) · [完整文档](docs/README.md) · [仓库](https://github.com/FimelStudio/fimelcard-dp)
 
 ## 安装与游玩前提
 
@@ -17,13 +19,13 @@ Minecraft Java 26.2 多人卡牌桌游数据包。作者：歪浪Ylong、水晶C
 
 ## 兼容性
 
-以下针对 Minecraft Java 26.2，Fabric 和钠的结论来自作者实测。
+本分支适用于 Minecraft Java 26.1、26.1.1、26.1.2。作者在 26.2 上实测 Fabric 和钠兼容；本分支对应版本的模组组合仍需游戏内确认。
 
 | 环境         | 兼容情况                     |
 | ------------ | ---------------------------- |
 | 原版         | 本包的目标环境，无需额外模组 |
-| Fabric       | 已实测兼容                   |
-| 钠（Sodium） | 已实测兼容                   |
+| Fabric       | 26.2 已实测；本分支待游戏内验证                   |
+| 钠（Sodium） | 26.2 已实测；本分支待游戏内验证                   |
 | Forge        | 尚未验证                     |
 | OptiFine     | 尚未验证                     |
 

@@ -1,7 +1,13 @@
 {
   "pack": {
-    "description": "fimel cards 26.2 — 作者：Ylong",
-    "min_format": 107,
-    "max_format": 107
+    "description": "Fimel Cards 26.1 / 26.1.1 / 26.1.2 v1.0 - Ylong / Cesmos",
+    "min_format": [
+      101,
+      1
+    ],
+    "max_format": [
+      101,
+      1
+    ]
   }
 }
