@@ -1,6 +1,6 @@
 # Fast Card自己的中央抢按按钮：外观为展示实体，点击体仍是交互实体
 function fast_card:table/clear_button
-summon minecraft:block_display ~ ~1.01 ~ {data:{fast_card:{new_game_entity:1b,button_display:1b}},block_state:{Name:'minecraft:polished_blackstone_button',Properties:{face:'floor',facing:'north',powered:'false'}},transformation:{translation:[-0.75f,0.0f,-0.75f],left_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[1.35f,1.35f,1.35f],right_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[1.5f,1.5f,1.5f]},view_range:24f,brightness:{block:15,sky:15}}
+summon minecraft:block_display ~ ~1.01 ~ {data:{fast_card:{new_game_entity:1b,button_display:1b}},block_state:{id:'minecraft:polished_blackstone_button',properties:{face:'floor',facing:'north',powered:'false'}},transformation:{translation:[-0.75f,0.0f,-0.75f],left_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[1.35f,1.35f,1.35f],right_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[1.5f,1.5f,1.5f]},view_range:24f,brightness:{block:15,sky:15}}
 summon minecraft:interaction ~ ~0.96 ~ {data:{fast_card:{new_game_entity:1b,button:1b}},width:0.92f,height:0.48f,response:1b}
 
 execute as @e[nbt={data:{fast_card:{new_game_entity:1b}}},distance=..2] run tag @s add fc.new_game_entity

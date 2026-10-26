@@ -1,1 +1,24 @@
-{"criteria":{"click":{"trigger":"minecraft:player_interacted_with_entity","conditions":{"entity":[{"condition":"minecraft:entity_scores","entity":"this","scores":{"ct_kind":41}}]}}},"rewards":{"function":"abraca:click/played_pile"}}
+{
+  "criteria": {
+    "click": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:all_of",
+          "terms": [
+            {
+              "type": "minecraft:entity_scores",
+              "entity": "this",
+              "scores": {
+                "ct_kind": 41
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "abraca:click/played_pile"
+  }
+}
