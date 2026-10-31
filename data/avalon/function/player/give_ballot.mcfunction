@@ -1,0 +1,2 @@
+$execute unless items entity @s $(slot) * run return run item replace entity @s $(slot) with minecraft:$(item)[minecraft:custom_data={avalon:{ballot:1b,table:$(table),epoch:$(epoch),code:$(code)}},minecraft:item_name={text:"$(label)",color:"$(color)",italic:false}] 1
+$give @s minecraft:$(item)[minecraft:custom_data={avalon:{ballot:1b,table:$(table),epoch:$(epoch),code:$(code)}},minecraft:item_name={text:"$(label)",color:"$(color)",italic:false}] 1

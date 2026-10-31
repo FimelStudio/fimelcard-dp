@@ -29,7 +29,7 @@ for p in (F/'dialog').glob('*.mcfunction'):
  assert 'selector:' not in p.read_text(encoding='utf8'),p
 assert 'av_ui_epoch = @e[tag=av.current,limit=1] av_epoch' in read('input/handle')
 assert 'av_ui_base' in read('input/handle')
-assert 'av_role matches 4..7 run return 0' in read('input/mission')
+assert 'if score #action av_ctx matches 31 unless score @a[tag=av.actor,limit=1] av_role matches 4..7 run return' in read('input/mission')
 assert 'scoreboard players set @s av_state 0' in read('game/abort')
 assert 'execute at @s run function cardtable:game/return_lobby' in read('game/abort')
 assert read('game/finish').startswith('execute unless score @s av_state matches 1..4')

@@ -32,12 +32,9 @@ execute store result storage avalon:ui need int 1 run scoreboard players get @e[
 function avalon:dialog/public with storage avalon:ui
 execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ctx as @a[tag=av.audience] run function avalon:dialog/team_button
 execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ctx run function avalon:dialog/button {code:10,label:"选好队伍，开始投票／强制出征"}
-execute if score #state av_ctx matches 2 if score @s av_vote matches 0 run function avalon:dialog/button {code:20,label:"同意组队"}
-execute if score #state av_ctx matches 2 if score @s av_vote matches 0 run function avalon:dialog/button {code:21,label:"反对组队"}
-execute if score #state av_ctx matches 3 if score @s av_selected matches 1 if score @s av_mission matches 0 run function avalon:dialog/button {code:30,label:"任务成功"}
-execute if score #state av_ctx matches 3 if score @s av_selected matches 1 if score @s av_mission matches 0 if score #role av_ctx matches 4.. run function avalon:dialog/button {code:31,label:"任务失败"}
 execute if score #state av_ctx matches 1..3 if score #role av_ctx matches 5 run function avalon:dialog/button {code:40,label:"提前翻牌刺杀…"}
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 as @a[tag=av.audience,scores={av_role=1..3}] run function avalon:dialog/target_button
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 if score @s av_target matches 1..8 run function avalon:dialog/button {code:60,label:"确认刺杀所选玩家（结束游戏）"}
 function avalon:dialog/button {code:99,label:"刷新／等待其他玩家"}
 function avalon:dialog/show with storage avalon:ui
+function avalon:player/ballots

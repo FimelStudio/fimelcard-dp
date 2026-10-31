@@ -27,3 +27,6 @@ title @a[tag=av.player] actionbar {text:""}
 execute as @a[tag=av.player] run function avalon:player/identity
 
 execute as @e[type=minecraft:marker,tag=av.controller,scores={av_state=1..5}] at @s run function avalon:map/render
+
+execute as @e[type=minecraft:marker,tag=av.controller,scores={av_state=1..5}] at @s run function avalon:hud/update
+execute as @a[tag=av.player] at @s run function avalon:input/reopen
