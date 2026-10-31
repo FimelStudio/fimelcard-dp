@@ -1,3 +1,4 @@
+scoreboard players set #manual_ui av_ctx 0
 scoreboard players add @s av_epoch 1
 function avalon:context
 dialog clear @a[tag=av.audience]
