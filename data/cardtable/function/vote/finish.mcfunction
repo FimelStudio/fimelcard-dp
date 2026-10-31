@@ -11,3 +11,5 @@ execute if score @s ct_game matches 10 run return run function doudizhu:game/end
 execute if score @s ct_game matches 11 run return run function uno:game/end_vote
 execute if score @s ct_game matches 12 run return run function chess:game/end_vote
 execute if score @s ct_game matches 13 run return run function xiangqi:game/end_vote
+execute if score @s ct_game matches 14 run return run function gomoku:game/end_vote
+execute if score @s ct_game matches 15 run return run function aeroplane_chess:game/end_vote

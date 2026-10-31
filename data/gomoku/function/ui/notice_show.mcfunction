@@ -1,0 +1,1 @@
+$dialog show @s {"type":"minecraft:notice","title":{"text":"五子棋 · 对局面板","color":"gold"},"body":[{"type":"minecraft:plain_message","width":460,"contents":{"text":"$(phase)","color":"yellow"}}],"pause":false}

@@ -4,7 +4,7 @@ scoreboard players operation #pick_choice ct_ctx -= @s ct_pick_base
 scoreboard players reset @s ct_game_pick
 execute unless entity @s[tag=ct.player] run return run function cardtable:menu/picker/invalid
 execute unless score @s ct_pick_table = @s ct_id run return run function cardtable:menu/picker/invalid
-execute unless score #pick_choice ct_ctx matches 1..13 run return run function cardtable:menu/picker/invalid
+execute unless score #pick_choice ct_ctx matches 1..15 run return run function cardtable:menu/picker/invalid
 scoreboard players operation #pick_table ct_ctx = @s ct_pick_table
 tag @a[tag=ct.switch_actor] remove ct.switch_actor
 tag @e[tag=ct.switch_controller] remove ct.switch_controller

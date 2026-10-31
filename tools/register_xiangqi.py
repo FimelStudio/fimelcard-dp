@@ -60,7 +60,7 @@ def main():
         name = f'menu/picker/show{capacity}'
         raw = read(name)
         dialog = json.loads(raw[raw.index('{'):])
-        assert len(dialog['actions']) in (12,13)
+        assert len(dialog['actions']) >= 12
         action = {'label':{'text':'中国象棋（1–2人+人机）'},'width':150,
                   'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p13)'}}
         if len(dialog['actions']) == 12:

@@ -15,7 +15,7 @@ say XIANGQI_DIALOG_SETTING_DEFAULT_COMPILED
 data merge storage xiangqi:settings {"board":0,"palette":0,"orient":0,"first":0,"time":0,"level":1,"hints":0,"close":100000000}
 function xiangqi:settings/root
 say XIANGQI_DIALOG_SETTING_MINIMUM_COMPILED
-data merge storage xiangqi:settings {"board":4,"palette":3,"orient":1,"first":1,"time":30,"level":3,"hints":1,"close":100000000}
+data merge storage xiangqi:settings {"board":1,"palette":1,"orient":1,"first":1,"time":30,"level":3,"hints":1,"close":100000000}
 function xiangqi:settings/root
 say XIANGQI_DIALOG_SETTING_MAXIMUM_COMPILED
 function xiangqi:rules/show

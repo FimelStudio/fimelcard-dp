@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const games = [
   ['hanabi', 'hb'], ['abraca', 'ab'], ['bullshit', 'bw'], ['decrypto', 'dc'],
-  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'],
+  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'], ['gomoku', 'gm'], ['aeroplane_chess', 'ac'],
 ];
 const pack = new URL('../', import.meta.url);
 const readFunction = id => fs.readFileSync(new URL(`data/${id.replace(':', '/function/')}.mcfunction`, pack), 'utf8');
@@ -115,7 +115,7 @@ for (const [namespace, prefix] of games) {
   check('恰好 8 格', player(), [edge], edge);
   const close = table('near', [2, 1, 0]), further = table('further', [6, 0, 0]);
   check('多个同游戏桌取最近', player(), [further, close], close);
-  if (namespace === 'chess') {
+  if (['chess','xiangqi','gomoku','aeroplane_chess'].includes(namespace)) {
     const preview = table('preview', [0.2, 0, 0]); preview.scores.ct_state = 0;
     check('大厅预览更近时选择进行中的局', player(), [preview, close], close);
     check('只有大厅预览时拒绝中止', player(), [preview]);

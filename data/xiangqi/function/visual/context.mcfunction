@@ -10,13 +10,8 @@ data modify storage xiangqi:visual palette set value "ebony"
 data modify storage xiangqi:visual board set value "classic"
 execute if score #vis_palette xq_ctx matches 0 run data modify storage xiangqi:visual palette set value "ebony"
 execute if score #vis_palette xq_ctx matches 1 run data modify storage xiangqi:visual palette set value "walnut"
-execute if score #vis_palette xq_ctx matches 2 run data modify storage xiangqi:visual palette set value "ice"
-execute if score #vis_palette xq_ctx matches 3 run data modify storage xiangqi:visual palette set value "jade"
 execute if score #vis_board xq_ctx matches 0 run data modify storage xiangqi:visual board set value "classic"
-execute if score #vis_board xq_ctx matches 1 run data modify storage xiangqi:visual board set value "green"
-execute if score #vis_board xq_ctx matches 2 run data modify storage xiangqi:visual board set value "wood"
-execute if score #vis_board xq_ctx matches 3 run data modify storage xiangqi:visual board set value "blue"
-execute if score #vis_board xq_ctx matches 4 run data modify storage xiangqi:visual board set value "purple"
+execute if score #vis_board xq_ctx matches 1 run data modify storage xiangqi:visual board set value "wood"
 scoreboard players operation #vis_redge xq_ctx = #vis_orient xq_ctx
 scoreboard players operation #vis_bedge xq_ctx = #vis_orient xq_ctx
 scoreboard players add #vis_bedge xq_ctx 2

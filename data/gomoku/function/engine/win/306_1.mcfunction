@@ -1,0 +1,19 @@
+execute unless data entity @s data.gomoku{win:[306]} run data modify entity @s data.gomoku.win append value 306
+execute if score #left gm_ctx matches 1.. unless data entity @s data.gomoku{win:[287]} run data modify entity @s data.gomoku.win append value 287
+execute if score #left gm_ctx matches 2.. unless data entity @s data.gomoku{win:[268]} run data modify entity @s data.gomoku.win append value 268
+execute if score #left gm_ctx matches 3.. unless data entity @s data.gomoku{win:[249]} run data modify entity @s data.gomoku.win append value 249
+execute if score #left gm_ctx matches 4.. unless data entity @s data.gomoku{win:[230]} run data modify entity @s data.gomoku.win append value 230
+execute if score #left gm_ctx matches 5.. unless data entity @s data.gomoku{win:[211]} run data modify entity @s data.gomoku.win append value 211
+execute if score #left gm_ctx matches 6.. unless data entity @s data.gomoku{win:[192]} run data modify entity @s data.gomoku.win append value 192
+execute if score #left gm_ctx matches 7.. unless data entity @s data.gomoku{win:[173]} run data modify entity @s data.gomoku.win append value 173
+execute if score #left gm_ctx matches 8.. unless data entity @s data.gomoku{win:[154]} run data modify entity @s data.gomoku.win append value 154
+execute if score #left gm_ctx matches 9.. unless data entity @s data.gomoku{win:[135]} run data modify entity @s data.gomoku.win append value 135
+execute if score #left gm_ctx matches 10.. unless data entity @s data.gomoku{win:[116]} run data modify entity @s data.gomoku.win append value 116
+execute if score #left gm_ctx matches 11.. unless data entity @s data.gomoku{win:[97]} run data modify entity @s data.gomoku.win append value 97
+execute if score #left gm_ctx matches 12.. unless data entity @s data.gomoku{win:[78]} run data modify entity @s data.gomoku.win append value 78
+execute if score #left gm_ctx matches 13.. unless data entity @s data.gomoku{win:[59]} run data modify entity @s data.gomoku.win append value 59
+execute if score #left gm_ctx matches 14.. unless data entity @s data.gomoku{win:[40]} run data modify entity @s data.gomoku.win append value 40
+execute if score #left gm_ctx matches 15.. unless data entity @s data.gomoku{win:[21]} run data modify entity @s data.gomoku.win append value 21
+execute if score #left gm_ctx matches 16.. unless data entity @s data.gomoku{win:[2]} run data modify entity @s data.gomoku.win append value 2
+execute if score #right gm_ctx matches 1.. unless data entity @s data.gomoku{win:[325]} run data modify entity @s data.gomoku.win append value 325
+execute if score #right gm_ctx matches 2.. unless data entity @s data.gomoku{win:[344]} run data modify entity @s data.gomoku.win append value 344

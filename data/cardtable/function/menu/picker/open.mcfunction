@@ -32,5 +32,9 @@ scoreboard players add #pick_button ct_ctx 1
 execute store result storage cardtable:picker p12 int 1 run scoreboard players get #pick_button ct_ctx
 scoreboard players add #pick_button ct_ctx 1
 execute store result storage cardtable:picker p13 int 1 run scoreboard players get #pick_button ct_ctx
+scoreboard players add #pick_button ct_ctx 1
+execute store result storage cardtable:picker p14 int 1 run scoreboard players get #pick_button ct_ctx
+scoreboard players add #pick_button ct_ctx 1
+execute store result storage cardtable:picker p15 int 1 run scoreboard players get #pick_button ct_ctx
 execute if score @s ct_capacity matches 8 run return run function cardtable:menu/picker/show8 with storage cardtable:picker
 function cardtable:menu/picker/show4 with storage cardtable:picker

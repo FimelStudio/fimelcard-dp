@@ -8,6 +8,7 @@ import base64
 import copy
 import json
 import math
+import shutil
 import uuid
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -21,11 +22,9 @@ PIECES={1:'pawn',2:'horse',3:'elephant',4:'rook',5:'cannon',6:'general',7:'advis
 LETTERS={'red':{1:'\u5175',2:'\u9a6c',3:'\u76f8',4:'\u8f66',5:'\u70ae',6:'\u5e05',7:'\u4ed5'},'black':{1:'\u5352',2:'\u9a6c',3:'\u8c61',4:'\u8f66',5:'\u70ae',6:'\u5c06',7:'\u58eb'}}
 BOARDS={
 'classic':('#e6c694','#ecd4ab','#a48553','#41301f'),
-'green':('#d3dbc1','#e4e9d6','#9cac81','#3f5534'),
 'wood':('#cfa472','#e3bc8a','#9d7048','#50351f'),
-'blue':('#c6d9e2','#e0ebef','#91aeba','#344e5c'),
-'purple':('#d4c6df','#e7dfed','#aa92bb','#574068')}
-PALETTES={'ebony':('#f0dab2','#e6cda1','#b72b27','#28272c'),'walnut':('#d8ac72','#edc895','#9c2722','#33291e'),'ice':('#dceef5','#f2fafb','#bd343c','#254d6b'),'jade':('#b5d7c2','#e2edcf','#a93129','#205748')}
+}
+PALETTES={'ebony':('#f0dab2','#e6cda1','#b72b27','#28272c'),'walnut':('#d8ac72','#edc895','#9c2722','#33291e')}
 LAYOUTS={4:{'step':.255,'piece_scale':.231},8:{'step':.35,'piece_scale':.317}}
 SEAT_EDGES={4:{1:2,2:3,3:0,4:1},8:{1:2,2:2,3:3,4:3,5:0,6:0,7:1,8:1}}
 
@@ -89,6 +88,21 @@ def blockbench_source(model,texture,target):
 
 def export_resourcepack():
  SOURCE.mkdir(parents=True,exist_ok=True)
+ # 删除固定列表内的旧配色；每个绝对路径须位于本资源包内。
+ for subtree in ('models/item/xiangqi','items/xiangqi','textures/item/xiangqi'):
+  for name in ('green','blue','purple'):
+   suffix='.png' if subtree.startswith('textures/') else '.json'
+   path=(ASSETS/subtree/f'board_{name}{suffix}').resolve()
+   assert path.is_relative_to(RP.resolve()),path
+   path.unlink(missing_ok=True)
+  for name in ('ice','jade'):
+   path=(ASSETS/subtree/name).resolve()
+   assert path.is_relative_to(RP.resolve()),path
+   if path.exists():shutil.rmtree(path)
+ for name in ('ice','jade'):
+  path=(SOURCE/'models'/name).resolve()
+  assert path.is_relative_to(RP.resolve()),path
+  if path.exists():shutil.rmtree(path)
  for palette,(base,top,red,black) in PALETTES.items():
   edge=Image.new('RGB',(64,64),base);draw=ImageDraw.Draw(edge)
   for y in range(64):
@@ -138,7 +152,7 @@ def export_resourcepack():
   for start,end in [([.6,0,.6],[15.4,.05,1.25]),([.6,0,14.75],[15.4,.05,15.4]),([.6,0,1.25],[1.25,.05,14.75]),([14.75,0,1.25],[15.4,.05,14.75])]:
    elements.append({'from':start,'to':end,'faces':{face:{'texture':'#frame'} for face in ('up','down','north','east','south','west')}})
   item_model(name,{'textures':{'frame':texture,'particle':texture},'elements':elements})
- preview=Image.new('RGB',(576*5,640+160),'#24262b')
+ preview=Image.new('RGB',(max(576*len(BOARDS),720*len(PALETTES)),640+160),'#24262b')
  for index,name in enumerate(BOARDS):preview.paste(Image.open(ASSETS/f'textures/item/xiangqi/board_{name}.png'),(576*index,0))
  for index,palette in enumerate(PALETTES):
   for j,side in enumerate(('red','black')):
@@ -410,7 +424,7 @@ def export_notes():
 \u68cb\u76d8\u3001\u68cb\u5b50\u7eb9\u7406\u548c\u5706\u76d8\u51e0\u4f55\u5747\u4e3a Fimel Cards \u81ea\u5236\uff0c\u672a\u4f7f\u7528\u7f51\u7ad9\u7684\u68cb\u76d8\u56fe\u7247\u6216\u7b2c\u4e09\u65b9\u68cb\u5b50\u6a21\u578b\u3002
 \u68cb\u5b50\u4f7f\u7528 32 \u4e2a Java \u539f\u7248\u5143\u7d20\u62fc\u6210\u8fd1\u5706\u5f62\u8fb9\u7f18\uff0c\u76f4\u5f84 15/16\uff0c\u539a\u5ea6 3/16\uff0c\u65e0\u9700 OptiFine \u6216\u6a21\u7ec4\u3002
 \u4e03\u79cd\u7ea2\u65b9\u68cb\u5b50\u4e3a\u5e05\u3001\u4ed5\u3001\u76f8\u3001\u9a6c\u3001\u8f66\u3001\u70ae\u3001\u5175\uff1b\u9ed1\u65b9\u4e3a\u5c06\u3001\u58eb\u3001\u8c61\u3001\u9a6c\u3001\u8f66\u3001\u70ae\u3001\u5352\u3002
-\u56db\u79cd\u68cb\u5b50\u6750\u8d28\u3001\u4e94\u79cd\u68cb\u76d8\u914d\u8272\u53ef\u5728\u6e38\u620f\u8bbe\u7f6e\u4e2d\u8c03\u6574\u3002 `palettes.png` \u4e3a\u9884\u89c8\uff0c`models/` \u5185\u662f\u53ef\u4ee5\u5728 Blockbench \u7ee7\u7eed\u7f16\u8f91\u7684 .bbmodel\u3002
+\u7ecf\u5178\u548c\u6728\u8272\u4e24\u79cd\u68cb\u5b50\u6750\u8d28\u4e0e\u68cb\u76d8\u914d\u8272\u53ef\u5728\u6e38\u620f\u8bbe\u7f6e\u4e2d\u8c03\u6574\u3002 `palettes.png` \u4e3a\u9884\u89c8\uff0c`models/` \u5185\u662f\u53ef\u4ee5\u5728 Blockbench \u7ee7\u7eed\u7f16\u8f91\u7684 .bbmodel\u3002
 
 \u751f\u6210\u65b9\u6cd5\uff1a\u4ece\u6570\u636e\u5305\u76ee\u5f55\u6267\u884c `python tools/build_xiangqi_visual.py`\uff0c\u4f9d\u8d56 Pillow \u548c Windows \u6977\u4f53\u5b57\u4f53 simkai.ttf\u3002
 \u903b\u8f91\u683c\u53f7 `rank*9+file`\uff0c\u7ea2\u65b9\u5e95\u7ebf\u4e3a rank=0\uff0c\u7ea2\u65b9\u5c06\u5e05\u4f4d\u4e8e file=4\u3002

@@ -13,6 +13,8 @@ execute if entity @s[tag=wq.player] run function wenfei:player/clear_state
 execute if entity @s[tag=sk.player] run function skull:player/clear_state
 execute if entity @s[tag=dd.player] run function doudizhu:player/clear_state
 execute if entity @s[tag=un.player] run function uno:player/clear_state
+execute if entity @s[tag=gm.player] run function gomoku:player/clear_state
+execute if entity @s[tag=ac.player] run function aeroplane_chess:player/clear_state
 function cardtable:seat/remove_player
 execute if entity @s[tag=ch.player] run function chess:player/clear_state
 execute if entity @s[tag=xq.player] run function xiangqi:player/clear_state

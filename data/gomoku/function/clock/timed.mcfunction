@@ -1,0 +1,1 @@
+$execute as @e[type=minecraft:text_display,tag=gm.clock] if score @s ct_id = #table gm_ctx run data modify entity @s text set value [{text:"五子棋 · $(status)\n",color:"gold"},{text:"$(poslabel) $(rm):$(rs)",color:"$(poscolor)"},{text:"　│　",color:"dark_gray"},{text:"$(neglabel) $(bm):$(bs)",color:"$(negcolor)"}]

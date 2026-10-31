@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+from collections import Counter
 
 PACK = Path(__file__).resolve().parents[1]
 A = '@e[type=minecraft:marker,tag=xg.table,scores={ct_id=101},limit=1]'
@@ -164,7 +165,7 @@ $scoreboard players set @s xq_table $(table)
         c+=self.count('@e[tag=xq.man,scores={ct_id=202}]',32,'remove_keeps_other_table')
         self.case('isolation',c)
         # Full settings/save path with session validation; no UI actor is necessary to test the persisted field.
-        for field,value,obj,want in [(5,0,'time',0),(5,5,'time',5),(5,30,'time',30),(5,7,'time',10),(4,8,'first',0),(6,3,'level',3),(6,4,'level',2),(7,0,'hints',0),(7,2,'hints',1)]:
+        for field,value,obj,want in [(1,1,'board',1),(1,2,'board',0),(2,1,'palette',1),(2,2,'palette',0),(5,0,'time',0),(5,5,'time',5),(5,30,'time',30),(5,7,'time',10),(4,8,'first',0),(6,3,'level',3),(6,4,'level',2),(7,0,'hints',0),(7,2,'hints',1)]:
             key=f'setting_{field}_{value}'
             c=self.setup()+[f'scoreboard players set {A} ct_state 0',f'scoreboard players operation {person(1)} xq_nonce = #ui_load xq_ctx',f'scoreboard players set {person(1)} xq_setnonce 100000',f'scoreboard players set {person(1)} xq_set_table 101',f'scoreboard players operation {person(1)} xq_setepoch = {A} xq_epoch',f'scoreboard players set {person(1)} xq_settings {100000000+field*100+value}',f'execute as {person(1)} at @s run function xiangqi:settings/save']
             self.case(key,c+self.score(A,'xq_'+obj,want,key))
@@ -181,6 +182,13 @@ $scoreboard players set @s xq_table $(table)
         c=settings_session()+[f'execute as {person(1)} at @s run function cardtable:seat/leave',f'tag {person(1)} add ct.player',f'scoreboard players set {person(1)} ct_id 101']
         c+=settings_submit(1)+self.score(A,'xq_level',2,'leave_rejoin_invalidates_settings')
         self.case('settings_leave_rejoin',c)
+        for old,want in [(0,0),(1,0),(2,1),(3,0),(4,0)]:
+            key=f'palette_migration_{old}'
+            c=self.setup()+self.move(1,27,36)+[f'data remove entity {A} data.xiangqi.palette_version',f'scoreboard players set {A} xq_board {old}',f'scoreboard players set {A} xq_palette 3']+self.call('system/migrate_palette')
+            c+=self.score(A,'xq_board',want,key+'_board')+self.score(A,'xq_palette',0,key+'_pieces')+self.score(square(36),'xq_piece',1,key+'_keeps_position')+self.score(A,'xq_turn',-1,key+'_keeps_turn')
+            # 真实入口只对未迁移的桌执行一次。
+            c+=[f'execute as {A} unless data entity @s data.xiangqi{{palette_version:2b}} run function xiangqi:system/migrate_palette']+self.score(A,'xq_board',want,key+'_idempotent')
+            self.case(key,c)
         self.case('dialogs',['function xiangqi_game_test:dialogs','say XIANGQI_GAME_DIALOGS_DONE'])
         self.file('dialogs',(PACK/'tools/test_xiangqi_dialogs.mcfunction').read_text(encoding='utf-8'))
         self.file('finish',['function xiangqi_game_test:reset','say XIANGQI_GAME_FINISHED'])
@@ -209,6 +217,10 @@ def run(suite, prefix='fimel-xiangqi-game-', setup_ticks=240, manual_tick=False)
                 line=line.replace('@a[tag=xq.audience','@e[tag=xq.audience')
             lines.append(line)
         path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    macro_requirements={'ui/actions_show':1,'ui/notice_show':1,'settings/root_show':3}
+    for name in macro_requirements:
+        path=target/'data/xiangqi/function'/(name+'.mcfunction')
+        path.write_text(path.read_text(encoding='utf-8')+'say XIANGQI_DIALOG_MACRO '+name.replace('/','_')+'\n',encoding='utf-8')
     for name,body in suite.files.items():
         dest=target/'data/xiangqi_game_test/function'/(name+'.mcfunction');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(body,encoding='utf-8')
     for name,body in {'test_environment/default.json':{'type':'minecraft:function','setup':'xiangqi_game_test:bootstrap'},'test_instance/game.json':{'type':'minecraft:function','environment':'xiangqi_game_test:default','function':'minecraft:always_pass','max_ticks':1,'setup_ticks':setup_ticks,'required':True,'structure':'minecraft:empty'}}.items():
@@ -227,9 +239,11 @@ def run(suite, prefix='fimel-xiangqi-game-', setup_ticks=240, manual_tick=False)
     (output/'game.log').write_text(proc.stdout,encoding='utf-8')
     passed=set(re.findall(r'XIANGQI_GAME_PASS ([a-z0-9_]+)',proc.stdout));failed=sorted(set(re.findall(r'XIANGQI_GAME_FAIL ([a-z0-9_]+)',proc.stdout)))
     errors=[line for line in proc.stdout.splitlines() if any(s in line for s in ['[ERROR]','/ERROR]','Failed to load','Failed to parse','Unknown function','Unknown or incomplete command',"Couldn't parse",'Command execution stopped'])]
-    result={'exit_code':proc.returncode,'seconds':round(time.monotonic()-start,1),'assertions':len(suite.expected),'passed':len(passed),'failed':failed,'missing':sorted(set(suite.expected)-passed),'errors':errors,'finished':'XIANGQI_GAME_FINISHED' in proc.stdout,'dialogs':'XIANGQI_DIALOGS_END' in proc.stdout,'output':str(output)}
+    macro_counts=Counter(re.findall(r'XIANGQI_DIALOG_MACRO ([a-z_]+)',proc.stdout))
+    macro_missing=[name for name,count in macro_requirements.items() if macro_counts[name.replace('/','_')]<count]
+    result={'exit_code':proc.returncode,'seconds':round(time.monotonic()-start,1),'assertions':len(suite.expected),'passed':len(passed),'failed':failed,'missing':sorted(set(suite.expected)-passed),'errors':errors,'finished':'XIANGQI_GAME_FINISHED' in proc.stdout,'dialogs':'XIANGQI_DIALOGS_END' in proc.stdout,'dialog_macros_missing':macro_missing,'output':str(output)}
     (output/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8');print(json.dumps(result,ensure_ascii=False,indent=2),flush=True)
-    return int(bool(proc.returncode or failed or result['missing'] or errors or not result['finished'] or not result['dialogs']))
+    return int(bool(proc.returncode or failed or result['missing'] or errors or macro_missing or not result['finished'] or not result['dialogs']))
 
 
 if __name__=='__main__':

@@ -1,14 +1,9 @@
 data modify storage xiangqi:settings board_row set value {"text":"棋盘配色\n","color":"white","extra":[]}
-function xiangqi:settings/choice {"key":"board","row":"board_row","value":0,"code":100,"label":"经典木色"}
-function xiangqi:settings/choice {"key":"board","row":"board_row","value":1,"code":101,"label":"清新竹绿"}
-function xiangqi:settings/choice {"key":"board","row":"board_row","value":2,"code":102,"label":"胡桃木"}
-function xiangqi:settings/choice {"key":"board","row":"board_row","value":3,"code":103,"label":"海洋蓝"}
-function xiangqi:settings/choice {"key":"board","row":"board_row","value":4,"code":104,"label":"薰衣草紫"}
+function xiangqi:settings/choice {"key":"board","row":"board_row","value":0,"code":100,"label":"经典"}
+function xiangqi:settings/choice {"key":"board","row":"board_row","value":1,"code":101,"label":"木色"}
 data modify storage xiangqi:settings palette_row set value {"text":"棋子配色\n","color":"white","extra":[]}
-function xiangqi:settings/choice {"key":"palette","row":"palette_row","value":0,"code":200,"label":"红黑"}
+function xiangqi:settings/choice {"key":"palette","row":"palette_row","value":0,"code":200,"label":"经典"}
 function xiangqi:settings/choice {"key":"palette","row":"palette_row","value":1,"code":201,"label":"木色"}
-function xiangqi:settings/choice {"key":"palette","row":"palette_row","value":2,"code":202,"label":"冰蓝"}
-function xiangqi:settings/choice {"key":"palette","row":"palette_row","value":3,"code":203,"label":"翡翠玉"}
 data modify storage xiangqi:settings orient_row set value {"text":"棋盘方向\n","color":"white","extra":[]}
 function xiangqi:settings/choice {"key":"orient","row":"orient_row","value":0,"code":300,"label":"南北向 · 红方南侧"}
 function xiangqi:settings/choice {"key":"orient","row":"orient_row","value":1,"code":301,"label":"东西向 · 红方西侧"}

@@ -39,7 +39,7 @@ assert.deepEqual(count(8,remaining),{votes:2,need:2,players:3});
 remaining[1].member=false;assert.deepEqual(count(8,remaining),{votes:1,need:2,players:2});
 assert.match(read('cardtable','table/recount_players'),/ct_state matches 1 run function cardtable:vote\/refresh/);
 assert.match(read('cardtable','vote/refresh'),/#vote_players ct_ctx matches 1\.\. if score @s ct_votes >= #vote_need ct_ctx run return run function cardtable:vote\/finish/);
-for(let game=1;game<=13;game++)assert.ok(read('cardtable','vote/finish').includes('ct_game matches '+game+' run return run function'));
+for(let game=1;game<=15;game++)assert.ok(read('cardtable','vote/finish').includes('ct_game matches '+game+' run return run function'));
 for(const [ns,prefix]of [['wenfei','wq'],['skull','sk']]){
  const scan=read(ns,'input/scan'),drop=read(ns,'input/drop');
  assert.match(scan,new RegExp('as @a\\[tag='+prefix+'\\.player,tag=ct.player\\].*ct_id = @s '+prefix+'_id at @s as @e'));
@@ -48,4 +48,4 @@ for(const [ns,prefix]of [['wenfei','wq'],['skull','sk']]){
  for(const distance of [0,9,100,10000])assert.ok(Math.abs((distance+1)-distance)<=8,'扫描中心是玩家，不是桌子');
 }
 assert.match(read('cardtable','admin/create8'),/execute align xyz summon minecraft:marker/,'用户要求暂不修改中心');
-console.log('通过：'+cases+'种实际投票计数、玩家离桌后门槛/旧票重算、13游戏结束分派、远离牌桌的道具扫描及桌号/丢出者校验。');
+console.log('通过：'+cases+'种实际投票计数、玩家离桌后门槛/旧票重算、15游戏结束分派、远离牌桌的道具扫描及桌号/丢出者校验。');

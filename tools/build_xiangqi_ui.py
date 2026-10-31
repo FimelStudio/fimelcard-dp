@@ -272,7 +272,7 @@ checks = ["# 仅供独立 GameTest 世界使用，不加入生产 tick。", "say
           'function xiangqi:ui/show with storage xiangqi:ui', 'say XIANGQI_DIALOG_NOTICE_COMPILED',
           'data modify storage xiangqi:ui buttons set value ' + js(sample_ui['buttons']),
           "function xiangqi:ui/button_append with storage xiangqi:ui", "scoreboard players set #ui_setting_base xq_ctx 100000000"]
-for name, values in [("DEFAULT", (0,0,0,0,10,2,1)), ("MINIMUM", (0,0,0,0,0,1,0)), ("MAXIMUM", (4,3,1,1,30,3,1))]:
+for name, values in [("DEFAULT", (0,0,0,0,10,2,1)), ("MINIMUM", (0,0,0,0,0,1,0)), ("MAXIMUM", (1,1,1,1,30,3,1))]:
     sample_settings = dict(zip(("board", "palette", "orient", "first", "time", "level", "hints"), values))
     sample_settings["close"] = 100000000
     checks += ["data merge storage xiangqi:settings " + js(sample_settings), "function xiangqi:settings/root", "say XIANGQI_DIALOG_SETTING_" + name + "_COMPILED"]

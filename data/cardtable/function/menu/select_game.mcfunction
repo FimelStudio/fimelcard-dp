@@ -3,6 +3,8 @@ execute if score @s ct_game = #pick_choice ct_ctx run return 0
 execute if score @s ct_game matches 11 run function uno:settings/invalidate_table
 execute if score @s ct_game matches 12 run function chess:game/remove
 execute if score @s ct_game matches 13 run function xiangqi:game/remove
+execute if score @s ct_game matches 14 run function gomoku:game/remove
+execute if score @s ct_game matches 15 run function aeroplane_chess:game/remove
 scoreboard players operation @s ct_game = #pick_choice ct_ctx
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 # 其他人的旧窗口也失效，防止覆盖刚刚选定的游戏。
@@ -32,5 +34,9 @@ execute if score @s ct_game matches 11 run tellraw @a[tag=ct.switch_actor,limit=
 execute if score @s ct_game matches 11 run function cardtable:log {text:"切换游戏：UNO"}
 execute if score @s ct_game matches 12 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：国际象棋",color:"gold"}
 execute if score @s ct_game matches 13 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：中国象棋",color:"gold"}
+execute if score @s ct_game matches 14 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：五子棋",color:"gold"}
+execute if score @s ct_game matches 14 run function cardtable:log {text:"切换游戏：五子棋"}
+execute if score @s ct_game matches 15 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：飞行棋",color:"gold"}
+execute if score @s ct_game matches 15 run function cardtable:log {text:"切换游戏：飞行棋"}
 function cardtable:game/init_selected
 function cardtable:menu/render

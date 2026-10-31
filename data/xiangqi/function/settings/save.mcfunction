@@ -23,8 +23,7 @@ execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=13,ct_stat
 execute unless entity @e[tag=xq.setting_table,limit=1] run return run function xiangqi:settings/invalid
 execute unless score #ui_setting_field xq_ctx matches 0..7 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 0 unless score #ui_setting_value xq_ctx matches 0 run return run function xiangqi:settings/invalid
-execute if score #ui_setting_field xq_ctx matches 1 unless score #ui_setting_value xq_ctx matches 0..4 run return run function xiangqi:settings/invalid
-execute if score #ui_setting_field xq_ctx matches 2 unless score #ui_setting_value xq_ctx matches 0..3 run return run function xiangqi:settings/invalid
+execute if score #ui_setting_field xq_ctx matches 1..2 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 3..4 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 5 unless score #ui_setting_value xq_ctx matches 0..30 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 6 unless score #ui_setting_value xq_ctx matches 1..3 run return run function xiangqi:settings/invalid

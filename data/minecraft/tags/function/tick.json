@@ -22,6 +22,8 @@
     "doudizhu:tick",
     "uno:tick",
     "chess:tick",
-    "xiangqi:tick"
+    "xiangqi:tick",
+    "gomoku:tick",
+    "aeroplane_chess:tick"
   ]
 }

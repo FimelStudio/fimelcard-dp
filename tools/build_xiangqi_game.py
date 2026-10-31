@@ -39,6 +39,7 @@ xq_bot xq_level xq_hints xq_aistate xq_aiwait xq_aiepoch'''.split()
     put('load', '''
 scoreboard objectives add xq_ctx dummy
 execute unless score #version xq_ctx matches 1.. run function xiangqi:system/install
+execute as @e[type=minecraft:marker,tag=ct.controller,tag=xq.controller] unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
 # xq_first 已改为 0 随机红黑、1 按棋盘边自行选边；旧指定座位值不再有效。
 execute as @e[tag=xq.controller] unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 0
 scoreboard players set #minus xq_ctx -1
@@ -70,8 +71,9 @@ execute as @e[tag=xq.player,tag=ct.player] if score @s xq_table = #table xq_ctx 
 ''')
     put('game/init_table', '''
 tag @s add xq.controller
-execute unless score @s xq_board matches 0..4 run scoreboard players set @s xq_board 0
-execute unless score @s xq_palette matches 0..3 run scoreboard players set @s xq_palette 0
+execute unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
+execute unless score @s xq_board matches 0..1 run scoreboard players set @s xq_board 0
+execute unless score @s xq_palette matches 0..1 run scoreboard players set @s xq_palette 0
 execute unless score @s xq_orient matches 0..1 run scoreboard players set @s xq_orient 0
 execute unless score @s xq_time matches 0..30 run scoreboard players set @s xq_time 10
 execute unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 0
@@ -80,6 +82,14 @@ execute unless score @s xq_hints matches 0..1 run scoreboard players set @s xq_h
 execute unless score @s xq_bot matches -1..1 run scoreboard players set @s xq_bot 0
 execute unless score @s xq_epoch matches 1.. run scoreboard players set @s xq_epoch 1
 execute if score @s ct_state matches 0 run function xiangqi:game/preview
+''')
+    put('system/migrate_palette', '''
+# 旧版棋盘 2 为木色、1 为竹绿；按桌迁移，活跃棋局及其他设置不变。
+execute if score @s xq_board matches 1 run scoreboard players set @s xq_board 0
+execute if score @s xq_board matches 2 run scoreboard players set @s xq_board 1
+execute unless score @s xq_board matches 0..1 run scoreboard players set @s xq_board 0
+execute unless score @s xq_palette matches 0..1 run scoreboard players set @s xq_palette 0
+data modify entity @s data.xiangqi.palette_version set value 2b
 ''')
     put('system/create_board', [
         'function xiangqi:system/context', 'kill @e[type=minecraft:marker,tag=xq.board]',

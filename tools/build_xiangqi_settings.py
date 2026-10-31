@@ -50,8 +50,8 @@ execute store result storage xiangqi:settings level int 1 run scoreboard players
 execute store result storage xiangqi:settings hints int 1 run scoreboard players get @s xq_hints
 ''')
     fields = [
-        (1, "board", "棋盘配色", [(0, "经典木色"), (1, "清新竹绿"), (2, "胡桃木"), (3, "海洋蓝"), (4, "薰衣草紫")]),
-        (2, "palette", "棋子配色", [(0, "红黑"), (1, "木色"), (2, "冰蓝"), (3, "翡翠玉")]),
+        (1, "board", "棋盘配色", [(0, "经典"), (1, "木色")]),
+        (2, "palette", "棋子配色", [(0, "经典"), (1, "木色")]),
         (3, "orient", "棋盘方向", [(0, "南北向 · 红方南侧"), (1, "东西向 · 红方西侧")]),
         (4, "first", "红黑方分配", [(1, "按座位自行选边"), (0, "随机分配红黑")]),
         (5, "time", "每人计时", [(0, "无限制")] + [(n, f"{n}分钟") for n in range(5, 31, 5)]),
@@ -121,8 +121,7 @@ execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=13,ct_stat
 execute unless entity @e[tag=xq.setting_table,limit=1] run return run function xiangqi:settings/invalid
 execute unless score #ui_setting_field xq_ctx matches 0..7 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 0 unless score #ui_setting_value xq_ctx matches 0 run return run function xiangqi:settings/invalid
-execute if score #ui_setting_field xq_ctx matches 1 unless score #ui_setting_value xq_ctx matches 0..4 run return run function xiangqi:settings/invalid
-execute if score #ui_setting_field xq_ctx matches 2 unless score #ui_setting_value xq_ctx matches 0..3 run return run function xiangqi:settings/invalid
+execute if score #ui_setting_field xq_ctx matches 1..2 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 3..4 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 5 unless score #ui_setting_value xq_ctx matches 0..30 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 6 unless score #ui_setting_value xq_ctx matches 1..3 run return run function xiangqi:settings/invalid
