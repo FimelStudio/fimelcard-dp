@@ -1,3 +1,5 @@
+execute if score @s ch_setnonce matches 1.. run function chess:input/clear
+execute if score @s un_setnonce matches 1.. run function uno:settings/clear_session
 # 本函数只由大厅离座检测调用
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 tag @s add ct.leaver

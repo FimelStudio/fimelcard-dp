@@ -1,0 +1,9 @@
+execute if score #to ch_ctx matches 1 if score #b37 ch_ctx matches 0 if score #b28 ch_ctx matches 0 if score #b19 ch_ctx matches 0 if score #b10 ch_ctx matches 0 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 10 if score #b37 ch_ctx matches 0 if score #b28 ch_ctx matches 0 if score #b19 ch_ctx matches 0 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 19 if score #b37 ch_ctx matches 0 if score #b28 ch_ctx matches 0 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 28 if score #b37 ch_ctx matches 0 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 37 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 39 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 53 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 55 run scoreboard players set #shape ch_ctx 1
+execute if score #to ch_ctx matches 60 if score #b53 ch_ctx matches 0 run scoreboard players set #shape ch_ctx 1

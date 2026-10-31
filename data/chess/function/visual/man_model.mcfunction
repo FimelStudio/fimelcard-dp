@@ -1,0 +1,13 @@
+execute if score @s ch_piece matches 1 run data modify storage chess:visual man set value "white_pawn"
+execute if score @s ch_piece matches 2 run data modify storage chess:visual man set value "white_knight"
+execute if score @s ch_piece matches 3 run data modify storage chess:visual man set value "white_bishop"
+execute if score @s ch_piece matches 4 run data modify storage chess:visual man set value "white_rook"
+execute if score @s ch_piece matches 5 run data modify storage chess:visual man set value "white_queen"
+execute if score @s ch_piece matches 6 run data modify storage chess:visual man set value "white_king"
+execute if score @s ch_piece matches -1 run data modify storage chess:visual man set value "black_pawn"
+execute if score @s ch_piece matches -2 run data modify storage chess:visual man set value "black_knight"
+execute if score @s ch_piece matches -3 run data modify storage chess:visual man set value "black_bishop"
+execute if score @s ch_piece matches -4 run data modify storage chess:visual man set value "black_rook"
+execute if score @s ch_piece matches -5 run data modify storage chess:visual man set value "black_queen"
+execute if score @s ch_piece matches -6 run data modify storage chess:visual man set value "black_king"
+function chess:visual/set_model with storage chess:visual

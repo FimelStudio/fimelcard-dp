@@ -19,6 +19,8 @@
     "critical_point:tick",
     "wenfei:tick",
     "skull:tick",
-    "doudizhu:tick"
+    "doudizhu:tick",
+    "uno:tick",
+    "chess:tick"
   ]
 }

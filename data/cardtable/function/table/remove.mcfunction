@@ -11,6 +11,10 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 7 run functio
 execute if score @s ct_state matches 1 if score @s ct_game matches 8 run function wenfei:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 9 run function skull:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 10 run function doudizhu:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 11 run function uno:game/abort
+
+execute if score @s ct_state matches 1 if score @s ct_game matches 12 run function chess:game/abort
+execute if score @s ct_game matches 12 run function chess:game/remove
 
 execute if score @s ct_skin matches 1..6 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
 execute if score @s ct_skin matches 1..6 if score @s ct_capacity matches 8 run function cardtable:skin/default8

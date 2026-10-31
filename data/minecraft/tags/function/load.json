@@ -11,6 +11,8 @@
     "critical_point:load",
     "wenfei:load",
     "skull:load",
-    "doudizhu:load"
+    "doudizhu:load",
+    "uno:load",
+    "chess:load"
   ]
 }

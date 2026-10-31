@@ -1,0 +1,14 @@
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:24}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:33}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:40}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:16}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:34}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:48}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:8}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:35}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:56}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:0}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:36}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:37}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:38}
+execute if score #found ch_ctx matches 0 run function chess:engine/probe {to:39}

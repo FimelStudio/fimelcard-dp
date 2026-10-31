@@ -1,0 +1,2 @@
+data modify entity @s data.chess.ai.batch set value [{f:17,t:1},{f:17,t:3},{f:17,t:8},{f:17,t:9},{f:17,t:10},{f:17,t:16},{f:17,t:18},{f:17,t:19},{f:17,t:20},{f:17,t:21},{f:17,t:22},{f:17,t:23},{f:17,t:24},{f:17,t:25},{f:17,t:26},{f:17,t:33},{f:17,t:35},{f:17,t:41},{f:17,t:44},{f:17,t:49},{f:17,t:53},{f:17,t:57},{f:17,t:62}]
+function chess:ai/flatten_queue

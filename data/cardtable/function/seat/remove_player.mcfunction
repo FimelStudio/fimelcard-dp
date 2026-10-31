@@ -1,3 +1,5 @@
+execute if score @s ch_setnonce matches 1.. run function chess:input/clear
+execute if score @s un_setnonce matches 1.. run function uno:settings/clear_session
 scoreboard players reset @s ct_skin_pick
 scoreboard players reset @s ct_skin_table
 ride @s dismount

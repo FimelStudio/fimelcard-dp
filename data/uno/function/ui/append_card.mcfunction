@@ -1,0 +1,1 @@
+$data modify storage uno:ui grid.extra append value {text:"",click_event:{action:"run_command",command:"trigger un_action set $(pick)"},hover_event:{action:"show_text",value:{text:"$(name) ×$(count) · $(pick_hint)"}},extra:[{text:"$(glyph)",font:"$(card_font)",color:"white"},{text:"×$(count)  ",font:"minecraft:default",color:"white"}]}

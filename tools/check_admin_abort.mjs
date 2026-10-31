@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const games = [
   ['hanabi', 'hb'], ['abraca', 'ab'], ['bullshit', 'bw'], ['decrypto', 'dc'],
-  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'],
+  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'],
 ];
 const pack = new URL('../', import.meta.url);
 const readFunction = id => fs.readFileSync(new URL(`data/${id.replace(':', '/function/')}.mcfunction`, pack), 'utf8');
@@ -17,7 +17,7 @@ function simulate(id, source, entities) {
     const match = selector.match(/^@([se])(?:\[(.*)\])?$/);
     assert.ok(match, `不支持的选择器：${selector}`);
     let selected = match[1] === 's' ? (context.self ? [context.self] : []) : [...entities];
-    const options = (match[2] || '').split(',').filter(Boolean).map(option => option.split('='));
+    const options = (match[2] || '').split(',').filter(Boolean).map(option => [option.slice(0,option.indexOf('=')), option.slice(option.indexOf('=')+1)]);
     let sort, limit;
     for (const [key, value] of options) {
       if (key === 'type') selected = selected.filter(entity => entity.type === value);
@@ -27,6 +27,10 @@ function simulate(id, source, entities) {
         const min = bounds.length === 1 ? Number(value) : bounds[0] ? Number(bounds[0]) : 0;
         const max = bounds.length === 1 ? Number(value) : bounds[1] ? Number(bounds[1]) : Infinity;
         selected = selected.filter(entity => entity.dimension === context.dimension && distance(entity, context) >= min && distance(entity, context) <= max);
+      } else if (key === 'scores') {
+        const m = value.match(/^\{(\w+):?(?:=)?(-?\d+)\}$/);
+        assert.ok(m, '只支持单一精确分值');
+        selected = selected.filter(entity => entity.scores[m[1]] === Number(m[2]));
       } else if (key === 'sort') sort = value;
       else if (key === 'limit') limit = Number(value);
       else assert.fail(`不支持的选择器参数：${key}`);
@@ -84,7 +88,7 @@ function simulate(id, source, entities) {
 }
 
 const entity = (id, type, tags = [], offset = [0, 0, 0], dimension = 'minecraft:overworld') => ({
-  id, type, tags, position: offset.map((n, i) => [100, 64, -100][i] + n), dimension, scores: {ct_id: 42},
+  id, type, tags, position: offset.map((n, i) => [100, 64, -100][i] + n), dimension, scores: {ct_id: 42, ct_state: 1},
 });
 let checks = 0;
 for (const [namespace, prefix] of games) {
@@ -111,6 +115,11 @@ for (const [namespace, prefix] of games) {
   check('恰好 8 格', player(), [edge], edge);
   const close = table('near', [2, 1, 0]), further = table('further', [6, 0, 0]);
   check('多个同游戏桌取最近', player(), [further, close], close);
+  if (namespace === 'chess') {
+    const preview = table('preview', [0.2, 0, 0]); preview.scores.ct_state = 0;
+    check('大厅预览更近时选择进行中的局', player(), [preview, close], close);
+    check('只有大厅预览时拒绝中止', player(), [preview]);
+  }
   const unrelated = entity('other-game', 'minecraft:marker', ['ct.controller', 'other.controller'], [0.1, 0, 0]);
   check('异游戏牌桌更近', player(), [unrelated, close], close);
   check('只有其他游戏', player(), [unrelated]);

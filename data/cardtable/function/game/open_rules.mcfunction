@@ -9,5 +9,7 @@ execute if score @s ct_game matches 7 run return run function critical_point:rul
 execute if score @s ct_game matches 8 run return run function wenfei:rules/show
 execute if score @s ct_game matches 9 run return run function skull:rules/show
 execute if score @s ct_game matches 10 run return run function doudizhu:rules/show
+execute if score @s ct_game matches 11 run return run function uno:rules/show
 
+execute if score @s ct_game matches 12 run return run function chess:rules/show
 tellraw @a[tag=ct.rules_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供规则介绍。',color:'yellow'}]
