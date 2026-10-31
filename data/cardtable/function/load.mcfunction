@@ -1,3 +1,4 @@
+execute as @e[type=minecraft:marker,tag=ct.controller,tag=av.controller,scores={ct_game=14}] run scoreboard players set @s ct_game 16
 scoreboard objectives add ct_meme trigger
 scoreboard objectives add ct_meme_cd dummy
 scoreboard objectives add ct_voice_cd dummy
@@ -19,7 +20,7 @@ scoreboard players reset * ct_pick_table
 scoreboard players reset * ct_pick_base
 
 # 当前注册游戏编号必须连续排列
-scoreboard players set #game_count ct_ctx 15
+scoreboard players set #game_count ct_ctx 16
 
 # 重载时升级已加载牌桌；尚未加载的牌桌会由低频维护逻辑补做
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{menu_version:13}}} run function cardtable:table/migrate_v13

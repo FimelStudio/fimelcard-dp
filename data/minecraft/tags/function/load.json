@@ -16,6 +16,7 @@
     "chess:load",
     "xiangqi:load",
     "gomoku:load",
-    "aeroplane_chess:load"
+    "aeroplane_chess:load",
+    "avalon:load"
   ]
 }

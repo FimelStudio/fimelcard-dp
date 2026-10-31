@@ -13,3 +13,4 @@ execute if score @s ct_game matches 12 run return run function chess:game/end_vo
 execute if score @s ct_game matches 13 run return run function xiangqi:game/end_vote
 execute if score @s ct_game matches 14 run return run function gomoku:game/end_vote
 execute if score @s ct_game matches 15 run return run function aeroplane_chess:game/end_vote
+execute if score @s ct_game matches 16 run return run function avalon:game/end_vote

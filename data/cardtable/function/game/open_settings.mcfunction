@@ -15,4 +15,5 @@ execute if score @s ct_game matches 12 run return run function chess:settings/op
 execute if score @s ct_game matches 13 run return run function xiangqi:settings/open
 execute if score @s ct_game matches 14 run return run function gomoku:settings/open
 execute if score @s ct_game matches 15 run return run function aeroplane_chess:settings/open
+execute if score @s ct_game matches 16 run return run function avalon:settings/open
 tellraw @a[tag=ct.settings_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供设置界面。',color:'yellow'}]

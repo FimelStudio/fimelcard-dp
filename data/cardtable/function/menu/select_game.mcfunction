@@ -1,3 +1,4 @@
+execute if score #pick_choice ct_ctx matches 16 unless score @s ct_capacity matches 8 run return 0
 # 玩家提交已由picker/handle验证；再次选择当前游戏不重置原设置。
 execute if score @s ct_game = #pick_choice ct_ctx run return 0
 execute if score @s ct_game matches 11 run function uno:settings/invalidate_table

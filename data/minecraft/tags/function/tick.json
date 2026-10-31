@@ -24,6 +24,7 @@
     "chess:tick",
     "xiangqi:tick",
     "gomoku:tick",
-    "aeroplane_chess:tick"
+    "aeroplane_chess:tick",
+    "avalon:tick"
   ]
 }
