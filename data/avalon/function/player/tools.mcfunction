@@ -1,3 +1,3 @@
+# Remove the retired purple menu tool; the role card is now the only Q menu entry.
 clear @s *[minecraft:custom_data~{avalon:{menu:1b}}]
-item replace entity @s hotbar.8 with minecraft:purple_dye[minecraft:custom_data={avalon:{menu:1b}},minecraft:item_name={text:"阿瓦隆 · 本轮操作（按Q）",color:"light_purple"}] 1
 function avalon:player/identity

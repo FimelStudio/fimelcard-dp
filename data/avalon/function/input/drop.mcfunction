@@ -1,2 +1,2 @@
-execute on origin if entity @s[tag=av.player] at @s run function avalon:input/reopen
+# Compatibility cleanup for old purple tools; do not reopen an interface.
 kill @s

@@ -2,11 +2,10 @@ execute unless score @s ct_capacity matches 8 run return fail
 execute unless score @s ct_joined matches 5..8 run return run tellraw @a[tag=ct.start_actor,limit=1] {text:"阿瓦隆需要5～8人入座。",color:"red"}
 scoreboard players operation #table av_ctx = @s ct_id
 scoreboard players set #blocked av_ctx 0
-execute as @a[tag=ct.player] if score @s ct_id = #table av_ctx if items entity @s hotbar.8 * run scoreboard players set #blocked av_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table av_ctx if items entity @s hotbar.7 * run scoreboard players set #blocked av_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table av_ctx if items entity @s hotbar.0 * run scoreboard players set #blocked av_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table av_ctx if items entity @s hotbar.1 * run scoreboard players set #blocked av_ctx 1
-execute if score #blocked av_ctx matches 1 run return run tellraw @a[tag=ct.start_actor,limit=1] {text:"请所有玩家清空快捷栏第1、2、8、9格，用于表决染料、身份牌和操作入口。",color:"yellow"}
+execute if score #blocked av_ctx matches 1 run return run tellraw @a[tag=ct.start_actor,limit=1] {text:"请所有玩家清空快捷栏第1、2、8格，用于表决染料和身份牌（按Q打开操作）。",color:"yellow"}
 tag @s add av.controller
 scoreboard players operation @s av_id = @s ct_id
 scoreboard players operation @s av_players = @s ct_joined

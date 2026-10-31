@@ -23,7 +23,6 @@ execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ct
 execute if score #state av_ctx matches 1..3 if score #role av_ctx matches 5 run function avalon:dialog/button {code:40,label:"提前翻牌刺杀…"}
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 as @a[tag=av.audience,scores={av_role=1..3}] run function avalon:dialog/target_button
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 if score @s av_target matches 1..8 run function avalon:dialog/button {code:60,label:"确认刺杀所选玩家（结束游戏）"}
-function avalon:dialog/button {code:99,label:"刷新／等待其他玩家"}
 function avalon:player/private_info
 scoreboard players set #show_ui av_ctx 0
 execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ctx run scoreboard players set #show_ui av_ctx 1

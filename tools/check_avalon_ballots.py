@@ -42,3 +42,23 @@ for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
   reveal=json.loads((rp/f'assets/card/items/avalon/reveal/{role}.json').read_text(encoding='utf8'))
   assert reveal['model']['model']==f'card:item/avalon/reveal/{role}'
 print(f'PASS: fixed HUD anchor; private actionbar and selective operation dialogs; Q ballot ownership/table/epoch/double-submit guards; {cases} role display contexts; public end reveal retained.')
+
+assert 'minecraft:purple_dye' not in read('player/tools')
+assert 'hotbar.8 * run scoreboard players set #blocked' not in read('game/start')
+assert 'function avalon:input/reopen' in read('input/drop_role')
+assert 'minecraft:item_model="card:avalon/ballot_$(color)"' in read('player/give_ballot')
+result=read('game/mission_result')
+assert 'if score #fail av_ctx < #threshold av_ctx at @s run function avalon:fx/success' in result
+assert 'if score #fail av_ctx >= #threshold av_ctx at @s run function avalon:fx/failure' in result
+assert result.index('avalon:fx/success') < result.index('run return run function avalon:game/evil_win')
+for effect in ['success','failure']:
+ assert 'particle ' in read('fx/'+effect)
+ assert 'playsound ' in read('fx/'+effect)
+ assert 'summon ' not in read('fx/'+effect)
+for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
+ for color,private in [('green','lime_dye'),('red','red_dye')]:
+  m=json.loads((rp/f'assets/card/items/avalon/ballot_{color}.json').read_text(encoding='utf8'))['model']
+  for ctx in contexts:
+   model=next((x['model'] for x in m['cases'] if x['when']==ctx),m['fallback'])['model']
+   assert model=='minecraft:item/'+(private if ctx in contexts[:3] else 'lime_dye')
+print('PASS: retired purple tool; private green/red ballot models in both packs; result effects before end routing and no destructive entities.')

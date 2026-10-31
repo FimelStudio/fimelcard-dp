@@ -9,6 +9,8 @@ execute if score #fail av_ctx >= #threshold av_ctx run scoreboard players add @s
 execute if score #fail av_ctx < #threshold av_ctx run scoreboard players add @s av_good 1
 execute if score #fail av_ctx >= #threshold av_ctx run data modify entity @s data.avalon.results append value {text:"✗ ",color:"red"}
 execute if score #fail av_ctx < #threshold av_ctx run data modify entity @s data.avalon.results append value {text:"✓ ",color:"green"}
+execute if score #fail av_ctx < #threshold av_ctx at @s run function avalon:fx/success
+execute if score #fail av_ctx >= #threshold av_ctx at @s run function avalon:fx/failure
 execute at @s run function avalon:map/render
 execute if score @s av_evil matches 3.. run return run function avalon:game/evil_win
 execute if score @s av_good matches 3.. run return run function avalon:game/assassination
