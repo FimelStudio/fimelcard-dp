@@ -1,0 +1,17 @@
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:44}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:52}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:62}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:35}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:51}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:71}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:26}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:50}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:80}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:17}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:49}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:89}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:8}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:48}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:47}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:46}
+execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:45}

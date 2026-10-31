@@ -10,3 +10,4 @@ execute if score @s ct_game matches 9 run return run function skull:game/end_vot
 execute if score @s ct_game matches 10 run return run function doudizhu:game/end_vote
 execute if score @s ct_game matches 11 run return run function uno:game/end_vote
 execute if score @s ct_game matches 12 run return run function chess:game/end_vote
+execute if score @s ct_game matches 13 run return run function xiangqi:game/end_vote

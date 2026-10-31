@@ -12,4 +12,5 @@ execute if score @s ct_game matches 10 run return run function doudizhu:rules/sh
 execute if score @s ct_game matches 11 run return run function uno:rules/show
 
 execute if score @s ct_game matches 12 run return run function chess:rules/show
+execute if score @s ct_game matches 13 run return run function xiangqi:rules/show
 tellraw @a[tag=ct.rules_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供规则介绍。',color:'yellow'}]

@@ -1,4 +1,4 @@
-"""从实际公共点击入口验证 UNO / chess 设置与动态 Dialog 编译。
+"""从实际公共点击入口验证 UNO / chess / xiangqi 设置与动态 Dialog 编译。
 
 隔离测试副本仅将参与者选择器适配为 marker，保留真实 dialog 命令目标；
 宏末尾添加哨兵，确保整条 Dialog 通过原版编译，避免静默宏失败被漏检。
@@ -15,7 +15,7 @@ class EntrySuite(base.Suite):
         self.file('reset', ['kill @e[tag=se.fixture]'])
         self.file('missing_settings', ['say SETTINGS_UNEXPECTED_FALLBACK'])
         self.file('missing_rules', ['say RULES_UNEXPECTED_FALLBACK'])
-        for game, namespace, prefix in [(11, 'uno', 'un'), (12, 'chess', 'ch')]:
+        for game, namespace, prefix in [(11, 'uno', 'un'), (12, 'chess', 'ch'), (13, 'xiangqi', 'xq')]:
             commands = ['function chess_game_test:reset',
                         'summon minecraft:marker 8 64 8 {Tags:["se.fixture","se.table","ct.controller"]}',
                         'summon minecraft:marker 9 64 8 {Tags:["se.fixture","se.actor","ct.player"]}',
@@ -25,9 +25,9 @@ class EntrySuite(base.Suite):
                         f'scoreboard players set {ACTOR} ct_id 101',
                         f'scoreboard players set {ACTOR} ct_seat 3',
                         f'scoreboard players set #dialog_compiled_{prefix} cg 0']
-            if game == 12:
+            if game in (12, 13):
                 for objective, value in [('ch_board', 0), ('ch_palette', 0), ('ch_orient', 0), ('ch_first', 0), ('ch_time', 10), ('ch_level', 2), ('ch_hints', 1), ('ch_epoch', 1)]:
-                    commands += [f'scoreboard players set {TABLE} {objective} {value}']
+                    commands += [f'scoreboard players set {TABLE} {objective.replace("ch_", prefix + "_")} {value}']
             commands += [f'execute as {ACTOR} at @s run function cardtable:click/game_settings']
             commands += self.check(f'score {ACTOR} {prefix}_set_table matches 101', namespace + '_common_click_creates_session')
             commands += self.check(f'score {ACTOR} {prefix}_setnonce matches 1..', namespace + '_common_click_nonce')
@@ -51,7 +51,7 @@ def copytree(source, destination, *args, **kwargs):
     if Path(source) == base.PACK / 'data':
         root = Path(destination)
         paths = [root / 'cardtable/function/skin/open.mcfunction']
-        for namespace, prefix in [('uno', 'un'), ('chess', 'ch')]:
+        for namespace, prefix in [('uno', 'un'), ('chess', 'ch'), ('xiangqi', 'xq')]:
             paths += list((root / namespace / 'function/settings').glob('*.mcfunction'))
             macro = root / namespace / 'function/settings/root_show.mcfunction'
             macro.write_text(macro.read_text(encoding='utf-8') + f'scoreboard players add #dialog_compiled_{prefix} cg 1\n', encoding='utf-8')

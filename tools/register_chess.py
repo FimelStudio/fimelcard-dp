@@ -8,8 +8,13 @@ COMMON = PACK / 'data/cardtable/function'
 
 def update(path, old, new):
     text = path.read_text(encoding='utf-8')
-    if old in text and new not in text:
-        path.write_text(text.replace(old, new), encoding='utf-8')
+    if old not in text or new in text:
+        return
+    # 后续游戏可能插在新分支和原锚点之间，不能仅按整块是否连续判断。
+    inserted = [line for line in new.splitlines() if line and line not in old.splitlines()]
+    if inserted and all(line in text for line in inserted):
+        return
+    path.write_text(text.replace(old, new), encoding='utf-8')
 
 
 def append(path, line):
@@ -21,8 +26,12 @@ def append(path, line):
 def before_fallback(path, line):
     # 分发器必须先匹配游戏，再执行“没有提供界面”的兜底提示。
     # 同时迁移早期生成器追加在兜底之后的分支。
-    lines = [entry for entry in path.read_text(encoding='utf-8').splitlines()
-             if entry.strip() != line]
+    lines = path.read_text(encoding='utf-8').splitlines()
+    positions = [i for i, entry in enumerate(lines) if entry.strip() == line]
+    fallback = next(i for i, entry in enumerate(lines) if '当前游戏没有提供' in entry)
+    if len(positions) == 1 and positions[0] < fallback:
+        return
+    lines = [entry for entry in lines if entry.strip() != line]
     index = next(i for i, entry in enumerate(lines) if '当前游戏没有提供' in entry)
     lines.insert(index, line)
     path.write_text('\n'.join(lines) + '\n', encoding='utf-8')

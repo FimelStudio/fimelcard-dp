@@ -12,4 +12,5 @@ execute if score @s ct_game matches 10 run return run function doudizhu:settings
 execute if score @s ct_game matches 11 run return run function uno:settings/open
 
 execute if score @s ct_game matches 12 run return run function chess:settings/open
+execute if score @s ct_game matches 13 run return run function xiangqi:settings/open
 tellraw @a[tag=ct.settings_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供设置界面。',color:'yellow'}]

@@ -1,0 +1,1 @@
+$execute as @e[type=minecraft:text_display,tag=xq.clock] if score @s ct_id = #table xq_ctx run data modify entity @s text set value [{text:"中国象棋 · $(status)\n",color:"gold"},{text:"$(rlabel) $(rm):$(rs)",color:"$(rcolor)"},{text:"　│　",color:"dark_gray"},{text:"$(blabel) $(bm):$(bs)",color:"$(bcolor)"}]

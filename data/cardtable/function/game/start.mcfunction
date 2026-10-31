@@ -15,6 +15,7 @@ execute if score @s ct_game matches 9 run function skull:game/start
 execute if score @s ct_game matches 10 run function doudizhu:game/start
 execute if score @s ct_game matches 11 run function uno:game/start
 execute if score @s ct_game matches 12 run function chess:game/start
+execute if score @s ct_game matches 13 run function xiangqi:game/start
 execute unless score @s ct_start matches 1 run return fail
 
 # 游戏确认成功后才隐藏中央菜单并生成结束投票按钮

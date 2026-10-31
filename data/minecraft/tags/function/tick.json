@@ -21,6 +21,7 @@
     "skull:tick",
     "doudizhu:tick",
     "uno:tick",
-    "chess:tick"
+    "chess:tick",
+    "xiangqi:tick"
   ]
 }

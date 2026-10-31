@@ -16,6 +16,8 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 11 run functi
 execute if score @s ct_state matches 1 if score @s ct_game matches 12 run function chess:game/abort
 execute if score @s ct_game matches 12 run function chess:game/remove
 
+execute if score @s ct_state matches 1 if score @s ct_game matches 13 run function xiangqi:game/abort
+execute if score @s ct_game matches 13 run function xiangqi:game/remove
 execute if score @s ct_skin matches 1..6 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
 execute if score @s ct_skin matches 1..6 if score @s ct_capacity matches 8 run function cardtable:skin/default8
 scoreboard players operation #ctx_id ct_ctx = @s ct_id

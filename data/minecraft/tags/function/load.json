@@ -13,6 +13,7 @@
     "skull:load",
     "doudizhu:load",
     "uno:load",
-    "chess:load"
+    "chess:load",
+    "xiangqi:load"
   ]
 }

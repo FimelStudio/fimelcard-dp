@@ -1,0 +1,1 @@
+$dialog show @s {"type":"minecraft:multi_action","title":{"text":"中国象棋 · 对局面板","color":"gold"},"body":[{"type":"minecraft:plain_message","width":460,"contents":{"text":"$(phase)","color":"yellow"}}],"columns":2,"actions":$(buttons),"exit_action":{"label":{"text":"返回棋盘"}},"pause":false}

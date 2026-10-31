@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const games = [
   ['hanabi', 'hb'], ['abraca', 'ab'], ['bullshit', 'bw'], ['decrypto', 'dc'],
-  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'],
+  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'],
 ];
 const pack = new URL('../', import.meta.url);
 const readFunction = id => fs.readFileSync(new URL(`data/${id.replace(':', '/function/')}.mcfunction`, pack), 'utf8');

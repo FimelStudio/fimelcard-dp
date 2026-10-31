@@ -1,0 +1,17 @@
+execute if score #to xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 2 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 3 if score #b2 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 4 if score #b2 xq_ctx matches 0 if score #b3 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 5 if score #b2 xq_ctx matches 0 if score #b3 xq_ctx matches 0 if score #b4 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 6 if score #b2 xq_ctx matches 0 if score #b3 xq_ctx matches 0 if score #b4 xq_ctx matches 0 if score #b5 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 7 if score #b2 xq_ctx matches 0 if score #b3 xq_ctx matches 0 if score #b4 xq_ctx matches 0 if score #b5 xq_ctx matches 0 if score #b6 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 8 if score #b2 xq_ctx matches 0 if score #b3 xq_ctx matches 0 if score #b4 xq_ctx matches 0 if score #b5 xq_ctx matches 0 if score #b6 xq_ctx matches 0 if score #b7 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 10 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 19 if score #b10 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 28 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 37 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 if score #b28 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 46 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 if score #b28 xq_ctx matches 0 if score #b37 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 55 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 if score #b28 xq_ctx matches 0 if score #b37 xq_ctx matches 0 if score #b46 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 64 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 if score #b28 xq_ctx matches 0 if score #b37 xq_ctx matches 0 if score #b46 xq_ctx matches 0 if score #b55 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 73 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 if score #b28 xq_ctx matches 0 if score #b37 xq_ctx matches 0 if score #b46 xq_ctx matches 0 if score #b55 xq_ctx matches 0 if score #b64 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 82 if score #b10 xq_ctx matches 0 if score #b19 xq_ctx matches 0 if score #b28 xq_ctx matches 0 if score #b37 xq_ctx matches 0 if score #b46 xq_ctx matches 0 if score #b55 xq_ctx matches 0 if score #b64 xq_ctx matches 0 if score #b73 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1

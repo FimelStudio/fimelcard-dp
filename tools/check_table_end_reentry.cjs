@@ -9,5 +9,5 @@ if(line==='function '+game+':game/cleanup')call(game,'game/cleanup');
 if(line==='function cardtable:game/return_lobby')call('cardtable','game/return_lobby');}
 w.depth--;return w;}return call(game,'game/end_vote');}
 for(const game of ['liars_holdem','hanabi']){assert.throws(()=>replay(game,true),/recursive cleanup/);const w=replay(game);assert.equal(w.cleanup,1);assert.equal(w.lobby,1);assert.equal(w.state,0);}
-const games=['fast_card','liars_holdem','hanabi','abraca','bullshit','decrypto','critical_point','wenfei','skull','doudizhu','uno','chess'];for(const game of games){assert.ok(read('cardtable','vote/finish').includes('function '+game+':game/end_vote'));assert.ok(fs.existsSync('data/'+game+'/function/game/end_vote.mcfunction'));}
+const games=['fast_card','liars_holdem','hanabi','abraca','bullshit','decrypto','critical_point','wenfei','skull','doudizhu','uno','chess','xiangqi'];for(const game of games){assert.ok(read('cardtable','vote/finish').includes('function '+game+':game/end_vote'));assert.ok(fs.existsSync('data/'+game+'/function/game/end_vote.mcfunction'));}
 console.log('PASS: 德州扑克/花火旧路径复现递归，新路径只清理一次并恢复大厅；'+games.length+'款游戏结束投票入口完整。');
