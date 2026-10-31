@@ -30,7 +30,7 @@ def main():
     register('register_boardgames.py');register('register_xiangqi.py')
     assert hashes(output)==baseline,'重跑注册脚本改变了既有文件'
     common=output/'data/cardtable/function'
-    future={'label':{'text':'未来游戏 · 保留此文本'},'width':123,'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p16)'}}
+    future={'label':{'text':'未来游戏 · 保留此文本'},'width':123,'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p17)'}}
     for capacity in (4,8):
         path=common/f'menu/picker/show{capacity}.mcfunction';text=path.read_text(encoding='utf-8');dialog=json.loads(text[text.index('{'):])
         dialog['actions']=[action for action in dialog['actions'] if action['action']['command'] not in ('trigger ct_game_pick set $(p14)','trigger ct_game_pick set $(p15)')]
@@ -38,27 +38,27 @@ def main():
         path.write_text('$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
     path=common/'menu/picker/open.mcfunction';text=path.read_text(encoding='utf-8')
     text=re.sub(r'scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p(?:14|15) int 1 run scoreboard players get #pick_button ct_ctx\n','',text)
-    text=text.replace('execute if score @s ct_capacity matches 8 run return','scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p16 int 1 run scoreboard players get #pick_button ct_ctx\nexecute if score @s ct_capacity matches 8 run return')
+    text=text.replace('execute if score @s ct_capacity matches 8 run return','scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p17 int 1 run scoreboard players get #pick_button ct_ctx\nexecute if score @s ct_capacity matches 8 run return')
     path.write_text(text,encoding='utf-8')
     for name in ['load','menu/render','menu/picker/handle']:
-        path=common/(name+'.mcfunction');text=path.read_text(encoding='utf-8').replace('#game_count ct_ctx 15','#game_count ct_ctx 16').replace('matches 1..15','matches 1..16');path.write_text(text,encoding='utf-8')
-    future_branch='execute if score @s ct_game matches 16 run return run function future_game:settings/open'
+        path=common/(name+'.mcfunction');text=path.read_text(encoding='utf-8').replace('#game_count ct_ctx 15','#game_count ct_ctx 17').replace('matches 1..15','matches 1..17');path.write_text(text,encoding='utf-8')
+    future_branch='execute if score @s ct_game matches 17 run return run function future_game:settings/open'
     path=common/'game/open_settings.mcfunction';text=path.read_text(encoding='utf-8')
     index=next(line for line in text.splitlines() if '当前游戏没有提供' in line)
     path.write_text(text.replace(index,future_branch+'\n'+index),encoding='utf-8')
     register('register_boardgames.py');register('register_xiangqi.py')
     for capacity in (4,8):
         text=(common/f'menu/picker/show{capacity}.mcfunction').read_text(encoding='utf-8');dialog=json.loads(text[text.index('{'):])
-        assert len(dialog['actions'])==16 and dialog['actions'][15]==future
+        assert len(dialog['actions'])==(17 if capacity==8 else 16) and dialog['actions'][-1]==future
     text=(common/'menu/picker/open.mcfunction').read_text(encoding='utf-8')
-    assert [int(n) for n in re.findall(r'cardtable:picker p(\d+) int',text)]==list(range(1,17))
-    assert '#game_count ct_ctx 16' in (common/'load.mcfunction').read_text(encoding='utf-8')
-    assert 'matches 1..16' in (common/'menu/render.mcfunction').read_text(encoding='utf-8')
-    assert 'matches 1..16' in (common/'menu/picker/handle.mcfunction').read_text(encoding='utf-8')
+    assert [int(n) for n in re.findall(r'cardtable:picker p(\d+) int',text)]==list(range(1,18))
+    assert '#game_count ct_ctx 17' in (common/'load.mcfunction').read_text(encoding='utf-8')
+    assert 'matches 1..17' in (common/'menu/render.mcfunction').read_text(encoding='utf-8')
+    assert 'matches 1..17' in (common/'menu/picker/handle.mcfunction').read_text(encoding='utf-8')
     assert future_branch in (common/'game/open_settings.mcfunction').read_text(encoding='utf-8')
     baseline=hashes(output);register('register_boardgames.py');register('register_xiangqi.py')
     assert hashes(output)==baseline,'有未来游戏时重跑注册不幂等'
-    print('通过：当前15款及模拟未来16款注册幂等；保留未来按钮、编号上限、分派和会话顺序。')
+    print('通过：当前16款及模拟未来17款注册幂等；保留未来按钮、编号上限、分派和会话顺序。')
     print('临时副本：'+str(output))
 
 

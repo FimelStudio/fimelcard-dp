@@ -39,5 +39,6 @@ execute if score @s ct_game matches 14 run tellraw @a[tag=ct.switch_actor,limit=
 execute if score @s ct_game matches 14 run function cardtable:log {text:"切换游戏：五子棋"}
 execute if score @s ct_game matches 15 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：飞行棋",color:"gold"}
 execute if score @s ct_game matches 15 run function cardtable:log {text:"切换游戏：飞行棋"}
+execute if score @s ct_game matches 16 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：阿瓦隆",color:"gold"}
 function cardtable:game/init_selected
 function cardtable:menu/render

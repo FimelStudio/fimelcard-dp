@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const read=n=>fs.readFileSync('data/cardtable/function/'+n+'.mcfunction','utf8');
-const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主','UNO','国际象棋','中国象棋','五子棋','飞行棋'];
-const min=[4,2,2,2,3,3,3,2,2,1,2,1,1,1,1],max=[4,8,5,5,8,8,6,8,6,3,8,2,2,2,4];
+const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主','UNO','国际象棋','中国象棋','五子棋','飞行棋','阿瓦隆'];
+const min=[4,2,2,2,3,3,3,2,2,1,2,1,1,1,1,5],max=[4,8,5,5,8,8,6,8,6,3,8,2,2,2,4,8];
 const count=names.length;
 for(const cap of [4,8]){
  const src=read('menu/picker/show'+cap);
  const d=JSON.parse(src.slice(src.indexOf('{')));
  assert.equal(d.type,'minecraft:multi_action');assert.equal(d.pause,false);
- assert.equal(d.actions.length,count);assert.equal(d.exit_action.action,undefined);
+ assert.equal(d.actions.length,cap===8?count:count-1);assert.equal(d.exit_action.action,undefined);
  for(const [i,a]of d.actions.entries()){
   const upper=Math.min(cap,max[i]),range=min[i]===upper?min[i]:min[i]+'–'+upper;
   // 斗地主会补测试人机，国际象棋单人开局时自动对战电脑。
@@ -63,4 +63,4 @@ assert.match(handle,/scores=\{ct_state=0\}.*ct_id = #pick_table ct_ctx/);
 assert.ok(handle.indexOf('reset @s ct_game_pick')<handle.indexOf('menu/select_game'));
 for(const f of ['load','seat/remove_player','game/start'])assert.ok(read(f).includes('reset')&&read(f).includes('ct_pick_table'));
 assert.ok(read('tick').includes('scores={ct_game_pick=1..}'));
-console.log('通过：两种桌型'+(count*2)+'个选择按钮、人数提示、取消/同游戏不改设置、'+checks+'种提交权限与旧窗口情形、升级及开局/离座/重载失效。仍需游戏内右键与普通玩家验收。');
+console.log('通过：两种桌型'+(count*2-1)+'个选择按钮、人数提示、取消/同游戏不改设置、'+checks+'种提交权限与旧窗口情形、升级及开局/离座/重载失效。仍需游戏内右键与普通玩家验收。');

@@ -1,3 +1,4 @@
+execute as @e[type=minecraft:marker,tag=ct.controller,tag=!gm.controller,scores={ct_game=14,ct_capacity=8}] run scoreboard players set @s ct_game 16
 execute as @e[type=minecraft:marker,tag=ct.controller,tag=av.controller,scores={ct_game=14}] run scoreboard players set @s ct_game 16
 scoreboard objectives add ct_meme trigger
 scoreboard objectives add ct_meme_cd dummy
