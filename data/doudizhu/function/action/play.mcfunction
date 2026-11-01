@@ -11,6 +11,7 @@ execute if score #type dd_ctx = @e[tag=dd.current,limit=1] dd_type if score #n d
 execute unless score #beats dd_ctx matches 1 run tellraw @s {text:"所选牌不能压过上一手。",color:"red"}
 execute unless score #beats dd_ctx matches 1 run return 0
 scoreboard players set #submitted dd_ctx 1
+function doudizhu:visual/play
 function doudizhu:hud/record_play
 function doudizhu:hand/build_play
 data modify entity @e[tag=dd.current,limit=1] data.doudizhu.last_play set from storage doudizhu:ui played

@@ -1,3 +1,4 @@
+function doudizhu:visual/load
 scoreboard objectives add dd_speed_time dummy
 scoreboard objectives add dd_counter dummy
 scoreboard objectives add dd_bidmode dummy
@@ -25,3 +26,4 @@ execute unless data storage fimel_title:io panels run function fimel_title:code/
 execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:input/sync
 
 function doudizhu:music/load
+execute as @a[tag=dd.player] run function doudizhu:input/refresh_model

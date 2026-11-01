@@ -4,9 +4,9 @@ execute if score @s gd_strength = #hud_previous gd_ctx run data modify storage g
 execute unless score #hud_previous gd_ctx matches -1 unless score @s gd_strength = #hud_previous gd_ctx run data modify storage guandan:hud hand.extra append value {text:"",font:"card:guandan/spacing"}
 scoreboard players operation #hud_type gd_ctx = @s gd_type
 function guandan:hud/type
-execute if score @s gd_wild matches 1 run data modify storage guandan:hud glyph set from storage guandan:hud wild
+execute if score @s gd_point = @e[tag=gd.current,limit=1] gd_level run data modify storage guandan:hud glyph set from storage guandan:hud wild
 execute if score @s gd_sel matches 1 run data modify storage guandan:hud glyph set from storage guandan:hud selected
-execute if score @s gd_sel matches 1 if score @s gd_wild matches 1 run data modify storage guandan:hud glyph set from storage guandan:hud selected_wild
+execute if score @s gd_sel matches 1 if score @s gd_point = @e[tag=gd.current,limit=1] gd_level run data modify storage guandan:hud glyph set from storage guandan:hud selected_wild
 execute store result storage guandan:hud depth int 1 run scoreboard players get #hud_depth gd_ctx
 function guandan:hud/append with storage guandan:hud
 tag @s remove gd.hudhand

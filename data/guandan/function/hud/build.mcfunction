@@ -17,7 +17,7 @@ data modify storage fimel_title:io text_buffer set value []
 data modify storage fimel_title:io neg_text_buffer set value []
 execute if score #hud_count gd_ctx matches 1.. run function guandan:hud/line
 execute if score #hud_count gd_ctx matches 0 run function guandan:hud/empty_hand
-function guandan:hud/status
+function guandan:hud/public
 scoreboard players operation panel_id fbt_io = @s gd_panel
 function fimel_title:replace_panel
 scoreboard players operation @s fbt_panel = @s gd_panel

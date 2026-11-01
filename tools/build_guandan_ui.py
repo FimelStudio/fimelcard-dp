@@ -149,6 +149,7 @@ execute as @e[tag=gd.current,limit=1] at @s run function guandan:game/submit
 execute if score #ok gd_ctx matches 1 run return run dialog clear @s
 function guandan:input/invalid
 ''')
+    put('input/play',(ROOT/'input/play.mcfunction').read_text(encoding='utf8').rstrip()+'\nfunction guandan:ui/open')
     put('input/pass','''
 scoreboard players set #ok gd_ctx 0
 execute as @e[tag=gd.current,limit=1] at @s run function guandan:game/pass
@@ -205,14 +206,18 @@ function guandan:ui/begin
 function guandan:ui/players
 function guandan:ui/hand
 function guandan:ui/status
+function guandan:ui/last_play
 execute if entity @e[tag=gd.current,scores={gd_state=3,gd_anim=0},limit=1] if score @s gd_seat = @e[tag=gd.current,limit=1] gd_turn run function guandan:ui/play_buttons
 execute if entity @e[tag=gd.current,scores={gd_state=2,gd_anim=0},limit=1] run function guandan:ui/tribute_buttons
 function guandan:ui/button {code:22,label:"取消所选",color:"gray"}
 function guandan:ui/button {code:2,label:"对局菜单",color:"gray"}
 function guandan:hud/update
 function guandan:ui/normalize
-function guandan:ui/show with storage guandan:ui
+function guandan:ui/hand_show with storage guandan:ui
 ''')
+    put('ui/last_play','data modify storage guandan:ui last_play set value {text:"还没有出牌，或等待重新领出。",color:"gray"}\nexecute if score @e[tag=gd.current,limit=1] gd_lastkind matches 1.. run data modify storage guandan:ui last_play set value {text:"",extra:[]}\nscoreboard players operation #ui_lastseat gd_ctx = @e[tag=gd.current,limit=1] gd_lastseat\nexecute if score @e[tag=gd.current,limit=1] gd_lastkind matches 1.. as @e[tag=gd.board] if score @s gd_seat = #ui_lastseat gd_ctx run function guandan:ui/last_play_owner\n')
+    put('ui/last_play_owner','data modify storage guandan:ui last_play.extra append from entity @s data.gd_name\ndata modify storage guandan:ui last_play.extra append value {text:"："}\ndata modify storage guandan:ui last_play.extra append from entity @s data.last_label\n')
+    put('ui/hand_show','$dialog show @s {"type":"minecraft:multi_action","title":{"text":"掼蛋 · 手牌","color":"gold"},"body":[{"type":"minecraft:plain_message","width":440,"contents":$(phase)},{"type":"minecraft:plain_message","width":440,"contents":[{"text":"上一手：","color":"gray"},$(last_play)]},{"type":"minecraft:plain_message","width":440,"contents":$(info)},{"type":"minecraft:plain_message","width":440,"contents":{"text":"从大到小排列，同点数上下堆叠；点击露出的牌面选中／取消，金边表示选中，★表示级牌（红桃级牌为逢人配）。","color":"gray"}},{"type":"minecraft:plain_message","width":690,"contents":$(grid)}],"columns":4,"actions":$(buttons),"exit_action":{"label":{"text":"返回游戏（保留选择）"}},"pause":false,"can_close_with_escape":true,"after_action":"close"}\n')
     put('ui/hand','''
 tag @e[tag=gd.uicards] remove gd.uicards
 execute as @e[tag=gd.cards] if score @s gd_owner = #ui_seat gd_ctx run tag @s add gd.uicards
@@ -238,9 +243,9 @@ execute unless score @s gd_strength = #ui_previous gd_ctx run data modify storag
 execute unless score @s gd_strength = #ui_previous gd_ctx run scoreboard players set #ui_depth gd_ctx 0
 scoreboard players operation #ui_type gd_ctx = @s gd_type
 function guandan:ui/type
-execute if score @s gd_wild matches 1 run data modify storage guandan:ui slices set from storage guandan:ui wild_slices
+execute if score @s gd_point = @e[tag=gd.current,limit=1] gd_level run data modify storage guandan:ui slices set from storage guandan:ui wild_slices
 execute if score @s gd_sel matches 1 run data modify storage guandan:ui slices set from storage guandan:ui selected_slices
-execute if score @s gd_sel matches 1 if score @s gd_wild matches 1 run data modify storage guandan:ui slices set from storage guandan:ui selected_wild_slices
+execute if score @s gd_sel matches 1 if score @s gd_point = @e[tag=gd.current,limit=1] gd_level run data modify storage guandan:ui slices set from storage guandan:ui selected_wild_slices
 scoreboard players operation #ui_code gd_ctx = @s gd_id
 scoreboard players add #ui_code gd_ctx 100
 scoreboard players operation #ui_code gd_ctx += #ui_base gd_ctx
@@ -334,7 +339,7 @@ execute store result storage guandan:ui code int 1 run scoreboard players get #u
 $data modify storage guandan:ui label set value {text:"$(label)",color:"$(color)"}
 function guandan:ui/button_append with storage guandan:ui
 ''')
-    put('ui/button_append','$data modify storage guandan:ui buttons append value {label:$(label),width:200,action:{type:"minecraft:run_command",command:"trigger gd_action set $(code)"}}')
+    put('ui/button_append','$data modify storage guandan:ui buttons append value {label:$(label),width:70,action:{type:"minecraft:run_command",command:"trigger gd_action set $(code)"}}')
     put('ui/menu','''
 function guandan:input/context
 execute unless entity @s[tag=gd.actor] run return 0
@@ -401,4 +406,6 @@ data modify storage guandan:ui buttons append from storage guandan:ui option_but
     settings()
 
 
-if __name__=='__main__':build()
+if __name__=='__main__':build(); __import__("build_guandan_layout").build_layout()
+
+if __name__ == '__main__': __import__('build_turn_tools').build()

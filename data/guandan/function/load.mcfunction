@@ -87,3 +87,10 @@ scoreboard players reset * gd_action
 scoreboard players reset * gd_settings
 function guandan:visual/load
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=18}] at @s run function guandan:system/reload
+
+scoreboard objectives add gd_humans dummy
+scoreboard objectives add gd_botclock dummy
+scoreboard objectives add gd_botepoch dummy
+scoreboard objectives add gd_best dummy
+scoreboard objectives add gd_bestchoice dummy
+scoreboard objectives add gd_botpick dummy

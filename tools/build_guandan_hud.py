@@ -70,7 +70,6 @@ data modify storage fimel_title:io text_buffer set value []
 data modify storage fimel_title:io neg_text_buffer set value []
 execute if score #hud_count gd_ctx matches 1.. run function guandan:hud/line
 execute if score #hud_count gd_ctx matches 0 run function guandan:hud/empty_hand
-function guandan:hud/status
 scoreboard players operation panel_id fbt_io = @s gd_panel
 function fimel_title:replace_panel
 scoreboard players operation @s fbt_panel = @s gd_panel
@@ -90,9 +89,9 @@ execute if score @s gd_strength = #hud_previous gd_ctx run data modify storage g
 execute unless score #hud_previous gd_ctx matches -1 unless score @s gd_strength = #hud_previous gd_ctx run data modify storage guandan:hud hand.extra append value {text:"'''+chr(0xEBF1)+'''",font:"card:guandan/spacing"}
 scoreboard players operation #hud_type gd_ctx = @s gd_type
 function guandan:hud/type
-execute if score @s gd_wild matches 1 run data modify storage guandan:hud glyph set from storage guandan:hud wild
+execute if score @s gd_point = @e[tag=gd.current,limit=1] gd_level run data modify storage guandan:hud glyph set from storage guandan:hud wild
 execute if score @s gd_sel matches 1 run data modify storage guandan:hud glyph set from storage guandan:hud selected
-execute if score @s gd_sel matches 1 if score @s gd_wild matches 1 run data modify storage guandan:hud glyph set from storage guandan:hud selected_wild
+execute if score @s gd_sel matches 1 if score @s gd_point = @e[tag=gd.current,limit=1] gd_level run data modify storage guandan:hud glyph set from storage guandan:hud selected_wild
 execute store result storage guandan:hud depth int 1 run scoreboard players get #hud_depth gd_ctx
 function guandan:hud/append with storage guandan:hud
 tag @s remove gd.hudhand
@@ -167,15 +166,29 @@ def fonts():
         atlas=Image.new('RGBA',(36*9,48*6),(0,0,0,0))
         for i,name in enumerate(NAMES):
             src=RP/f'assets/card/textures/item/poker/{name}.png'
-            with Image.open(src) as im:image=im.convert('RGBA').crop((0,0,36,48))
+            with Image.open(src) as im:
+                rgba=im.convert('RGBA')
+                if name in ('j_1','j_2'):
+                    # Jokers use a 128x128 texture with a complete 60x96 face.
+                    face=rgba.crop(rgba.getchannel('A').getbbox()).resize((30,48),Image.Resampling.NEAREST)
+                    image=Image.new('RGBA',(36,48),(0,0,0,0))
+                    image.paste(face,(2,0))
+                else:
+                    image=rgba.crop((0,0,36,48))
             draw=ImageDraw.Draw(image)
-            draw.rounded_rectangle((0,0,35,47),radius=3,outline='#352e25',width=1)
+            # Decorations stay inside the original card silhouette; no outer frame.
             if 'wild' in variant:
-                draw.polygon([(1,1),(11,1),(1,11)],fill='#d947e9')
-                draw.polygon([(34,46),(24,46),(34,36)],fill='#d947e9')
-                draw.line([(3,4),(7,4)],fill='white',width=1);draw.line([(5,2),(5,6)],fill='white',width=1)
+                import math
+                points=[(25+5*math.cos(-math.pi/2+k*math.pi/5)*(1 if k%2==0 else .43),6+5*math.sin(-math.pi/2+k*math.pi/5)*(1 if k%2==0 else .43)) for k in range(10)]
+                draw.polygon(points,fill='#ffd74b',outline='#946526')
             if 'selected' in variant:
-                draw.rounded_rectangle((0,0,35,47),radius=3,outline='#ffe058',width=2)
+                alpha=image.getchannel('A')
+                draw.rounded_rectangle((2,0,31,47),radius=3,outline='#ffe058',width=2)
+                image.putalpha(alpha)
+            # Match Doudizhu visible card bounds: 33x46 within a 36x48 cell.
+            face=image.crop(image.getchannel('A').getbbox()).resize((33,46),Image.Resampling.NEAREST)
+            image=Image.new('RGBA',(36,48),(0,0,0,0))
+            image.paste(face,(3,2))
             atlas.paste(image,((i%9)*36,(i//9)*48))
             # 仅移除旧生成器明确创建的逐张字体副本，新图集不需要216个独立provider。
             previous=texture_root/variant/(name+'.png')
@@ -208,4 +221,4 @@ def fonts():
 
 
 def build():functions();fonts()
-if __name__=='__main__':build()
+if __name__=='__main__':build(); __import__("build_guandan_layout").build_layout()

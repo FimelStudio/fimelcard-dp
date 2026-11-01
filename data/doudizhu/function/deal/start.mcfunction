@@ -1,3 +1,4 @@
+function doudizhu:visual/clear
 function doudizhu:game/ensure_match
 function doudizhu:player/audience
 tag @s remove dd.music_exciting

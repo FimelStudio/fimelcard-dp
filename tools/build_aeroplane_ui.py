@@ -194,3 +194,5 @@ function aeroplane_chess:ui/show with storage aeroplane_chess:ui
  put('rules/show','function aeroplane_chess:rules/open')
 
 if __name__=='__main__':build()
+
+if __name__ == '__main__': __import__('build_turn_tools').build()

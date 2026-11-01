@@ -1,3 +1,4 @@
+function doudizhu:visual/clear
 tag @s remove dd.music_exciting
 tag @s remove dd.low_cards_announced
 scoreboard players operation #ctx dd_ctx = @s dd_id

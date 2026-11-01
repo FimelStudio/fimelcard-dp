@@ -14,7 +14,7 @@ data modify storage guandan:visual seat_data.count_text set value ""
 execute if entity @e[tag=gd.current,scores={gd_show=1},limit=1] run function guandan:visual/count_text
 data modify storage guandan:visual seat_data.turn_text set value ""
 execute if score @s gd_seat = @e[tag=gd.current,limit=1] gd_turn run data modify storage guandan:visual seat_data.turn_text set value " ◀"
-function guandan:visual/label_at with storage guandan:visual seat_data
+# Seat labels removed; player details remain in the HUD.
 # 只读取本桌公开出牌；绝不读取 gd.card 的玩家持有牌面。
 data modify storage guandan:visual public set value []
 data modify storage guandan:visual public set from entity @s data.last_play

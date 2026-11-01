@@ -3,6 +3,7 @@ execute unless score @s dd_seat = @e[tag=dd.current,limit=1] dd_turn run return 
 execute if score @e[tag=dd.current,limit=1] dd_type matches 0 run tellraw @s {text:"你是本轮领出者，必须出牌。",color:"red"}
 execute if score @e[tag=dd.current,limit=1] dd_type matches 0 run return 0
 scoreboard players set #submitted dd_ctx 1
+function doudizhu:visual/clear_seat
 function doudizhu:hud/record_pass
 execute as @e[tag=dd.current,limit=1] run function doudizhu:player/audience
 tellraw @a[tag=dd.audience] [{selector:"@s",color:"yellow"},{text:"：不出。",color:"gray"}]

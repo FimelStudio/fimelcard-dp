@@ -3,3 +3,4 @@ function guandan:system/context
 scoreboard players set @a[tag=gd.audience] gd_action 0
 scoreboard players enable @a[tag=gd.audience] gd_action
 function guandan:hud/refresh
+execute as @a[tag=gd.audience] run function guandan:input/sync_turn_tool

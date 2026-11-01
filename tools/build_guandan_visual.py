@@ -39,7 +39,7 @@ def build():
                 x,z={0:(0,-1.25),-90:(1.25,0),180:(0,1.25),90:(-1.25,0)}[yaw]
             a=math.radians(yaw)/2;q=math.sqrt(.5)
             tx,tz=turn(scale/16,-scale/16,yaw)
-            values.append(dict(x=x,z=z,seat=seat,scale=scale,tx=round(tx,7),tz=round(tz,7),ty=round(scale/16,7),
+            values.append(dict(x=x,z=z,lx=round(x*1.36,5),lz=round(z*1.36,5),yaw=yaw,seat=seat,scale=scale,tx=round(tx,7),tz=round(tz,7),ty=round(scale/16,7),
                 qx=round(q*math.cos(a),8),qy=round(q*math.sin(a),8),qz=round(-q*math.sin(a),8),qw=round(q*math.cos(a),8)))
         load.append(f'data modify storage guandan:layout c{capacity}.seats set value '+j(values))
         for seat,value in enumerate(values,1):
@@ -77,12 +77,12 @@ scoreboard players set #box_found gd_ctx 0
 execute as @e[tag=gd.box] if score @s ct_id = #vis_table gd_ctx run scoreboard players add #box_found gd_ctx 1
 execute unless score #box_found gd_ctx matches 2 run function guandan:visual/boxes
 execute as @e[type=minecraft:marker,tag=gd.board] run function guandan:visual/participant
-execute if score @s gd_state matches 1..5 positioned ~ ~1.92 ~ summon minecraft:text_display run function guandan:visual/status
+execute if score @s gd_state matches 1..5 positioned ~ ~1.075 ~ summon minecraft:text_display run function guandan:visual/status
 ''')
     put('boxes',r'''
 execute as @e[tag=gd.box] if score @s ct_id = #vis_table gd_ctx run kill @s
-execute positioned ~-0.22 ~1.04 ~ summon minecraft:item_display run function guandan:visual/box
-execute positioned ~0.22 ~1.04 ~ summon minecraft:item_display run function guandan:visual/box
+execute positioned ~-0.22 ~1.04 ~0.55 summon minecraft:item_display run function guandan:visual/box
+execute positioned ~0.22 ~1.04 ~0.55 summon minecraft:item_display run function guandan:visual/box
 ''')
     put('box',r'''
 tag @s add gd.visual
@@ -110,7 +110,7 @@ data modify storage guandan:visual seat_data.count_text set value ""
 execute if entity @e[tag=gd.current,scores={gd_show=1},limit=1] run function guandan:visual/count_text
 data modify storage guandan:visual seat_data.turn_text set value ""
 execute if score @s gd_seat = @e[tag=gd.current,limit=1] gd_turn run data modify storage guandan:visual seat_data.turn_text set value " ◀"
-function guandan:visual/label_at with storage guandan:visual seat_data
+# Seat labels removed; player details remain in the HUD.
 # 只读取本桌公开出牌；绝不读取 gd.card 的玩家持有牌面。
 data modify storage guandan:visual public set value []
 data modify storage guandan:visual public set from entity @s data.last_play
@@ -123,19 +123,19 @@ execute store result storage guandan:visual count int 1 run scoreboard players g
 function guandan:visual/count_string with storage guandan:visual
 ''')
     put('count_string','$data modify storage guandan:visual seat_data.count_text set value " · 余$(count)张"')
-    put('label_at','$execute positioned ~$(x) ~1.43 ~$(z) summon minecraft:text_display run function guandan:visual/label with storage guandan:visual seat_data')
+    put('label_at','$execute positioned ~$(lx) ~1.075 ~$(lz) summon minecraft:text_display run function guandan:visual/label with storage guandan:visual seat_data')
     put('label',r'''
 tag @s add gd.visual
 tag @s add gd.label
 scoreboard players operation @s ct_id = #vis_table gd_ctx
 $scoreboard players set @s gd_v_seat $(seat)
-$data merge entity @s {text:{text:"",extra:[$(name),{text:" · 队$(team)$(count_text)$(turn_text)\n$(line)",color:"gray"}]},billboard:"center",background:0,shadow:1b,view_range:0.5f,line_width:300,transformation:{scale:[0.16f,0.16f,0.16f]}}
+$data merge entity @s {text:{text:"",extra:[$(name),{text:" · 队$(team)$(count_text)$(turn_text)",color:"gray"}]},billboard:"fixed",Rotation:[$(yaw)f,-90f],background:0,shadow:0b,view_range:0.5f,line_width:300,transformation:{scale:[0.13f,0.13f,0.13f]}}
 ''')
     put('status',r'''
 tag @s add gd.visual
 tag @s add gd.status
 scoreboard players operation @s ct_id = #vis_table gd_ctx
-data merge entity @s {text:{text:"掼蛋",color:"gold",extra:[{text:" · 本副 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_round"}},{text:"\n队0 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_team0"}},{text:"级 / 队1 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_team1"}},{text:"级 · 打 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_level"}},{text:"\n轮到 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_turn"}},{text:" 号位 · 逆时针"}]},billboard:"center",background:0,shadow:1b,view_range:0.5f,line_width:340,transformation:{scale:[0.18f,0.18f,0.18f]}}
+data merge entity @s {text:{text:"掼蛋",color:"gold",extra:[{text:" · 本副 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_round"}},{text:"\n队0 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_team0"}},{text:"级 / 队1 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_team1"}},{text:"级 · 打 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_level"}},{text:"\n轮到 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_turn"}},{text:" 号位 · 逆时针"}]},billboard:"fixed",Rotation:[0f,-90f],background:0,shadow:0b,view_range:0.5f,line_width:340,transformation:{scale:[0.14f,0.14f,0.14f]}}
 # text_display 会立即解析 selector/score；刷新时上下文只包含当前桌。
 execute if entity @e[tag=gd.current,scores={gd_state=0},limit=1] run data modify entity @s text set value {text:"掼蛋 · 四人对家",color:"gold"}
 execute if entity @e[tag=gd.current,scores={gd_state=1},limit=1] run data modify entity @s text set value {text:"掼蛋 · 正在发牌",color:"gold"}

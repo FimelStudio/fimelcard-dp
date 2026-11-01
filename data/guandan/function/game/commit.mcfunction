@@ -11,7 +11,7 @@ execute store result entity @s data.guandan.action.size int 1 run scoreboard pla
 execute store result entity @s data.guandan.action.high int 1 run scoreboard players get @s gd_high
 execute store result entity @s data.guandan.action.power int 1 run scoreboard players get @s gd_power
 execute store result entity @s data.guandan.action.round int 1 run scoreboard players get @s gd_round
-execute as @e[tag=gd.cards,scores={gd_sel=1}] if score @s gd_owner = #actor gd_ctx run function guandan:game/commit_card
+function guandan:game/commit_ordered
 scoreboard players operation #played gd_ctx = @s gd_size
 execute as @e[tag=gd.board] if score @s gd_seat = #actor gd_ctx run function guandan:game/commit_part
 scoreboard players operation @s gd_lastseat = #actor gd_ctx

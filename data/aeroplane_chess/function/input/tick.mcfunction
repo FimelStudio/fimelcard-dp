@@ -3,3 +3,4 @@ execute as @e[type=minecraft:interaction,tag=ac.plane_click] if data entity @s i
 execute as @a[tag=ac.player,scores={ac_drop=1..}] at @s run function aeroplane_chess:input/drop
 execute as @a[tag=ac.player,scores={ac_action=1..}] at @s run function aeroplane_chess:input/submit
 execute as @a[scores={ac_settings=1..}] at @s run function aeroplane_chess:settings/save
+execute as @a[tag=ac.player] run function aeroplane_chess:input/sync_turn_tool

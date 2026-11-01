@@ -10,7 +10,7 @@ execute as @a[tag=gd.start,scores={gd_order=0}] run scoreboard players add #side
 execute as @a[tag=gd.start,scores={gd_order=1}] run scoreboard players add #side1 gd_ctx 1
 execute as @a[tag=gd.start,scores={gd_order=2}] run scoreboard players add #side2 gd_ctx 1
 execute as @a[tag=gd.start,scores={gd_order=3}] run scoreboard players add #side3 gd_ctx 1
-execute unless score #side0 gd_ctx matches 1 run scoreboard players set #sides_ok gd_ctx 0
-execute unless score #side1 gd_ctx matches 1 run scoreboard players set #sides_ok gd_ctx 0
-execute unless score #side2 gd_ctx matches 1 run scoreboard players set #sides_ok gd_ctx 0
-execute unless score #side3 gd_ctx matches 1 run scoreboard players set #sides_ok gd_ctx 0
+execute if score #side0 gd_ctx matches 2.. run scoreboard players set #sides_ok gd_ctx 0
+execute if score #side1 gd_ctx matches 2.. run scoreboard players set #sides_ok gd_ctx 0
+execute if score #side2 gd_ctx matches 2.. run scoreboard players set #sides_ok gd_ctx 0
+execute if score #side3 gd_ctx matches 2.. run scoreboard players set #sides_ok gd_ctx 0

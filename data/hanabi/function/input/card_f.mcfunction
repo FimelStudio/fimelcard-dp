@@ -13,6 +13,6 @@ execute unless entity @s[tag=hb.turn] run function hanabi:hand/sync
 execute unless entity @s[tag=hb.turn] run return 0
 
 scoreboard players operation @s hb_action = #slot hb_ctx
-scoreboard players add @s hb_action 100
+scoreboard players add @s hb_action 200
 function hanabi:action/handle
 execute if entity @s[tag=hb.player] run function hanabi:hand/sync
