@@ -165,7 +165,7 @@ $scoreboard players set @s xq_table $(table)
         c+=self.count('@e[tag=xq.man,scores={ct_id=202}]',32,'remove_keeps_other_table')
         self.case('isolation',c)
         # Full settings/save path with session validation; no UI actor is necessary to test the persisted field.
-        for field,value,obj,want in [(1,1,'board',1),(1,2,'board',0),(2,1,'palette',1),(2,2,'palette',0),(5,0,'time',0),(5,5,'time',5),(5,30,'time',30),(5,7,'time',10),(4,8,'first',0),(6,3,'level',3),(6,4,'level',2),(7,0,'hints',0),(7,2,'hints',1)]:
+        for field,value,obj,want in [(1,1,'board',1),(1,2,'board',0),(2,1,'palette',1),(2,2,'palette',0),(5,0,'time',0),(5,5,'time',5),(5,30,'time',30),(5,7,'time',10),(4,8,'first',1),(6,3,'level',3),(6,4,'level',2),(7,0,'hints',0),(7,2,'hints',1)]:
             key=f'setting_{field}_{value}'
             c=self.setup()+[f'scoreboard players set {A} ct_state 0',f'scoreboard players operation {person(1)} xq_nonce = #ui_load xq_ctx',f'scoreboard players set {person(1)} xq_setnonce 100000',f'scoreboard players set {person(1)} xq_set_table 101',f'scoreboard players operation {person(1)} xq_setepoch = {A} xq_epoch',f'scoreboard players set {person(1)} xq_settings {100000000+field*100+value}',f'execute as {person(1)} at @s run function xiangqi:settings/save']
             self.case(key,c+self.score(A,'xq_'+obj,want,key))

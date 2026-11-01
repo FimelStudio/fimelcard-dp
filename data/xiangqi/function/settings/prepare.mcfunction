@@ -9,3 +9,4 @@ execute store result storage xiangqi:settings first int 1 run scoreboard players
 execute store result storage xiangqi:settings time int 1 run scoreboard players get @s xq_time
 execute store result storage xiangqi:settings level int 1 run scoreboard players get @s xq_level
 execute store result storage xiangqi:settings hints int 1 run scoreboard players get @s xq_hints
+execute store result storage xiangqi:settings variant int 1 run scoreboard players get @s xq_variant

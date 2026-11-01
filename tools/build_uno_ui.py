@@ -49,8 +49,17 @@ kill @e[type=minecraft:item_display,tag=un.name_resolver,distance=..1,sort=neare
 
 
 put("input/give", '''
-# 手牌逻辑留在实体记分板；这里只提供快捷栏第1格的操作物。
-clear @s minecraft:purple_dye[minecraft:custom_data~{uno:{tool:1b}}]
+# 手牌和 HUD 始终保留；操作物只在本人的正常行动回合提供。
+execute unless entity @s[tag=un.player,tag=ct.player] run return 0
+execute unless score @s un_table = @s ct_id run return 0
+scoreboard players operation #tool_table un_ctx = @s un_table
+scoreboard players operation #tool_seat un_ctx = @s un_seat
+scoreboard players set #tool_allowed un_ctx 0
+execute as @e[type=minecraft:marker,tag=ct.controller,tag=un.controller,scores={ct_game=11,un_state=2}] if score @s ct_id = #tool_table un_ctx if score @s un_turn = #tool_seat un_ctx run scoreboard players set #tool_allowed un_ctx 1
+execute unless score #tool_allowed un_ctx matches 1 run clear @s minecraft:purple_dye[minecraft:custom_data~{uno:{tool:1b}}]
+execute unless score #tool_allowed un_ctx matches 1 run return 0
+execute store result score #tool_have un_ctx run clear @s minecraft:purple_dye[minecraft:custom_data~{uno:{tool:1b}}] 0
+execute if score #tool_have un_ctx matches 1.. run return 0
 execute store result storage uno:input table int 1 run scoreboard players get @s un_table
 function uno:input/give_tool with storage uno:input
 ''')
@@ -94,7 +103,7 @@ tag @s add un.actor
 execute as @e[tag=un.current,limit=1] at @s run function uno:system/context
 ''')
 put("input/invalid", '''
-tellraw @s {text:"[UNO] 这个窗口已过期或当前操作不可用，请按Q重新打开手牌。",color:"yellow"}
+tellraw @s {text:"[UNO] 窗口已过期，请使用当前回合的操作入口。",color:"yellow"}
 scoreboard players set @s un_action 0
 scoreboard players enable @s un_action
 scoreboard players set @s un_colorpick -1
@@ -136,6 +145,8 @@ execute if score #ui_action un_ctx matches 1..2 as @e[tag=un.current,limit=1] at
 execute if score #ui_action un_ctx matches 200..203 if score @s un_pick matches 52..53 as @e[tag=un.current,limit=1] at @s run function uno:action/play
 execute if score #ui_action un_ctx matches 210..213 if score @s un_pick matches 52..53 as @e[tag=un.current,limit=1] at @s run function uno:action/play
 execute if score #ui_played un_ctx matches 1 run dialog clear @s
+# 漏喊者也要能补喊；出牌时新开的响应框不被“退出手牌”一并关掉。
+execute if score #ui_played un_ctx matches 1 run function uno:ui/response_prepare
 execute if score #ui_played un_ctx matches 1 run tag @a[tag=un.actor] remove un.actor
 execute if score #ui_played un_ctx matches 1 run return 0
 execute if score #ui_action un_ctx matches 3 as @e[tag=un.current,limit=1] at @s run function uno:action/draw
@@ -161,16 +172,22 @@ scoreboard players set @s un_pick -1
 function uno:ui/open
 ''')
 put("ui/refresh", '''
-# 状态推进后仅更新可用输入，不逐刻向全桌强制弹窗。
+# 回合变化才同步物品；回合外的 UNO 与 +4 响应独立于手牌道具。
 function uno:system/context
+dialog clear @a[tag=un.audience]
 scoreboard players set @a[tag=un.audience] un_pick -1
 scoreboard players set @a[tag=un.audience] un_colorpick -1
 scoreboard players set @a[tag=un.audience] un_action 0
 scoreboard players enable @a[tag=un.audience] un_action
+execute as @a[tag=un.audience] run function uno:input/give
+execute if score @s un_state matches 3..4 as @a[tag=un.audience] run function uno:ui/response_prepare
 ''')
 put("ui/open", '''
 function uno:input/context
 execute unless entity @s[tag=un.actor] run return 0
+execute if score @e[tag=un.current,limit=1] un_state matches 3..4 run return run function uno:ui/response_open
+execute unless score @e[tag=un.current,limit=1] un_state matches 2 run return run function uno:ui/close
+execute unless score @s un_seat = @e[tag=un.current,limit=1] un_turn run return run function uno:ui/close
 scoreboard players set @s un_colorpick -1
 scoreboard players operation @s un_seen = @e[tag=un.current,limit=1] un_epoch
 scoreboard players operation #ui_base un_ctx = @s un_seen
@@ -193,6 +210,40 @@ scoreboard players set @s un_action 0
 scoreboard players enable @s un_action
 function uno:hud/update
 tag @a[tag=un.actor] remove un.actor
+''')
+put("ui/close", '''
+dialog clear @s
+tag @a[tag=un.actor] remove un.actor
+''')
+put("ui/response_open", '''
+function uno:ui/response_prepare
+tag @a[tag=un.actor] remove un.actor
+''')
+put("ui/response_prepare", '''
+# 已由本桌状态推进或核验过的玩家入口调用；不改 actor，避免打断正在提交的出牌。
+execute unless entity @s[tag=un.player,tag=ct.player,tag=un.audience] run return 0
+execute unless score @s un_table = @e[tag=un.current,limit=1] ct_id run return 0
+execute unless score @s ct_id = @s un_table run return 0
+execute unless score @e[tag=un.current,limit=1] un_state matches 3..4 run return 0
+execute if score @e[tag=un.current,limit=1] un_state matches 4 unless score @s un_seat = @e[tag=un.current,limit=1] un_challenger run return run dialog clear @s
+scoreboard players operation #ui_table un_ctx = @s un_table
+scoreboard players operation @s un_seen = @e[tag=un.current,limit=1] un_epoch
+scoreboard players operation #ui_base un_ctx = @s un_seen
+scoreboard players set #ui_1000 un_ctx 1000
+scoreboard players operation #ui_base un_ctx *= #ui_1000 un_ctx
+function uno:ui/status
+function uno:ui/controls
+execute unless data storage uno:ui controls[0] run return 0
+scoreboard players operation #ui_code un_ctx = #ui_base un_ctx
+scoreboard players add #ui_code un_ctx 9
+execute store result storage uno:ui reopen int 1 run scoreboard players get #ui_code un_ctx
+scoreboard players set @s un_action 0
+scoreboard players enable @s un_action
+function uno:ui/response_show with storage uno:ui
+''')
+put("ui/response_show", '''
+$tellraw @s {text:"[UNO] 点击这里重新打开响应。",color:"yellow",underlined:true,click_event:{action:"run_command",command:"trigger un_action set $(reopen)"}}
+$dialog show @s {type:"minecraft:multi_action",title:{text:"UNO · 回应",color:"gold"},body:[{type:"minecraft:plain_message",width:400,contents:$(phase)}],columns:2,actions:$(controls),exit_action:{label:{text:"返回游戏"},width:140},pause:false,can_close_with_escape:true,after_action:"close"}
 ''')
 
 names = []
@@ -328,10 +379,10 @@ build_settings(ROOT)
 
 sections = [
     ("人数与目标", "2～8人，超过4人请使用八人桌。经典108张牌，每人7张，起始牌只使用数字牌；按实际座位顺时针开始并跳过空座。先出完手牌者赢得一轮。"),
-    ("回合与操作", "快捷栏第1格（hotbar.0）是“UNO 手牌”，选中后按Q打开。点击牌面亮框选中，再点同一牌型取消，点另一牌型直接转移选中；相同牌型合并显示。选好后点“出牌”或“出牌并喊UNO”，每次只出一张；HUD同步显示手牌与选中亮框。牌必须同色、同数字或同功能符号，普通变色牌可随时出并选色。即使能出牌，也可主动摸一张；摸后只能打刚摸到的牌，或选择不出。禁止叠加罚牌、一次出多张、抢出和摸到能出为止。"),
+    ("回合与操作", "轮到自己时，快捷栏第1格（hotbar.0）出现“UNO 手牌”，选中后按Q打开；其他回合仍可在HUD查看自己的手牌。点击牌面亮框选中，再点同一牌型取消，点另一牌型直接转移选中；相同牌型合并显示。选好后点“出牌”或“出牌并喊UNO”，每次只出一张；HUD同步显示手牌与选中亮框。牌必须同色、同数字或同功能符号，普通变色牌可随时出并选色。即使能出牌，也可主动摸一张；摸后只能打刚摸到的牌，或选择不出。禁止叠加罚牌、一次出多张、抢出和摸到能出为止。"),
     ("功能牌", "跳过：下家失去回合。反转：行动方向倒转。+2：下家摸2并失去回合。变色：选择当前颜色。变色+4：选择颜色，下家摸4并失去回合或发起质疑。二人局的反转与跳过均让自己再次行动；二人局+2/+4正常罚牌后也回到自己。"),
     ("+4与质疑", "只有手中没有当前颜色牌时，+4才合法；有相同数字或功能、但颜色不同的牌仍可合法出+4。开启质疑时允许冒险违规出牌：下家接受则摸4并跳过；质疑成功，出牌者摸4，质疑者正常行动；质疑失败，质疑者摸6并跳过。系统只公布是否合法，不公开整手牌。关闭质疑时，系统直接禁止违规+4。"),
-    ("喊UNO", "打到只剩1张时应选择“出牌并喊UNO”。漏喊会进入抓UNO阶段：本人可补喊，其他玩家可抓UNO；他人先抓到则漏喊者摸2。本人先补喊或无人抓到均不受罚。默认窗口3秒，期间不允许下一位出牌。设置可调整1～5秒或开启自动喊UNO。"),
+    ("喊UNO", "打到只剩1张时应选择“出牌并喊UNO”。漏喊会弹出响应框：本人可补喊，其他玩家可抓UNO；他人先抓到则漏喊者摸2。本人先补喊或无人抓到均不受罚。默认窗口3秒，期间不允许下一位出牌。设置可调整1～5秒或开启自动喊UNO。+4的接受或质疑也通过响应框处理，关闭后可点击聊天中的入口重开。"),
     ("结算与积分", "默认单局，出完即胜。可在游戏设置选择固定局数或目标积分赛（默认500分）；每轮胜者获得其他玩家剩牌总分。数字牌按牌面分，跳过/反转/+2各20分，变色/+4各50分。末张+2/+4先处理罚牌与质疑再结算；末张+4被质疑成功须摸4并继续本轮。固定局数完成后总分最高者获胜，同分并列。"),
     ("特殊情况与管理", "牌库耗尽时，保留弃牌堆顶牌，将其余弃牌洗回牌库。玩家离线则中止整场并回大厅；/reload保留本场手牌、回合与计分，旧窗口需按Q重开。普通玩家无需管理员权限；结束游戏使用桌边投票。管理员可站在牌桌旁执行 /function uno:admin/abort。"),
 ]

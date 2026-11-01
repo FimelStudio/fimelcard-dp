@@ -41,7 +41,7 @@ class Suite:
     def probe(self,a,b):return [f'scoreboard players set #from xq_ctx {a}',f'scoreboard players set #to xq_ctx {b}']+self.call('engine/check_move')
 
     def build(self,oracle=None):
-        objectives='xq_ctx xq_piece xq_sq ct_id xq_state xq_turn xq_half xq_full xq_result xq_reason xq_check xq_repetition xe'.split()
+        objectives='xq_ctx xq_piece xq_sq ct_id xq_state xq_turn xq_half xq_full xq_result xq_reason xq_check xq_repetition xq_variant xq_hidden xq_covered xe'.split()
         self.file('load',[f'scoreboard objectives add {o} dummy' for o in objectives]+['scoreboard players set #minus xq_ctx -1'])
         self.file('reset','kill @e[tag=xe.fixture]')
         self.file('controller','tag @s add xe.fixture\ntag @s add xe.controller\ntag @s add xq.controller\nscoreboard players set @s ct_id 101\nscoreboard players set @s xq_state 1\nscoreboard players set @s xe 0\ndata modify entity @s data.xiangqi.history set value []')
@@ -204,13 +204,14 @@ class Suite:
         for i,name in enumerate(self.cases):self.files['case/'+name]+=('schedule function xiangqi_engine_test:case/'+self.cases[i+1]+' 1t\n') if i+1<len(self.cases) else 'function xiangqi_engine_test:finish\n'
 
 
-def run(args):
+def run(args, suite=None):
     output=args.output.resolve() if args.output else Path(tempfile.mkdtemp(prefix='fimel-xiangqi-engine-'))
     if args.output:output.mkdir(parents=True,exist_ok=False)
     target=output/'packs'/'xiangqi_engine'
     shutil.copytree(args.pack/'data/xiangqi/function/engine',target/'data/xiangqi/function/engine')
     shutil.copy2(args.pack/'pack.mcmeta',target/'pack.mcmeta')
-    suite=Suite();suite.build(args.oracle)
+    if suite is None:
+        suite=Suite();suite.build(args.oracle)
     for name,body in suite.files.items():
         path=target/'data/xiangqi_engine_test/function'/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body,encoding='utf-8')
     helpers={

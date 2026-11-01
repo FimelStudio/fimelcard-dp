@@ -1,4 +1,5 @@
 tag @s add xq.controller
+execute unless score @s xq_variant matches 0..1 run scoreboard players set @s xq_variant 0
 execute unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
 execute unless score @s xq_board matches 0..1 run scoreboard players set @s xq_board 0
 execute unless score @s xq_palette matches 0..1 run scoreboard players set @s xq_palette 0

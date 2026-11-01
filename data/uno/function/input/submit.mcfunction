@@ -33,6 +33,8 @@ execute if score #ui_action un_ctx matches 1..2 as @e[tag=un.current,limit=1] at
 execute if score #ui_action un_ctx matches 200..203 if score @s un_pick matches 52..53 as @e[tag=un.current,limit=1] at @s run function uno:action/play
 execute if score #ui_action un_ctx matches 210..213 if score @s un_pick matches 52..53 as @e[tag=un.current,limit=1] at @s run function uno:action/play
 execute if score #ui_played un_ctx matches 1 run dialog clear @s
+# 漏喊者也要能补喊；出牌时新开的响应框不被“退出手牌”一并关掉。
+execute if score #ui_played un_ctx matches 1 run function uno:ui/response_prepare
 execute if score #ui_played un_ctx matches 1 run tag @a[tag=un.actor] remove un.actor
 execute if score #ui_played un_ctx matches 1 run return 0
 execute if score #ui_action un_ctx matches 3 as @e[tag=un.current,limit=1] at @s run function uno:action/draw

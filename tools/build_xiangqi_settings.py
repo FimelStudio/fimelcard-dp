@@ -24,7 +24,7 @@ function xiangqi:settings/begin
 function xiangqi:settings/root
 ''')
     put("settings/begin", '''
-# 六位nonce、字段一位、数值两位，最大999999701，小于有符号整数上限。
+# 六位nonce、字段一位、数值两位，最大999999801，小于有符号整数上限。
 execute if score #setting_serial xq_ctx matches 999999.. run scoreboard players add #ui_load xq_ctx 1
 execute unless score #setting_serial xq_ctx matches 99999..999998 run scoreboard players set #setting_serial xq_ctx 99999
 scoreboard players add #setting_serial xq_ctx 1
@@ -48,6 +48,7 @@ execute store result storage xiangqi:settings first int 1 run scoreboard players
 execute store result storage xiangqi:settings time int 1 run scoreboard players get @s xq_time
 execute store result storage xiangqi:settings level int 1 run scoreboard players get @s xq_level
 execute store result storage xiangqi:settings hints int 1 run scoreboard players get @s xq_hints
+execute store result storage xiangqi:settings variant int 1 run scoreboard players get @s xq_variant
 ''')
     fields = [
         (1, "board", "棋盘配色", [(0, "经典"), (1, "木色")]),
@@ -57,6 +58,7 @@ execute store result storage xiangqi:settings hints int 1 run scoreboard players
         (5, "time", "每人计时", [(0, "无限制")] + [(n, f"{n}分钟") for n in range(5, 31, 5)]),
         (6, "level", "单人人机难度", [(1, "简单"), (2, "普通"), (3, "困难")]),
         (7, "hints", "可走格提示", [(0, "关闭"), (1, "开启")]),
+        (8, "variant", "玩法", [(0, "标准象棋"), (1, "揭棋")]),
     ]
     lines = []
     for field, key, label, choices in fields:
@@ -119,13 +121,14 @@ scoreboard players operation #ui_setting_table xq_ctx = @s xq_set_table
 scoreboard players operation #ui_setting_epoch xq_ctx = @s xq_setepoch
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=13,ct_state=0}] if score @s ct_id = #ui_setting_table xq_ctx if score @s xq_epoch = #ui_setting_epoch xq_ctx run tag @s add xq.setting_table
 execute unless entity @e[tag=xq.setting_table,limit=1] run return run function xiangqi:settings/invalid
-execute unless score #ui_setting_field xq_ctx matches 0..7 run return run function xiangqi:settings/invalid
+execute unless score #ui_setting_field xq_ctx matches 0..8 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 0 unless score #ui_setting_value xq_ctx matches 0 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 1..2 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 3..4 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 5 unless score #ui_setting_value xq_ctx matches 0..30 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 6 unless score #ui_setting_value xq_ctx matches 1..3 run return run function xiangqi:settings/invalid
 execute if score #ui_setting_field xq_ctx matches 7 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
+execute if score #ui_setting_field xq_ctx matches 8 unless score #ui_setting_value xq_ctx matches 0..1 run return run function xiangqi:settings/invalid
 scoreboard players operation #ui_setting_mod xq_ctx = #ui_setting_value xq_ctx
 scoreboard players set #ui_5 xq_ctx 5
 scoreboard players operation #ui_setting_mod xq_ctx %= #ui_5 xq_ctx
@@ -139,10 +142,14 @@ execute if score #ui_setting_field xq_ctx matches 4 run scoreboard players opera
 execute if score #ui_setting_field xq_ctx matches 5 run scoreboard players operation @e[tag=xq.setting_table,limit=1] xq_time = #ui_setting_value xq_ctx
 execute if score #ui_setting_field xq_ctx matches 6 run scoreboard players operation @e[tag=xq.setting_table,limit=1] xq_level = #ui_setting_value xq_ctx
 execute if score #ui_setting_field xq_ctx matches 7 run scoreboard players operation @e[tag=xq.setting_table,limit=1] xq_hints = #ui_setting_value xq_ctx
+execute if score #ui_setting_field xq_ctx matches 8 run scoreboard players operation @e[tag=xq.setting_table,limit=1] xq_variant = #ui_setting_value xq_ctx
 tag @a[tag=ct.settings_actor] remove ct.settings_actor
 tag @s add ct.settings_actor
 # 外观立即重建本桌预览；一次刷新后绑定新epoch，其他旧窗口也随之失效。
 execute if score #ui_setting_field xq_ctx matches 1..3 as @e[tag=xq.setting_table,limit=1] at @s run function xiangqi:game/preview
+# 切换玩法要重摆初始棋面；外观设置仍可查看保留的终局。
+execute if score #ui_setting_field xq_ctx matches 8 run data remove entity @e[tag=xq.setting_table,limit=1] data.xiangqi.review
+execute if score #ui_setting_field xq_ctx matches 8 as @e[tag=xq.setting_table,limit=1] at @s run function xiangqi:game/preview
 execute as @e[tag=xq.setting_table,limit=1] at @s run function xiangqi:settings/open
 tag @a[tag=ct.settings_actor] remove ct.settings_actor
 tag @e[tag=xq.setting_table] remove xq.setting_table

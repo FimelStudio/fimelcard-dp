@@ -99,7 +99,7 @@ put("system/reload", """
     function uno:visual/repair_faces
     function uno:system/advance
     execute as @a[tag=un.audience] run function uno:input/give
-    tellraw @a[tag=un.audience] [{text:'[UNO] ',color:'gold'},{text:'数据包已重新加载，牌局与计时已保留。按 Q 重新打开手牌。',color:'yellow'}]
+    tellraw @a[tag=un.audience] [{text:'[UNO] ',color:'gold'},{text:'数据包已重新加载，牌局与计时已保留。轮到自己时按 Q 打开手牌。',color:'yellow'}]
 """)
 put("log", """
     # 自行添加 ct.debug 后查看关键状态，默认不启用。
@@ -443,7 +443,7 @@ put("round/offer_four", """
     scoreboard players set @s un_drew 0
     scoreboard players set @s un_drawn 0
     scoreboard players operation #u_turn un_ctx = @s un_challenger
-    execute as @a[tag=un.audience] if score @s un_seat = #u_turn un_ctx run tellraw @s [{text:'[UNO] 你收到变色 +4。按 Q 选择接受罚四张，或质疑对方当时仍有当前颜色牌。',color:'yellow'}]
+    execute as @a[tag=un.audience] if score @s un_seat = #u_turn un_ctx run tellraw @s [{text:'[UNO] 你收到变色 +4。请在响应框选择接受罚四张，或质疑对方当时仍有当前颜色牌。',color:'yellow'}]
     tellraw @a[tag=un.audience] [{text:'[UNO] 等待下家接受或质疑变色 +4。',color:'gold'}]
     function uno:log {text:"进入变色 +4 接受或质疑阶段"}
     function uno:system/advance
@@ -629,7 +629,7 @@ put("round/offer_uno", """
     scoreboard players set @s un_called 0
     scoreboard players set @s un_drew 0
     scoreboard players set @s un_drawn 0
-    tellraw @a[tag=un.audience] [{text:'[UNO] 有人只剩一张牌却没喊 UNO！按 Q 抓 UNO；本人可以补喊。',color:'yellow'}]
+    tellraw @a[tag=un.audience] [{text:'[UNO] 有人只剩一张牌却没喊 UNO！请在响应框抓 UNO；本人可以补喊。',color:'yellow'}]
     function uno:log {text:"暂停下家回合，开放抓 UNO 窗口"}
     function uno:system/advance
 """)

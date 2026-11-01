@@ -8,15 +8,7 @@ def build(root=ROOT):
   p=root/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
   p.write_text(('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
  def js(v):return json.dumps(v,ensure_ascii=False,separators=(',',':'))
- put('input/give','''
-clear @s minecraft:paper[minecraft:custom_data~{aeroplane_chess:{tool:1b}}]
-execute store result storage aeroplane_chess:input table int 1 run scoreboard players get @s ac_table
-function aeroplane_chess:input/tools with storage aeroplane_chess:input
-''')
- put('input/tools','''
-$function aeroplane_chess:input/place {table:$(table),slot:0,action:1,name:"飞行棋 · 投骰",model:"card:aeroplane_chess/dice"}
-$function aeroplane_chess:input/place {table:$(table),slot:8,action:0,name:"飞行棋 · 对局菜单",model:"minecraft:book"}
-''')
+ # 给物和回合资格由 build_turn_tools.build_aeroplane 统一生成。
  put('input/place','''
 $execute unless items entity @s hotbar.$(slot) * run return run item replace entity @s hotbar.$(slot) with minecraft:paper[minecraft:item_name="$(name)",minecraft:item_model="$(model)",minecraft:custom_data={aeroplane_chess:{tool:1b,action:$(action),table:$(table)}},minecraft:max_stack_size=1]
 $give @s minecraft:paper[minecraft:item_name="$(name)",minecraft:item_model="$(model)",minecraft:custom_data={aeroplane_chess:{tool:1b,action:$(action),table:$(table)}},minecraft:max_stack_size=1]
@@ -111,6 +103,7 @@ dialog clear @s
 ''')
  put('ui/refresh','''
 function aeroplane_chess:system/context
+execute as @a[tag=ac.audience] run function aeroplane_chess:input/give
 scoreboard players set @a[tag=ac.audience] ac_action 0
 scoreboard players enable @a[tag=ac.audience] ac_action
 function aeroplane_chess:ui/board_status
@@ -188,11 +181,11 @@ function aeroplane_chess:ui/show with storage aeroplane_chess:ui
   '飞机按点数逐格前进。落在本色格跳四格，落在航线入口可飞跃至对面；每种特殊移动每次至多触发一次。',
   '普通前进、跳格、飞跃的实际落点撞回该格所有敌机；途经格不撞机，同色可叠放。',
   '终点默认准确到达，超出的点数向后反弹。四架全部到达后获胜。规则变化见本桌设置。',
-  '第 1 格按 Q 或右键骰子投骰；骰子停稳后右键飞机，或在最后一格 Q 菜单选机、认输。'
+  '轮到己方时，第 1 格出现骰子，按 Q 或右键桌面骰子投骰；骰子停稳后右键飞机，或在最后一格 Q 菜单选机、认输。'
  ]],'action':{'label':{'text':'知道了'},'width':140},'pause':False,'can_close_with_escape':True}
  put('rules/open','dialog show @a[tag=ct.rules_actor,limit=1] '+js(rules))
  put('rules/show','function aeroplane_chess:rules/open')
+ from build_turn_tools import build_aeroplane
+ build_aeroplane(root)
 
 if __name__=='__main__':build()
-
-if __name__ == '__main__': __import__('build_turn_tools').build()
