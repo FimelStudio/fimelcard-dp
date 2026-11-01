@@ -1,0 +1,10 @@
+execute if score #public_role ll_ctx matches 0 run data modify storage love_letter:runtime role set value {"text":"0 · 间谍","color":"yellow"}
+execute if score #public_role ll_ctx matches 1 run data modify storage love_letter:runtime role set value {"text":"1 · 侍卫","color":"yellow"}
+execute if score #public_role ll_ctx matches 2 run data modify storage love_letter:runtime role set value {"text":"2 · 牧师","color":"yellow"}
+execute if score #public_role ll_ctx matches 3 run data modify storage love_letter:runtime role set value {"text":"3 · 男爵","color":"yellow"}
+execute if score #public_role ll_ctx matches 4 run data modify storage love_letter:runtime role set value {"text":"4 · 侍女","color":"yellow"}
+execute if score #public_role ll_ctx matches 5 run data modify storage love_letter:runtime role set value {"text":"5 · 王子","color":"yellow"}
+execute if score #public_role ll_ctx matches 6 run data modify storage love_letter:runtime role set value {"text":"6 · 大臣","color":"yellow"}
+execute if score #public_role ll_ctx matches 7 run data modify storage love_letter:runtime role set value {"text":"7 · 国王","color":"yellow"}
+execute if score #public_role ll_ctx matches 8 run data modify storage love_letter:runtime role set value {"text":"8 · 伯爵夫人","color":"yellow"}
+execute if score #public_role ll_ctx matches 9 run data modify storage love_letter:runtime role set value {"text":"9 · 公主","color":"yellow"}

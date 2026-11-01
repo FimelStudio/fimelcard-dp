@@ -1,8 +1,8 @@
 scoreboard objectives add xq_ctx dummy
 execute unless score #version xq_ctx matches 1.. run function xiangqi:system/install
 execute as @e[type=minecraft:marker,tag=ct.controller,tag=xq.controller] unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
-# xq_first 已改为 0 随机红黑、1 按棋盘边自行选边；旧指定座位值不再有效。
-execute as @e[tag=xq.controller] unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 0
+# 分边默认按座位（1）；合法的显式随机（0）保留，旧指定座位值迁为默认。
+execute as @e[tag=xq.controller] unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 1
 scoreboard players set #minus xq_ctx -1
 scoreboard players set #two xq_ctx 2
 scoreboard players set #four xq_ctx 4

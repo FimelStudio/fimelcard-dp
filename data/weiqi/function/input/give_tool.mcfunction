@@ -1,0 +1,2 @@
+$execute unless items entity @s hotbar.8 * run return run item replace entity @s hotbar.8 with minecraft:paper[minecraft:item_name="围棋 · 对局菜单",minecraft:item_model="minecraft:book",minecraft:custom_data={weiqi:{tool:1b,table:$(table)}},minecraft:max_stack_size=1]
+$give @s minecraft:paper[minecraft:item_name="围棋 · 对局菜单",minecraft:item_model="minecraft:book",minecraft:custom_data={weiqi:{tool:1b,table:$(table)}},minecraft:max_stack_size=1]

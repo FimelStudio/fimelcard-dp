@@ -1,0 +1,1 @@
+function guandan:game/cleanup

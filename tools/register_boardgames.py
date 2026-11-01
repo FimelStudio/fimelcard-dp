@@ -32,13 +32,35 @@ def before_fallback(name,line):
 def picker_button(game):
     """按游戏编号插入会话值；未来编号的既有计数顺序保持不变。"""
     body=read('menu/picker/open')
-    pattern=r'scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p(\d+) int 1 run scoreboard players get #pick_button ct_ctx'
+    pattern=r'(?:scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx\n)?scoreboard players add #pick_button ct_ctx \d+\nexecute store result storage cardtable:picker p(\d+) int 1 run scoreboard players get #pick_button ct_ctx'
     existing=list(re.finditer(pattern,body))
     if any(int(match[1])==game for match in existing):return
     next_value=next((match.start() for match in existing if int(match[1])>game),None)
     if next_value is None:next_value=body.index('execute if score @s ct_capacity matches 8 run return')
-    block=f'scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p{game} int 1 run scoreboard players get #pick_button ct_ctx\n'
+    block=f'scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx\nscoreboard players add #pick_button ct_ctx {game}\nexecute store result storage cardtable:picker p{game} int 1 run scoreboard players get #pick_button ct_ctx\n'
     write('menu/picker/open',body[:next_value]+block+body[next_value:])
+
+
+def normalize_picker_ids():
+    """窗口值按真实编号编码；保留作者跳过的编号，禁止手填未注册游戏。"""
+    source=read('menu/picker/open')
+    pattern=r'(?:scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx\n)?scoreboard players add #pick_button ct_ctx \d+\nexecute store result storage cardtable:picker p(\d+) int 1 run scoreboard players get #pick_button ct_ctx'
+    def encode(match):
+        game=int(match[1])
+        return f'scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx\nscoreboard players add #pick_button ct_ctx {game}\nexecute store result storage cardtable:picker p{game} int 1 run scoreboard players get #pick_button ct_ctx'
+    source=re.sub(pattern,encode,source)
+    write('menu/picker/open',source)
+    registered={int(value) for value in re.findall(r'cardtable:picker p(\d+) int',source)}
+    body=read('menu/picker/handle')
+    anchor='scoreboard players operation #pick_table ct_ctx = @s ct_pick_table'
+    # 不把行尾注释交给命令解析器；专属标记写在独立注释行。
+    body=re.sub(r'^# unregistered-id \d+\nexecute if score #pick_choice ct_ctx matches \d+ run return run function cardtable:menu/picker/invalid\n','',body,flags=re.M)
+    guards=''.join(f'# unregistered-id {game}\nexecute if score #pick_choice ct_ctx matches {game} run return run function cardtable:menu/picker/invalid\n' for game in range(1,max(registered)+1) if game not in registered)
+    write('menu/picker/handle',body.replace(anchor,guards+anchor,1))
+    render=re.sub(r'^# unregistered-game \d+\nexecute if score @s ct_game matches \d+ run scoreboard players set @s ct_game 1\n','',read('menu/render'),flags=re.M)
+    fallback=next(line for line in render.splitlines() if line.startswith('execute unless score @s ct_game matches 1..'))
+    missing=''.join(f'\n# unregistered-game {game}\nexecute if score @s ct_game matches {game} run scoreboard players set @s ct_game 1' for game in range(1,max(registered)+1) if game not in registered)
+    write('menu/render',render.replace(fallback,fallback+missing,1))
 
 
 def main():
@@ -85,6 +107,7 @@ def main():
     write('load',re.sub(r'(#game_count ct_ctx )\d+',lambda match:match[1]+str(count),read('load')))
     for name in ('menu/render','menu/picker/handle'):
         write(name,re.sub(r'(ct_game matches 1\.\.|#pick_choice ct_ctx matches 1\.\.)(\d+)',lambda match:match[1]+str(max(count,int(match[2]))),read(name)))
+    normalize_picker_ids()
     print(f'五子棋14、飞行棋15已注册；游戏编号上限{count}。')
 
 

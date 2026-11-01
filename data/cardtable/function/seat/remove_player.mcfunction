@@ -1,3 +1,6 @@
+execute if score @s go_setnonce matches 1.. run function weiqi:settings/clear_session
+execute if score @s gd_setnonce matches 1.. run function guandan:settings/clear_session
+execute if score @s ll_setnonce matches 1.. run function love_letter:settings/clear_session
 execute if score @s ac_setnonce matches 1.. run function aeroplane_chess:settings/clear_session
 execute if score @s gm_setnonce matches 1.. run function gomoku:settings/clear_session
 execute if score @s xq_setnonce matches 1.. run function xiangqi:input/clear

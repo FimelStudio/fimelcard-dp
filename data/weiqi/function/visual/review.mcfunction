@@ -1,0 +1,1 @@
+function weiqi:visual/refresh

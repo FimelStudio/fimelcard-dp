@@ -25,6 +25,9 @@
     "xiangqi:tick",
     "gomoku:tick",
     "aeroplane_chess:tick",
-    "avalon:tick"
+    "avalon:tick",
+    "love_letter:tick",
+    "guandan:tick",
+    "weiqi:tick"
   ]
 }

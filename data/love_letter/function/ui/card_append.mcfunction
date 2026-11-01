@@ -1,0 +1,2 @@
+$data modify storage love_letter:ui cards.extra append value {text:"",click_event:{action:"run_command",command:"trigger ll_action set $(card_code)"},hover_event:{action:"show_text",value:{text:"$(role_name)\n$(effect)"}},extra:[{text:"$(glyph)",font:"$(card_font)",color:"white"},{text:"   ",font:"minecraft:default"}]}
+$data modify storage love_letter:ui info.extra append value {text:"$(role_name)：$(effect)\n",color:"gray"}

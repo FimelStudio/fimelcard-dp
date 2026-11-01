@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const games = [
   ['hanabi', 'hb'], ['abraca', 'ab'], ['bullshit', 'bw'], ['decrypto', 'dc'],
-  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'], ['gomoku', 'gm'], ['aeroplane_chess', 'ac'],
+  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'], ['gomoku', 'gm'], ['aeroplane_chess', 'ac'], ['love_letter', 'll'], ['guandan', 'gd'], ['weiqi', 'go'],
 ];
 const pack = new URL('../', import.meta.url);
 const readFunction = id => fs.readFileSync(new URL(`data/${id.replace(':', '/function/')}.mcfunction`, pack), 'utf8');
@@ -17,7 +17,7 @@ function simulate(id, source, entities) {
     const match = selector.match(/^@([se])(?:\[(.*)\])?$/);
     assert.ok(match, `不支持的选择器：${selector}`);
     let selected = match[1] === 's' ? (context.self ? [context.self] : []) : [...entities];
-    const options = (match[2] || '').split(',').filter(Boolean).map(option => [option.slice(0,option.indexOf('=')), option.slice(option.indexOf('=')+1)]);
+    const options = (match[2] || '').split(/,(?![^{]*\})/).filter(Boolean).map(option => [option.slice(0,option.indexOf('=')), option.slice(option.indexOf('=')+1)]);
     let sort, limit;
     for (const [key, value] of options) {
       if (key === 'type') selected = selected.filter(entity => entity.type === value);
@@ -28,9 +28,12 @@ function simulate(id, source, entities) {
         const max = bounds.length === 1 ? Number(value) : bounds[1] ? Number(bounds[1]) : Infinity;
         selected = selected.filter(entity => entity.dimension === context.dimension && distance(entity, context) >= min && distance(entity, context) <= max);
       } else if (key === 'scores') {
-        const m = value.match(/^\{(\w+):?(?:=)?(-?\d+)\}$/);
-        assert.ok(m, '只支持单一精确分值');
-        selected = selected.filter(entity => entity.scores[m[1]] === Number(m[2]));
+        assert.ok(value.startsWith('{')&&value.endsWith('}'),'记分项过滤格式');
+        for(const score of value.slice(1,-1).split(',')){
+          const m=score.match(/^(\w+)=(-?\d+)$/);
+          assert.ok(m,'只支持精确分值');
+          selected=selected.filter(entity=>entity.scores[m[1]]===Number(m[2]));
+        }
       } else if (key === 'sort') sort = value;
       else if (key === 'limit') limit = Number(value);
       else assert.fail(`不支持的选择器参数：${key}`);
@@ -93,7 +96,13 @@ const entity = (id, type, tags = [], offset = [0, 0, 0], dimension = 'minecraft:
 let checks = 0;
 for (const [namespace, prefix] of games) {
   const player = () => entity('operator', 'minecraft:player', ['ct.player']);
-  const table = (id, offset = [3, 0, 0], dimension) => entity(id, 'minecraft:marker', ['ct.controller', `${prefix}.controller`], offset, dimension);
+  const table = (id, offset = [3, 0, 0], dimension) => {
+    const result=entity(id,'minecraft:marker',['ct.controller',`${prefix}.controller`],offset,dimension);
+    if(namespace==='love_letter')result.scores.ct_game=17;
+    if(namespace==='guandan')result.scores.ct_game=18;
+    if(namespace==='weiqi')result.scores.ct_game=20;
+    return result;
+  };
   function check(label, source, entities, expectedTarget, expectedFailure = !expectedTarget, expectedMessage = !expectedTarget && source?.type === 'minecraft:player') {
     const snapshot = structuredClone({source, entities});
     const result = simulate(`${namespace}:admin/abort`, source, entities);
@@ -115,10 +124,15 @@ for (const [namespace, prefix] of games) {
   check('恰好 8 格', player(), [edge], edge);
   const close = table('near', [2, 1, 0]), further = table('further', [6, 0, 0]);
   check('多个同游戏桌取最近', player(), [further, close], close);
-  if (['chess','xiangqi','gomoku','aeroplane_chess'].includes(namespace)) {
+  if (['chess','xiangqi','gomoku','aeroplane_chess','love_letter','guandan','weiqi'].includes(namespace)) {
     const preview = table('preview', [0.2, 0, 0]); preview.scores.ct_state = 0;
     check('大厅预览更近时选择进行中的局', player(), [preview, close], close);
     check('只有大厅预览时拒绝中止', player(), [preview]);
+  }
+  if (['love_letter','guandan','weiqi'].includes(namespace)) {
+    const stale = table('stale-game-tag', [0.1, 0, 0]); stale.scores.ct_game = 1;
+    check('旧游戏标签不能覆盖当前游戏编号', player(), [stale, close], close);
+    check('只有旧游戏标签时拒绝中止', player(), [stale]);
   }
   const unrelated = entity('other-game', 'minecraft:marker', ['ct.controller', 'other.controller'], [0.1, 0, 0]);
   check('异游戏牌桌更近', player(), [unrelated, close], close);

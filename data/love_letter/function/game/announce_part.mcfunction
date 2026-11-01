@@ -1,0 +1,1 @@
+tellraw @a[tag=ll.audience] [{text:"[情书] ",color:"gold"},{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 打出 "},{nbt:"role",storage:"love_letter:runtime",interpret:true},{text:"。"}]

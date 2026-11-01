@@ -16,6 +16,9 @@ execute if entity @s[tag=un.player] run function uno:player/clear_state
 execute if entity @s[tag=gm.player] run function gomoku:player/clear_state
 execute if entity @s[tag=ac.player] run function aeroplane_chess:player/clear_state
 execute if entity @s[tag=av.player] run function avalon:player/clear
+execute if entity @s[tag=ll.player] run function love_letter:player/clear_state
+execute if entity @s[tag=gd.player] run function guandan:player/clear_state
+execute if entity @s[tag=go.player] run function weiqi:player/clear_state
 function cardtable:seat/remove_player
 execute if entity @s[tag=ch.player] run function chess:player/clear_state
 execute if entity @s[tag=xq.player] run function xiangqi:player/clear_state

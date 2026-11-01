@@ -66,6 +66,9 @@ class Suite(BaseSuite):
         lines += [f'scoreboard players set #passengers cs 0',
                   'execute as @e[type=minecraft:interaction,tag=ct.seat,scores={ct_id=101}] on passengers if entity @s[tag=cs.person] run scoreboard players add #passengers cs 1']
         lines += self.score('#passengers', 'cs', 2, prefix + '_exactly_two_passengers')
+        lines += ['scoreboard players set #same_seat cs 0',
+                  f'execute if score {player(1)} ct_seat = {player(2)} ct_seat run scoreboard players set #same_seat cs 1']
+        lines += self.score('#same_seat', 'cs', 0, prefix + '_different_seats')
         return lines
 
     def build(self):
@@ -124,6 +127,25 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
             lines += self.call('game/reseat')
             lines += self.mounted(1,-1,*black,name+'_p1') + self.mounted(2,1,*red,name+'_p2') + self.board_sides(cap,orient,name)
             self.case(name,lines)
+            # 同一桌连续随机重开，覆盖双方互换及目标座位被上一局对方占用。
+            self.case(f'repeated_setup_{cap}_{orient}', self.setup(cap, orient, 0, (red[1], black[1])))
+            for repeat in range(12):
+                prefix = f'repeated_{cap}_{orient}_{repeat}'
+                lines = [f'scoreboard players set {TABLE} ct_state 0', f'scoreboard players set {TABLE} ct_start 0',
+                         f'scoreboard players set {TABLE} ct_joined 2']
+                lines += self.call('game/start') + self.score(TABLE,'ct_start',1,prefix+'_started')
+                lines += self.board_sides(cap, orient, prefix)
+                self.case(prefix, lines)
+            # 即使旧状态中两位乘客挤在同一实体，按阵营重新落座也会恢复。
+            name = f'repair_stacked_{cap}_{orient}'
+            lines = self.setup(cap, orient, 1, (red[1],black[1])) + self.call('game/start')
+            lines += [f'execute as {player(2)} run ride @s dismount',
+                      f'execute as {player(2)} run ride @s mount @e[tag=ct.seat,scores={{ct_id=101,ct_seat={red[1]}}},limit=1]']
+            lines += ['scoreboard players set #stacked cs 0',
+                      f'execute as @e[tag=ct.seat,scores={{ct_id=101,ct_seat={red[1]}}},limit=1] on passengers if entity @s[tag=cs.person] run scoreboard players add #stacked cs 1']
+            lines += self.score('#stacked','cs',2,name+'_fixture_reproduces_two_on_one_chair')
+            lines += self.call('game/reseat') + self.board_sides(cap, orient, name)
+            self.case(name, lines)
             # 自行选边时，两人同一桌边或其中一人坐侧边必须拒绝，身份不变。
             bad = (red[0],red[1]) if cap == 8 else (red[0],2 if orient == 0 else 1)
             name = f'reject_{cap}_{orient}'
@@ -149,15 +171,21 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         # 在一桌交换阵营不能移动另一桌的玩家或乘客。
         lines = self.setup(4,0,1,(3,1)) + self.call('game/start')
         lines += self.setup(8,1,1,(8,4),table=202,reset=False) + self.call('game/start',202)
-        lines += [f'scoreboard players set {player(1)} xq_side -1', f'scoreboard players set {player(2)} xq_side 1'] + self.call('system/context') + self.call('game/reseat')
+        lines += [f'scoreboard players set {player(1)} xq_side -1', f'scoreboard players set {player(2)} xq_side 1'] + self.call('game/reseat')
+        lines += self.board_sides(4,0,'isolation_active_table')
         lines += self.score(player(3),'ct_seat',8,'isolation_red_seat') + self.score(player(4),'ct_seat',4,'isolation_black_seat')
         lines += self.score(OTHER,'xq_red',8,'isolation_controller_red') + self.score(OTHER,'xq_black',4,'isolation_controller_black')
         lines += ['scoreboard players set #passengers cs 0','execute as @e[tag=ct.seat,scores={ct_id=202}] on passengers if entity @s[tag=cs.person] run scoreboard players add #passengers cs 1']
         lines += self.score('#passengers','cs',2,'isolation_passengers')
         self.case('isolation',lines)
-        # 旧指定座位 2..8 迁为随机红黑；没有改变正在进行的局面。
+        # 新桌与旧非法值默认按座位，显式随机设置仍保留。
+        lines = self.setup() + [f'scoreboard players reset {TABLE} xq_first'] + self.call('game/init_table')
+        lines += self.score(TABLE,'xq_first',1,'fresh_table_defaults_by_seat')
+        lines += [f'scoreboard players set {TABLE} xq_first 0'] + self.call('game/init_table')
+        lines += self.score(TABLE,'xq_first',0,'explicit_random_preserved')
+        self.case('default_setting',lines)
         lines = self.setup() + self.call('game/start') + [f'scoreboard players set {TABLE} ct_state 1', f'scoreboard players set {TABLE} xq_first 8', f'scoreboard players set {TABLE} xq_turn -1','function xiangqi:load']
-        lines += self.score(TABLE,'xq_first',0,'legacy_first_reset') + self.score(TABLE,'xq_turn',-1,'legacy_reload_keeps_turn')
+        lines += self.score(TABLE,'xq_first',1,'legacy_first_reset') + self.score(TABLE,'xq_turn',-1,'legacy_reload_keeps_turn')
         self.case('legacy_setting',lines)
         # 单人选白／选黑：真实玩家骑乘对应侧，虚拟对手只保留逻辑座位。
         for (cap, orient), (red, black) in sides.items():
@@ -264,7 +292,7 @@ def main():
         path=target/'data/xiangqi_seat_test/function'/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body.replace('function xiangqi_game_test:', 'function xiangqi_seat_test:'),encoding='utf-8')
     for name,body in {
         'test_environment/default.json':{'type':'minecraft:function','setup':'xiangqi_seat_test:bootstrap'},
-        'test_instance/seating.json':{'type':'minecraft:function','environment':'xiangqi_seat_test:default','function':'minecraft:always_pass','max_ticks':1,'setup_ticks':300,'required':True,'structure':'minecraft:empty'},
+        'test_instance/seating.json':{'type':'minecraft:function','environment':'xiangqi_seat_test:default','function':'minecraft:always_pass','max_ticks':1,'setup_ticks':400,'required':True,'structure':'minecraft:empty'},
     }.items():
         path=target/'data/xiangqi_seat_test'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(body),encoding='utf-8')
     launch=args.minecraft_root/'versions'/args.version/(args.version+'.json')

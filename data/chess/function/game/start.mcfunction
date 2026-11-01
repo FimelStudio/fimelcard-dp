@@ -22,7 +22,8 @@ execute if score @s ch_first matches 1 if score #side_ok ch_ctx matches 0 run re
 execute as @a[tag=ct.player] if score @s ct_id = #table ch_ctx run function chess:player/init
 function chess:system/context
 function chess:game/assign_sides
-function chess:game/reseat
+execute store result score #seats_ok ch_ctx run function chess:game/reseat
+execute unless score #seats_ok ch_ctx matches 1 run return run function chess:game/abort
 function chess:ai/reset
 data remove entity @s data.chess.ai_undo
 function chess:settings/invalidate_table

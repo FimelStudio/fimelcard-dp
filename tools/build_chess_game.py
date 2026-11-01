@@ -38,7 +38,7 @@ ch_bot ch_level ch_hints ch_aistate ch_aiwait ch_aiepoch'''.split()
 # 兼容制作过程中已加载的早期国际象棋：补新目标，不清空现有棋局。
 scoreboard objectives add ch_first dummy
 scoreboard objectives add ch_undo dummy
-execute as @e[tag=ch.controller] unless score @s ch_first matches 0..1 run scoreboard players set @s ch_first 0
+execute as @e[tag=ch.controller] unless score @s ch_first matches 0..1 run scoreboard players set @s ch_first 1
 execute as @e[tag=ch.controller] unless score @s ch_undo matches -1..1 run scoreboard players set @s ch_undo 0
 scoreboard players set #version ch_ctx 2
 ''')
@@ -60,8 +60,8 @@ scoreboard objectives add ch_ctx dummy
 execute unless score #version ch_ctx matches 1.. run function chess:system/install
 execute if score #version ch_ctx matches 1 run function chess:system/upgrade_v2
 execute if score #version ch_ctx matches 2 run function chess:system/upgrade_v3
-# ch_first 已改为 0 随机黑白、1 按棋盘边自行选边；旧指定座位值不再有效。
-execute as @e[tag=ch.controller] unless score @s ch_first matches 0..1 run scoreboard players set @s ch_first 0
+# 分边默认按座位（1）；合法的显式随机（0）保留，旧指定座位值迁为默认。
+execute as @e[tag=ch.controller] unless score @s ch_first matches 0..1 run scoreboard players set @s ch_first 1
 scoreboard players set #minus ch_ctx -1
 scoreboard players set #two ch_ctx 2
 scoreboard players set #four ch_ctx 4
@@ -93,7 +93,7 @@ execute unless score @s ch_board matches 0..4 run scoreboard players set @s ch_b
 execute unless score @s ch_palette matches 0..3 run scoreboard players set @s ch_palette 0
 execute unless score @s ch_orient matches 0..1 run scoreboard players set @s ch_orient 0
 execute unless score @s ch_time matches 0..30 run scoreboard players set @s ch_time 10
-execute unless score @s ch_first matches 0..1 run scoreboard players set @s ch_first 0
+execute unless score @s ch_first matches 0..1 run scoreboard players set @s ch_first 1
 execute unless score @s ch_level matches 1..3 run scoreboard players set @s ch_level 2
 execute unless score @s ch_hints matches 0..1 run scoreboard players set @s ch_hints 1
 execute unless score @s ch_bot matches -1..1 run scoreboard players set @s ch_bot 0
@@ -179,7 +179,9 @@ execute if score @s ch_state matches 3 as @a[tag=ch.audience] if score @s ch_sid
         'execute if score @s ch_first matches 1 if score #side_ok ch_ctx matches 0 run function chess:game/seat_hint',
         'execute if score @s ch_first matches 1 if score #side_ok ch_ctx matches 0 run return fail',
         'execute as @a[tag=ct.player] if score @s ct_id = #table ch_ctx run function chess:player/init',
-        'function chess:system/context', 'function chess:game/assign_sides', 'function chess:game/reseat',
+        'function chess:system/context', 'function chess:game/assign_sides',
+        'execute store result score #seats_ok ch_ctx run function chess:game/reseat',
+        'execute unless score #seats_ok ch_ctx matches 1 run return run function chess:game/abort',
         'function chess:ai/reset', 'data remove entity @s data.chess.ai_undo',
         'function chess:settings/invalidate_table',
         'data remove entity @s data.chess.review',
@@ -265,26 +267,47 @@ execute as @a[tag=ch.audience] if score @s ch_weight matches 1 run scoreboard pl
     put('player/weight', 'function chess:player/seat_side')
     put('game/seat_hint', hints)
     put('game/reseat', '''
-# 两人先一起下座，再改双方身份并骑乘，互换阵营时不会被旧乘客占住。
-# 通用层以玩家 ct_id + ct_seat 判断占用；无需修改其他桌子的座椅。
+# 先冻结双方目标座位，再全部下座、统一更新身份，最后按阵营分别骑乘。
+# 不让尚未执行的玩家继续占用另一方目标，也不让临时选择器跨玩家串位。
+function chess:system/context
 function chess:system/side_seats
-execute as @a[tag=ch.audience] run ride @s dismount
+scoreboard players set #white_ready ch_ctx 0
+scoreboard players set #black_ready ch_ctx 0
+execute as @a[tag=ch.audience,scores={ch_side=1}] run scoreboard players add #white_ready ch_ctx 1
+execute as @a[tag=ch.audience,scores={ch_side=-1}] run scoreboard players add #black_ready ch_ctx 1
+execute if score @s ch_bot matches 1 run scoreboard players add #white_ready ch_ctx 1
+execute if score @s ch_bot matches -1 run scoreboard players add #black_ready ch_ctx 1
+execute unless score #white_ready ch_ctx matches 1 run return 0
+execute unless score #black_ready ch_ctx matches 1 run return 0
 execute as @a[tag=ch.audience] run function chess:player/place_side
+execute as @a[tag=ch.audience] run ride @s dismount
+execute as @a[tag=ch.audience] run scoreboard players operation @s ct_seat = @s ch_seat
 # 虚拟对手同样占用对应边的逻辑座号，供吃子区朝向和阵营显示使用。
 scoreboard players operation @s ch_white = #white_seat ch_ctx
 scoreboard players operation @s ch_black = #black_seat ch_ctx
 execute unless score @s ch_bot matches 1 run scoreboard players operation @s ch_white = @a[tag=ch.audience,scores={ch_side=1},limit=1] ch_seat
 execute unless score @s ch_bot matches -1 run scoreboard players operation @s ch_black = @a[tag=ch.audience,scores={ch_side=-1},limit=1] ch_seat
 function cardtable:table/ensure_seats
-execute as @a[tag=ch.audience] at @s run function cardtable:seat/mount
+scoreboard players set #seats_ok ch_ctx 1
+execute as @a[tag=ch.audience,scores={ch_side=1},limit=1] at @s run function chess:player/mount_side
+execute as @a[tag=ch.audience,scores={ch_side=-1},limit=1] at @s run function chess:player/mount_side
+return run scoreboard players get #seats_ok ch_ctx
 ''')
     put('player/place_side', '''
-# 八座桌保留本来就在对应边的具体座位；否则使用该边的第一个座位。
-execute if score @s ch_side matches 1 if score @s ct_seat < #white_seat ch_ctx run scoreboard players operation @s ct_seat = #white_seat ch_ctx
-execute if score @s ch_side matches 1 if score @s ct_seat > #white_last ch_ctx run scoreboard players operation @s ct_seat = #white_seat ch_ctx
-execute if score @s ch_side matches -1 if score @s ct_seat < #black_seat ch_ctx run scoreboard players operation @s ct_seat = #black_seat ch_ctx
-execute if score @s ch_side matches -1 if score @s ct_seat > #black_last ch_ctx run scoreboard players operation @s ct_seat = #black_seat ch_ctx
+# 只计算目标，暂不修改通用座位，避免双方互换时出现中间的同座身份。
 scoreboard players operation @s ch_seat = @s ct_seat
+execute if score @s ch_side matches 1 if score @s ch_seat < #white_seat ch_ctx run scoreboard players operation @s ch_seat = #white_seat ch_ctx
+execute if score @s ch_side matches 1 if score @s ch_seat > #white_last ch_ctx run scoreboard players operation @s ch_seat = #white_seat ch_ctx
+execute if score @s ch_side matches -1 if score @s ch_seat < #black_seat ch_ctx run scoreboard players operation @s ch_seat = #black_seat ch_ctx
+execute if score @s ch_side matches -1 if score @s ch_seat > #black_last ch_ctx run scoreboard players operation @s ch_seat = #black_seat ch_ctx
+''')
+    put('player/mount_side', '''
+# 每一方单独完成通用骑乘及核验，再处理下一方；不共享待骑乘目标。
+function cardtable:seat/mount
+scoreboard players operation #mount_seat ch_ctx = @s ch_seat
+scoreboard players set #mounted ch_ctx 0
+execute on vehicle if entity @s[type=minecraft:interaction,tag=ct.seat] if score @s ct_id = #table ch_ctx if score @s ct_seat = #mount_seat ch_ctx run scoreboard players set #mounted ch_ctx 1
+execute unless score #mounted ch_ctx matches 1 run scoreboard players set #seats_ok ch_ctx 0
 ''')
     put('game/actor_guard', '''
 # 供控制器回调复用；UI有nonce校验，此处仍复核真人/桌号/身份。

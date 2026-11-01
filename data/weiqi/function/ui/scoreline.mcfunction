@@ -1,0 +1,1 @@
+$data modify storage weiqi:ui scoreline set value {"text":"$(area_title)：黑$(barea) / 白$(warea)\n空地 黑$(bterrit) / 白$(wterrit) · 未定/公气$(neutral)\n含贴目得分：黑$(bscore_label) / 白$(wscore_label)\n复盘手数：$(review)","color":"gray"}

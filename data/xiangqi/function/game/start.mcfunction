@@ -22,7 +22,8 @@ execute if score @s xq_first matches 1 if score #side_ok xq_ctx matches 0 run re
 execute as @a[tag=ct.player] if score @s ct_id = #table xq_ctx run function xiangqi:player/init
 function xiangqi:system/context
 function xiangqi:game/assign_sides
-function xiangqi:game/reseat
+execute store result score #seats_ok xq_ctx run function xiangqi:game/reseat
+execute unless score #seats_ok xq_ctx matches 1 run return run function xiangqi:game/abort
 function xiangqi:ai/reset
 data remove entity @s data.xiangqi.ai_undo
 function xiangqi:settings/invalidate_table

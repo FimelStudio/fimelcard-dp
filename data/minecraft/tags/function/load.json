@@ -17,6 +17,9 @@
     "xiangqi:load",
     "gomoku:load",
     "aeroplane_chess:load",
-    "avalon:load"
+    "avalon:load",
+    "love_letter:load",
+    "guandan:load",
+    "weiqi:load"
   ]
 }

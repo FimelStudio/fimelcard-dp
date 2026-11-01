@@ -1,0 +1,10 @@
+execute if score #ui_card ll_ctx matches 0 run data merge storage love_letter:ui {"role_name":"0 · 间谍","role":{"text":"0 · 间谍","color":"yellow"},"effect":"本轮唯一仍存活、曾打出或弃过间谍的玩家额外获得1枚好感。","glyph":""}
+execute if score #ui_card ll_ctx matches 1 run data merge storage love_letter:ui {"role_name":"1 · 侍卫","role":{"text":"1 · 侍卫","color":"yellow"},"effect":"选择另一位未受保护的玩家，猜测其手牌（不能猜侍卫），猜中则淘汰。","glyph":""}
+execute if score #ui_card ll_ctx matches 2 run data merge storage love_letter:ui {"role_name":"2 · 牧师","role":{"text":"2 · 牧师","color":"yellow"},"effect":"秘密查看另一位未受保护玩家的手牌。","glyph":""}
+execute if score #ui_card ll_ctx matches 3 run data merge storage love_letter:ui {"role_name":"3 · 男爵","role":{"text":"3 · 男爵","color":"yellow"},"effect":"与你选的未受保护玩家秘密比较留牌，点数低者淘汰，同值均留下。","glyph":""}
+execute if score #ui_card ll_ctx matches 4 run data merge storage love_letter:ui {"role_name":"4 · 侍女","role":{"text":"4 · 侍女","color":"yellow"},"effect":"保护自己直到下一回合开始，其他玩家不能将你选为角色效果的目标。","glyph":""}
+execute if score #ui_card ll_ctx matches 5 run data merge storage love_letter:ui {"role_name":"5 · 王子","role":{"text":"5 · 王子","color":"yellow"},"effect":"选择任何未受保护的玩家（可以自己），公开弃掉手牌再补一张；弃公主则淘汰且不补。","glyph":""}
+execute if score #ui_card ll_ctx matches 6 run data merge storage love_letter:ui {"role_name":"6 · 大臣","role":{"text":"6 · 大臣","color":"yellow"},"effect":"最多再摸两张，秘密留一张，其余自行排序放回牌库底。","glyph":""}
+execute if score #ui_card ll_ctx matches 7 run data merge storage love_letter:ui {"role_name":"7 · 国王","role":{"text":"7 · 国王","color":"yellow"},"effect":"与另一位未受保护玩家交换留牌。","glyph":""}
+execute if score #ui_card ll_ctx matches 8 run data merge storage love_letter:ui {"role_name":"8 · 伯爵夫人","role":{"text":"8 · 伯爵夫人","color":"yellow"},"effect":"与国王或王子同时在手时必须打出；可以主动打出，其他玩家不知道是否被迫。","glyph":""}
+execute if score #ui_card ll_ctx matches 9 run data merge storage love_letter:ui {"role_name":"9 · 公主","role":{"text":"9 · 公主","color":"yellow"},"effect":"打出或被弃掉便立即淘汰。","glyph":""}

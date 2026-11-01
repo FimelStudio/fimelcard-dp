@@ -40,8 +40,8 @@ xq_bot xq_level xq_hints xq_aistate xq_aiwait xq_aiepoch'''.split()
 scoreboard objectives add xq_ctx dummy
 execute unless score #version xq_ctx matches 1.. run function xiangqi:system/install
 execute as @e[type=minecraft:marker,tag=ct.controller,tag=xq.controller] unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
-# xq_first 已改为 0 随机红黑、1 按棋盘边自行选边；旧指定座位值不再有效。
-execute as @e[tag=xq.controller] unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 0
+# 分边默认按座位（1）；合法的显式随机（0）保留，旧指定座位值迁为默认。
+execute as @e[tag=xq.controller] unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 1
 scoreboard players set #minus xq_ctx -1
 scoreboard players set #two xq_ctx 2
 scoreboard players set #four xq_ctx 4
@@ -76,7 +76,7 @@ execute unless score @s xq_board matches 0..1 run scoreboard players set @s xq_b
 execute unless score @s xq_palette matches 0..1 run scoreboard players set @s xq_palette 0
 execute unless score @s xq_orient matches 0..1 run scoreboard players set @s xq_orient 0
 execute unless score @s xq_time matches 0..30 run scoreboard players set @s xq_time 10
-execute unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 0
+execute unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 1
 execute unless score @s xq_level matches 1..3 run scoreboard players set @s xq_level 2
 execute unless score @s xq_hints matches 0..1 run scoreboard players set @s xq_hints 1
 execute unless score @s xq_bot matches -1..1 run scoreboard players set @s xq_bot 0
@@ -169,7 +169,9 @@ function xiangqi:ui/refresh
         'execute if score @s xq_first matches 1 if score #side_ok xq_ctx matches 0 run function xiangqi:game/seat_hint',
         'execute if score @s xq_first matches 1 if score #side_ok xq_ctx matches 0 run return fail',
         'execute as @a[tag=ct.player] if score @s ct_id = #table xq_ctx run function xiangqi:player/init',
-        'function xiangqi:system/context', 'function xiangqi:game/assign_sides', 'function xiangqi:game/reseat',
+        'function xiangqi:system/context', 'function xiangqi:game/assign_sides',
+        'execute store result score #seats_ok xq_ctx run function xiangqi:game/reseat',
+        'execute unless score #seats_ok xq_ctx matches 1 run return run function xiangqi:game/abort',
         'function xiangqi:ai/reset', 'data remove entity @s data.xiangqi.ai_undo',
         'function xiangqi:settings/invalidate_table',
         'data remove entity @s data.xiangqi.review',
@@ -255,26 +257,47 @@ execute as @a[tag=xq.audience] if score @s xq_weight matches 1 run scoreboard pl
     put('player/weight', 'function xiangqi:player/seat_side')
     put('game/seat_hint', hints)
     put('game/reseat', '''
-# 两人先一起下座，再改双方身份并骑乘，互换阵营时不会被旧乘客占住。
-# 通用层以玩家 ct_id + ct_seat 判断占用；无需修改其他桌子的座椅。
+# 先冻结双方目标座位，再全部下座、统一更新身份，最后按阵营分别骑乘。
+# 不让尚未执行的玩家继续占用另一方目标，也不让临时选择器跨玩家串位。
+function xiangqi:system/context
 function xiangqi:system/side_seats
-execute as @a[tag=xq.audience] run ride @s dismount
+scoreboard players set #red_ready xq_ctx 0
+scoreboard players set #black_ready xq_ctx 0
+execute as @a[tag=xq.audience,scores={xq_side=1}] run scoreboard players add #red_ready xq_ctx 1
+execute as @a[tag=xq.audience,scores={xq_side=-1}] run scoreboard players add #black_ready xq_ctx 1
+execute if score @s xq_bot matches 1 run scoreboard players add #red_ready xq_ctx 1
+execute if score @s xq_bot matches -1 run scoreboard players add #black_ready xq_ctx 1
+execute unless score #red_ready xq_ctx matches 1 run return 0
+execute unless score #black_ready xq_ctx matches 1 run return 0
 execute as @a[tag=xq.audience] run function xiangqi:player/place_side
+execute as @a[tag=xq.audience] run ride @s dismount
+execute as @a[tag=xq.audience] run scoreboard players operation @s ct_seat = @s xq_seat
 # 虚拟对手同样占用对应边的逻辑座号，供吃子区朝向和阵营显示使用。
 scoreboard players operation @s xq_red = #red_seat xq_ctx
 scoreboard players operation @s xq_black = #black_seat xq_ctx
 execute unless score @s xq_bot matches 1 run scoreboard players operation @s xq_red = @a[tag=xq.audience,scores={xq_side=1},limit=1] xq_seat
 execute unless score @s xq_bot matches -1 run scoreboard players operation @s xq_black = @a[tag=xq.audience,scores={xq_side=-1},limit=1] xq_seat
 function cardtable:table/ensure_seats
-execute as @a[tag=xq.audience] at @s run function cardtable:seat/mount
+scoreboard players set #seats_ok xq_ctx 1
+execute as @a[tag=xq.audience,scores={xq_side=1},limit=1] at @s run function xiangqi:player/mount_side
+execute as @a[tag=xq.audience,scores={xq_side=-1},limit=1] at @s run function xiangqi:player/mount_side
+return run scoreboard players get #seats_ok xq_ctx
 ''')
     put('player/place_side', '''
-# 八座桌保留本来就在对应边的具体座位；否则使用该边的第一个座位。
-execute if score @s xq_side matches 1 if score @s ct_seat < #red_seat xq_ctx run scoreboard players operation @s ct_seat = #red_seat xq_ctx
-execute if score @s xq_side matches 1 if score @s ct_seat > #red_last xq_ctx run scoreboard players operation @s ct_seat = #red_seat xq_ctx
-execute if score @s xq_side matches -1 if score @s ct_seat < #black_seat xq_ctx run scoreboard players operation @s ct_seat = #black_seat xq_ctx
-execute if score @s xq_side matches -1 if score @s ct_seat > #black_last xq_ctx run scoreboard players operation @s ct_seat = #black_seat xq_ctx
+# 只计算目标，暂不修改通用座位，避免双方互换时出现中间的同座身份。
 scoreboard players operation @s xq_seat = @s ct_seat
+execute if score @s xq_side matches 1 if score @s xq_seat < #red_seat xq_ctx run scoreboard players operation @s xq_seat = #red_seat xq_ctx
+execute if score @s xq_side matches 1 if score @s xq_seat > #red_last xq_ctx run scoreboard players operation @s xq_seat = #red_seat xq_ctx
+execute if score @s xq_side matches -1 if score @s xq_seat < #black_seat xq_ctx run scoreboard players operation @s xq_seat = #black_seat xq_ctx
+execute if score @s xq_side matches -1 if score @s xq_seat > #black_last xq_ctx run scoreboard players operation @s xq_seat = #black_seat xq_ctx
+''')
+    put('player/mount_side', '''
+# 每一方单独完成通用骑乘及核验，再处理下一方；不共享待骑乘目标。
+function cardtable:seat/mount
+scoreboard players operation #mount_seat xq_ctx = @s xq_seat
+scoreboard players set #mounted xq_ctx 0
+execute on vehicle if entity @s[type=minecraft:interaction,tag=ct.seat] if score @s ct_id = #table xq_ctx if score @s ct_seat = #mount_seat xq_ctx run scoreboard players set #mounted xq_ctx 1
+execute unless score #mounted xq_ctx matches 1 run scoreboard players set #seats_ok xq_ctx 0
 ''')
     put('game/actor_guard', '''
 # 供控制器回调复用；UI有nonce校验，此处仍复核真人/桌号/身份。

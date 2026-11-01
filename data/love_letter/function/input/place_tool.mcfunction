@@ -1,0 +1,2 @@
+$execute unless items entity @s hotbar.$(slot) * run return run item replace entity @s hotbar.$(slot) with minecraft:purple_dye[minecraft:item_name="$(name)",minecraft:item_model="$(model)",minecraft:custom_data={love_letter:{tool:1b,action:$(action),table:$(table)}},minecraft:max_stack_size=1]
+$give @s minecraft:purple_dye[minecraft:item_name="$(name)",minecraft:item_model="$(model)",minecraft:custom_data={love_letter:{tool:1b,action:$(action),table:$(table)}},minecraft:max_stack_size=1]

@@ -68,8 +68,9 @@ def main():
         else:
             dialog['actions'][12] = action
         write(name,'$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':')))
-    insert('menu/picker/open','scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p13 int 1 run scoreboard players get #pick_button ct_ctx',
-           'execute if score @s ct_capacity matches 8 run return')
+    if 'store result storage cardtable:picker p13 int' not in read('menu/picker/open'):
+        insert('menu/picker/open','scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p13 int 1 run scoreboard players get #pick_button ct_ctx',
+               'execute if score @s ct_capacity matches 8 run return')
     for kind in ('load','tick'):
         path = PACK/f'data/minecraft/tags/function/{kind}.json'
         data = json.loads(path.read_text(encoding='utf-8'))

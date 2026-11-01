@@ -15,3 +15,6 @@ execute if score @s ct_game matches 13 run function xiangqi:game/init_table
 execute if score @s ct_game matches 14 run function gomoku:game/init_table
 execute if score @s ct_game matches 15 run function aeroplane_chess:game/init_table
 execute if score @s ct_game matches 16 run function avalon:game/init_table
+execute if score @s ct_game matches 17 run function love_letter:game/init_table
+execute if score @s ct_game matches 18 run function guandan:game/init_table
+execute if score @s ct_game matches 20 run function weiqi:game/init_table
