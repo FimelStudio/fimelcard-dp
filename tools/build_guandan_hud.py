@@ -165,30 +165,19 @@ def fonts():
     for variant in ('normal','selected','wild','selected_wild'):
         atlas=Image.new('RGBA',(36*9,48*6),(0,0,0,0))
         for i,name in enumerate(NAMES):
-            src=RP/f'assets/card/textures/item/poker/{name}.png'
-            with Image.open(src) as im:
-                rgba=im.convert('RGBA')
-                if name in ('j_1','j_2'):
-                    # Jokers use a 128x128 texture with a complete 60x96 face.
-                    face=rgba.crop(rgba.getchannel('A').getbbox()).resize((30,48),Image.Resampling.NEAREST)
-                    image=Image.new('RGBA',(36,48),(0,0,0,0))
-                    image.paste(face,(2,0))
-                else:
-                    image=rgba.crop((0,0,36,48))
+            # Use Doudizhu's exact normal/selected cells, remapping physical card IDs.
+            dd_names=[suit+'_'+rank for rank in ['3','4','5','6','7','8','9','10','j','q','k','a','2'] for suit in 'sdch']+['j_2','j_1']
+            dd_index=dd_names.index(name)
+            source_variant='selected' if 'selected' in variant else 'normal'
+            with Image.open(RP/f'assets/card/textures/font/doudizhu/{source_variant}.png') as source:
+                x=dd_index%9*36;y=dd_index//9*48
+                image=source.convert('RGBA').crop((x,y,x+36,y+48))
             draw=ImageDraw.Draw(image)
             # Decorations stay inside the original card silhouette; no outer frame.
             if 'wild' in variant:
                 import math
                 points=[(25+5*math.cos(-math.pi/2+k*math.pi/5)*(1 if k%2==0 else .43),6+5*math.sin(-math.pi/2+k*math.pi/5)*(1 if k%2==0 else .43)) for k in range(10)]
-                draw.polygon(points,fill='#ffd74b',outline='#946526')
-            if 'selected' in variant:
-                alpha=image.getchannel('A')
-                draw.rounded_rectangle((2,0,31,47),radius=3,outline='#ffe058',width=2)
-                image.putalpha(alpha)
-            # Match Doudizhu visible card bounds: 33x46 within a 36x48 cell.
-            face=image.crop(image.getchannel('A').getbbox()).resize((33,46),Image.Resampling.NEAREST)
-            image=Image.new('RGBA',(36,48),(0,0,0,0))
-            image.paste(face,(3,2))
+                draw.polygon(points,fill='#d86bff' if name.startswith('h_') else '#ffd74b',outline='#682887' if name.startswith('h_') else '#946526')
             atlas.paste(image,((i%9)*36,(i//9)*48))
             # 仅移除旧生成器明确创建的逐张字体副本，新图集不需要216个独立provider。
             previous=texture_root/variant/(name+'.png')

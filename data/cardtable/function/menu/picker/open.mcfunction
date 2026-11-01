@@ -60,6 +60,9 @@ scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx
 scoreboard players add #pick_button ct_ctx 18
 execute store result storage cardtable:picker p18 int 1 run scoreboard players get #pick_button ct_ctx
 scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx
+scoreboard players add #pick_button ct_ctx 19
+execute store result storage cardtable:picker p19 int 1 run scoreboard players get #pick_button ct_ctx
+scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx
 scoreboard players add #pick_button ct_ctx 20
 execute store result storage cardtable:picker p20 int 1 run scoreboard players get #pick_button ct_ctx
 execute if score @s ct_capacity matches 8 run return run function cardtable:menu/picker/show8 with storage cardtable:picker

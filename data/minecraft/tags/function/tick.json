@@ -28,6 +28,7 @@
     "avalon:tick",
     "love_letter:tick",
     "guandan:tick",
-    "weiqi:tick"
+    "weiqi:tick",
+    "ito:tick"
   ]
 }

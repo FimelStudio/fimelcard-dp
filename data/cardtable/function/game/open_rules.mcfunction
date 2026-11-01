@@ -19,4 +19,5 @@ execute if score @s ct_game matches 16 run return run function avalon:rules/show
 execute if score @s ct_game matches 17 run return run function love_letter:rules/show
 execute if score @s ct_game matches 18 run return run function guandan:rules/show
 execute if score @s ct_game matches 20 run return run function weiqi:rules/show
+execute if score @s ct_game matches 19 run return run function ito:rules/show
 tellraw @a[tag=ct.rules_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供规则介绍。',color:'yellow'}]

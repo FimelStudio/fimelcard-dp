@@ -8,5 +8,11 @@ def put(n,s):
 def js(x):return json.dumps(x,ensure_ascii=False,separators=(',',':'))
 def say(s,color='yellow',target='@a[tag=it.audience]'):return 'tellraw '+target+' '+js({'text':'[命悬一线] '+s,'color':color})
 def build():
- pass
+ from build_ito_runtime import build as runtime
+ from build_ito_themes import build as themes
+ from build_ito_ui import build as ui
+ from build_ito_display import build as display
+ runtime();themes();ui();display()
+ from build_ito_settings import build as settings
+ settings()
 if __name__=='__main__':build()

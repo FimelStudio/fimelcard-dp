@@ -19,4 +19,5 @@ execute if score @s ct_game matches 16 run return run function avalon:settings/o
 execute if score @s ct_game matches 17 run return run function love_letter:settings/open
 execute if score @s ct_game matches 18 run return run function guandan:settings/open
 execute if score @s ct_game matches 20 run return run function weiqi:settings/open
+execute if score @s ct_game matches 19 run return run function ito:settings/open
 tellraw @a[tag=ct.settings_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供设置界面。',color:'yellow'}]

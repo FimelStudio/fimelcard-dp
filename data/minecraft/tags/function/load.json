@@ -20,6 +20,7 @@
     "avalon:load",
     "love_letter:load",
     "guandan:load",
-    "weiqi:load"
+    "weiqi:load",
+    "ito:load"
   ]
 }

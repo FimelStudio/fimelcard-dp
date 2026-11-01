@@ -18,3 +18,4 @@ execute if score @s ct_game matches 16 run function avalon:game/init_table
 execute if score @s ct_game matches 17 run function love_letter:game/init_table
 execute if score @s ct_game matches 18 run function guandan:game/init_table
 execute if score @s ct_game matches 20 run function weiqi:game/init_table
+execute if score @s ct_game matches 19 run function ito:game/init_table

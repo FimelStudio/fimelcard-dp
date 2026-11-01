@@ -22,6 +22,7 @@ execute if score @s ct_game matches 16 run function avalon:game/start
 execute if score @s ct_game matches 17 run function love_letter:game/start
 execute if score @s ct_game matches 18 run function guandan:game/start
 execute if score @s ct_game matches 20 run function weiqi:game/start
+execute if score @s ct_game matches 19 run function ito:game/start
 execute unless score @s ct_start matches 1 run return fail
 
 # 游戏确认成功后才隐藏中央菜单并生成结束投票按钮

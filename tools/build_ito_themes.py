@@ -85,34 +85,16 @@ def build():
  for line in THEMES.strip().splitlines():
   q,low,high=line.split('|');themes.append({'question':q,'low':low,'high':high,'text':q+'？（1：'+low+'；100：'+high+'）'})
  put('themes/load','data modify storage ito:themes entries set value '+js(themes))
- put('themes/draw',f'''execute store result storage ito:runtime draw.a int 1 run random value 0..{len(themes)-1}
-execute store result storage ito:runtime draw.b int 1 run random value 0..{len(themes)-2}
-execute store result score #a it_ctx run data get storage ito:runtime draw.a
-execute store result score #b it_ctx run data get storage ito:runtime draw.b
-execute if score #b it_ctx >= #a it_ctx run scoreboard players add #b it_ctx 1
-execute store result storage ito:runtime draw.b int 1 run scoreboard players get #b it_ctx
+ put('themes/draw','''execute store result storage ito:runtime draw.a int 1 run random value 0..79
 function ito:themes/copy with storage ito:runtime draw
-''')
- put('themes/copy','''$data modify entity @s data.ito.option1 set from storage ito:themes entries[$(a)]
-$data modify entity @s data.ito.option2 set from storage ito:themes entries[$(b)]
-''')
+function ito:themes/check''')
+ put('themes/copy','''$data modify entity @s data.ito.theme set from storage ito:themes entries[$(a)]''')
  put('themes/vote','''execute unless score @e[tag=it.current,limit=1] it_state matches 1 run return 0
 scoreboard players operation @s it_vote = #choice it_ctx
 '''+say('选题票已记录，等待其他玩家；可重新打开改票。','green','@s')+'''
 execute as @e[tag=it.current,limit=1] at @s run function ito:themes/check
 ''')
- put('themes/check','''scoreboard players set #voted it_ctx 0
-execute as @a[tag=it.audience,scores={it_vote=1..2}] run scoreboard players add #voted it_ctx 1
-execute unless score #voted it_ctx = @s it_count run return 0
-scoreboard players set #a it_ctx 0
-scoreboard players set #b it_ctx 0
-execute as @a[tag=it.audience,scores={it_vote=1}] run scoreboard players add #a it_ctx 1
-execute as @a[tag=it.audience,scores={it_vote=2}] run scoreboard players add #b it_ctx 1
-execute store result score #tie it_ctx run random value 1..2
-data modify entity @s data.ito.theme set from entity @s data.ito.option1
-execute if score #b it_ctx > #a it_ctx run data modify entity @s data.ito.theme set from entity @s data.ito.option2
-execute if score #b it_ctx = #a it_ctx if score #tie it_ctx matches 2 run data modify entity @s data.ito.theme set from entity @s data.ito.option2
-scoreboard players set @s it_state 2
+ put('themes/check','''scoreboard players set @s it_state 2
 function ito:game/epoch
 execute as @a[tag=it.audience] run dialog clear @s
 tellraw @a[tag=it.audience] [{text:"[命悬一线] 本关主题：",color:"gold"},{nbt:"data.ito.theme.text",entity:"@s"}]
