@@ -10,7 +10,7 @@ import sys
 import tempfile
 
 PACK=Path(__file__).resolve().parents[1]
-REGISTRARS=('register_boardgames.py','register_xiangqi.py','register_love_letter.py','register_guandan.py','register_weiqi.py')
+REGISTRARS=('register_boardgames.py','register_xiangqi.py','register_love_letter.py','register_guandan.py','register_weiqi.py','register_catan.py')
 
 
 def hashes(root):
@@ -23,6 +23,21 @@ def main():
     shutil.copytree(PACK/'data/minecraft/tags/function',output/'data/minecraft/tags/function')
     for name in [*REGISTRARS,'check_game_picker.mjs','check_admin_abort.mjs','check_table_end_reentry.cjs','check_table_vote_remote.mjs']:
         path=output/'tools'/name;path.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(PACK/'tools'/name,path)
+    common=output/'data/cardtable/function'
+    def buttons(capacity):
+        text=(common/f'menu/picker/show{capacity}.mcfunction').read_text(encoding='utf-8')
+        dialog=json.loads(text[text.index('{'):])
+        return {int(re.search(r'\$\(p(\d+)\)',button['action']['command'])[1]):button for button in dialog['actions']}
+    preserved={capacity:{game:buttons(capacity)[game] for game in (18,19,21)} for capacity in (4,8)}
+    for capacity in (4,8):
+        assert preserved[capacity][18]['label']['text']=='掼蛋（1–4人+人机）'
+        assert preserved[capacity][19]['label']['text']==f'命悬一线·蛛丝（2–{capacity}人）'
+        assert preserved[capacity][21]['label']['text']=='卡坦岛（3–4人）'
+    def check_preserved_buttons():
+        for capacity in (4,8):
+            actual=buttons(capacity)
+            for game,button in preserved[capacity].items():
+                assert actual[game]==button,(capacity,game,'旧注册脚本覆盖了既有按钮或人数说明')
     def register(script):
         process=subprocess.run([sys.executable,str(output/'tools'/script)],cwd=output,env={**os.environ,'PYTHONUTF8':'1'},capture_output=True,text=True,encoding='utf-8')
         assert process.returncode==0,process.stdout+process.stderr
@@ -30,10 +45,10 @@ def main():
         for script in REGISTRARS:
             register(script)
     register_all()
+    check_preserved_buttons()
     baseline=hashes(output)
     register_all()
     assert hashes(output)==baseline,'重跑注册脚本改变了既有文件'
-    common=output/'data/cardtable/function'
     current=int(re.search(r'#game_count ct_ctx (\d+)',(common/'load.mcfunction').read_text(encoding='utf-8'))[1])
     future_id=current+1
     registered=[int(n) for n in re.findall(r'cardtable:picker p(\d+) int',(common/'menu/picker/open.mcfunction').read_text(encoding='utf-8'))]
@@ -42,7 +57,8 @@ def main():
     for capacity in (4,8):
         path=common/f'menu/picker/show{capacity}.mcfunction';text=path.read_text(encoding='utf-8');dialog=json.loads(text[text.index('{'):])
         expected_actions[capacity]=len(dialog['actions'])+1
-        dialog['actions']=[action for action in dialog['actions'] if action['action']['command'] not in ('trigger ct_game_pick set $(p14)','trigger ct_game_pick set $(p15)')]
+        # 缺少按钮时重新注册也要恢复掼蛋的人机人数说明。
+        dialog['actions']=[action for action in dialog['actions'] if action['action']['command'] not in ('trigger ct_game_pick set $(p14)','trigger ct_game_pick set $(p15)','trigger ct_game_pick set $(p18)')]
         dialog['actions'].append(future)
         path.write_text('$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
     path=common/'menu/picker/open.mcfunction';text=path.read_text(encoding='utf-8')
@@ -59,31 +75,31 @@ def main():
     index=next(line for line in text.splitlines() if '当前游戏没有提供' in line)
     path.write_text(text.replace(index,future_branch+'\n'+index),encoding='utf-8')
     register_all()
+    check_preserved_buttons()
     for capacity in (4,8):
         text=(common/f'menu/picker/show{capacity}.mcfunction').read_text(encoding='utf-8');dialog=json.loads(text[text.index('{'):])
         assert len(dialog['actions'])==expected_actions[capacity] and dialog['actions'][-1]==future
-        guandan=next(action for action in dialog['actions'] if action['action']['command']=='trigger ct_game_pick set $(p18)')
-        assert guandan['label']['text']=='掼蛋（4人）','掼蛋应要求四名真人，不提供人机补位'
     text=(common/'menu/picker/open.mcfunction').read_text(encoding='utf-8')
     assert [int(n) for n in re.findall(r'cardtable:picker p(\d+) int',text)]==registered+[future_id]
-    assert 'cardtable:picker p19 int' not in text
-    assert 'if score #pick_choice ct_ctx matches 19 run return run function cardtable:menu/picker/invalid' in (common/'menu/picker/handle.mcfunction').read_text(encoding='utf-8')
+    for game in (19,21):
+        assert f'cardtable:picker p{game} int' in text
+        assert f'if score #pick_choice ct_ctx matches {game} run return run function cardtable:menu/picker/invalid' not in (common/'menu/picker/handle.mcfunction').read_text(encoding='utf-8')
     assert f'#game_count ct_ctx {future_id}' in (common/'load.mcfunction').read_text(encoding='utf-8')
     assert f'matches 1..{future_id}' in (common/'menu/render.mcfunction').read_text(encoding='utf-8')
     assert f'matches 1..{future_id}' in (common/'menu/picker/handle.mcfunction').read_text(encoding='utf-8')
     assert future_branch in (common/'game/open_settings.mcfunction').read_text(encoding='utf-8')
     for kind in ('load','tick'):
         values=json.loads((output/f'data/minecraft/tags/function/{kind}.json').read_text(encoding='utf-8'))['values']
-        for namespace in ('avalon','love_letter','guandan','weiqi'):
+        for namespace in ('avalon','love_letter','guandan','ito','weiqi','catan'):
             assert values.count(f'{namespace}:{kind}')==1,f'{namespace}:{kind} 必须恰好登记一次'
     for name,endpoint in [('game/init_selected','game/init_table'),('game/start','game/start'),('game/open_settings','settings/open'),('game/open_rules','rules/show'),('vote/finish','game/end_vote')]:
         source=(common/(name+'.mcfunction')).read_text(encoding='utf-8')
-        for game,namespace in ((16,'avalon'),(17,'love_letter'),(18,'guandan'),(20,'weiqi')):
+        for game,namespace in ((16,'avalon'),(17,'love_letter'),(18,'guandan'),(19,'ito'),(20,'weiqi'),(21,'catan')):
             pattern=rf'ct_game matches {game} run (?:return run )?function {namespace}:{endpoint}(?:\n|$)'
             assert len(re.findall(pattern,source))==1,(name,game,'分派必须保留且不能重复')
     baseline=hashes(output);register_all()
     assert hashes(output)==baseline,'有未来游戏时重跑注册不幂等'
-    print(f'通过：当前{current}款及模拟未来{future_id}款注册幂等；保留未来按钮、编号上限、分派和会话顺序；阿瓦隆16、情书17与掼蛋18加载/分派不重复。')
+    print(f'通过：当前{current}款及模拟未来{future_id}款注册幂等；保留掼蛋人数、命悬一线19、卡坦岛21及未来按钮、编号上限、分派和会话顺序；16至21号游戏加载/分派不重复。')
     print('临时副本：'+str(output))
 
 

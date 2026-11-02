@@ -11,6 +11,27 @@ LABELS = ('SPY', 'GUARD', 'PRIEST', 'BARON', 'HANDMAID', 'PRINCE', 'CHANCELLOR',
 SOURCE = RP/'.source/love_letter'
 W, H = 256, 384
 BURGUNDY, GOLD, PAPER, INK = '#742738', '#d8b668', '#f4e9ce', '#352a23'
+FONT_SIZE = (128, 192)
+
+
+def font_assets():
+    """为字体单独导出牌面，不能将 256×384 物品纹理直接交给字体。
+
+    26.2 客户端的 FontTexture 图集只有 256×256。BitmapProvider 的
+    height 只改变显示比例，上传的字形仍是 PNG 的原始像素大小。
+    保留物品原图，字体使用相同比例的 128×192 缩略图。
+    """
+    target = CARD/'textures/font/love_letter'
+    target.mkdir(parents=True, exist_ok=True)
+    for selected in (False, True):
+        providers = []
+        for index, role in enumerate(ROLES):
+            name = role + ('_selected' if selected else '')
+            with Image.open(CARD/f'textures/item/love_letter/{name}.png') as source:
+                source.resize(FONT_SIZE, Image.Resampling.LANCZOS).save(target/f'{name}.png')
+            providers.append({'type':'bitmap','file':f'card:font/love_letter/{name}.png',
+                              'ascent':50,'height':54,'chars':[chr(0xe800+index)]})
+        json_file(CARD/f'font/love_letter/dialog{"_selected" if selected else ""}.json',{'providers':providers})
 
 
 def font(size, bold=False):
@@ -131,12 +152,7 @@ def build():
         cube([.2,0,.2],[15.8,.08,.6]),cube([.2,0,15.4],[15.8,.08,15.8]),
         cube([.2,0,.6],[.6,.08,15.4]),cube([15.4,0,.6],[15.8,.08,15.4])]}
     export_model('love_letter','protection',protect)
-    for selected in (False,True):
-        providers=[]
-        for index,role in enumerate(ROLES):
-            providers.append({'type':'bitmap','file':f'card:item/love_letter/{role}{"_selected" if selected else ""}.png',
-                              'ascent':50,'height':54,'chars':[chr(0xe800+index)]})
-        json_file(CARD/f'font/love_letter/dialog{"_selected" if selected else ""}.json',{'providers':providers})
+    font_assets()
     preview.save(SOURCE/'cards_preview.png')
     prompt=(PACK/'tools/love_letter_image_prompt.txt').read_text(encoding='utf-8')
     text_file(SOURCE/'prompt.txt',prompt)
@@ -145,7 +161,7 @@ def build():
 宫廷角色肖像由内置 image_gen 生成，使用原创人物与服饰；未临摹商业《情书》插画。完整原图保存在 portraits_original.png，生成提示词见 prompt.txt。
 十个角色按 5 列 × 2 行排列：spy、guard、priest、baron、handmaid；prince、chancellor、king、countess、princess。
 生成图只负责肖像。256×384 牌面的数字、英文名、信封、封蜡、金色边框和好感标记均由确定性资源脚本绘制。
-资源名使用角色英文名，不使用连续 c0 编号；同名正面 PNG 可直接用于物品、对话框与私人 HUD。
+资源名使用角色英文名，不使用连续 c0 编号。物品保留 256×384 牌面；对话框和私人 HUD 使用 textures/font/love_letter/ 下的 128×192 专用字形，避免超过原版 256×256 字体图集限制。
 models/ 保存可编辑 Blockbench Java 模型与嵌入纹理；牌和牌盒参照本项目 fake_card / cardbox 原有尺寸。
 另有八段原创合成音效，保留 audio/ 中的无损 WAV 源文件；audio_manifest.json 记录发布 OGG 的时长及 SHA-256，来源与重建方式见 audio/README.md。
 从数据包目录运行 python tools/build_love_letter_assets.py 可重建；需要 Pillow 及 Windows Georgia 字体。重建不会重新调用图像生成服务。

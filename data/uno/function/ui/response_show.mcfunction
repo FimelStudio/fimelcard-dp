@@ -1,0 +1,2 @@
+$tellraw @s {text:"[UNO] 点击这里重新打开响应。",color:"yellow",underlined:true,click_event:{action:"run_command",command:"trigger un_action set $(reopen)"}}
+$dialog show @s {type:"minecraft:multi_action",title:{text:"UNO · 回应",color:"gold"},body:[{type:"minecraft:plain_message",width:400,contents:$(phase)}],columns:2,actions:$(controls),exit_action:{label:{text:"返回游戏"},width:140},pause:false,can_close_with_escape:true,after_action:"close"}

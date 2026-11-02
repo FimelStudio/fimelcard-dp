@@ -1,5 +1,8 @@
 function uno:input/context
 execute unless entity @s[tag=un.actor] run return 0
+execute if score @e[tag=un.current,limit=1] un_state matches 3..4 run return run function uno:ui/response_open
+execute unless score @e[tag=un.current,limit=1] un_state matches 2 run return run function uno:ui/close
+execute unless score @s un_seat = @e[tag=un.current,limit=1] un_turn run return run function uno:ui/close
 scoreboard players set @s un_colorpick -1
 scoreboard players operation @s un_seen = @e[tag=un.current,limit=1] un_epoch
 scoreboard players operation #ui_base un_ctx = @s un_seen
