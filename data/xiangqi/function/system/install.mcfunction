@@ -44,10 +44,7 @@ scoreboard objectives add xq_hints dummy
 scoreboard objectives add xq_aistate dummy
 scoreboard objectives add xq_aiwait dummy
 scoreboard objectives add xq_aiepoch dummy
-scoreboard objectives add xq_variant dummy
-scoreboard objectives add xq_hidden dummy
-scoreboard objectives add xq_covered dummy
 scoreboard objectives add xq_action trigger
 scoreboard objectives add xq_settings trigger
 scoreboard objectives add xq_drop minecraft.dropped:minecraft.paper
-scoreboard players set #version xq_ctx 2
+scoreboard players set #version xq_ctx 1

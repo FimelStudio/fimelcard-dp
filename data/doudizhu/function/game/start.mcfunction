@@ -16,6 +16,7 @@ tag @s add dd.controller
 scoreboard players operation @s dd_id = @s ct_id
 scoreboard players operation @s dd_humans = @s ct_joined
 scoreboard players set @s dd_bot_timer 0
+data remove entity @s data.dd_collect
 data modify entity @s data.doudizhu set value {}
 execute as @a[tag=ct.player] if score @s ct_id = #ctx dd_ctx run function doudizhu:player/init
 function doudizhu:bot/fill

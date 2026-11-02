@@ -120,19 +120,16 @@ function fimel_title:new_text
 
 def fonts():
     from PIL import Image
-    from build_love_letter_assets import font_assets
-    # 与对话框共用专用缩略图；单独重建 HUD 也不能回退至超高物品纹理。
-    font_assets()
     target=RP/'assets/card/font/love_letter'
     target.mkdir(parents=True,exist_ok=True)
     providers=[];negative={chr(0xE90A):-4}
     for i,role in enumerate(ROLES):
-        path=RP/f'assets/card/textures/font/love_letter/{role}.png'
+        path=RP/f'assets/card/textures/item/love_letter/{role}.png'
         if not path.exists():
             print('Waiting for role textures before font export: '+str(path));return
         with Image.open(path) as bitmap:w,h=bitmap.size
         glyph=chr(0xE900+i)
-        providers.append({'type':'bitmap','file':f'card:font/love_letter/{role}.png','height':56,'ascent':56,'chars':[glyph]})
+        providers.append({'type':'bitmap','file':f'card:item/love_letter/{role}.png','height':56,'ascent':56,'chars':[glyph]})
         negative[glyph]=-(round(56*w/h)+1)/2
     providers += [{'type':'space','advances':{chr(0xE90A):8}},{'type':'reference','id':'minecraft:default_mod'}]
     (target/'hud.json').write_text(json.dumps({'providers':providers},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

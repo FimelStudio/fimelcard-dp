@@ -111,16 +111,6 @@ def export_resourcepack():
   draw.line((0,6,63,6),fill=top,width=2);draw.line((0,55,63,55),fill=top,width=2)
   texture_file(f'{palette}/edge',edge)
   for side,ink in [('red',red),('black',black)]:
-   # 揭棋盖面不绘制身份；双方只能由边环识别红黑归属。
-   image=Image.new('RGB',(128,128),base);d=ImageDraw.Draw(image)
-   d.ellipse((5,5,122,122),fill=base,outline=ink,width=2)
-   d.ellipse((11,11,116,116),fill=top,outline=ink,width=2)
-   d.ellipse((42,42,85,85),outline=base,width=3)
-   d.ellipse((49,49,78,78),outline=base,width=2)
-   resource=f'{palette}/{side}_covered';texture_file(resource,image)
-   model=circle_model(f'card:item/xiangqi/{resource}',f'card:item/xiangqi/{palette}/edge')
-   item_model(resource,model)
-   blockbench_source(model,ASSETS/f'textures/item/xiangqi/{resource}.png',SOURCE/f'models/{palette}/{side}_covered.bbmodel')
    for kind,name in PIECES.items():
     image=Image.new('RGB',(128,128),top);d=ImageDraw.Draw(image)
     d.ellipse((5,5,122,122),fill=base,outline=ink,width=2)
@@ -251,8 +241,6 @@ execute if score #vis_cap xq_ctx matches 8 run data merge entity @s {width:0.346
 
     function("spawn_man", """
 scoreboard players operation #vis_piece xq_ctx = @s xq_piece
-scoreboard players set #vis_covered xq_ctx 0
-execute if score @s xq_covered matches 1 run scoreboard players set #vis_covered xq_ctx 1
 scoreboard players operation #vis_sq xq_ctx = @s xq_sq
 execute positioned ~ ~1.04 ~ summon minecraft:item_display run function xiangqi:visual/man_init
 function xiangqi:visual/spawn_hit with storage xiangqi:visual
@@ -265,7 +253,6 @@ tag @s add xq.piece_hit
 scoreboard players operation @s ct_id = #vis_table xq_ctx
 scoreboard players operation @s xq_sq = #vis_sq xq_ctx
 scoreboard players operation @s xq_piece = #vis_piece xq_ctx
-scoreboard players operation @s xq_covered = #vis_covered xq_ctx
 data merge entity @s {response:1b}
 function xiangqi:visual/hit_shape
 """)
@@ -281,7 +268,6 @@ function xiangqi:visual/hit_shape
 $tp @s ~$(x) ~1.035 ~$(z)
 scoreboard players operation @s xq_sq = #vis_sq xq_ctx
 scoreboard players operation @s xq_piece = #vis_piece xq_ctx
-scoreboard players set @s xq_covered 0
 function xiangqi:visual/hit_shape
 """)
     function("man_init", """
@@ -290,7 +276,6 @@ tag @s add xq.man
 scoreboard players operation @s ct_id = #vis_table xq_ctx
 scoreboard players operation @s xq_sq = #vis_sq xq_ctx
 scoreboard players operation @s xq_piece = #vis_piece xq_ctx
-scoreboard players operation @s xq_covered = #vis_covered xq_ctx
 scoreboard players set @s xq_owner 0
 scoreboard players set @s xq_slot -1
 data merge entity @s {item_display:"none",brightness:{block:15,sky:15},shadow_radius:0f,view_range:24f}
@@ -301,11 +286,7 @@ function xiangqi:visual/man_pose
     for side,sign in [("red",1),("black",-1)]:
         for value,name in PIECES.items():
             model_lines.append(f'execute if score @s xq_piece matches {sign*value} run data modify storage xiangqi:visual man set value "{side}_{name}"')
-    model_lines += [
-        'execute if score @s xq_covered matches 1 if score @s xq_piece matches 1.. run data modify storage xiangqi:visual man set value "red_covered"',
-        'execute if score @s xq_covered matches 1 if score @s xq_piece matches ..-1 run data modify storage xiangqi:visual man set value "black_covered"',
-        "function xiangqi:visual/set_model with storage xiangqi:visual",
-    ]
+    model_lines += ["function xiangqi:visual/set_model with storage xiangqi:visual"]
     function("man_model", "\n".join(model_lines))
     function("set_model", '$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:xiangqi/$(palette)/$(man)"}}}')
 
@@ -357,8 +338,6 @@ execute store result score #vis_from xq_ctx run data get entity @s data.xiangqi.
 execute store result score #vis_to xq_ctx run data get entity @s data.xiangqi.last.to
 execute store result score #vis_piece xq_ctx run data get entity @s data.xiangqi.last.piece
 execute store result score #vis_taken xq_ctx run data get entity @s data.xiangqi.last.captured
-scoreboard players set #vis_taken_covered xq_ctx 0
-execute store result score #vis_taken_covered xq_ctx run data get entity @s data.xiangqi.last.captured_covered
 execute store result score #vis_capture xq_ctx run data get entity @s data.xiangqi.last.capture_sq
 scoreboard players set #vis_owner xq_ctx 1
 execute if score #vis_piece xq_ctx matches ..-1 run scoreboard players set #vis_owner xq_ctx -1
@@ -369,8 +348,6 @@ function xiangqi:visual/select
     function("move_man", """
 tag @s add xq.moving
 scoreboard players operation @s xq_sq = #vis_to xq_ctx
-scoreboard players operation @s xq_piece = #vis_piece xq_ctx
-scoreboard players set @s xq_covered 0
 function xiangqi:visual/man_model
 function xiangqi:visual/man_pose
 scoreboard players operation #vis_piece xq_ctx = @s xq_piece
@@ -384,9 +361,8 @@ execute as @e[tag=xq.man,tag=xq.moving] if score @s ct_id = #vis_table xq_ctx ru
 scoreboard players set #vis_slot xq_ctx 0
 execute if score #vis_owner xq_ctx matches 1 run scoreboard players operation #vis_slot xq_ctx = @s xq_rcapt
 execute if score #vis_owner xq_ctx matches -1 run scoreboard players operation #vis_slot xq_ctx = @s xq_bcapt
-data modify storage xiangqi:visual captured set value {piece:0,owner:0,slot:0,covered:0}
+data modify storage xiangqi:visual captured set value {piece:0,owner:0,slot:0}
 execute store result storage xiangqi:visual captured.piece int 1 run scoreboard players get #vis_taken xq_ctx
-execute store result storage xiangqi:visual captured.covered int 1 run scoreboard players get #vis_taken_covered xq_ctx
 execute store result storage xiangqi:visual captured.owner int 1 run scoreboard players get #vis_owner xq_ctx
 execute store result storage xiangqi:visual captured.slot int 1 run scoreboard players get #vis_slot xq_ctx
 data modify entity @s data.xiangqi.captured append from storage xiangqi:visual captured
@@ -401,14 +377,10 @@ tag @s add xq.moving
 scoreboard players set @s xq_sq -1
 scoreboard players operation @s xq_owner = #vis_owner xq_ctx
 scoreboard players operation @s xq_slot = #vis_slot xq_ctx
-scoreboard players operation @s xq_covered = #vis_taken_covered xq_ctx
-function xiangqi:visual/man_model
 function xiangqi:visual/captured_pose
 """)
     function("restore_captured", """
 execute store result score #vis_piece xq_ctx run data get storage xiangqi:visual restore[0].piece
-scoreboard players set #vis_covered xq_ctx 0
-execute store result score #vis_covered xq_ctx run data get storage xiangqi:visual restore[0].covered
 execute store result score #vis_owner xq_ctx run data get storage xiangqi:visual restore[0].owner
 execute store result score #vis_slot xq_ctx run data get storage xiangqi:visual restore[0].slot
 execute positioned ~ ~1.04 ~ summon minecraft:item_display run function xiangqi:visual/restore_man
@@ -421,7 +393,6 @@ tag @s add xq.man
 tag @s add xq.captured
 scoreboard players operation @s ct_id = #vis_table xq_ctx
 scoreboard players operation @s xq_piece = #vis_piece xq_ctx
-scoreboard players operation @s xq_covered = #vis_covered xq_ctx
 scoreboard players operation @s xq_owner = #vis_owner xq_ctx
 scoreboard players operation @s xq_slot = #vis_slot xq_ctx
 scoreboard players set @s xq_sq -1
@@ -461,9 +432,6 @@ def export_notes():
 \u65b9\u5411 0 \u7ea2\u65b9\u5728\u5357\u4fa7\uff0c\u65b9\u5411 1 \u7ea2\u65b9\u5728\u897f\u4fa7\uff0c\u5b57\u9762\u671d\u5411\u5404\u81ea\u73a9\u5bb6\u3002
 \u68cb\u5b50\u548c\u88ab\u5403\u68cb\u5b50\u7684\u79fb\u52a8\u4f7f\u7528 8 \u523b\u63d2\u503c\uff0c\u88ab\u5403\u68cb\u5b50\u7f29\u5c0f\u540e\u6392\u5728\u5403\u5b50\u8005\u53f3\u624b\u8fb9\u3002
 \u9009\u4e2d\u683c\u7528\u91d1\u8272\u8fb9\u6846\uff0c\u5408\u6cd5\u7ec8\u70b9\u7528\u7eff\u8272\u53d1\u5149\u8fb9\u6846\uff0c\u63d0\u793a\u76f4\u63a5\u8c03\u7528\u89c4\u5219\u5f15\u64ce\u7684\u53ea\u8bfb\u6a21\u62df\u3002
-
-揭棋盖面资源为每种材质的 `red_covered`、`black_covered`，沿用圆盘几何，仅以边环区分阵营，不绘制身份。
-公开展示与点击实体仅保存棋子模板／已翻开身份及盖面标记，不读取暗子真实身份。首次行棋后换为真实牌面，被吃暗子在右侧槽内保持盖面；悔棋和重载均恢复盖面。
 """)
 
 if __name__=='__main__':

@@ -1,5 +1,5 @@
 execute if score @s sk_state matches 1 run return run function skull:ui/place_hint
-data modify storage skull:ui dialog set value {type:"minecraft:multi_action",title:{text:"骷髅牌",color:"gold",bold:true},body:[{type:"minecraft:plain_message",width:460,contents:{text:"花牌＝黑桃A，骷髅＝小丑牌。扣牌请关闭界面，选中要出的牌按Q。叫号、翻牌和弃牌点击按钮；紫色染料按Q可重开。",color:"gray"}}],actions:[],columns:4,exit_action:{label:{text:"关闭"}},pause:false}
+data modify storage skull:ui dialog set value {type:"minecraft:multi_action",title:{text:"骷髅牌",color:"gold",bold:true},body:[{type:"minecraft:plain_message",width:460,contents:{text:"花牌＝各自套装的花卉，骷髅＝糖骷髅。扣牌请关闭界面，选中要出的牌按Q。叫号、翻牌和弃牌点击按钮；紫色染料按Q可重开。",color:"gray"}}],actions:[],columns:4,exit_action:{label:{text:"关闭"}},pause:false}
 scoreboard players operation #base sk_ctx = @s sk_epoch
 scoreboard players operation #base sk_ctx *= #hundred sk_ctx
 function skull:ui/load_hand with storage skull:ui view

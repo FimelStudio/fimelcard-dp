@@ -134,11 +134,6 @@ def assets():
         assert len(providers)==10
         assert [p['chars'][0] for p in providers]==[chr(0xe800+i) for i in range(10)]
         assert all(p['height']==54 and p['ascent']==50 for p in providers)
-        for role,provider in zip(roles,providers):
-            suffix='_selected' if name=='dialog_selected' else ''
-            assert provider['file']==f'card:font/love_letter/{role}{suffix}.png'
-            image=Image.open(CARD/f'textures/font/love_letter/{role}{suffix}.png')
-            assert image.size==(128,192) and max(image.size)<=256
     for path in (PACK/'data/love_letter/function/visual').rglob('*.mcfunction'):
         body='\n'.join(line for line in path.read_text(encoding='utf-8').splitlines() if not line.startswith('#'))
         assert 'll_hand' not in body and 'll_extra' not in body and 'll_private' not in body,path

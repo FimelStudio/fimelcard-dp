@@ -8,6 +8,8 @@ execute store result storage ito:form epoch int 1 run scoreboard players get @e[
 execute store result storage ito:form token int 1 run scoreboard players get @s it_window
 execute store result storage ito:form number int 1 run scoreboard players get @e[tag=it.focus,limit=1] it_number
 data modify storage ito:form dialog set value '''+js({'type':'minecraft:confirmation','title':{'text':'修改描述'},'body':[{'type':'minecraft:plain_message','contents':{'text':'自由文本提交需要OP；普通玩家请使用描述书。最多48字。'}}],'inputs':[{'type':'minecraft:text','key':'a','label':{'text':'描述'},'width':360,'max_length':48,'initial':''}],'yes':{'label':{'text':'公布描述'},'action':{'type':'minecraft:dynamic/run_command','template':''}},'no':{'label':{'text':'关闭'}},'pause':False,'after_action':'close'})+'''
+data modify storage ito:form dialog.body prepend value {type:"minecraft:plain_message",width:440,contents:{text:"本轮问题：",color:"gold",extra:[{text:""}]}}
+data modify storage ito:form dialog.body[0].contents.extra[0].text set from entity @e[tag=it.current,limit=1] data.ito.theme.text
 data modify storage ito:form dialog.inputs[0].initial set from entity @e[tag=it.focus,limit=1] data.description
 data modify storage ito:form a set value "$(a)"
 function ito:form/template with storage ito:form
@@ -70,7 +72,9 @@ scoreboard players operation @s fbt_panel = @s it_panel''')
  put('hud/participant','''data modify storage fimel_title:io text set from entity @s data.name
 function ito:hud/text
 scoreboard players operation #hud_owner it_ctx = @s it_seat
-execute as @e[tag=it.cards,scores={it_owner=1..8}] if score @s it_owner = #hud_owner it_ctx run function ito:hud/card''')
+execute as @e[tag=it.cards,scores={it_owner=1..8,it_slot=1}] if score @s it_owner = #hud_owner it_ctx run function ito:hud/card
+execute as @e[tag=it.cards,scores={it_owner=1..8,it_slot=2}] if score @s it_owner = #hud_owner it_ctx run function ito:hud/card
+execute as @e[tag=it.cards,scores={it_owner=1..8,it_slot=3}] if score @s it_owner = #hud_owner it_ctx run function ito:hud/card''')
  put('hud/card','''data modify storage fimel_title:io text set value {text:"",color:"white",shadow_color:0}
 data modify storage fimel_title:io text.text set from entity @s data.description
 execute if data entity @s {data:{description:""}} run data modify storage fimel_title:io text.text set value "（尚未描述）"

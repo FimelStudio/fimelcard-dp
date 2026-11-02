@@ -1,17 +1,11 @@
-# 只有真实提交可以读取暗子身份；合法判定、提示和人机模拟只处理公开模板。
-function xiangqi:engine/covered/reveal with storage xiangqi:engine scratch
-data modify entity @s data.xiangqi.last set value {from:0,to:0,piece:0,captured:0,capture_sq:-1,rook_from:-1,rook_to:-1,promotion:0,was_covered:0,captured_covered:0,moved_template:0}
+data modify entity @s data.xiangqi.last set value {from:0,to:0,piece:0,captured:0,capture_sq:-1,rook_from:-1,rook_to:-1,promotion:0}
 scoreboard players operation #captured xq_ctx = #target xq_ctx
 execute store result entity @s data.xiangqi.last.from int 1 run scoreboard players get #from xq_ctx
 execute store result entity @s data.xiangqi.last.to int 1 run scoreboard players get #to xq_ctx
-execute store result entity @s data.xiangqi.last.piece int 1 run scoreboard players get #placed xq_ctx
+execute store result entity @s data.xiangqi.last.piece int 1 run scoreboard players get #piece xq_ctx
 execute store result entity @s data.xiangqi.last.captured int 1 run scoreboard players get #captured xq_ctx
 execute store result entity @s data.xiangqi.last.capture_sq int 1 run scoreboard players get #capture_sq xq_ctx
-execute store result entity @s data.xiangqi.last.was_covered int 1 run scoreboard players get #covered xq_ctx
-execute store result entity @s data.xiangqi.last.captured_covered int 1 run scoreboard players get #target_covered xq_ctx
-execute store result entity @s data.xiangqi.last.moved_template int 1 run scoreboard players get #piece xq_ctx
 function xiangqi:engine/apply_cache with storage xiangqi:engine scratch
-function xiangqi:engine/covered/apply_real with storage xiangqi:engine scratch
 scoreboard players add @s xq_half 1
 execute unless score #captured xq_ctx matches 0 run scoreboard players set @s xq_half 0
 execute if score #side xq_ctx matches -1 run scoreboard players add @s xq_full 1

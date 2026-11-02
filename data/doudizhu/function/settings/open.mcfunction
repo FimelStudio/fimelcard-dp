@@ -27,4 +27,9 @@ data modify storage doudizhu:settings counter_on set value false
 data modify storage doudizhu:settings counter_off set value true
 execute if score @s dd_counter matches 1 run data modify storage doudizhu:settings counter_on set value true
 execute if score @s dd_counter matches 1 run data modify storage doudizhu:settings counter_off set value false
+data modify storage doudizhu:settings shuffle set value "$(shuffle)"
+data modify storage doudizhu:settings shuffled set value true
+data modify storage doudizhu:settings unshuffled set value false
+execute if score @s dd_noshuffle matches 1 run data modify storage doudizhu:settings shuffled set value false
+execute if score @s dd_noshuffle matches 1 run data modify storage doudizhu:settings unshuffled set value true
 function doudizhu:settings/show with storage doudizhu:settings

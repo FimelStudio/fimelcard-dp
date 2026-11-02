@@ -16,6 +16,6 @@ execute if score @s it_round matches 3 run function ito:round/reference
 function ito:themes/draw
 function ito:system/context
 execute as @a[tag=it.audience] run function ito:input/give
-tellraw @a[tag=it.audience] {text:"[命悬一线] 按Q使用紫色染料查看手牌和出牌；输入方式以游戏设置为准。",color:"yellow"}
+tellraw @a[tag=it.audience] {text:"[命悬一线] 拿数字牌按Q出牌；紫色染料用于查看手牌和填写描述。",color:"yellow"}
 function ito:visual/refresh
 function ito:hud/refresh

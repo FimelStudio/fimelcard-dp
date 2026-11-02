@@ -6,8 +6,6 @@ execute store result score #vis_from xq_ctx run data get entity @s data.xiangqi.
 execute store result score #vis_to xq_ctx run data get entity @s data.xiangqi.last.to
 execute store result score #vis_piece xq_ctx run data get entity @s data.xiangqi.last.piece
 execute store result score #vis_taken xq_ctx run data get entity @s data.xiangqi.last.captured
-scoreboard players set #vis_taken_covered xq_ctx 0
-execute store result score #vis_taken_covered xq_ctx run data get entity @s data.xiangqi.last.captured_covered
 execute store result score #vis_capture xq_ctx run data get entity @s data.xiangqi.last.capture_sq
 scoreboard players set #vis_owner xq_ctx 1
 execute if score #vis_piece xq_ctx matches ..-1 run scoreboard players set #vis_owner xq_ctx -1

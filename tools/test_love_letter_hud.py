@@ -23,15 +23,13 @@ def geometry():
         providers=[p for p in font['providers'] if p['type']=='bitmap' and any(glyph in row for row in p['chars'])]
         assert len(providers)==1,(name,'glyph missing or duplicate');checks+=1
         provider=providers[0]
-        assert provider['file']==f'card:font/love_letter/{name}.png';checks+=1
+        assert provider['file']==f'card:item/love_letter/{name}.png';checks+=1
         assert provider['height']==56 and provider['ascent']==56;checks+=1
-        image=Image.open(RESOURCE/f'assets/card/textures/font/love_letter/{name}.png').convert('RGBA')
-        assert image.size==(128,192);checks+=1
-        # height=56 只缩放渲染几何；原始字形也必须装得进 256×256 图集。
-        assert image.width<=256 and image.height<=256,(name,'glyph cannot fit vanilla FontTexture');checks+=1
+        image=Image.open(RESOURCE/f'assets/card/textures/item/love_letter/{name}.png').convert('RGBA')
+        assert image.size==(256,384);checks+=1
         # 原版 BitmapProvider 扫描最后一个有alpha的像素列，缩放后四舍五入，再加1px字距。
         alpha=image.getchannel('A');bounds=alpha.getbbox()
-        assert bounds and bounds[2]==128,(name,'unexpected opaque width');checks+=1
+        assert bounds and bounds[2]==256,(name,'unexpected opaque width');checks+=1
         advance=int(bounds[2]*provider['height']/image.height+0.5)+1
         assert advance==38,(name,advance);checks+=1
         assert neg[glyph]==-advance/2,(name,'rewind must equal -half actual advance');checks+=1

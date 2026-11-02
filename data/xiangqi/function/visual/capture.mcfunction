@@ -1,9 +1,8 @@
 scoreboard players set #vis_slot xq_ctx 0
 execute if score #vis_owner xq_ctx matches 1 run scoreboard players operation #vis_slot xq_ctx = @s xq_rcapt
 execute if score #vis_owner xq_ctx matches -1 run scoreboard players operation #vis_slot xq_ctx = @s xq_bcapt
-data modify storage xiangqi:visual captured set value {piece:0,owner:0,slot:0,covered:0}
+data modify storage xiangqi:visual captured set value {piece:0,owner:0,slot:0}
 execute store result storage xiangqi:visual captured.piece int 1 run scoreboard players get #vis_taken xq_ctx
-execute store result storage xiangqi:visual captured.covered int 1 run scoreboard players get #vis_taken_covered xq_ctx
 execute store result storage xiangqi:visual captured.owner int 1 run scoreboard players get #vis_owner xq_ctx
 execute store result storage xiangqi:visual captured.slot int 1 run scoreboard players get #vis_slot xq_ctx
 data modify entity @s data.xiangqi.captured append from storage xiangqi:visual captured

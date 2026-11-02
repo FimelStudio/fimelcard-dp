@@ -16,7 +16,6 @@ data modify storage fimel_title:io font set value "card:guandan/public"
 data modify storage fimel_title:io neg_font set value "card:guandan/public_neg"
 data modify storage fimel_title:io dy set value -20.0d
 function fimel_title:new_text
-
 execute unless data entity @s data.last_play[0] run return 0
 data modify storage fimel_title:io text set value {text:"",color:"gray",shadow_color:0}
 # Resolve the label now, not later in the viewer context.

@@ -29,19 +29,16 @@ xq_epoch xq_result xq_reason xq_check xq_repetition xq_sel xq_timer
 xq_red xq_black xq_table xq_side xq_seat xq_weight xq_rtime xq_btime xq_board xq_palette
 xq_orient xq_time xq_draw xq_pulse xq_owner xq_slot xq_rcapt xq_bcapt
 xq_seen xq_ui_load xq_ui_tmp xq_set_table xq_setnonce xq_setepoch xq_nonce xq_first xq_undo
-xq_bot xq_level xq_hints xq_aistate xq_aiwait xq_aiepoch xq_variant xq_hidden xq_covered'''.split()
+xq_bot xq_level xq_hints xq_aistate xq_aiwait xq_aiepoch'''.split()
     put('system/install', [f'scoreboard objectives add {o} dummy' for o in dummy if o != 'xq_ctx'] + [
         'scoreboard objectives add xq_action trigger', 'scoreboard objectives add xq_settings trigger',
         'scoreboard objectives add xq_drop minecraft.dropped:minecraft.paper',
-        'scoreboard players set #version xq_ctx 2'])
+        'scoreboard players set #version xq_ctx 1'])
 
 
     put('load', '''
 scoreboard objectives add xq_ctx dummy
-execute unless score #version xq_ctx matches 2.. run function xiangqi:system/install
-execute as @e[tag=xq.controller] unless score @s xq_variant matches 0..1 run scoreboard players set @s xq_variant 0
-execute as @e[type=minecraft:marker,tag=xq.square] unless score @s xq_covered matches 0..1 run scoreboard players set @s xq_covered 0
-execute as @e[type=minecraft:marker,tag=xq.square] unless score @s xq_hidden matches -7..7 run scoreboard players operation @s xq_hidden = @s xq_piece
+execute unless score #version xq_ctx matches 1.. run function xiangqi:system/install
 execute as @e[type=minecraft:marker,tag=ct.controller,tag=xq.controller] unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
 # 分边默认按座位（1）；合法的显式随机（0）保留，旧指定座位值迁为默认。
 execute as @e[tag=xq.controller] unless score @s xq_first matches 0..1 run scoreboard players set @s xq_first 1
@@ -74,7 +71,6 @@ execute as @e[tag=xq.player,tag=ct.player] if score @s xq_table = #table xq_ctx 
 ''')
     put('game/init_table', '''
 tag @s add xq.controller
-execute unless score @s xq_variant matches 0..1 run scoreboard players set @s xq_variant 0
 execute unless data entity @s data.xiangqi{palette_version:2b} run function xiangqi:system/migrate_palette
 execute unless score @s xq_board matches 0..1 run scoreboard players set @s xq_board 0
 execute unless score @s xq_palette matches 0..1 run scoreboard players set @s xq_palette 0
@@ -103,8 +99,6 @@ tag @s add xq.square
 scoreboard players operation @s ct_id = #table xq_ctx
 $scoreboard players set @s xq_sq $(sq)
 scoreboard players set @s xq_piece 0
-scoreboard players set @s xq_hidden 0
-scoreboard players set @s xq_covered 0
 ''')
     put('game/preview', '''
 # 选择游戏或改变外观后立即显示；绝不重置进行中的对局。
@@ -327,14 +321,11 @@ execute as @e[tag=xq.actor,tag=xq.audience,limit=1] if score @s xq_table = #tabl
     ])
     put('game/select', [
         'scoreboard players set #chosen xq_ctx 0',
-        'scoreboard players set #chosen_covered xq_ctx 0',
         'execute as @e[type=minecraft:marker,tag=xq.board] if score @s xq_sq = #target xq_ctx run scoreboard players operation #chosen xq_ctx = @s xq_piece',
-        'execute as @e[type=minecraft:marker,tag=xq.board] if score @s xq_sq = #target xq_ctx if score @s xq_covered matches 1 run scoreboard players set #chosen_covered xq_ctx 1',
         'scoreboard players operation #chosen xq_ctx *= @s xq_turn',
         'execute unless score #chosen xq_ctx matches 1..7 run return 0',
         'scoreboard players operation @s xq_sel = #target xq_ctx', 'function xiangqi:visual/select',
-        *[f'execute if score #chosen_covered xq_ctx matches 0 if score #chosen xq_ctx matches {kind} run title @a[tag=xq.actor] actionbar {{text:"已选择：{name}",color:"gold"}}' for kind,name in enumerate(['','兵／卒','马','相／象','车','炮','帅／将','仕／士']) if kind],
-        *[f'execute if score #chosen_covered xq_ctx matches 1 if score #chosen xq_ctx matches {kind} run title @a[tag=xq.actor] actionbar {{text:"暗子（按{name}走）",color:"gold"}}' for kind,name in enumerate(['','兵／卒','马','相／象','车','炮','帅／将','仕／士']) if kind],
+        *[f'execute if score #chosen xq_ctx matches {kind} run title @a[tag=xq.actor] actionbar {{text:"已选择：{name}",color:"gold"}}' for kind,name in enumerate(['','兵／卒','马','相／象','车','炮','帅／将','仕／士']) if kind],
     ])
     put('game/illegal', ['scoreboard players set @s xq_sel -1', 'function xiangqi:visual/select', 'function xiangqi:sound/illegal', say('这一步不合法，请重新选择棋子。', '@a[tag=xq.actor]', 'red')])
 
@@ -370,8 +361,7 @@ scoreboard players set #legal xq_ctx 1
                 'execute if score #log_piece xq_ctx matches ..-1 run data modify storage xiangqi:runtime move.side set value "黑方"',
                 'execute if score #log_piece xq_ctx matches ..-1 run scoreboard players operation #log_piece xq_ctx *= #minus xq_ctx',
                 'data modify storage xiangqi:runtime move.extra set value ""',
-                'execute unless score #log_cap xq_ctx matches 0 run data modify storage xiangqi:runtime move.extra set value "（吃子）"',
-                'execute if data entity @s data.xiangqi.last{captured_covered:1} run data modify storage xiangqi:runtime move.extra set value "（吃暗子）"']
+                'execute unless score #log_cap xq_ctx matches 0 run data modify storage xiangqi:runtime move.extra set value "（吃子）"']
     for v, name in enumerate(['', '兵／卒', '马', '相／象', '车', '炮', '帅／将', '仕／士']):
         if v:
             announce += [f'execute if score #log_piece xq_ctx matches {v} run data modify storage xiangqi:runtime move.piece set value "{name}"']
@@ -517,17 +507,13 @@ function xiangqi:game/finish
     # 保存最后一着之前的完整局面。非法尝试只写pending，不覆盖已可悔的上一着。
     undo_scores = ['turn','half','full','rtime','btime','rcapt','bcapt','check','repetition']
     snapshot = ['function xiangqi:system/context',
-        'data modify entity @s data.xiangqi.pending_undo set value {board:[],hidden:[],covered:[]}',
+        'data modify entity @s data.xiangqi.pending_undo set value {board:[]}',
         'data modify entity @s data.xiangqi.pending_undo.history set from entity @s data.xiangqi.history',
         'data modify entity @s data.xiangqi.pending_undo.captured set from entity @s data.xiangqi.captured']
     snapshot += [f'execute store result entity @s data.xiangqi.pending_undo.{field} int 1 run scoreboard players get @s xq_{field}' for field in undo_scores]
     for sq in range(90):
         snapshot += ['data modify entity @s data.xiangqi.pending_undo.board append value 0',
-            f'execute store result entity @s data.xiangqi.pending_undo.board[{sq}] int 1 run scoreboard players get @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_piece',
-            'data modify entity @s data.xiangqi.pending_undo.hidden append value 0',
-            f'execute store result entity @s data.xiangqi.pending_undo.hidden[{sq}] int 1 run scoreboard players get @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_hidden',
-            'data modify entity @s data.xiangqi.pending_undo.covered append value 0',
-            f'execute store result entity @s data.xiangqi.pending_undo.covered[{sq}] int 1 run scoreboard players get @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_covered']
+            f'execute store result entity @s data.xiangqi.pending_undo.board[{sq}] int 1 run scoreboard players get @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_piece']
     put('game/snapshot', snapshot)
     put('game/offer_undo', [
         'function xiangqi:game/actor_guard', 'execute unless score #actor_ok xq_ctx matches 1 run return 0',
@@ -562,11 +548,7 @@ function xiangqi:game/finish
         'data modify storage xiangqi:undo saved set from entity @s data.xiangqi.undo']
     for sq in range(90):
         restore += [f'execute store result score #restore xq_ctx run data get storage xiangqi:undo saved.board[{sq}]',
-                    f'scoreboard players operation @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_piece = #restore xq_ctx',
-                    f'scoreboard players operation @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_hidden = #restore xq_ctx',
-                    f'scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_covered 0',
-                    f'execute if data storage xiangqi:undo saved.hidden[{sq}] store result score @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_hidden run data get storage xiangqi:undo saved.hidden[{sq}]',
-                    f'execute if data storage xiangqi:undo saved.covered[{sq}] store result score @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_covered run data get storage xiangqi:undo saved.covered[{sq}]']
+                    f'scoreboard players operation @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={sq}}},limit=1] xq_piece = #restore xq_ctx']
     restore += ['data remove entity @s data.xiangqi.undo', 'data remove entity @s data.xiangqi.pending_undo',
         'data remove entity @s data.xiangqi.ai_undo',
         'data remove entity @s data.xiangqi.last', 'data remove storage xiangqi:undo saved',

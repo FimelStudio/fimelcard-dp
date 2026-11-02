@@ -251,8 +251,7 @@ sections = [
     ("操作", "右键己方棋子选中，再右键落点移动或吃子；选另一枚己方棋子会切换选择。可走点默认发光，可在设置关闭。被吃棋子放在吃子者右侧。手持最后一格的对局菜单按Q，可悔棋、和棋或认输；双人悔棋与和棋须对手同意，人机自动同意，悔棋退回到你上次行棋前。"),
     ("各子走法", "车直走，不可越子；马走日，受蹩马腿限制；炮移动同车，吃子须隔恰好一个炮架；相／象走田，受塞象眼限制且不能过河；仕／士斜走一格且不出九宫；帅／将直走一格且不出九宫；兵／卒过河前只前进一格，过河后可横走一格，不能后退。两将不得在无隔子的同一直线上照面，任何走法都不能使己方帅／将被吃。"),
     ("结束与和棋", "将死、困毙、对手超时或认输即获胜。双方同意、双方均无车马炮兵等进攻子力、连续120着（双方合计）未吃子时和棋；重复局面按本包简化规则处理：单方持续将军者判负，其他三次重复和棋，不裁定长捉、将军扣除等正式竞赛细则。结束5秒后返回大厅并保留终局棋面，重新开局或切换游戏才重摆。"),
-    ("揭棋", "设置中可切换为揭棋：将帅明置，其余每方15子随机盖放；暗子第一次按所在位置原本棋子的规则走，合法落子后翻开，之后按真实身份走。明士可出九宫、过河，明象可过河但仍须不塞象眼；将帅仍不能出九宫或照面。双方都看不到暗子的真实身份，被吃的暗子保持盖面。电脑与可走点提示也只使用公开信息。"),
-    ("设置与计时", "单页点击设置立即生效；可调标准象棋／揭棋、棋盘与棋子配色、方向、红黑方分配、人机难度、落点提示及每人无限制或5～30分钟计时。按座位选边或随机分配，开局自动坐到对应侧。只扣行棋方时间，移动动画暂停，无加秒。"),
+    ("设置与计时", "单页点击设置立即生效；可调棋盘与棋子配色、方向、红黑方分配、人机难度、落点提示及每人无限制或5～30分钟计时。按座位选边或随机分配，开局自动坐到对应侧。只扣行棋方时间，移动动画暂停，无加秒。"),
     ("中止", "正常游玩无需管理员。玩家离线会中止本场。/reload保留棋局与时钟，旧菜单请按Q重开。管理员可在桌旁执行 /function xiangqi:admin/abort。"),
 ]
 rules = {"type": "minecraft:notice", "title": {"text": "中国象棋 · 游戏规则", "color": "gold", "bold": True}, "body": [], "pause": False}
@@ -273,8 +272,8 @@ checks = ["# 仅供独立 GameTest 世界使用，不加入生产 tick。", "say
           'function xiangqi:ui/show with storage xiangqi:ui', 'say XIANGQI_DIALOG_NOTICE_COMPILED',
           'data modify storage xiangqi:ui buttons set value ' + js(sample_ui['buttons']),
           "function xiangqi:ui/button_append with storage xiangqi:ui", "scoreboard players set #ui_setting_base xq_ctx 100000000"]
-for name, values in [("DEFAULT", (0,0,0,1,10,2,1,0)), ("MINIMUM", (0,0,0,0,0,1,0,0)), ("MAXIMUM", (1,1,1,1,30,3,1,1))]:
-    sample_settings = dict(zip(("board", "palette", "orient", "first", "time", "level", "hints", "variant"), values))
+for name, values in [("DEFAULT", (0,0,0,0,10,2,1)), ("MINIMUM", (0,0,0,0,0,1,0)), ("MAXIMUM", (1,1,1,1,30,3,1))]:
+    sample_settings = dict(zip(("board", "palette", "orient", "first", "time", "level", "hints"), values))
     sample_settings["close"] = 100000000
     checks += ["data merge storage xiangqi:settings " + js(sample_settings), "function xiangqi:settings/root", "say XIANGQI_DIALOG_SETTING_" + name + "_COMPILED"]
 checks += ["function xiangqi:rules/show", "say XIANGQI_DIALOG_RULES_COMPILED", "say XIANGQI_DIALOGS_END"]

@@ -13,6 +13,7 @@ scoreboard players reset @s dd_timer
 scoreboard players reset @s dd_humans
 scoreboard players reset @s dd_bot_timer
 function cardtable:animation/deal/clear
+data remove entity @s data.dd_collect
 data remove entity @s data.doudizhu
 tag @s remove dd.controller
 scoreboard players reset @s dd_state

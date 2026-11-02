@@ -10,8 +10,12 @@ scoreboard players set #set_ten dd_ctx 10
 # 回合数、音乐、模式、牌数显示、记牌器、版本尾码9；旧窗口不再接受。
 scoreboard players operation #set_marker dd_ctx = #set_rounds dd_ctx
 scoreboard players operation #set_marker dd_ctx %= #set_ten dd_ctx
-execute unless score #set_marker dd_ctx matches 9 run return run function doudizhu:settings/invalid
+execute unless score #set_marker dd_ctx matches 7 run return run function doudizhu:settings/invalid
 scoreboard players operation #set_rounds dd_ctx /= #set_ten dd_ctx
+scoreboard players operation #set_shuffle dd_ctx = #set_rounds dd_ctx
+scoreboard players operation #set_shuffle dd_ctx %= #set_ten dd_ctx
+scoreboard players operation #set_rounds dd_ctx /= #set_ten dd_ctx
+execute unless score #set_shuffle dd_ctx matches 0..1 run return run function doudizhu:settings/invalid
 scoreboard players operation #set_counter dd_ctx = #set_rounds dd_ctx
 scoreboard players operation #set_counter dd_ctx %= #set_ten dd_ctx
 scoreboard players operation #set_rounds dd_ctx /= #set_ten dd_ctx
@@ -32,6 +36,9 @@ execute unless score #set_rounds dd_ctx matches 1..32 run return run function do
 tag @e[tag=dd.settings_table] remove dd.settings_table
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_state=0,ct_game=10}] if score @s ct_id = #set_table dd_ctx run tag @s add dd.settings_table
 execute unless entity @e[tag=dd.settings_table,limit=1] run return run function doudizhu:settings/invalid
+scoreboard players operation @e[tag=dd.settings_table,limit=1] dd_noshuffle = #set_shuffle dd_ctx
+execute if score #set_shuffle dd_ctx matches 1 run tellraw @s {text:"不洗牌模式：首副同点数成组，切牌后连续发牌；后续保留出牌组合收牌、切牌，不逐张打散。",color:"green"}
+execute if score #set_shuffle dd_ctx matches 0 run tellraw @s {text:"正常洗牌模式。",color:"green"}
 scoreboard players operation @e[tag=dd.settings_table,limit=1] dd_max = #set_rounds dd_ctx
 scoreboard players operation @e[tag=dd.settings_table,limit=1] dd_audio = #set_music dd_ctx
 scoreboard players operation @e[tag=dd.settings_table,limit=1] dd_counter = #set_counter dd_ctx

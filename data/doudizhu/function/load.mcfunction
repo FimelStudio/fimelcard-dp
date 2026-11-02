@@ -1,3 +1,5 @@
+scoreboard objectives add dd_noshuffle dummy
+scoreboard objectives add dd_deckpos dummy
 function doudizhu:visual/load
 scoreboard objectives add dd_speed_time dummy
 scoreboard objectives add dd_counter dummy

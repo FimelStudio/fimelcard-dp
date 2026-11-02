@@ -7,4 +7,4 @@ function uno:visual/ensure_box
 function uno:visual/repair_faces
 function uno:system/advance
 execute as @a[tag=un.audience] run function uno:input/give
-tellraw @a[tag=un.audience] [{text:'[UNO] ',color:'gold'},{text:'数据包已重新加载，牌局与计时已保留。轮到自己时按 Q 打开手牌。',color:'yellow'}]
+tellraw @a[tag=un.audience] [{text:'[UNO] ',color:'gold'},{text:'数据包已重新加载，牌局与计时已保留。按 Q 重新打开手牌。',color:'yellow'}]

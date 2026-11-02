@@ -12,5 +12,3 @@ execute if score #choice it_ctx matches 1..2 run return run function ito:themes/
 scoreboard players operation #slot it_ctx = #choice it_ctx
 execute if score #choice it_ctx matches 11..13 run scoreboard players remove #slot it_ctx 10
 execute if score #choice it_ctx matches 11..13 run return run function ito:form/open
-execute if score #choice it_ctx matches 21..23 run scoreboard players remove #slot it_ctx 20
-execute if score #choice it_ctx matches 21..23 as @e[tag=it.current,limit=1] at @s run function ito:game/play

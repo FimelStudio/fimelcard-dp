@@ -169,16 +169,8 @@ def resources():
     die=cube([1,1,1],[15,15,15])
     faces={'up':1,'down':6,'north':2,'south':5,'east':3,'west':4}
     for face,value in faces.items(): die['faces'][face]['texture']=f'#f{value}'
-    # 只缩小手持视角；桌面 item_display:"none" 的实体尺寸与投骰动画保持独立。
-    die_model={'credit':'Opposite dice faces sum to seven',
-        'textures':{f'f{i}':f'card:item/aeroplane_chess/dice/{i}' for i in range(1,7)},'elements':[die],
-        'display':{context:{'scale':[.6,.6,.6]} for context in
-                   ('firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand')}}
-    export_model('aeroplane_chess','dice',die_model)
-    source=RP/'.source/aeroplane_chess/models/dice.bbmodel'
-    source_model=json.loads(source.read_text(encoding='utf-8'))
-    source_model['display']=die_model['display']
-    source.write_text(json.dumps(source_model,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    export_model('aeroplane_chess','dice',{'credit':'Opposite dice faces sum to seven',
+        'textures':{f'f{i}':f'card:item/aeroplane_chess/dice/{i}' for i in range(1,7)},'elements':[die]})
     export_texture('aeroplane_chess','selection',Image.new('RGB',(16,16),'#fff0a3'))
     export_model('aeroplane_chess','selection',outline('card:item/aeroplane_chess/selection'))
     preview=Image.new('RGB',(1536,1536))

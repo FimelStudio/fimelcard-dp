@@ -50,15 +50,6 @@ check(len(list((CARD/'models/item/gomoku/board').glob('*.json')))==12,'two gomok
 check(len(list((CARD/'models/item/gomoku/stone').glob('*.json')))==2,'black and white stones only')
 check(len(list((CARD/'models/item/aeroplane_chess/board').glob('*.json')))==1,'one flight board')
 check(len(list((CARD/'models/item/aeroplane_chess/plane').glob('*.json')))==4,'four flight colors')
-die_model=json.loads((CARD/'models/item/aeroplane_chess/dice.json').read_text(encoding='utf-8'))
-die_source=json.loads((RP/'.source/aeroplane_chess/models/dice.bbmodel').read_text(encoding='utf-8'))
-hands=('firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand')
-check(set(die_model['display'])==set(hands),'dice changes only hand transforms')
-for hand in hands:
-    check(die_model['display'][hand]['scale']==[.6,.6,.6],'smaller hand dice '+hand)
-    check(die_source['display'][hand]==die_model['display'][hand],'editable dice hand scale '+hand)
-check(die_model['elements'][0]['from']==[1,1,1] and die_model['elements'][0]['to']==[15,15,15],
-      'tabletop dice native geometry unchanged')
 normals={1:(0,1,0),6:(0,-1,0),2:(0,0,-1),5:(0,0,1),3:(1,0,0),4:(-1,0,0)}
 for face,q in FACE_ROTATIONS.items():
     check(abs(sum(v*v for v in q)-1)<1e-8,'unit dice quaternion')

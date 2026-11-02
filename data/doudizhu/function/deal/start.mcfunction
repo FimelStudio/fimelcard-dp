@@ -8,6 +8,7 @@ execute unless score @s dd_audio matches 0 as @a[tag=dd.audience] run function d
 data modify entity @s data.doudizhu set value {}
 execute as @e[tag=dd.actors] run scoreboard players set @s dd_action 0
 execute as @a[tag=dd.audience] run dialog clear @s
+function doudizhu:deck/prepare
 execute as @e[tag=dd.card] if score @s dd_id = #ctx dd_ctx run kill @s
 scoreboard players set @s dd_state 1
 scoreboard players set @s dd_timer 0
@@ -26,6 +27,7 @@ execute as @e[tag=dd.actors] run scoreboard players set @s dd_plays 0
 function doudizhu:deck/create
 tag @e[tag=dd.pool] remove dd.pool
 execute as @e[tag=dd.card] if score @s dd_id = #ctx dd_ctx run tag @s add dd.pool
+function doudizhu:deck/order
 execute as @e[tag=dd.actors] run function doudizhu:deal/hand
 tag @e[tag=dd.pool] remove dd.pool
 scoreboard players operation @s dd_turn = @e[tag=dd.actors,sort=random,limit=1] dd_seat

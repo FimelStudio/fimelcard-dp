@@ -15,4 +15,8 @@ def build():
  runtime();themes();ui();display()
  from build_ito_settings import build as settings
  settings()
+ from build_ito_cards import build as cards
+ cards()
+ from build_ito_batch_form import build as batch_form
+ batch_form()
 if __name__=='__main__':build()

@@ -1,4 +1,1 @@
-execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:20}
-execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:22}
-execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:38}
-execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {to:40}
+return 0

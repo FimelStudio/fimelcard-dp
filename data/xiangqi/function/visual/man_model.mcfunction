@@ -12,6 +12,4 @@ execute if score @s xq_piece matches -4 run data modify storage xiangqi:visual m
 execute if score @s xq_piece matches -5 run data modify storage xiangqi:visual man set value "black_cannon"
 execute if score @s xq_piece matches -6 run data modify storage xiangqi:visual man set value "black_general"
 execute if score @s xq_piece matches -7 run data modify storage xiangqi:visual man set value "black_advisor"
-execute if score @s xq_covered matches 1 if score @s xq_piece matches 1.. run data modify storage xiangqi:visual man set value "red_covered"
-execute if score @s xq_covered matches 1 if score @s xq_piece matches ..-1 run data modify storage xiangqi:visual man set value "black_covered"
 function xiangqi:visual/set_model with storage xiangqi:visual

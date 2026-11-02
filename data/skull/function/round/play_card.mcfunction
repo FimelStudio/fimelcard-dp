@@ -1,5 +1,6 @@
 $execute unless data entity @s data.skull.seats.s$(seat).hand[{slot:$(slot)}] run return 0
 scoreboard players set #played sk_ctx 1
+$data modify entity @s data.skull.seats.s$(seat).visible append value {slot:$(slot),model:"card:skull/set$(seat)/back"}
 $data modify entity @s data.skull.seats.s$(seat).stack append from entity @s data.skull.seats.s$(seat).hand[{slot:$(slot)}]
 $data remove entity @s data.skull.seats.s$(seat).hand[{slot:$(slot)}]
 scoreboard players add @a[tag=sk.actor,limit=1] sk_count 1

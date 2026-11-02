@@ -13,6 +13,9 @@ execute as @a[tag=it.joining] if items entity @s hotbar.0 * run scoreboard playe
 execute as @a[tag=it.joining] if items entity @s hotbar.1 * run scoreboard players set #occupied it_ctx 1
 execute as @a[tag=it.joining] if items entity @s hotbar.2 * run scoreboard players set #occupied it_ctx 1
 execute as @a[tag=it.joining] if items entity @s hotbar.8 * run scoreboard players set #occupied it_ctx 1
+execute as @a[tag=it.joining] if items entity @s hotbar.3 * run scoreboard players set #occupied it_ctx 1
+execute as @a[tag=it.joining] if items entity @s hotbar.4 * run scoreboard players set #occupied it_ctx 1
+execute as @a[tag=it.joining] if items entity @s hotbar.5 * run scoreboard players set #occupied it_ctx 1
 execute if score #occupied it_ctx matches 1 run return run function ito:game/bad_slots
 function ito:game/remove
 tag @s add it.controller

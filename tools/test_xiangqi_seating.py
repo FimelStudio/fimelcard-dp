@@ -266,17 +266,15 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
             self.files['case/'+name] += 'schedule function xiangqi_seat_test:' + ('case/'+self.cases[index+1] if index+1 < len(self.cases) else 'finish') + ' 2t\n'
 
 
-def main(suite=None, prefix='fimel-xiangqi-seating-', setup_ticks=400, manual_tick=False, heap_mb=1536):
+def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--java',type=Path,default=Path('C:/Temp/fimel-uno-java25/jdk-25.0.5+8-jre/bin/java.exe'))
     parser.add_argument('--minecraft-root',type=Path,default=Path('D:/PCL2/MinecraftPcl'))
     parser.add_argument('--version',default='26.2-Fabric_0.19.3')
     args=parser.parse_args()
-    output=Path(tempfile.mkdtemp(prefix=prefix))
+    output=Path(tempfile.mkdtemp(prefix='fimel-xiangqi-seating-'))
     target=output/'packs/fimel_cards'
     shutil.copytree(PACK/'data',target/'data');shutil.copy2(PACK/'pack.mcmeta',target/'pack.mcmeta')
-    if manual_tick:
-        (target/'data/minecraft/tags/function/tick.json').write_text('{"values":[]}',encoding='utf-8')
     # 只替换服务端参与者；tellraw/title/dialog 的真人接收者保持原样。
     for name in ['game/start','game/assign_sides','game/solo_sides','game/random_first','game/chosen_first','game/reseat','system/reload','system/heartbeat']:
         path=target/f'data/xiangqi/function/{name}.mcfunction'
@@ -289,13 +287,12 @@ def main(suite=None, prefix='fimel-xiangqi-seating-', setup_ticks=400, manual_ti
                 line=line.replace('@a[tag=xq.audience', '@e[tag=cs.person,tag=xq.audience')
             lines.append(line)
         path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
-    if suite is None:
-        suite=Suite();suite.build()
+    suite=Suite();suite.build()
     for name,body in suite.files.items():
         path=target/'data/xiangqi_seat_test/function'/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body.replace('function xiangqi_game_test:', 'function xiangqi_seat_test:'),encoding='utf-8')
     for name,body in {
         'test_environment/default.json':{'type':'minecraft:function','setup':'xiangqi_seat_test:bootstrap'},
-        'test_instance/seating.json':{'type':'minecraft:function','environment':'xiangqi_seat_test:default','function':'minecraft:always_pass','max_ticks':1,'setup_ticks':setup_ticks,'required':True,'structure':'minecraft:empty'},
+        'test_instance/seating.json':{'type':'minecraft:function','environment':'xiangqi_seat_test:default','function':'minecraft:always_pass','max_ticks':1,'setup_ticks':400,'required':True,'structure':'minecraft:empty'},
     }.items():
         path=target/'data/xiangqi_seat_test'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(body),encoding='utf-8')
     launch=args.minecraft_root/'versions'/args.version/(args.version+'.json')
@@ -305,16 +302,10 @@ def main(suite=None, prefix='fimel-xiangqi-seating-', setup_ticks=400, manual_ti
         if entry.get('path'):
             path=args.minecraft_root/'libraries'/entry['path']
             if path.is_file():classpath.append(path)
-    options=['-Xms256M',f'-Xmx{heap_mb}M','-Djava.awt.headless=true','-Dfile.encoding=UTF-8','--enable-native-access=ALL-UNNAMED','-cp',';'.join(map(str,classpath)),'net.minecraft.gametest.Main','--packs',str(output/'packs'),'--universe',str(output/'universe'),'--tests','xiangqi_seat_test:*','--report',str(output/'gametest.xml')]
+    options=['-Xms256M','-Xmx1536M','-Djava.awt.headless=true','-Dfile.encoding=UTF-8','--enable-native-access=ALL-UNNAMED','-cp',';'.join(map(str,classpath)),'net.minecraft.gametest.Main','--packs',str(output/'packs'),'--universe',str(output/'universe'),'--tests','xiangqi_seat_test:*','--report',str(output/'gametest.xml')]
     argfile=output/'java-args.txt';argfile.write_text('\n'.join('"'+v.replace('\\','\\\\').replace('"','\\"')+'"' for v in options),encoding='utf-8')
     print('Xiangqi seating GameTest: '+str(output),flush=True);start=time.monotonic()
-    try:
-        process=subprocess.run([str(args.java),'@'+str(argfile)],cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace',timeout=max(180,setup_ticks/20+300))
-    except subprocess.TimeoutExpired as error:
-        body=error.stdout or ''
-        if isinstance(body,bytes):body=body.decode('utf-8',errors='replace')
-        (output/'game.log').write_text(body,encoding='utf-8')
-        raise
+    process=subprocess.run([str(args.java),'@'+str(argfile)],cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace',timeout=180)
     (output/'game.log').write_text(process.stdout,encoding='utf-8')
     passed=set(re.findall(r'XIANGQI_GAME_PASS ([a-z0-9_]+)',process.stdout));failed=sorted(set(re.findall(r'XIANGQI_GAME_FAIL ([a-z0-9_]+)',process.stdout)))
     errors=[line for line in process.stdout.splitlines() if any(s in line for s in ['[ERROR]','/ERROR]','Failed to load','Failed to parse','Unknown function','Unknown or incomplete command',"Couldn't parse",'Command execution stopped'])]

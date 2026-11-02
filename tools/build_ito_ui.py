@@ -76,7 +76,7 @@ scoreboard players operation #base it_ctx *= #hundred it_ctx
 data modify storage ito:ui dialog set value '''+js({'type':'minecraft:multi_action','title':{'text':'命悬一线 · 私密手牌'},'body':[{'type':'minecraft:plain_message','width':440,'contents':{'text':'描述不要透露数字。普通玩家可使用书本，第一页填写后Q提交。'}}],'actions':[],'columns':2,'pause':False,'after_action':'close'})+'''
 execute if score @e[tag=it.current,limit=1] it_state matches 1 run function ito:ui/topics
 execute if score @e[tag=it.current,limit=1] it_state matches 2 run function ito:ui/cards
-execute unless data storage ito:ui dialog.actions[0] run data modify storage ito:ui dialog.actions append value {label:{text:"等待下一阶段"}}
+execute unless data storage ito:ui dialog.actions[0] run data modify storage ito:ui dialog.actions append value {label:{text:"请拿数字牌按Q出牌"}}
 function ito:ui/show with storage ito:ui''')
  put('ui/show','$dialog show @s $(dialog)')
  put('ui/topics','\n'.join(f'''data modify storage ito:ui label set from entity @e[tag=it.current,limit=1] data.ito.option{i}.text

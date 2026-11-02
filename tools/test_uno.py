@@ -626,14 +626,12 @@ def run(args: argparse.Namespace) -> int:
         runtime = Path.home() / 'AppData/Roaming/.minecraft/runtime/java-runtime-epsilon/bin/java.exe'
         if runtime.is_file():
             java = runtime
-    # 真实热重载会短暂同时保留全包两代已解析函数，避免 1.5 GB 上限引发 GC 抖动。
-    options = ['-Xms256M', '-Xmx3072M', '-Djava.awt.headless=true', '-Dfile.encoding=UTF-8', '--enable-native-access=ALL-UNNAMED', '-cp', ';'.join(map(str, classpath)), 'net.minecraft.gametest.Main', '--packs', str(output / 'packs'), '--universe', str(output / 'universe'), '--tests', 'uno_test:*', '--report', str(output / 'gametest.xml')]
+    options = ['-Xms256M', '-Xmx1536M', '-Djava.awt.headless=true', '-Dfile.encoding=UTF-8', '--enable-native-access=ALL-UNNAMED', '-cp', ';'.join(map(str, classpath)), 'net.minecraft.gametest.Main', '--packs', str(output / 'packs'), '--universe', str(output / 'universe'), '--tests', 'uno_test:*', '--report', str(output / 'gametest.xml')]
     argfile = output / 'java-args.txt'
     argfile.write_text('\n'.join('"' + value.replace('\\', '\\\\').replace('"', '\\"') + '"' for value in options), encoding='utf-8')
     print('UNO GameTest 输出：' + str(output), flush=True)
     start = time.monotonic()
-    # 全包启动后还会执行真实 /reload；新增游戏后，完整两次加载需留足时间。
-    proc = subprocess.run([str(java), '@' + str(argfile)], cwd=output, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding='utf-8', errors='replace', timeout=300)
+    proc = subprocess.run([str(java), '@' + str(argfile)], cwd=output, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding='utf-8', errors='replace', timeout=180)
     (output / 'game.log').write_text(proc.stdout, encoding='utf-8')
     passed = set(re.findall(r'UNO_TEST_PASS ([a-z0-9_]+)', proc.stdout))
     failed = sorted(set(re.findall(r'UNO_TEST_FAIL ([a-z0-9_]+)', proc.stdout)))

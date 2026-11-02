@@ -9,13 +9,13 @@ say XIANGQI_DIALOG_NOTICE_COMPILED
 data modify storage xiangqi:ui buttons set value [{"label":{"text":"认输"},"action":{"type":"minecraft:run_command","command":"trigger xq_action set 101"}}]
 function xiangqi:ui/button_append with storage xiangqi:ui
 scoreboard players set #ui_setting_base xq_ctx 100000000
-data merge storage xiangqi:settings {"board":0,"palette":0,"orient":0,"first":1,"time":10,"level":2,"hints":1,"variant":0,"close":100000000}
+data merge storage xiangqi:settings {"board":0,"palette":0,"orient":0,"first":0,"time":10,"level":2,"hints":1,"close":100000000}
 function xiangqi:settings/root
 say XIANGQI_DIALOG_SETTING_DEFAULT_COMPILED
-data merge storage xiangqi:settings {"board":0,"palette":0,"orient":0,"first":0,"time":0,"level":1,"hints":0,"variant":0,"close":100000000}
+data merge storage xiangqi:settings {"board":0,"palette":0,"orient":0,"first":0,"time":0,"level":1,"hints":0,"close":100000000}
 function xiangqi:settings/root
 say XIANGQI_DIALOG_SETTING_MINIMUM_COMPILED
-data merge storage xiangqi:settings {"board":1,"palette":1,"orient":1,"first":1,"time":30,"level":3,"hints":1,"variant":1,"close":100000000}
+data merge storage xiangqi:settings {"board":1,"palette":1,"orient":1,"first":1,"time":30,"level":3,"hints":1,"close":100000000}
 function xiangqi:settings/root
 say XIANGQI_DIALOG_SETTING_MAXIMUM_COMPILED
 function xiangqi:rules/show
