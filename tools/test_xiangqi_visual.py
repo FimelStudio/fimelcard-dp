@@ -39,7 +39,7 @@ def asset_checks():
                 checks.append(f'board_uv_{board}_{cap}_{orient}_{sq}')
     for palette in visual.PALETTES:
         for side in ('red','black'):
-            for kind in visual.PIECES.values():
+            for kind in [*visual.PIECES.values(), 'covered']:
                 model=json.loads((visual.ASSETS/f'models/item/xiangqi/{palette}/{side}_{kind}.json').read_text(encoding='utf-8'))
                 assert len(model['elements'])==32
                 for element in model['elements']:
@@ -50,6 +50,15 @@ def asset_checks():
                 assert len(bb['elements'])==32 and len(bb['textures'])==2
                 assert {f['texture'] for e in bb['elements'] for f in e['faces'].values()}=={0,1}
                 checks.append(f'disc_{palette}_{side}_{kind}')
+            resource=f'{palette}/{side}_covered'
+            item=json.loads((visual.ASSETS/f'items/xiangqi/{resource}.json').read_text(encoding='utf-8'))
+            assert item['model']['model']==f'card:item/xiangqi/{resource}'
+            checks.append(f'covered_item_{palette}_{side}')
+    # Only marker rule state contains identities; no public display or hitbox
+    # receives xq_hidden, even while a capture animation or reload is running.
+    for path in visual.GAME.glob('*.mcfunction'):
+        assert 'xq_hidden' not in path.read_text(encoding='utf-8'),path
+    checks.append('visuals_never_read_private_identity')
     print(f'Independent Xiangqi assets: {len(checks)} checks passed.',flush=True)
     return checks
 
@@ -169,6 +178,43 @@ class VisualSuite(Suite):
         c+=self.count('@e[tag=xq.highlight,scores={ct_id=101}]',1,'same_chain_two_tables_first_selection')
         c+=self.count('@e[tag=xq.highlight,scores={ct_id=202}]',1,'same_chain_two_tables_second_selection')
         self.case('stress_two_tables',c)
+        for cap in (4,8):
+            for orient in (0,1):
+                key=f'jieqi_{cap}_{orient}'
+                palette='walnut' if orient else 'ebony'
+                c=self.setup(cap)+[f'scoreboard players set {A} xq_variant 1',f'scoreboard players set {A} xq_orient {orient}',f'scoreboard players set {A} xq_palette {orient}']+self.call('engine/init_board')+self.call('visual/refresh')
+                c+=self.count('@e[tag=xq.man,scores={ct_id=101,xq_covered=1}]',30,key+'_thirty_covers')
+                c+=self.count('@e[tag=xq.man,scores={ct_id=101,xq_covered=0}]',2,key+'_generals_visible')
+                c+=self.check(f'data entity {man(0)} item.components{{"minecraft:item_model":"card:xiangqi/{palette}/red_covered"}}',key+'_red_cover')
+                c+=self.check(f'data entity {man(81)} item.components{{"minecraft:item_model":"card:xiangqi/{palette}/black_covered"}}',key+'_black_cover')
+                c+=self.check(f'data entity {man(4)} item.components{{"minecraft:item_model":"card:xiangqi/{palette}/red_general"}}',key+'_general')
+                c+=self.count('@e[tag=xq.visual,scores={ct_id=101,xq_hidden=-7..7}]',0,key+'_no_private_scores_on_visuals')
+                c+=[f'scoreboard players set {square(27)} xq_hidden 4']+self.click(1,27)
+                c+=self.count('@e[tag=xq.hint,scores={ct_id=101,xq_sq=36}]',1,key+'_nominal_pawn_hint')
+                c+=self.click(1,36)
+                c+=self.score(man(36),'xq_piece',4,key+'_revealed_public_rook')
+                c+=self.score(man(36),'xq_covered',0,key+'_display_uncovered')
+                c+=self.score(hit(36),'xq_piece',4,key+'_hit_uses_revealed_kind')
+                c+=self.score(hit(36),'xq_covered',0,key+'_hit_uncovered')
+                c+=self.check(f'data entity {man(36)} item.components{{"minecraft:item_model":"card:xiangqi/{palette}/red_rook"}}',key+'_new_face_during_animation')
+                c+=self.call('game/animation_done')+self.actor(1)+self.call('game/offer_undo')+self.actor(-1)+self.call('game/accept_undo')
+                c+=self.score(square(27),'xq_hidden',4,key+'_undo_keeps_secret')
+                c+=self.score(man(27),'xq_covered',1,key+'_undo_recovers_cover')
+                c+=self.check(f'data entity {man(27)} item.components{{"minecraft:item_model":"card:xiangqi/{palette}/red_covered"}}',key+'_undo_recovers_cover_model')
+                self.case(key,c)
+        c=self.position('4k4/9/p8/9/4P4/9/9/9/9/R3K4')
+        c+=[f'scoreboard players set {A} xq_variant 1',f'scoreboard players set {square(63)} xq_hidden -2',f'scoreboard players set {square(63)} xq_covered 1']+self.call('visual/refresh')+self.move(1,0,63)
+        captured='@e[tag=xq.man,tag=xq.captured,scores={ct_id=101,xq_slot=0},limit=1]'
+        c+=self.check(f'data entity {A} data.xiangqi.captured[{{piece:-1,covered:1}}]','covered_capture_stores_public_template_only')
+        c+=self.check(f'data entity {captured} item.components{{"minecraft:item_model":"card:xiangqi/ebony/black_covered"}}','covered_capture_animation_stays_hidden')
+        c+=self.score(captured,'xq_piece',-1,'covered_capture_displays_public_template')
+        c+=self.call('visual/refresh')
+        c+=self.check(f'data entity {captured} item.components{{"minecraft:item_model":"card:xiangqi/ebony/black_covered"}}','covered_capture_reload_stays_hidden')
+        c+=self.actor(1)+self.call('game/offer_undo')+self.actor(-1)+self.call('game/accept_undo')
+        c+=self.count('@e[tag=xq.captured,scores={ct_id=101}]',0,'covered_capture_undo_clears_tray')
+        c+=self.score(square(63),'xq_hidden',-2,'covered_capture_undo_restores_secret')
+        c+=self.check(f'data entity {man(63)} item.components{{"minecraft:item_model":"card:xiangqi/ebony/black_covered"}}','covered_capture_undo_restores_cover')
+        self.case('covered_capture',c)
         self.case('dialogs',['function xiangqi_game_test:dialogs'])
         self.file('bootstrap',['forceload add -16 -16 63 31','scoreboard objectives add xg dummy','function xiangqi:load','schedule function xiangqi_game_test:case/'+self.cases[0]+' 40t'])
         for i,name in enumerate(self.cases):

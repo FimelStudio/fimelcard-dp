@@ -25,7 +25,7 @@ def palace(f, r, side):
     return 3 <= f <= 5 and (0 <= r <= 2 if side == 1 else 7 <= r <= 9)
 
 
-def shapes(start, kind, side):
+def shapes(start, kind, side, revealed=False):
     """(target, intervening cells, exact occupied count); no own/other side occupancy rules."""
     f, r = start % 9, start // 9
     result = []
@@ -39,7 +39,7 @@ def shapes(start, kind, side):
         elif kind == 2 and sorted((abs(df), abs(dr))) == [1, 2]:
             leg = sq(f+(1 if df > 0 else -1), r) if abs(df) == 2 else sq(f, r+(1 if dr > 0 else -1))
             result.append((to, [leg], 0))
-        elif kind == 3 and abs(df) == abs(dr) == 2 and (tr <= 4 if side == 1 else tr >= 5):
+        elif kind == 3 and abs(df) == abs(dr) == 2 and (revealed or (tr <= 4 if side == 1 else tr >= 5)):
             result.append((to, [sq(f+df//2, r+dr//2)], 0))
         elif kind in (4, 5) and ((df == 0) != (dr == 0)):
             stepf, stepr = (df > 0)-(df < 0), (dr > 0)-(dr < 0)
@@ -47,7 +47,7 @@ def shapes(start, kind, side):
             result.append((to,path,0 if kind == 4 else -1))
         elif kind == 6 and abs(df)+abs(dr) == 1 and palace(tf,tr,side) and palace(f,r,side):
             result.append((to,[],0))
-        elif kind == 7 and abs(df) == abs(dr) == 1 and palace(tf,tr,side) and palace(f,r,side):
+        elif kind == 7 and abs(df) == abs(dr) == 1 and (revealed or (palace(tf,tr,side) and palace(f,r,side))):
             result.append((to,[],0))
     return result
 
@@ -58,6 +58,8 @@ def free(path):
 
 put('cache', '''
     scoreboard players operation #side xq_ctx = @s xq_turn
+    scoreboard players set #variant xq_ctx 0
+    execute if score @s xq_variant matches 1 run scoreboard players set #variant xq_ctx 1
     scoreboard players set #wking xq_ctx -1
     scoreboard players set #bking xq_ctx -1
     scoreboard players set #cache_ok xq_ctx 1
@@ -73,6 +75,8 @@ put('cache', '''
     f'execute store result score #cell_count xq_ctx if entity @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}}]\n'
     f'execute unless score #cell_count xq_ctx matches 1 run scoreboard players set #cache_ok xq_ctx 0\n'
     f'scoreboard players operation #b{i} xq_ctx = @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}},limit=1] xq_piece\n'
+    f'scoreboard players set #q{i} xq_ctx 0\n'
+    f'execute if score #variant xq_ctx matches 1 if score @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}},limit=1] xq_covered matches 1 run scoreboard players set #q{i} xq_ctx 1\n'
     f'execute if score #b{i} xq_ctx matches 6 run scoreboard players set #wking xq_ctx {i}\n'
     f'execute if score #b{i} xq_ctx matches -6 run scoreboard players set #bking xq_ctx {i}' for i in range(90)))
 
@@ -94,7 +98,10 @@ put('init_board','''
     scoreboard players set @s xq_repetition 0
     data modify entity @s data.xiangqi.history set value []
     data remove entity @s data.xiangqi.last
-'''+'\n'.join(f'scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}},limit=1] xq_piece {p}' for i,p in enumerate(initial))+'''
+'''+'\n'.join(f'scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}},limit=1] xq_piece {p}\n'
+              f'scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}},limit=1] xq_hidden {p}\n'
+              f'scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={{xq_sq={i}}},limit=1] xq_covered 0' for i,p in enumerate(initial))+'''
+    execute if score @s xq_variant matches 1 run function xiangqi:engine/covered/init
     function xiangqi:engine/cache
     execute unless score #cache_ok xq_ctx matches 1 run return 0
     function xiangqi:engine/history/record
@@ -148,8 +155,12 @@ put('check_move','''
     execute if score #attacked xq_ctx matches 0 run scoreboard players set #legal xq_ctx 1
     return run scoreboard players get #legal xq_ctx
 ''')
-put('get_pieces','$scoreboard players operation #piece xq_ctx = #b$(from) xq_ctx\n$scoreboard players operation #target xq_ctx = #b$(to) xq_ctx')
-put('dispatch_shape','$function xiangqi:engine/shape/side$(side)/p$(kind)/s$(from)')
+put('get_pieces','$scoreboard players operation #piece xq_ctx = #b$(from) xq_ctx\n$scoreboard players operation #target xq_ctx = #b$(to) xq_ctx\n$scoreboard players operation #covered xq_ctx = #q$(from) xq_ctx\n$scoreboard players operation #target_covered xq_ctx = #q$(to) xq_ctx')
+put('dispatch_shape','''
+$execute if score #variant xq_ctx matches 1 if score #covered xq_ctx matches 0 if score #kind xq_ctx matches 3 run return run function xiangqi:engine/revealed/side$(side)/p3/s$(from)
+$execute if score #variant xq_ctx matches 1 if score #covered xq_ctx matches 0 if score #kind xq_ctx matches 7 run return run function xiangqi:engine/revealed/side$(side)/p7/s$(from)
+$function xiangqi:engine/shape/side$(side)/p$(kind)/s$(from)
+''')
 for side in (1,-1):
     for kind in range(1,8):
         for start in range(90):
@@ -168,6 +179,10 @@ for side in (1,-1):
             lines=[line.replace('run scoreboard players set #shape xq_ctx 1',
                                 'run return run scoreboard players set #shape xq_ctx 1') for line in lines]
             put(f'shape/side{side}/p{kind}/s{start}', '\n'.join(lines) or 'return 0')
+            if kind in (3, 7):
+                extended = [f'execute if score #to xq_ctx matches {to} '+free(path)+' run return run scoreboard players set #shape xq_ctx 1'
+                            for to,path,_ in shapes(start,kind,side,revealed=True)]
+                put(f'revealed/side{side}/p{kind}/s{start}', '\n'.join(extended) or 'return 0')
 
 put('attack','''
     scoreboard players set #attacked xq_ctx 0
@@ -190,6 +205,11 @@ for side in (1,-1):
                         attacks[side,target].append(prefix+f' unless score #b{screen} xq_ctx matches 0 '+free([s for s in path if s!=screen])+' run return run scoreboard players set #attacked xq_ctx 1')
                 else:
                     attacks[side,target].append(prefix+' '+free(path)+' run return run scoreboard players set #attacked xq_ctx 1')
+            if kind in (3,7):
+                ordinary={target for target,_,_ in shapes(start,kind,side)}
+                for target,path,_ in shapes(start,kind,side,revealed=True):
+                    if target not in ordinary:
+                        attacks[side,target].append(f'execute if score #variant xq_ctx matches 1 if score #q{start} xq_ctx matches 0 if score #b{start} xq_ctx matches {side*kind} '+free(path)+' run return run scoreboard players set #attacked xq_ctx 1')
     # 将帅同一纵线且无其他棋子时相互攻击，不能以普通吃子来吃掉对方将帅。
     for target in range(90):
         f,r=target%9,target//9
@@ -212,13 +232,16 @@ put('simulate','''
     function xiangqi:engine/attack
     function xiangqi:engine/restore_cache with storage xiangqi:engine scratch
 ''')
-put('apply_cache','$scoreboard players set #b$(from) xq_ctx 0\n$scoreboard players operation #b$(to) xq_ctx = #placed xq_ctx')
-put('restore_cache','$scoreboard players operation #b$(from) xq_ctx = #piece xq_ctx\n$scoreboard players operation #b$(to) xq_ctx = #target xq_ctx')
+put('apply_cache','$scoreboard players set #b$(from) xq_ctx 0\n$scoreboard players operation #b$(to) xq_ctx = #placed xq_ctx\n$scoreboard players set #q$(from) xq_ctx 0\n$scoreboard players operation #q$(to) xq_ctx = #covered xq_ctx')
+put('restore_cache','$scoreboard players operation #b$(from) xq_ctx = #piece xq_ctx\n$scoreboard players operation #b$(to) xq_ctx = #target xq_ctx\n$scoreboard players operation #q$(from) xq_ctx = #covered xq_ctx\n$scoreboard players operation #q$(to) xq_ctx = #target_covered xq_ctx')
 put('commit','''
-    data modify entity @s data.xiangqi.last set value {from:0,to:0,piece:0,captured:0,capture_sq:-1,rook_from:-1,rook_to:-1,promotion:0}
+    # 只有真实提交可以读取暗子身份；合法判定、提示和人机模拟只处理公开模板。
+    function xiangqi:engine/covered/reveal with storage xiangqi:engine scratch
+    data modify entity @s data.xiangqi.last set value {from:0,to:0,piece:0,captured:0,capture_sq:-1,rook_from:-1,rook_to:-1,promotion:0,was_covered:0,captured_covered:0,moved_template:0}
     scoreboard players operation #captured xq_ctx = #target xq_ctx
-'''+'\n'.join(f'execute store result entity @s data.xiangqi.last.{field} int 1 run scoreboard players get {score} xq_ctx' for field,score in [('from','#from'),('to','#to'),('piece','#piece'),('captured','#captured'),('capture_sq','#capture_sq')])+'''
+'''+'\n'.join(f'execute store result entity @s data.xiangqi.last.{field} int 1 run scoreboard players get {score} xq_ctx' for field,score in [('from','#from'),('to','#to'),('piece','#placed'),('captured','#captured'),('capture_sq','#capture_sq'),('was_covered','#covered'),('captured_covered','#target_covered'),('moved_template','#piece')])+'''
     function xiangqi:engine/apply_cache with storage xiangqi:engine scratch
+    function xiangqi:engine/covered/apply_real with storage xiangqi:engine scratch
     scoreboard players add @s xq_half 1
     execute unless score #captured xq_ctx matches 0 run scoreboard players set @s xq_half 0
     execute if score #side xq_ctx matches -1 run scoreboard players add @s xq_full 1
@@ -239,7 +262,7 @@ for start in range(90):
         f'execute if score #found xq_ctx matches 0 if score #b{start} xq_ctx matches {side*kind} run function xiangqi:engine/search/side{side}/p{kind}/s{start}' for side in (1,-1) for kind in range(1,8)))
     for side in (1,-1):
         for kind in range(1,8):
-            targets=sorted((t for t,_,_ in shapes(start,kind,side)),key=lambda t:abs(t%9-start%9)+abs(t//9-start//9))
+            targets=sorted({t for t,_,_ in shapes(start,kind,side,revealed=(kind in (3,7)))},key=lambda t:(abs(t%9-start%9)+abs(t//9-start//9),t))
             put(f'search/side{side}/p{kind}/s{start}', '\n'.join(f'execute if score #found xq_ctx matches 0 run function xiangqi:engine/probe {{to:{to}}}' for to in targets) or 'return 0')
 put('probe','$scoreboard players set #to xq_ctx $(to)\nfunction xiangqi:engine/check_move\nexecute if score #legal xq_ctx matches 1 run scoreboard players set #found xq_ctx 1')
 put('evaluate','''
@@ -300,13 +323,16 @@ put('history/record','''
     execute if score #history_initial xq_ctx matches 0 if score #side xq_ctx matches 1 if score #attacked xq_ctx matches 0 run scoreboard players add #bquiet xq_ctx 1
     execute store result entity @s data.xiangqi.history[0].rquiet int 1 run scoreboard players get #rquiet xq_ctx
     execute store result entity @s data.xiangqi.history[0].bquiet int 1 run scoreboard players get #bquiet xq_ctx
-    data modify storage xiangqi:engine history set value {key:"",piece:0,turn:1}
-'''+'\n'.join(f'execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b{i} xq_ctx\nfunction xiangqi:engine/history/append with storage xiangqi:engine history' for i in range(90))+'''
+    data modify storage xiangqi:engine history set value {key:"",piece:0,covered:0,turn:1}
+'''+'\n'.join(f'execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b{i} xq_ctx\nexecute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q{i} xq_ctx\nfunction xiangqi:engine/history/append with storage xiangqi:engine history' for i in range(90))+'''
     execute store result storage xiangqi:engine history.turn int 1 run scoreboard players get #side xq_ctx
     function xiangqi:engine/history/key with storage xiangqi:engine history
     function xiangqi:engine/history/count with storage xiangqi:engine history
 ''')
-put('history/append','$data modify storage xiangqi:engine history.key set value "$(key)$(piece),"')
+put('history/append','''
+$execute if score #variant xq_ctx matches 1 run return run data modify storage xiangqi:engine history.key set value "$(key)$(piece):$(covered),"
+$data modify storage xiangqi:engine history.key set value "$(key)$(piece),"
+''')
 put('history/key','$data modify storage xiangqi:engine history.key set value "$(key)/$(turn)"')
 put('history/count','''
     scoreboard players set #rep xq_ctx 0
@@ -334,4 +360,44 @@ put('history/adjudicate','''
     execute if data entity @s data.xiangqi.history[{meta:1,loser:1}] run scoreboard players set @s xq_result 2
     execute if data entity @s data.xiangqi.history[{meta:1,loser:-1}] run scoreboard players set @s xq_result 1
 ''')
+put('covered/init', '''
+    # 每方十五子独立不放回随机；将帅始终明置，不写入公共展示数据。
+    data modify storage xiangqi:private bag set value [1,1,1,1,1,2,2,3,3,4,4,5,5,7,7]
+'''+'\n'.join(f'function xiangqi:engine/covered/draw {{sq:{i},max:{14-index}}}' for index,i in enumerate(i for i,p in enumerate(initial) if p>0 and p!=6))+'''
+    data modify storage xiangqi:private bag set value [-1,-1,-1,-1,-1,-2,-2,-3,-3,-4,-4,-5,-5,-7,-7]
+'''+'\n'.join(f'function xiangqi:engine/covered/draw {{sq:{i},max:{14-index}}}' for index,i in enumerate(i for i,p in enumerate(initial) if p<0 and p!=-6))+'''
+    data remove storage xiangqi:private bag
+    data remove storage xiangqi:private pick
+''')
+put('covered/draw', '''
+$execute store result storage xiangqi:private pick.slot int 1 run random value 0..$(max)
+$data modify storage xiangqi:private pick.sq set value $(sq)
+function xiangqi:engine/covered/pick with storage xiangqi:private pick
+''')
+put('covered/pick', '''
+$execute store result score @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(sq)},limit=1] xq_hidden run data get storage xiangqi:private bag[$(slot)]
+$scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(sq)},limit=1] xq_covered 1
+$data remove storage xiangqi:private bag[$(slot)]
+''')
+put('covered/reveal', '''
+# 从模板到真实身份仅发生于真实落子提交，吃掉暗子不读取其身份。
+$execute if score #covered xq_ctx matches 1 run scoreboard players operation #placed xq_ctx = @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(from)},limit=1] xq_hidden
+''')
+put('covered/apply_real', '''
+$scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(from)},limit=1] xq_hidden 0
+$scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(from)},limit=1] xq_covered 0
+$scoreboard players operation @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(to)},limit=1] xq_hidden = #placed xq_ctx
+$scoreboard players set @e[type=minecraft:marker,tag=xq.board,scores={xq_sq=$(to)},limit=1] xq_covered 0
+''')
+# 揭棋的士、象可以越宫过河；不能沿用标准象棋的“仅防守子即和棋”。
+for path,score in [('material','#dead'),('can_mate','#can_mate')]:
+    target=ROOT/(path+'.mcfunction')
+    original=target.read_text(encoding='utf-8').splitlines()
+    extra=[]
+    for i in range(90):
+        for side in (1,-1):
+            side_guard='' if path=='material' else f'if score #side xq_ctx matches {side} '
+            for kind in (3,7):
+                extra.append(f'execute if score #variant xq_ctx matches 1 {side_guard}if score #b{i} xq_ctx matches {kind*side} run scoreboard players set {score} xq_ctx {0 if path=="material" else 1}')
+    put(path,'\n'.join(original[:-1]+extra+original[-1:]))
 print(f'Generated {len(list(ROOT.rglob("*.mcfunction")))} Xiangqi engine functions.')

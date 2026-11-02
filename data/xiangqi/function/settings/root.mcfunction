@@ -25,4 +25,7 @@ function xiangqi:settings/choice {"key":"level","row":"level_row","value":3,"cod
 data modify storage xiangqi:settings hints_row set value {"text":"可走格提示\n","color":"white","extra":[]}
 function xiangqi:settings/choice {"key":"hints","row":"hints_row","value":0,"code":700,"label":"关闭"}
 function xiangqi:settings/choice {"key":"hints","row":"hints_row","value":1,"code":701,"label":"开启"}
+data modify storage xiangqi:settings variant_row set value {"text":"玩法\n","color":"white","extra":[]}
+function xiangqi:settings/choice {"key":"variant","row":"variant_row","value":0,"code":800,"label":"标准象棋"}
+function xiangqi:settings/choice {"key":"variant","row":"variant_row","value":1,"code":801,"label":"揭棋"}
 function xiangqi:settings/root_show with storage xiangqi:settings

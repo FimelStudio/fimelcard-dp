@@ -58,6 +58,10 @@ execute if score #b62 xq_ctx matches -5 unless score #b59 xq_ctx matches 0 if sc
 execute if score #b76 xq_ctx matches -5 unless score #b67 xq_ctx matches 0 run return run scoreboard players set #attacked xq_ctx 1
 execute if score #b85 xq_ctx matches -5 unless score #b76 xq_ctx matches 0 if score #b67 xq_ctx matches 0 run return run scoreboard players set #attacked xq_ctx 1
 execute if score #b85 xq_ctx matches -5 unless score #b67 xq_ctx matches 0 if score #b76 xq_ctx matches 0 run return run scoreboard players set #attacked xq_ctx 1
+execute if score #variant xq_ctx matches 1 if score #q48 xq_ctx matches 0 if score #b48 xq_ctx matches -7 run return run scoreboard players set #attacked xq_ctx 1
+execute if score #variant xq_ctx matches 1 if score #q50 xq_ctx matches 0 if score #b50 xq_ctx matches -7 run return run scoreboard players set #attacked xq_ctx 1
+execute if score #variant xq_ctx matches 1 if score #q66 xq_ctx matches 0 if score #b66 xq_ctx matches -7 run return run scoreboard players set #attacked xq_ctx 1
+execute if score #variant xq_ctx matches 1 if score #q68 xq_ctx matches 0 if score #b68 xq_ctx matches -7 run return run scoreboard players set #attacked xq_ctx 1
 execute if score #b4 xq_ctx matches -6 if score #b58 xq_ctx matches 6 if score #b13 xq_ctx matches 0 if score #b22 xq_ctx matches 0 if score #b31 xq_ctx matches 0 if score #b40 xq_ctx matches 0 if score #b49 xq_ctx matches 0 run return run scoreboard players set #attacked xq_ctx 1
 execute if score #b13 xq_ctx matches -6 if score #b58 xq_ctx matches 6 if score #b22 xq_ctx matches 0 if score #b31 xq_ctx matches 0 if score #b40 xq_ctx matches 0 if score #b49 xq_ctx matches 0 run return run scoreboard players set #attacked xq_ctx 1
 execute if score #b22 xq_ctx matches -6 if score #b58 xq_ctx matches 6 if score #b31 xq_ctx matches 0 if score #b40 xq_ctx matches 0 if score #b49 xq_ctx matches 0 run return run scoreboard players set #attacked xq_ctx 1

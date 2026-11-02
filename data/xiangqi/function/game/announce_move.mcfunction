@@ -7,6 +7,7 @@ execute if score #log_piece xq_ctx matches ..-1 run data modify storage xiangqi:
 execute if score #log_piece xq_ctx matches ..-1 run scoreboard players operation #log_piece xq_ctx *= #minus xq_ctx
 data modify storage xiangqi:runtime move.extra set value ""
 execute unless score #log_cap xq_ctx matches 0 run data modify storage xiangqi:runtime move.extra set value "（吃子）"
+execute if data entity @s data.xiangqi.last{captured_covered:1} run data modify storage xiangqi:runtime move.extra set value "（吃暗子）"
 execute if score #log_piece xq_ctx matches 1 run data modify storage xiangqi:runtime move.piece set value "兵／卒"
 execute if score #log_piece xq_ctx matches 2 run data modify storage xiangqi:runtime move.piece set value "马"
 execute if score #log_piece xq_ctx matches 3 run data modify storage xiangqi:runtime move.piece set value "相／象"

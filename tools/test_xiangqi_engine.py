@@ -41,7 +41,7 @@ class Suite:
     def probe(self,a,b):return [f'scoreboard players set #from xq_ctx {a}',f'scoreboard players set #to xq_ctx {b}']+self.call('engine/check_move')
 
     def build(self,oracle=None):
-        objectives='xq_ctx xq_piece xq_sq ct_id xq_state xq_turn xq_half xq_full xq_result xq_reason xq_check xq_repetition xe'.split()
+        objectives='xq_ctx xq_piece xq_sq ct_id xq_state xq_turn xq_half xq_full xq_result xq_reason xq_check xq_repetition xq_variant xq_hidden xq_covered xe'.split()
         self.file('load',[f'scoreboard objectives add {o} dummy' for o in objectives]+['scoreboard players set #minus xq_ctx -1'])
         self.file('reset','kill @e[tag=xe.fixture]')
         self.file('controller','tag @s add xe.fixture\ntag @s add xe.controller\ntag @s add xq.controller\nscoreboard players set @s ct_id 101\nscoreboard players set @s xq_state 1\nscoreboard players set @s xe 0\ndata modify entity @s data.xiangqi.history set value []')
@@ -204,13 +204,14 @@ class Suite:
         for i,name in enumerate(self.cases):self.files['case/'+name]+=('schedule function xiangqi_engine_test:case/'+self.cases[i+1]+' 1t\n') if i+1<len(self.cases) else 'function xiangqi_engine_test:finish\n'
 
 
-def run(args):
+def run(args, suite=None):
     output=args.output.resolve() if args.output else Path(tempfile.mkdtemp(prefix='fimel-xiangqi-engine-'))
     if args.output:output.mkdir(parents=True,exist_ok=False)
     target=output/'packs'/'xiangqi_engine'
     shutil.copytree(args.pack/'data/xiangqi/function/engine',target/'data/xiangqi/function/engine')
     shutil.copy2(args.pack/'pack.mcmeta',target/'pack.mcmeta')
-    suite=Suite();suite.build(args.oracle)
+    if suite is None:
+        suite=Suite();suite.build(args.oracle)
     for name,body in suite.files.items():
         path=target/'data/xiangqi_engine_test/function'/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body,encoding='utf-8')
     helpers={
@@ -229,10 +230,10 @@ def run(args):
         if entry.get('path'):
             path=args.minecraft_root/'libraries'/entry['path']
             if path.is_file():classpath.append(path)
-    options=['-Xms256M','-Xmx1536M','-Djava.awt.headless=true','-Dfile.encoding=UTF-8','--enable-native-access=ALL-UNNAMED','-cp',';'.join(map(str,classpath)),'net.minecraft.gametest.Main','--packs',str(output/'packs'),'--universe',str(output/'universe'),'--tests','xiangqi_engine_test:*','--report',str(output/'gametest.xml')]
+    options=['-Xms256M','-Xmx3072M','-Djava.awt.headless=true','-Dfile.encoding=UTF-8','--enable-native-access=ALL-UNNAMED','-cp',';'.join(map(str,classpath)),'net.minecraft.gametest.Main','--packs',str(output/'packs'),'--universe',str(output/'universe'),'--tests','xiangqi_engine_test:*','--report',str(output/'gametest.xml')]
     argfile=output/'java-args.txt';argfile.write_text('\n'.join('"'+v.replace('\\','\\\\').replace('"','\\"')+'"' for v in options),encoding='utf-8')
     print('Xiangqi engine GameTest: '+str(output),flush=True);start=time.monotonic()
-    proc=subprocess.run([str(args.java),'@'+str(argfile)],cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace',timeout=240)
+    proc=subprocess.run([str(args.java),'@'+str(argfile)],cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace',timeout=300)
     (output/'game.log').write_text(proc.stdout,encoding='utf-8')
     passed=set(re.findall(r'XIANGQI_ENGINE_PASS ([a-z0-9_]+)',proc.stdout));failed=sorted(set(re.findall(r'XIANGQI_ENGINE_FAIL ([a-z0-9_]+)',proc.stdout)));missing=sorted(set(suite.expected)-passed)
     errors=[s for s in proc.stdout.splitlines() if any(p in s for p in ('[ERROR]','/ERROR]','Failed to load','Failed to parse','Unknown function','Unknown or incomplete command',"Couldn't parse",'Command execution stopped'))]
@@ -243,5 +244,5 @@ def run(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--pack',type=Path,default=PACK);parser.add_argument('--minecraft-root',type=Path,default=Path('D:/PCL2/MinecraftPcl'));parser.add_argument('--version',default='26.2-Fabric_0.19.3');parser.add_argument('--java',type=Path,default=Path('C:/Temp/fimel-uno-java25/jdk-25.0.5+8-jre/bin/java.exe'));parser.add_argument('--output',type=Path);parser.add_argument('--oracle',type=Path,help='可选官方 Fairy-Stockfish largeboard 程序，追加随机局面全格差分')
+    parser.add_argument('--pack',type=Path,default=PACK);parser.add_argument('--minecraft-root',type=Path,default=Path('D:/PCL2/MinecraftPcl'));parser.add_argument('--version',default='26.2-Fabric_0.19.3');parser.add_argument('--java',type=Path,default=Path('C:/Temp/fimel-java25-validation/jdk-25.0.5+8-jre/bin/java.exe'));parser.add_argument('--output',type=Path);parser.add_argument('--oracle',type=Path,help='可选官方 Fairy-Stockfish largeboard 程序，追加随机局面全格差分')
     sys.exit(run(parser.parse_args()))

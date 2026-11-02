@@ -11,186 +11,276 @@ execute if score #history_initial xq_ctx matches 0 if score #side xq_ctx matches
 execute if score #history_initial xq_ctx matches 0 if score #side xq_ctx matches 1 if score #attacked xq_ctx matches 0 run scoreboard players add #bquiet xq_ctx 1
 execute store result entity @s data.xiangqi.history[0].rquiet int 1 run scoreboard players get #rquiet xq_ctx
 execute store result entity @s data.xiangqi.history[0].bquiet int 1 run scoreboard players get #bquiet xq_ctx
-data modify storage xiangqi:engine history set value {key:"",piece:0,turn:1}
+data modify storage xiangqi:engine history set value {key:"",piece:0,covered:0,turn:1}
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b0 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q0 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b1 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q1 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b2 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q2 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b3 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q3 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b4 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q4 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b5 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q5 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b6 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q6 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b7 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q7 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b8 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q8 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b9 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q9 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b10 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q10 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b11 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q11 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b12 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q12 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b13 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q13 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b14 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q14 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b15 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q15 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b16 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q16 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b17 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q17 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b18 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q18 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b19 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q19 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b20 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q20 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b21 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q21 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b22 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q22 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b23 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q23 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b24 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q24 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b25 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q25 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b26 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q26 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b27 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q27 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b28 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q28 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b29 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q29 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b30 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q30 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b31 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q31 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b32 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q32 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b33 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q33 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b34 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q34 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b35 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q35 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b36 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q36 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b37 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q37 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b38 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q38 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b39 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q39 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b40 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q40 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b41 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q41 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b42 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q42 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b43 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q43 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b44 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q44 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b45 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q45 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b46 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q46 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b47 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q47 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b48 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q48 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b49 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q49 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b50 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q50 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b51 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q51 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b52 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q52 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b53 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q53 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b54 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q54 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b55 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q55 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b56 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q56 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b57 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q57 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b58 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q58 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b59 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q59 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b60 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q60 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b61 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q61 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b62 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q62 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b63 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q63 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b64 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q64 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b65 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q65 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b66 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q66 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b67 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q67 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b68 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q68 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b69 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q69 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b70 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q70 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b71 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q71 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b72 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q72 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b73 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q73 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b74 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q74 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b75 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q75 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b76 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q76 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b77 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q77 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b78 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q78 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b79 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q79 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b80 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q80 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b81 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q81 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b82 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q82 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b83 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q83 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b84 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q84 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b85 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q85 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b86 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q86 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b87 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q87 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b88 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q88 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.piece int 1 run scoreboard players get #b89 xq_ctx
+execute store result storage xiangqi:engine history.covered int 1 run scoreboard players get #q89 xq_ctx
 function xiangqi:engine/history/append with storage xiangqi:engine history
 execute store result storage xiangqi:engine history.turn int 1 run scoreboard players get #side xq_ctx
 function xiangqi:engine/history/key with storage xiangqi:engine history

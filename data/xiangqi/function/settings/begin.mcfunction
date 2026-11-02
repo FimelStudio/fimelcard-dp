@@ -1,4 +1,4 @@
-# 六位nonce、字段一位、数值两位，最大999999701，小于有符号整数上限。
+# 六位nonce、字段一位、数值两位，最大999999801，小于有符号整数上限。
 execute if score #setting_serial xq_ctx matches 999999.. run scoreboard players add #ui_load xq_ctx 1
 execute unless score #setting_serial xq_ctx matches 99999..999998 run scoreboard players set #setting_serial xq_ctx 99999
 scoreboard players add #setting_serial xq_ctx 1
