@@ -1,6 +1,9 @@
 function avalon:name/resolve
-execute if score @s av_seat = #leader av_ctx run data modify storage avalon:names leader set from storage avalon:name resolved
-execute if score @s av_selected matches 1 run data modify storage avalon:names team append from storage avalon:name resolved
+data modify storage avalon:name portrait set value {text:"",extra:[{object:"player",player:{},hat:true},{text:" "}]}
+data modify storage avalon:name portrait.extra[0].player.id set from entity @s UUID
+data modify storage avalon:name portrait.extra append from storage avalon:name resolved
+execute if score @s av_seat = #leader av_ctx run data modify storage avalon:names leader set from storage avalon:name portrait
+execute if score @s av_selected matches 1 run data modify storage avalon:names team append from storage avalon:name portrait
 execute if score @s av_selected matches 1 run data modify storage avalon:names team append value {text:" "}
 execute if score @s av_role matches 4..7 run data modify storage avalon:names evil append from storage avalon:name resolved
 execute if score @s av_role matches 4..7 run data modify storage avalon:names evil append value {text:" "}

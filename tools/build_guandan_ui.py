@@ -395,7 +395,7 @@ execute if data storage guandan:ui option{beat:1} run function guandan:ui/option
 data modify storage guandan:ui buttons append from storage guandan:ui option_button
 ''')
     put('ui/option_command','$data modify storage guandan:ui option_button.action set value {type:"minecraft:run_command",command:"trigger gd_action set $(option_code)"}')
-    dialog={'type':'minecraft:multi_action','title':{'text':'$(title)','color':'gold'},'body':[{'type':'minecraft:plain_message','width':690 if key=='grid' else 480,'contents':'__'+key+'__'} for key in ['phase','rows','info','grid']], 'actions':'__buttons__','columns':2,'exit_action':{'label':{'text':'返回游戏'}},'pause':False,'can_close_with_escape':True,'after_action':'none'}
+    dialog={'type':'minecraft:multi_action','title':{'text':'$(title)','color':'gold'},'body':[{'type':'minecraft:plain_message','width':690 if key=='grid' else 480,'contents':'__'+key+'__'} for key in ['phase','rows','info','grid']], 'actions':'__buttons__','columns':2,'exit_action':{'label':{'text':'返回游戏'}},'pause':False,'can_close_with_escape':True,'after_action':'close'}
     text=js(dialog)
     for key in ['phase','rows','info','grid','buttons']:text=text.replace('"__'+key+'__"','$('+key+')')
     put('ui/normalize','\n'.join(f'execute unless data storage guandan:ui {key}.extra[0] run data remove storage guandan:ui {key}.extra' for key in ['phase','rows','info','grid']))

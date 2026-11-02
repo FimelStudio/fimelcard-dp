@@ -69,7 +69,7 @@ assert 'av_players matches 7.. if score @s av_round matches 4' in read('game/mis
 assert 'if score @s av_good matches 3.. run return run function avalon:game/assassination' in read('game/mission_result')
 assert 'if score @s av_evil matches 3.. run return run function avalon:game/evil_win' in read('game/mission_result')
 for role in range(1,8):
- assert f'av_role matches {role} unless items entity @s hotbar.7' in read('player/identity')
+ assert f'av_role matches {role} unless items entity @s hotbar.8' in read('player/identity')
 assert 'execute as @a[tag=av.audience] run function avalon:player/identity' in read('game/tick')
 assert 'if score @s av_seat = #action av_ctx' in read('input/toggle')
 assert 'if score @s av_id = #table av_ctx' in read('context')

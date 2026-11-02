@@ -1,6 +1,7 @@
 scoreboard players set #manual_ui av_ctx 0
 scoreboard players add @s av_epoch 1
 function avalon:context
+function avalon:game/announce
 dialog clear @a[tag=av.audience]
 function avalon:hud/update
 tag @e[tag=av.current] remove av.current

@@ -44,7 +44,7 @@ for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
 print(f'PASS: fixed HUD anchor; private actionbar and selective operation dialogs; Q ballot ownership/table/epoch/double-submit guards; {cases} role display contexts; public end reveal retained.')
 
 assert 'minecraft:purple_dye' not in read('player/tools')
-assert 'hotbar.8 * run scoreboard players set #blocked' not in read('game/start')
+assert 'hotbar.8 * run scoreboard players set #blocked' in read('game/start')
 assert 'function avalon:input/reopen' in read('input/drop_role')
 assert 'minecraft:item_model="card:avalon/ballot_$(color)"' in read('player/give_ballot')
 result=read('game/mission_result')
