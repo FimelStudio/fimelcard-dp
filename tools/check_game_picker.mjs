@@ -72,10 +72,10 @@ for(const cap of [4,8]){
  const shown=ids.filter(id=>cap===8||min[id-1]<=4);
  assert.equal(dialog.type,'minecraft:notice');assert.equal(dialog.pause,false);assert.equal(dialog.after_action,'close');
  assert.equal(dialog.action.label.text,'取消');assert.equal(dialog.action.action,undefined);
- assert.equal(dialog.body.length,1+Math.ceil(shown.length/4));assert.equal(dialog.title.text,`选择游戏 · ${cap}人桌`);
+ assert.equal(dialog.body.length,1+Math.ceil(shown.length/5));assert.equal(dialog.title.text,`选择游戏 · ${cap}人桌`);
  for(const [row,block] of dialog.body.slice(1).entries()){
-  assert.equal(block.type,'minecraft:plain_message');assert.equal(block.width,330);
-  const rowIds=shown.slice(row*4,row*4+4),pieces=block.contents.extra;
+  assert.equal(block.type,'minecraft:plain_message');assert.equal(block.width,410);
+  const rowIds=shown.slice(row*5,row*5+5),pieces=block.contents.extra;
   let offset=0;
   for(let strip=0;strip<8;strip++){
    for(const id of rowIds){
