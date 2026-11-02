@@ -96,7 +96,7 @@ Minecraft Java 26.2 多人卡牌桌游数据包。作者：歪浪Ylong、水晶C
 /function doudizhu:admin/abort
 ```
 
-除阿瓦隆外，上表游戏均支持 `/function <命名空间>:admin/abort`，命名空间见[文档索引](docs/README.md)。命令只中止同维度 8 格内最近一场对应游戏，其他桌不受影响，无需填写桌号；[阿瓦隆](docs/阿瓦隆.md)使用控制器命令，各游戏文档提供完整模板。
+上表游戏均支持 `/function <命名空间>:admin/abort`，例如阿瓦隆为 `/function avalon:admin/abort`，命名空间见[文档索引](docs/README.md)。命令只中止同维度 8 格内最近一场对应游戏，其他桌不受影响，无需填写桌号；各游戏文档提供完整模板。
 
 需要精确指定某张桌子时，再查询自己所属的桌号：
 

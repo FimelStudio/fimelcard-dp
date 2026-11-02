@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const games = [
   ['hanabi', 'hb'], ['abraca', 'ab'], ['bullshit', 'bw'], ['decrypto', 'dc'],
-  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'], ['gomoku', 'gm'], ['aeroplane_chess', 'ac'], ['love_letter', 'll'], ['guandan', 'gd'], ['weiqi', 'go'],
+  ['critical_point', 'cp'], ['wenfei', 'wq'], ['skull', 'sk'], ['doudizhu', 'dd'], ['uno', 'un'], ['chess', 'ch'], ['xiangqi', 'xq'], ['gomoku', 'gm'], ['aeroplane_chess', 'ac'], ['avalon', 'av'], ['love_letter', 'll'], ['guandan', 'gd'], ['weiqi', 'go'],
 ];
 const pack = new URL('../', import.meta.url);
 const readFunction = id => fs.readFileSync(new URL(`data/${id.replace(':', '/function/')}.mcfunction`, pack), 'utf8');
@@ -98,6 +98,7 @@ for (const [namespace, prefix] of games) {
   const player = () => entity('operator', 'minecraft:player', ['ct.player']);
   const table = (id, offset = [3, 0, 0], dimension) => {
     const result=entity(id,'minecraft:marker',['ct.controller',`${prefix}.controller`],offset,dimension);
+    if(namespace==='avalon')result.scores.ct_game=16;
     if(namespace==='love_letter')result.scores.ct_game=17;
     if(namespace==='guandan')result.scores.ct_game=18;
     if(namespace==='weiqi')result.scores.ct_game=20;
@@ -124,12 +125,12 @@ for (const [namespace, prefix] of games) {
   check('恰好 8 格', player(), [edge], edge);
   const close = table('near', [2, 1, 0]), further = table('further', [6, 0, 0]);
   check('多个同游戏桌取最近', player(), [further, close], close);
-  if (['chess','xiangqi','gomoku','aeroplane_chess','love_letter','guandan','weiqi'].includes(namespace)) {
+  if (['chess','xiangqi','gomoku','aeroplane_chess','avalon','love_letter','guandan','weiqi'].includes(namespace)) {
     const preview = table('preview', [0.2, 0, 0]); preview.scores.ct_state = 0;
     check('大厅预览更近时选择进行中的局', player(), [preview, close], close);
     check('只有大厅预览时拒绝中止', player(), [preview]);
   }
-  if (['love_letter','guandan','weiqi'].includes(namespace)) {
+  if (['avalon','love_letter','guandan','weiqi'].includes(namespace)) {
     const stale = table('stale-game-tag', [0.1, 0, 0]); stale.scores.ct_game = 1;
     check('旧游戏标签不能覆盖当前游戏编号', player(), [stale, close], close);
     check('只有旧游戏标签时拒绝中止', player(), [stale]);
