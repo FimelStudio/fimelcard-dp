@@ -298,7 +298,7 @@ function love_letter:ui/button_append with storage love_letter:ui
         {'type':'minecraft:plain_message','width':480,'contents':'__rows__'},
         {'type':'minecraft:plain_message','width':480,'contents':'__cards__'},
         {'type':'minecraft:plain_message','width':480,'contents':'__info__'}],
-        'actions':'__buttons__','columns':2,'exit_action':{'label':{'text':'返回游戏'}},'pause':False,'can_close_with_escape':True,'after_action':'none'}
+        'actions':'__buttons__','columns':2,'exit_action':{'label':{'text':'返回游戏'}},'pause':False,'can_close_with_escape':True,'after_action':'close'}
     show=js(dialog)
     for key in ['phase','rows','cards','info','buttons']:
         show=show.replace('"__'+key+'__"','$('+key+')')

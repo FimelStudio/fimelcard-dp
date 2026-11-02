@@ -122,13 +122,7 @@ $scoreboard players set @s ll_v_seat $(seat)
 $data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:love_letter/$(model)"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0f,view_range:0.5f,transformation:{translation:[$(tx)f,0.022f,$(tz)f],left_rotation:[$(qx)f,$(qy)f,$(qz)f,$(qw)f],right_rotation:[0f,1f,0f,0f],scale:[0.44f,0.44f,0.44f]}}
 ''')
     put('label_at','$execute positioned ~$(x) ~1.39 ~$(z) summon minecraft:text_display run function love_letter:visual/label with storage love_letter:visual seat_data')
-    put('label','''
-tag @s add ll.visual
-tag @s add ll.label
-scoreboard players operation @s ct_id = #vis_table ll_ctx
-$scoreboard players set @s ll_v_seat $(seat)
-$data merge entity @s {text:{text:"$(seat)号位 · ♥$(points) · 弃$(count)",color:"gold"},billboard:"center",background:0,shadow:1b,see_through:0b,view_range:0.5f,line_width:240,transformation:{scale:[0.18f,0.18f,0.18f]}}
-''')
+    put('label','tag @s add ll.visual\ntag @s add ll.label\nscoreboard players operation @s ct_id = #vis_table ll_ctx\n$scoreboard players set @s ll_v_seat $(seat)\n$data merge entity @s {text:{text:"$(seat)号位 · ♥$(points) · 弃$(count)",color:"gold"},billboard:"center",background:0,shadow:1b,see_through:0b,view_range:0.5f,line_width:240,transformation:{scale:[0.30f,0.30f,0.30f]}}\n')
     put('box','''
 tag @s add ll.visual
 tag @s add ll.box

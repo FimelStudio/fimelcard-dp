@@ -131,17 +131,7 @@ scoreboard players operation @s ct_id = #vis_table gd_ctx
 $scoreboard players set @s gd_v_seat $(seat)
 $data merge entity @s {text:{text:"",extra:[$(name),{text:" · 队$(team)$(count_text)$(turn_text)",color:"gray"}]},billboard:"fixed",Rotation:[$(yaw)f,-90f],background:0,shadow:0b,view_range:0.5f,line_width:300,transformation:{scale:[0.13f,0.13f,0.13f]}}
 ''')
-    put('status',r'''
-tag @s add gd.visual
-tag @s add gd.status
-scoreboard players operation @s ct_id = #vis_table gd_ctx
-data merge entity @s {text:{text:"掼蛋",color:"gold",extra:[{text:" · 本副 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_round"}},{text:"\n队0 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_team0"}},{text:"级 / 队1 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_team1"}},{text:"级 · 打 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_level"}},{text:"\n轮到 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_turn"}},{text:" 号位 · 逆时针"}]},billboard:"fixed",Rotation:[0f,-90f],background:0,shadow:0b,view_range:0.5f,line_width:340,transformation:{scale:[0.14f,0.14f,0.14f]}}
-# text_display 会立即解析 selector/score；刷新时上下文只包含当前桌。
-execute if entity @e[tag=gd.current,scores={gd_state=0},limit=1] run data modify entity @s text set value {text:"掼蛋 · 四人对家",color:"gold"}
-execute if entity @e[tag=gd.current,scores={gd_state=1},limit=1] run data modify entity @s text set value {text:"掼蛋 · 正在发牌",color:"gold"}
-execute if entity @e[tag=gd.current,scores={gd_state=2,gd_phase=1},limit=1] run data modify entity @s text set value {text:"掼蛋 · 选择进贡",color:"gold"}
-execute if entity @e[tag=gd.current,scores={gd_state=2,gd_phase=2},limit=1] run data modify entity @s text set value {text:"掼蛋 · 选择还牌",color:"gold"}
-''')
+    put('status','kill @s\n')
     put('public_group',r'''
 execute store result storage guandan:visual count int 1 run data get storage guandan:visual public
 scoreboard players set #index gd_ctx 0
@@ -252,10 +242,7 @@ scoreboard players set @s gd_v_age 0
 scoreboard players set @s gd_v_life 30
 $data merge entity @s {text:{text:"升 $(steps) 级",color:"gold",bold:1b},billboard:"center",background:0,shadow:1b,view_range:0.5f,interpolation_duration:30,start_interpolation:0,transformation:{translation:[0f,0.32f,0f],scale:[0.25f,0.25f,0.25f]}}
 ''')
-    put('tick',r'''
-scoreboard players operation #vis_table gd_ctx = @s ct_id
-execute as @e[tag=gd.fx] if score @s ct_id = #vis_table gd_ctx run function guandan:visual/fx_tick
-''')
+    put('tick','# table-pause: begin (tools/build_table_pause_guards.py)\nexecute if score @s ct_paused matches 1 run return 0\nexecute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0\nexecute on origin if score @s ct_paused matches 1 run return 0\n# table-pause: end\nscoreboard players operation #vis_table gd_ctx = @s ct_id\nexecute as @e[tag=gd.fx] if score @s ct_id = #vis_table gd_ctx run function guandan:visual/fx_tick\n\nexecute as @e[tag=gd.status] if score @s ct_id = #vis_table gd_ctx run kill @s\n')
     put('fx_tick',r'''
 scoreboard players add @s gd_v_age 1
 execute if data entity @s data.path[0] run data modify entity @s transformation.translation set from entity @s data.path[0]
@@ -270,7 +257,7 @@ data remove entity @s data.path
     # 高级别按J/Q/K/A显示，玩家无需把11～14换算成牌点。
     body=(ROOT/'status.mcfunction').read_text(encoding='utf8')
     body=body.replace('# text_display', 'function guandan:visual/status_fields\n# text_display')
-    put('status',body)
+    put('status','kill @s\n')
     fields=[]
     for field,objective in [('level','gd_level'),('level0','gd_team0'),('level1','gd_team1')]:
         fields.append(f'execute store result storage guandan:visual {field} int 1 run scoreboard players get @e[tag=gd.current,limit=1] {objective}')

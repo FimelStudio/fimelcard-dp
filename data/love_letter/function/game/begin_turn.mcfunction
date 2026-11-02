@@ -10,3 +10,6 @@ scoreboard players operation #deal_seat ll_ctx = @s ll_turn
 function love_letter:deal/launch
 function love_letter:visual/refresh
 function love_letter:hud/refresh
+
+scoreboard players operation #announce_turn ll_ctx = @s ll_turn
+execute as @e[tag=ll.audience] if score @s ll_seat = #announce_turn ll_ctx run tellraw @a[tag=ll.audience] [{text:"[情书] 轮到 ",color:"gold"},{selector:"@s"},{text:" 行动，请选择一张手牌打出。",color:"yellow"}]

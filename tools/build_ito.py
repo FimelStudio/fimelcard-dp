@@ -24,4 +24,6 @@ def build():
  batch_form()
  from build_ito_red import build as red
  red()
+ from build_ito_public import build as public
+ public()
 if __name__=='__main__':build()

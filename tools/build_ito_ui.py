@@ -30,7 +30,7 @@ data modify storage ito:input content set value {pages:[""]}
 data modify storage ito:input content.pages[0] set from entity @e[tag=it.focus,limit=1] data.description
 function ito:input/book_item with storage ito:input''')
  put('input/book_item','''$clear @s *[minecraft:custom_data~{ito:{tool:1b,kind:1,slot:$(slot)}}]
-$give @s minecraft:writable_book[minecraft:item_name="手牌$(slot) · 描述书（Q提交）",minecraft:custom_data={ito:{tool:1b,kind:1,table:$(table),round:$(round),slot:$(slot)}},minecraft:writable_book_content=$(content),minecraft:lore=[{text:"仅你可见：数字$(number)",color:"gold"},{text:"第一页写1–48字，完成后Q提交，不签名。",color:"yellow"}]]''')
+$give @s minecraft:writable_book[minecraft:item_name="手牌$(slot) · 描述书（Q提交）",minecraft:custom_data={ito:{tool:1b,kind:1,table:$(table),round:$(round),slot:$(slot)}},minecraft:writable_book_content=$(content),minecraft:lore=[{text:"仅你可见：数字$(number)",color:"gold"},{text:"第一页写1–80字，完成后Q提交，不签名。",color:"yellow"}]]''')
  put('input/clear_spent_books','scoreboard players operation #actor it_ctx = @s it_seat\n'+'\n'.join(f'scoreboard players set #slot it_ctx {i}\nfunction ito:input/focus\nexecute unless entity @e[tag=it.focus,limit=1] run clear @s *[minecraft:custom_data~{{ito:{{tool:1b,kind:1,slot:{i}}}}}]' for i in range(1,4)))
  put('input/drop','''tag @e[tag=it.drop] remove it.drop
 tag @s add it.drop
@@ -57,9 +57,9 @@ execute unless score #pages it_ctx matches 1 run return run function ito:input/r
 data modify storage ito:input incoming set from storage ito:input pages[0]
 execute if data storage ito:input pages[0].raw run data modify storage ito:input incoming set from storage ito:input pages[0].raw
 function ito:input/save''')
- put('input/reject',say('请在未签名书的第一页填写1–48字；原描述保留。','red','@s'))
+ put('input/reject',say('请在未签名书的第一页填写1–80字；原描述保留。','red','@s'))
  put('input/save','''execute store result score #length it_ctx run data get storage ito:input incoming
-execute unless score #length it_ctx matches 1..48 run return run function ito:input/reject
+execute unless score #length it_ctx matches 1..80 run return run function ito:input/reject
 function ito:input/focus
 execute unless entity @e[tag=it.focus,limit=1] run return 0
 data modify entity @e[tag=it.focus,limit=1] data.description set from storage ito:input incoming
