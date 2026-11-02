@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 私有结果仅发送给合法知情人；从不将秘密牌值写入公共行、桌面或广播。
 execute unless data entity @s data.ll_private.kind run return 0
 function love_letter:system/context

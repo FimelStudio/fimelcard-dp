@@ -1,4 +1,5 @@
 """卡坦岛 21：生命周期和规则结果到表现层的单向桥接。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import importlib.util
 import json
@@ -14,7 +15,7 @@ OBJECTIVES['ca_action'] = OBJECTIVES['ca_settings'] = 'trigger'
 
 def put(name, body):
     p = ROOT / (name + '.mcfunction'); p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(('\n'.join(body) if isinstance(body, list) else body).strip()+'\n', encoding='utf-8')
+    write_guarded(p, ('\n'.join(body) if isinstance(body, list) else body).strip()+'\n', encoding='utf-8')
 
 
 def msg(text, color='yellow', target='@a[tag=ca.audience]'):
@@ -159,7 +160,7 @@ $data modify entity @e[tag=ca.current,limit=1] data.catan.p$(side).color set val
     name=(PACK/'data/weiqi/function/name/capture.mcfunction').read_text(encoding='utf-8').replace('weiqi:','catan:').replace('go.name_resolver','ca.name_resolver')
     put('name/capture', name)
     loot=PACK/'data/catan/loot_table/player_name.json';loot.parent.mkdir(parents=True,exist_ok=True)
-    loot.write_text((PACK/'data/weiqi/loot_table/player_name.json').read_text(encoding='utf-8'),encoding='utf-8')
+    write_guarded(loot, (PACK/'data/weiqi/loot_table/player_name.json').read_text(encoding='utf-8'),encoding='utf-8')
     put('game/sync', ['execute store result score @s ca_state run data get entity @s data.catan.phase','execute store result score @s ca_epoch run data get entity @s data.catan.epoch','execute store result score @s ca_turn run data get entity @s data.catan.turn','execute store result score @s ca_winner run data get entity @s data.catan.winner']+[f'execute if score @s ca_state matches {phase} run data modify entity @s data.catan.hint set value "{hint}"' for phase,hint in [(1,'放置村庄'),(2,'放置相邻道路'),(3,'等待投骰'),(4,'建造／交易／结束回合'),(5,'等待弃牌'),(6,'移动强盗'),(7,'选择偷取对象'),(8,'免费修路'),(10,'计算最长道路'),(11,'对局结束')]])
     put('game/action','''
 # 入口只接受绑定本桌、未失效的 UI/落点；引擎是最终裁判。

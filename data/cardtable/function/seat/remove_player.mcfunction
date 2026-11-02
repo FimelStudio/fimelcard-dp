@@ -1,3 +1,9 @@
+# BEGIN public session member departure
+function cardtable:session/drop_member
+# END public session member departure
+# BEGIN public session player reset
+function cardtable:session/end_player
+# END public session player reset
 execute if score @s ca_setnonce matches 1.. run function catan:settings/clear_session
 execute if score @s it_setnonce matches 1.. run function ito:settings/clear_session
 execute if score @s go_setnonce matches 1.. run function weiqi:settings/clear_session

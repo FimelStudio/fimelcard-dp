@@ -3,6 +3,8 @@
 规则/UI/模型分别由 build_gomoku_engine/ui/visual.py 维护。运行本脚本只更新
 gomoku 的 load/tick/system/game/player/admin/clock/log，不重写其他模块。
 """
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -12,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1] / 'data/gomoku/function'
 def put(name, lines):
     target = ROOT / (name + '.mcfunction')
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
+    write_guarded(target, ('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
 
 
 def say(text, target='@a[tag=gm.audience]', color='yellow'):

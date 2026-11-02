@@ -20,3 +20,5 @@ execute if score @s ct_game matches 18 run function guandan:game/init_table
 execute if score @s ct_game matches 20 run function weiqi:game/init_table
 execute if score @s ct_game matches 19 run function ito:game/init_table
 execute if score @s ct_game matches 21 run function catan:game/init_table
+# 新游戏最低人数可能更高，保留已有占用座并立即补足。
+function cardtable:chairs/layout/ensure

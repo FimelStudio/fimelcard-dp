@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players operation #target_seat hb_ctx = #action hb_ctx
 scoreboard players remove #target_seat hb_ctx 300
 execute if score #target_seat hb_ctx = @s hb_seat run tellraw @s [{text:"[花火] ",color:"light_purple"},{text:"不能提示自己。",color:"red"}]

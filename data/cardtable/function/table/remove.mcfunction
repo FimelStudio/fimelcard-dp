@@ -35,6 +35,9 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 21 run functi
 execute if score @s ct_game matches 21 run function catan:game/remove
 execute if score @s ct_skin matches 1..6 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
 execute if score @s ct_skin matches 1..6 if score @s ct_capacity matches 8 run function cardtable:skin/default8
+# BEGIN public session end
+function cardtable:session/end
+# END public session end
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player
 execute as @e[tag=ct.part] if score @s ct_id = #ctx_id ct_ctx run kill @s

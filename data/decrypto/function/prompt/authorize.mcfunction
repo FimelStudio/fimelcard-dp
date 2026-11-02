@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # @s 为玩家；只允许本桌本阶段加密者访问己方密码。
 scoreboard players set #form_ok dc_ctx 0
 tag @e[tag=dc.form_controller] remove dc.form_controller

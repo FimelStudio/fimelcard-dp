@@ -1,4 +1,7 @@
 """生成中国象棋的单页即时设置；原版输入控件不提供值变化时的提交回调。"""
+from build_table_pause_guards import write_guarded
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 
@@ -9,7 +12,7 @@ def build(root: Path = ROOT):
     def put(name, text):
         path = root / (name + ".mcfunction")
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text.strip() + "\n", encoding="utf-8")
+        write_guarded(path, augment_dialog(text).strip() + "\n", encoding="utf-8")
 
     def js(value):
         return json.dumps(value, ensure_ascii=False, separators=(",", ":"))

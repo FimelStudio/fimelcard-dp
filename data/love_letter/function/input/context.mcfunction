@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 tag @a[tag=ll.actor] remove ll.actor
 tag @e[tag=ll.me] remove ll.me
 tag @e[tag=ll.current] remove ll.current

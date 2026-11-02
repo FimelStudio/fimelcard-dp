@@ -1,3 +1,6 @@
+# 公共椅子入口只打开菜单；修改另以一次性会话校验。
+scoreboard players set @a[tag=ct.settings_actor,limit=1] ct_chair_pick 0
+scoreboard players enable @a[tag=ct.settings_actor,limit=1] ct_chair_pick
 # 当前执行者是牌桌控制器，实际接收dialog的是带ct.settings_actor标签的点击玩家
 execute if score @s ct_game matches 1 run return run function fast_card:settings/open
 execute if score @s ct_game matches 2 run return run function liars_holdem:settings/open

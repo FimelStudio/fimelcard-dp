@@ -1,4 +1,5 @@
 """生成自由五子棋规则：13/15/19 路，固定 19 步长，五连及长连均获胜。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 from textwrap import dedent
 import re
@@ -14,7 +15,7 @@ def build(root=PACK):
     def put(name, body):
         path = root / 'engine' / (name + '.mcfunction')
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text('\n'.join(re.sub(r' {2,}', ' ', x.strip()) for x in dedent(body).strip().splitlines()) + '\n', encoding='utf-8')
+        write_guarded(path, '\n'.join(re.sub(r' {2,}', ' ', x.strip()) for x in dedent(body).strip().splitlines()) + '\n', encoding='utf-8')
 
     put('init_board', '''
         function gomoku:system/context

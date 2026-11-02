@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 对话框不会解析selector组件，先沿用现有名字解析入口得到静态文本。
 $data modify storage skull:ui target_name set value {text:"座位$(seat)"}
 $execute as @a[tag=sk.player,scores={sk_id=$(table),sk_seat=$(seat)},limit=1] at @s run function hanabi:name/resolve

@@ -3,6 +3,7 @@
 所有搜索只修改刻内假棋盘；每刻最多 12 个候选，真实落子仍经过规则引擎。
 这是适合数据包的休闲人机，并非专业五子棋引擎。
 """
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 from textwrap import dedent
 import re
@@ -17,7 +18,7 @@ def build(root=PACK):
     def put(name,body):
         path=root/'ai'/(name+'.mcfunction')
         path.parent.mkdir(parents=True,exist_ok=True)
-        path.write_text('\n'.join(re.sub(r' {2,}', ' ', line.strip()) for line in dedent(body).strip().splitlines())+'\n',encoding='utf-8')
+        write_guarded(path, '\n'.join(re.sub(r' {2,}', ' ', line.strip()) for line in dedent(body).strip().splitlines())+'\n',encoding='utf-8')
 
     put('reset','''
         scoreboard players set @s gm_aistate 0

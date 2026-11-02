@@ -1,11 +1,13 @@
 """Public played cards at actual seats; isolated from hidden hand/deal entities."""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json,math
 P=Path(__file__).resolve().parents[1];F=P/'data/doudizhu/function'
 def put(n,s):
- p=F/(n+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s.strip()+'\n',encoding='utf8')
+ p=F/(n+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True);write_guarded(p, s.strip()+'\n',encoding='utf8')
 def hook(n,needle,line):
- p=F/(n+'.mcfunction');s=p.read_text(encoding='utf8');s=s.replace(line+'\n','');assert needle in s;s=s.replace(needle,line+'\n'+needle,1);p.write_text(s,encoding='utf8')
+ p=F/(n+'.mcfunction');s=p.read_text(encoding='utf8');s=s.replace(line+'\n','');assert needle in s;s=s.replace(needle,line+'\n'+needle,1);write_guarded(p, s,encoding='utf8')
 def build():
  seats={4:[(0,-.91,0),(.91,0,-90),(0,.91,180),(-.91,0,90)],8:[(-.85,-1.38,0),(.85,-1.38,0),(1.38,-.85,-90),(1.38,.85,-90),(.85,1.38,180),(-.85,1.38,180),(-1.38,.85,90),(-1.38,-.85,90)]}
  models=[s+'_'+r for r in ['3','4','5','6','7','8','9','10','j','q','k','a','2'] for s in 'sdch']+['j_2','j_1']

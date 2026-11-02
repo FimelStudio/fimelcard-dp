@@ -1,10 +1,11 @@
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import json,shutil
 from PIL import Image,ImageDraw,ImageFont
 P=Path(__file__).resolve().parents[1];F=P/'data/ito/function';R=P.parents[3]/'resourcepacks/fimelcard-rp'
 def build():
  def put(n,s):
-  f=F/(n+'.mcfunction');f.parent.mkdir(parents=True,exist_ok=True);f.write_text(s.strip()+'\n',encoding='utf8')
+  f=F/(n+'.mcfunction');f.parent.mkdir(parents=True,exist_ok=True);write_guarded(f, s.strip()+'\n',encoding='utf8')
  def edit(n,a,b):
   f=F/(n+'.mcfunction');s=f.read_text(encoding='utf8');put(n,s.replace(a,b))
  put('input/number_cards','scoreboard players operation #actor it_ctx = @s it_seat\n'+'\n'.join(f'scoreboard players set #slot it_ctx {i}\nfunction ito:input/number_card' for i in range(1,4)))
@@ -44,8 +45,8 @@ execute if score @e[tag=it.current,limit=1] it_state matches 2 run function ito:
   d.text((132,192),str(n),font=font,anchor='mm',fill='#333333',stroke_width=1)
   f=R/f'assets/card/textures/item/ito/{n}.png';f.parent.mkdir(parents=True,exist_ok=True);im.save(f)
   m={'parent':'card:item/fake_card','textures':{'0':f'card:item/ito/{n}','1':'card:item/card','particle':f'card:item/ito/{n}'}}
-  f=R/f'assets/card/models/item/ito/{n}.json';f.parent.mkdir(parents=True,exist_ok=True);f.write_text(json.dumps(m),encoding='utf8')
+  f=R/f'assets/card/models/item/ito/{n}.json';f.parent.mkdir(parents=True,exist_ok=True);write_guarded(f, json.dumps(m),encoding='utf8')
   item={'model':{'type':'minecraft:select','property':'minecraft:display_context','cases':[{'when':['thirdperson_righthand','thirdperson_lefthand'],'model':{'type':'minecraft:model','model':'card:item/fake_card'}}],'fallback':{'type':'minecraft:model','model':f'card:item/ito/{n}'}}}
-  f=R/f'assets/card/items/ito/{n}.json';f.parent.mkdir(parents=True,exist_ok=True);f.write_text(json.dumps(item),encoding='utf8')
+  f=R/f'assets/card/items/ito/{n}.json';f.parent.mkdir(parents=True,exist_ok=True);write_guarded(f, json.dumps(item),encoding='utf8')
  for folder in ['assets/card/textures/item/ito','assets/card/models/item/ito','assets/card/items/ito']:shutil.copytree(R/folder,R.parent/'Fimel桌游馆'/folder,dirs_exist_ok=True)
 if __name__=='__main__':build()

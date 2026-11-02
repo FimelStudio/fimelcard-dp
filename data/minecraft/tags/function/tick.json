@@ -1,5 +1,6 @@
 {
   "values": [
+    "cardtable:session/pre_tick",
     "fimel_sklibs:skapi_arrays/native/tick",
     "fimel_sklibs:skapi_math/native/tick",
     "fimel_sklibs:sk_schedule/tick",

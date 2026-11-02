@@ -4,6 +4,8 @@
 盘面以 19 个三进制行整数保存；哈希只筛选历史，禁止重复前仍逐项精确比较。
 洪泛只遍历四个邻点，不生成格子交互实体，不在 tick 中运行。
 """
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / 'data/weiqi/function/engine'
@@ -16,7 +18,7 @@ go_bscore go_wscore go_btime go_wtime go_bdist go_wdist'''.split()}
 def put(name, value):
     path = ROOT / (name + '.mcfunction')
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(('\n'.join(value) if isinstance(value, list) else value).strip() + '\n', encoding='utf-8')
+    write_guarded(path, ('\n'.join(value) if isinstance(value, list) else value).strip() + '\n', encoding='utf-8')
 
 
 def neighbors(sq):

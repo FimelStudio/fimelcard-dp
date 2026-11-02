@@ -1,4 +1,6 @@
 """斗地主式掼蛋叠牌：私有BetterTitle、最多八层、实卡独立高亮及逢人配角标。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 from PIL import Image, ImageDraw
@@ -12,7 +14,7 @@ OBJECTIVES={n:'dummy' for n in 'gd_panel gd_prev_panel gd_hud_key'.split()}
 
 def put(name,body):
     path=ROOT/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(body.strip()+'\n',encoding='utf8')
+    write_guarded(path, body.strip()+'\n',encoding='utf8')
 
 
 def functions():
@@ -203,7 +205,7 @@ def fonts():
         slices.append({'type':'bitmap','file':f'card:font/guandan/{variant}.png','height':9,'ascent':7,'chars':chars})
     output['stack']={'providers':slices}
     for name,value in output.items():
-        (target/(name+'.json')).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+        write_guarded(target/(name+'.json'), json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     for obsolete in ('hud.json','dialog.json'):
         previous=target/obsolete
         if previous.exists():previous.unlink()

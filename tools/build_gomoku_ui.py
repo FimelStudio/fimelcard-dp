@@ -1,4 +1,6 @@
 """生成五子棋输入、Dialog、桌内设置和规则，不修改规则引擎或公共牌桌。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -10,7 +12,7 @@ ROOT = PACK / "data/gomoku/function"
 def put(name, lines):
     path = ROOT / (name + ".mcfunction")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(lines.strip() + "\n", encoding="utf-8")
+    write_guarded(path, lines.strip() + "\n", encoding="utf-8")
 
 
 def js(value):
@@ -329,7 +331,7 @@ sections = [
     ("对局菜单", "按Q可申请悔棋、和棋或认输。双人悔棋与和棋须对手同意，认输需本人确认。人机自动同意练习悔棋与和棋；悔棋退回你上一次落子前，连同电脑应手撤回，并恢复时钟。"),
     ("结束", "五连、对手超时或认输即获胜；棋盘下满仍无人五连，或双方同意则和棋。结束5秒后返回大厅并保留终局，重新开局或切换游戏时清空。"),
     ("设置与计时", "设置都在一页，点击立即生效。可调棋盘大小、配色、方向、黑白分配、人机难度、最后一手标记、坐标和落子确认。每人可选无限制或5～30分钟，仅扣当前落子方时间，落子动画暂停，无加秒。按座位选边或随机分配后自动换座，黑方始终先手。"),
-    ("恢复与管理", "正常游玩无需管理员。玩家离线会中止本场。/reload保留棋局与时钟，旧菜单按Q重开。管理员可在桌旁执行 /function gomoku:admin/abort。"),
+    ("恢复与管理", "正常游玩无需管理员。玩家离线后暂停，等待重新上线；其间可投票结束或由管理员中止。/reload保留棋局与时钟，旧菜单按Q重开。管理员可在桌旁执行 /function gomoku:admin/abort。"),
 ]
 rules = {"type": "minecraft:notice", "title": {"text": "五子棋 · 游戏规则", "color": "gold", "bold": True}, "body": [], "pause": False}
 for title, content in sections:
@@ -339,7 +341,7 @@ put("rules/show", "dialog show @a[tag=ct.rules_actor,limit=1] " + js(rules))
 advancement = {"criteria": {"click": {"trigger": "minecraft:player_interacted_with_entity", "conditions": {"entity": [{"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"minecraft:entity_type": "minecraft:interaction"}}, {"condition": "minecraft:entity_scores", "entity": "this", "scores": {"gm_sq": {"min": 0, "max": 360}}}]}}}, "rewards": {"function": "gomoku:input/click_dispatch"}}
 adv_path = PACK / "data/gomoku/advancement/click_cell.json"
 adv_path.parent.mkdir(parents=True, exist_ok=True)
-adv_path.write_text(json.dumps(advancement, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+write_guarded(adv_path, json.dumps(advancement, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 # 独立 GameTest 世界调用这些宏，检查所有 Dialog 的 codec 和动态模板。
 sample_ui = {"phase": "轮到黑方行棋。", "buttons": [{"label": {"text": "认输"}, "action": {"type": "minecraft:run_command", "command": "trigger gm_action set 101"}}], "code": 101, "label": "认输", "color": "black"}
@@ -356,7 +358,7 @@ for name, values in [("DEFAULT", (15,0,0,0,0,10,2,1,1,0)), ("MINIMUM", (13,0,0,0
 checks += ['data merge storage gomoku:coordinates {nonce:1000,size:19,row:"$(row)",col:"$(col)"}',
            'function gomoku:ui/coordinates_show with storage gomoku:coordinates',
            "function gomoku:rules/show", "say GOMOKU_DIALOG_RULES_COMPILED", "say GOMOKU_DIALOGS_END"]
-(PACK / "tools/test_gomoku_dialogs.mcfunction").write_text("\n".join(checks) + "\n", encoding="utf-8")
+write_guarded(PACK / "tools/test_gomoku_dialogs.mcfunction", "\n".join(checks) + "\n", encoding="utf-8")
 # 单棋盘点击入口独立维护；须在旧逐格入口生成之后覆盖。
 from build_gomoku_input import build as build_input
 build_input()

@@ -1,4 +1,5 @@
 """生成 UNO 服务端核心；界面、资源和通用牌桌接入由对应模块维护。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 from textwrap import dedent
 
@@ -18,7 +19,7 @@ def put(name, text):
             line = line.replace("@a[tag=un.audience", "@e[tag=un.audience")
             line = line.replace("@a[tag=un.player", "@e[tag=un.player")
         result.append(line.lstrip())
-    target.write_text("\n".join(result) + "\n", encoding="utf-8")
+    write_guarded(target, "\n".join(result) + "\n", encoding="utf-8")
 
 
 OBJECTIVES = """un_state un_turn un_dir un_color un_value un_top un_epoch un_round un_timer

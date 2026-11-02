@@ -5,6 +5,7 @@ models in resourcepack/.source/chess make rebuilding independent of NyaaWorks.
 All world positions are relative to the cardtable controller.
 """
 from __future__ import annotations
+from build_table_pause_guards import write_guarded
 
 import copy
 import hashlib
@@ -42,7 +43,7 @@ SEAT_EDGES = {4: {1: 2, 2: 3, 3: 0, 4: 1}, 8: {1: 2, 2: 2, 3: 3, 4: 3, 5: 0, 6: 
 
 def text_file(path: Path, contents: str):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(contents.strip() + "\n", encoding="utf-8")
+    write_guarded(path, contents.strip() + "\n", encoding="utf-8")
 
 
 def json_file(path: Path, obj):

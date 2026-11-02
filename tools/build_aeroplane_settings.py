@@ -1,4 +1,7 @@
 """飞行棋单页即时设置，五位会话号+两位字段+两位数值。"""
+from build_table_pause_guards import write_guarded
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]/'data/aeroplane_chess/function'
@@ -22,7 +25,7 @@ FIELDS=[
 def build(root=ROOT):
  def put(name,lines):
   p=root/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
-  p.write_text(('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
+  write_guarded(p, augment_dialog('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
  def js(v):return json.dumps(v,ensure_ascii=False,separators=(',',':'))
  put('settings/open','''
 execute unless entity @a[tag=ct.settings_actor,tag=ct.player,limit=1] run return 0

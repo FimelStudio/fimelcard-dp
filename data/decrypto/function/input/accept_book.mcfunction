@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 整本校验通过后才写入回合；转为纯文本组件以复用笔记和面板。
 execute if items entity @e[type=minecraft:item,tag=dc.submitted_book,limit=1] contents minecraft:written_book run return run function decrypto:input/unsigned_book
 data modify storage decrypto:input pages set value []

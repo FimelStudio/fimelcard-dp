@@ -1,13 +1,14 @@
 """Keep turn-specific tools only while their owner can act; menus stay available."""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 P=Path(__file__).resolve().parents[1]
-def put(g,n,s):(P/f'data/{g}/function/{n}.mcfunction').write_text(s.strip()+'\n',encoding='utf8')
+def put(g,n,s):write_guarded(P/f'data/{g}/function/{n}.mcfunction', s.strip()+'\n',encoding='utf8')
 def build_aeroplane(root=None):
  """飞行棋保留独立资格判定与道具补回；菜单和骰子均幂等。"""
  root=Path(root) if root is not None else P/'data/aeroplane_chess/function'
  def write(name,text):
   target=root/(name+'.mcfunction');target.parent.mkdir(parents=True,exist_ok=True)
-  target.write_text(text.strip()+'\n',encoding='utf8')
+  write_guarded(target, text.strip()+'\n',encoding='utf8')
  write('input/tool_eligibility','''
 scoreboard players set #item_allowed ac_ctx 0
 scoreboard players operation #item_table ac_ctx = @s ac_table
@@ -49,7 +50,7 @@ $execute if score #tools_have ac_ctx matches 0 run function aeroplane_chess:inpu
  path=root/'input/tick.mcfunction'
  if path.exists():
   text=path.read_text(encoding='utf8');line='execute as @a[tag=ac.player] run function aeroplane_chess:input/sync_turn_tool'
-  path.write_text(text.replace(line+'\n','').rstrip()+'\n'+line+'\n',encoding='utf8')
+  write_guarded(path, text.replace(line+'\n','').rstrip()+'\n'+line+'\n',encoding='utf8')
  path=root/'ui/refresh.mcfunction'
  if path.exists():
   text=path.read_text(encoding='utf8')
@@ -57,7 +58,7 @@ $execute if score #tools_have ac_ctx matches 0 run function aeroplane_chess:inpu
   line='execute as @a[tag=ac.audience] run function aeroplane_chess:input/give'
   text=text.replace(line+'\n','')
   text=text.replace('function aeroplane_chess:system/context\n','function aeroplane_chess:system/context\n'+line+'\n',1)
-  path.write_text(text,encoding='utf8')
+  write_guarded(path, text,encoding='utf8')
 
 def build():
  for g,pre,tool,action,seat in [('guandan','gd','place_tool',0,'gd_seat'),('aeroplane_chess','ac','place',1,'ac_color')]:
@@ -87,8 +88,8 @@ execute store result storage {g}:input table int 1 run scoreboard players get @s
 function {g}:input/ensure_turn_tool with storage {g}:input""")
   put(g,'input/ensure_turn_tool',f"""$execute store result score #item_count {pre}_ctx run clear @s *[minecraft:custom_data~{{{g}:{{tool:1b,action:{action},table:$(table)}}}}] 0
 $execute if score #item_count {pre}_ctx matches 0 run function {g}:input/{tool} {{table:$(table),{spec}}}""")
-  f=root/'input/give.mcfunction';s=f.read_text(encoding='utf8');line=f'function {g}:input/tool_eligibility';s=s.replace(line+'\n','');s=line+'\n'+s;f.write_text(s,encoding='utf8')
-  f=root/('input/give_tools.mcfunction' if g=='guandan' else 'input/tools.mcfunction');s=f.read_text(encoding='utf8');original=f'$function {g}:input/{tool} {{table:$(table),{spec}}}';replacement=f'$execute if score #item_allowed {pre}_ctx matches 1 run function {g}:input/{tool} {{table:$(table),{spec}}}';s=s.replace(original,replacement);f.write_text(s,encoding='utf8')
+  f=root/'input/give.mcfunction';s=f.read_text(encoding='utf8');line=f'function {g}:input/tool_eligibility';s=s.replace(line+'\n','');s=line+'\n'+s;write_guarded(f, s,encoding='utf8')
+  f=root/('input/give_tools.mcfunction' if g=='guandan' else 'input/tools.mcfunction');s=f.read_text(encoding='utf8');original=f'$function {g}:input/{tool} {{table:$(table),{spec}}}';replacement=f'$execute if score #item_allowed {pre}_ctx matches 1 run function {g}:input/{tool} {{table:$(table),{spec}}}';s=s.replace(original,replacement);write_guarded(f, s,encoding='utf8')
   for name in ['input/tick','ui/refresh']:
-   f=root/(name+'.mcfunction');s=f.read_text(encoding='utf8');tag=f'{pre}.player' if name=='input/tick' else f'{pre}.audience';line=f'execute as @a[tag={tag}] run function {g}:input/sync_turn_tool';s=s.replace(line+'\n','').rstrip()+'\n'+line+'\n';f.write_text(s,encoding='utf8')
+   f=root/(name+'.mcfunction');s=f.read_text(encoding='utf8');tag=f'{pre}.player' if name=='input/tick' else f'{pre}.audience';line=f'execute as @a[tag={tag}] run function {g}:input/sync_turn_tool';s=s.replace(line+'\n','').rstrip()+'\n'+line+'\n';write_guarded(f, s,encoding='utf8')
 if __name__=='__main__':build()

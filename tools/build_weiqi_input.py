@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """围棋只用一个棋盘interaction；点击时复用五子棋的有界二分射线。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -10,7 +12,7 @@ OBJECTIVES.update(go_action='trigger',go_coord='trigger',go_drop='minecraft.drop
 
 def build(root=ROOT):
  def put(name,text):
-  path=root/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text.strip()+'\n',encoding='utf8')
+  path=root/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);write_guarded(path, text.strip()+'\n',encoding='utf8')
  put('input/give','''
 # 最后一格只放一个菜单；不覆盖玩家已有物品。
 clear @s minecraft:paper[minecraft:custom_data~{weiqi:{tool:1b}}]
@@ -126,6 +128,6 @@ scoreboard players set #coord_suffix go_ctx -1
   for col in range(1,20):coords.append(f'execute if score #coord_suffix go_ctx matches {row}0{col} run scoreboard players set #to go_ctx {(row-1)*19+col-1}')
  coords+=['execute unless score #to go_ctx matches 0..360 run return run function weiqi:input/invalid','execute as @e[tag=go.current,limit=1] at @s run function weiqi:game/click','tag @a[tag=go.actor] remove go.actor'];put('input/coordinate_submit','\n'.join(coords))
  path=PACK/'data/weiqi/advancement/click_cell.json';path.parent.mkdir(parents=True,exist_ok=True)
- path.write_text(json.dumps({'criteria':{'click':{'trigger':'minecraft:player_interacted_with_entity','conditions':{'entity':[{'condition':'minecraft:entity_properties','entity':'this','predicate':{'minecraft:entity_type':'minecraft:interaction'}}]}}},'rewards':{'function':'weiqi:input/click_dispatch'}},indent=2)+'\n',encoding='utf8')
+ write_guarded(path, json.dumps({'criteria':{'click':{'trigger':'minecraft:player_interacted_with_entity','conditions':{'entity':[{'condition':'minecraft:entity_properties','entity':'this','predicate':{'minecraft:entity_type':'minecraft:interaction'}}]}}},'rewards':{'function':'weiqi:input/click_dispatch'}},indent=2)+'\n',encoding='utf8')
 
 if __name__=='__main__':build();print('围棋输入和单棋盘射线已生成')

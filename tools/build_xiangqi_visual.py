@@ -4,6 +4,8 @@ Java item elements approximate a circular edge with 32 thin columns. All artwork
 and geometry are original, with editable Blockbench source preserved in .source.
 """
 from __future__ import annotations
+from build_table_pause_guards import write_guarded
+
 import base64
 import copy
 import json
@@ -29,7 +31,7 @@ LAYOUTS={4:{'step':.255,'piece_scale':.231},8:{'step':.35,'piece_scale':.317}}
 SEAT_EDGES={4:{1:2,2:3,3:0,4:1},8:{1:2,2:2,3:3,4:3,5:0,6:0,7:1,8:1}}
 
 def text_file(path,contents):
- path.parent.mkdir(parents=True,exist_ok=True);path.write_text(contents.strip()+'\n',encoding='utf-8')
+ path.parent.mkdir(parents=True,exist_ok=True);write_guarded(path, contents.strip()+'\n',encoding='utf-8')
 def json_file(path,obj):text_file(path,json.dumps(obj,ensure_ascii=False,indent=2))
 def function(name,contents):text_file(GAME/(name+'.mcfunction'),contents)
 def f(value):return f'{value:.7f}'.rstrip('0').rstrip('.') if value else '0.0'

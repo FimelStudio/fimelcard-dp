@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute store result score #length it_ctx run data get storage ito:input incoming
 execute unless score #length it_ctx matches 1..48 run return run function ito:input/reject
 function ito:input/focus

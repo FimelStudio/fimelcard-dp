@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 只对当前决策玩家展开选择；旁观者与其他玩家不会被强制弹窗。
 function love_letter:system/context
 scoreboard players set @a[tag=ll.audience] ll_pick -1

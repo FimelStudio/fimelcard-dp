@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 data modify storage aeroplane_chess:ui status set value "选择一架飞机"
 scoreboard players operation #ui_color ac_ctx = @s ac_color
 execute as @e[tag=ac.board,scores={ac_plane=0,ac_legal=1}] if score @s ac_color = #ui_color ac_ctx run function aeroplane_chess:ui/button {code:2,label:"1 号飞机"}

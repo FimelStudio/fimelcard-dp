@@ -1,5 +1,6 @@
 """棋盘游戏原创 Java 模型、纹理和可编辑 Blockbench 源文件的公共导出工具。"""
 from pathlib import Path
+from build_table_pause_guards import write_guarded
 import base64
 import copy
 import json
@@ -16,7 +17,7 @@ SIDES = ('up', 'down', 'north', 'south', 'east', 'west')
 def text_file(path, body):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(body.strip()+'\n', encoding='utf-8')
+    write_guarded(path, body.strip()+'\n', encoding='utf-8')
 
 
 def json_file(path, value):

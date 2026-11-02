@@ -8,17 +8,17 @@ scoreboard players add #epoch it_ctx 100
 scoreboard players set #hundred it_ctx 100
 scoreboard players set #four it_ctx 4
 function ito:themes/load
-execute in minecraft:overworld as @e[type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
-execute in minecraft:the_nether as @e[type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
-execute in minecraft:the_end as @e[type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
+execute in minecraft:overworld as @e[distance=0..,type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
+execute in minecraft:the_nether as @e[distance=0..,type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
+execute in minecraft:the_end as @e[distance=0..,type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
 ''')
  put('tick','''execute as @a[tag=it.player,scores={it_action=1..}] at @s run function ito:input/submit
 execute in minecraft:overworld run function ito:system/tick_dimension
 execute in minecraft:the_nether run function ito:system/tick_dimension
 execute in minecraft:the_end run function ito:system/tick_dimension
 ''')
- put('system/tick_dimension','''execute as @e[type=minecraft:item,nbt={Item:{components:{"minecraft:custom_data":{ito:{tool:1b}}}}}] at @s run function ito:input/drop
-execute as @e[type=minecraft:marker,tag=it.controller,scores={it_state=1..4}] at @s run function ito:game/tick
+ put('system/tick_dimension','''execute as @e[distance=0..,type=minecraft:item,nbt={Item:{components:{"minecraft:custom_data":{ito:{tool:1b}}}}}] at @s run function ito:input/drop
+execute as @e[distance=0..,type=minecraft:marker,tag=it.controller,scores={it_state=1..4}] at @s run function ito:game/tick
 ''')
  put('system/context','''scoreboard players operation #table it_ctx = @s ct_id
 tag @e[tag=it.current] remove it.current

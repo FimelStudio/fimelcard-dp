@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 验证期间仅用临时分数，拒绝动作不改变控制器和手牌。
 scoreboard players operation #u_say un_ctx = #say un_ctx
 scoreboard players operation #u_chosen un_ctx = #color un_ctx

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 当前执行者为掉落物；仅接受加密者本人丢出的提示册。
 execute unless data entity @s Thrower run return 0
 data modify storage decrypto:input thrower set from entity @s Thrower

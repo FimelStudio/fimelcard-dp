@@ -1,1 +1,2 @@
-dialog show @a[tag=ct.settings_actor,limit=1] {type:"minecraft:notice",title:{text:"骷髅牌·设置",color:"gold"},body:[{"type":"minecraft:plain_message","width":440,"contents":{"text":"【牌桌皮肤 · 点击选择】","color":"aqua","bold":true,"underlined":true,"click_event":{"action":"run_command","command":"trigger ct_skin_pick set 4"},"hover_event":{"action":"show_text","value":{"text":"打开默认／典雅皮肤选择；离开本页不会保存尚未提交的游戏设置。"}}}},{type:"minecraft:plain_message",width:450,contents:{text:"采用标准固定规则：2至6人，每人3张花牌（万寿菊）和1张骷髅牌（糖骷髅）；累计成功两次或成为唯一存活玩家获胜。暂无可调整设置。"}}],pause:false}
+# 公共单页文本设置；保留本游戏的实际控制器参数。
+function cardtable:settings/open

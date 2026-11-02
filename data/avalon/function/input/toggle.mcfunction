@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 tag @a[tag=av.target] remove av.target
 execute as @a[tag=av.audience] if score @s av_seat = #action av_ctx run tag @s add av.target
 execute unless entity @a[tag=av.target,limit=1] run return 0

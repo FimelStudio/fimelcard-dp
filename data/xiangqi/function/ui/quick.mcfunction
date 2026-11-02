@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 function xiangqi:input/context
 execute unless entity @s[tag=xq.actor] run return 0
 execute if score #ui_tool xq_ctx matches 1 if entity @e[tag=xq.current,scores={xq_state=1..2},limit=1] run return run function xiangqi:ui/resign

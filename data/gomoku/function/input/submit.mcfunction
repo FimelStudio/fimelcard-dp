@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # epoch*100 + 动作。回合、阶段或重载变化后，旧窗口不能提交操作。
 scoreboard players operation @s gm_ui_tmp = @s gm_action
 scoreboard players set @s gm_action 0

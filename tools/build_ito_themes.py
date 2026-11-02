@@ -1,3 +1,4 @@
+from build_table_pause_guards import write_guarded
 from build_ito import *
 THEMES='''上课偷偷干什么最开心|假装认真点头|老师宣布全班提前放学
 什么事情最容易让全班憋不住笑|笔掉地上|老师一本正经念错自己的名字
@@ -103,5 +104,5 @@ execute if score @s it_round matches 3 run tellraw @a[tag=it.audience] [{text:"�
 function ito:hud/refresh
 function ito:visual/refresh
 ''')
- (P/'docs/命悬一线题库.json').write_text(json.dumps(themes,ensure_ascii=False,indent=2),encoding='utf8')
+ write_guarded(P/'docs/命悬一线题库.json', json.dumps(themes,ensure_ascii=False,indent=2),encoding='utf8')
 if __name__=='__main__':build()

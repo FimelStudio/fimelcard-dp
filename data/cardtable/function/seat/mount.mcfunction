@@ -1,3 +1,6 @@
+# A chess game may assign a previously hidden stable slot; reconcile all players together.
+scoreboard players operation #mount_table ct_ctx = @s ct_id
+execute as @e[type=minecraft:marker,tag=ct.controller] if score @s ct_id = #mount_table ct_ctx at @s run function cardtable:chairs/layout/ensure
 # 按牌桌号和座位号寻找唯一座椅
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 scoreboard players operation #ctx_seat ct_ctx = @s ct_seat

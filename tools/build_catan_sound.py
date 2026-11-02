@@ -3,6 +3,7 @@
 Original downloads, authors' license declarations and hashes live in the resource
 pack's .source/catan/audio. No other game's sounds.json entries are replaced.
 """
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import argparse
 import hashlib
@@ -73,7 +74,7 @@ def build_assets(rp=RP):
             item['stream'] = True
         sounds['catan.' + event] = {'sounds': [item], 'subtitle': 'subtitles.card.catan.' + event}
         subtitles['subtitles.card.catan.' + event] = subtitle
-    sound_file.write_text(json.dumps(sounds, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    write_guarded(sound_file, json.dumps(sounds, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     for locale in ('zh_cn', 'en_us'):
         path = rp / 'assets/card/lang' / (locale + '.json')
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -83,12 +84,12 @@ def build_assets(rp=RP):
             'development': 'Development card played', 'win': 'Victory', 'lose': 'Game over',
             'illegal': 'Action unavailable', 'bgm': 'Pastoral music'}
         values.update(subtitles if locale == 'zh_cn' else {'subtitles.card.catan.' + k: v for k, v in english.items()})
-        path.write_text(json.dumps(values, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        write_guarded(path, json.dumps(values, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     duration = float(manifest['audio']['bgm']['format']['format']['duration'])
     manifest['loop_ticks'] = math.ceil(duration * 20)
     manifest['retained_files'] = {str(path.relative_to(source)).replace('\\', '/'): sha(path)
         for path in sorted(source.rglob('*')) if path.is_file() and path.name not in ('manifest.json', 'README.md')}
-    (source / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    write_guarded(source / 'manifest.json', json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     return manifest['loop_ticks']
 
 
@@ -96,7 +97,7 @@ def build(root=PACK / 'data/catan/function', loop_ticks=1000):
     def put(name, lines):
         path = root / 'sound' / (name + '.mcfunction')
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
+        write_guarded(path, ('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
     put('load', [f'scoreboard objectives add {key} {kind}' for key, kind in OBJECTIVES.items()] + [
         '# ca_ctx belongs to the game installer, not to this module.',
         'execute as @a run function catan:sound/stop_player'])

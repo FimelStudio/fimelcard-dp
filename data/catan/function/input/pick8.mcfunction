@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score #mode ca_ctx matches 1 run function catan:input/hex {id:0,x:-2483,z:-4301,rx:1242,rz:1434,bound:2483068}
 execute if score #mode ca_ctx matches 1 run function catan:input/hex {id:1,x:0,z:-4301,rx:1242,rz:1434,bound:2483068}
 execute if score #mode ca_ctx matches 1 run function catan:input/hex {id:2,x:2483,z:-4301,rx:1242,rz:1434,bound:2483068}

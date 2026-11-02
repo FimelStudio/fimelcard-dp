@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score #action av_ctx matches 31 unless score @a[tag=av.actor,limit=1] av_role matches 4..7 run return run tellraw @a[tag=av.actor,limit=1] {text:"好人只能提交任务成功，请丢出绿色染料。",color:"red"}
 scoreboard players operation #value av_ctx = #action av_ctx
 scoreboard players remove #value av_ctx 29

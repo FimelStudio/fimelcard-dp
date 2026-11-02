@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """围棋单页即时设置；会话绑定玩家、桌号、游戏、epoch与reload代次。"""
+from build_table_pause_guards import write_guarded
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 
@@ -25,7 +28,7 @@ def js(value):return json.dumps(value,ensure_ascii=False,separators=(',',':'))
 
 def build(root=ROOT):
  def put(name,text):
-  path=root/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text.strip()+'\n',encoding='utf8')
+  path=root/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);write_guarded(path, augment_dialog(text).strip()+'\n',encoding='utf8')
  put('settings/open','''
 execute unless entity @a[tag=ct.settings_actor,tag=ct.player,limit=1] run return 0
 execute unless score @s ct_game matches 20 run return 0

@@ -1,4 +1,5 @@
 """情书私人手牌 BetterTitle 面板，仅读取本桌本人的逻辑手牌。"""
+from build_table_pause_guards import write_guarded
 import json
 from pathlib import Path
 
@@ -10,7 +11,7 @@ ROLES=['spy','guard','priest','baron','handmaid','prince','chancellor','king','c
 
 def put(name,body):
     p=ROOT/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(body.strip()+'\n',encoding='utf-8')
+    write_guarded(p, body.strip()+'\n',encoding='utf-8')
 
 
 def functions():
@@ -135,8 +136,8 @@ def fonts():
         providers.append({'type':'bitmap','file':f'card:font/love_letter/{role}.png','height':56,'ascent':56,'chars':[glyph]})
         negative[glyph]=-(round(56*w/h)+1)/2
     providers += [{'type':'space','advances':{chr(0xE90A):8}},{'type':'reference','id':'minecraft:default_mod'}]
-    (target/'hud.json').write_text(json.dumps({'providers':providers},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    (target/'hud_neg.json').write_text(json.dumps({'providers':[{'type':'space','advances':negative},{'type':'reference','id':'minecraft:default_neg'}]},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    write_guarded(target/'hud.json', json.dumps({'providers':providers},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    write_guarded(target/'hud_neg.json', json.dumps({'providers':[{'type':'space','advances':negative},{'type':'reference','id':'minecraft:default_neg'}]},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
 
 if __name__=='__main__':

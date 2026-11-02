@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 data modify storage weiqi:ui black_name set value {text:"黑方"}
 data modify storage weiqi:ui white_name set value {text:"白方"}
 data modify storage weiqi:ui black_name set from entity @e[tag=go.current,limit=1] data.weiqi.black_name

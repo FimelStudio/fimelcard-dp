@@ -1,4 +1,5 @@
 """生成中国象棋按桌隔离的音效入口。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 
 
@@ -7,7 +8,7 @@ def build(root):
     target = root / 'sound'
     target.mkdir(parents=True, exist_ok=True)
     def put(name, lines):
-        (target / (name + '.mcfunction')).write_text('\n'.join(lines) + '\n', encoding='utf-8')
+        write_guarded(target / (name + '.mcfunction'), '\n'.join(lines) + '\n', encoding='utf-8')
     put('landing', [
         'execute if score @s xq_check matches 1 run return run function xiangqi:sound/check',
         'scoreboard players set #sound_captured xq_ctx 0',

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 已由本桌状态推进或核验过的玩家入口调用；不改 actor，避免打断正在提交的出牌。
 execute unless entity @s[tag=un.player,tag=ct.player,tag=un.audience] run return 0
 execute unless score @s un_table = @e[tag=un.current,limit=1] ct_id run return 0

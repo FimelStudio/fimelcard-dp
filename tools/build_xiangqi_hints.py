@@ -1,4 +1,6 @@
 """生成选中棋子的合法目标提示，只读规则缓存。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 from build_xiangqi_ai import candidates
 
@@ -8,7 +10,7 @@ def build(root: Path):
     target.mkdir(parents=True, exist_ok=True)
 
     def put(name, lines):
-        (target / (name + '.mcfunction')).write_text(
+        write_guarded(target / (name + '.mcfunction'),
             ('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
 
     put('clear', '''
@@ -57,8 +59,8 @@ scoreboard players operation #hint_kind xq_ctx *= #side xq_ctx
                           'function xiangqi:engine/check_move',
                           f'execute if score #legal xq_ctx matches 1 run scoreboard players set #vis_sq xq_ctx {square}',
                           'execute if score #legal xq_ctx matches 1 positioned ~ ~1.035 ~ summon minecraft:item_display run function xiangqi:hints/display']
-            path=target/f'candidates/s{source}_k{kind}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
-        path=target/f'route/s{source}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);path.write_text('\n'.join(routes)+'\n',encoding='utf-8')
+            path=target/f'candidates/s{source}_k{kind}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);write_guarded(path, '\n'.join(lines)+'\n',encoding='utf-8')
+        path=target/f'route/s{source}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);write_guarded(path, '\n'.join(routes)+'\n',encoding='utf-8')
     put('destinations', destinations)
     put('display', '''
 tag @s add xq.visual

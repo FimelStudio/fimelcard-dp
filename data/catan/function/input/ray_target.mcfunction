@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players set #ray_low ca_ctx 0
 scoreboard players set #ray_high ca_ctx 32768
 scoreboard players set #ray_count ca_ctx 14

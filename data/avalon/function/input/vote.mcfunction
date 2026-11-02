@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players operation #value av_ctx = #action av_ctx
 scoreboard players remove #value av_ctx 19
 scoreboard players operation @a[tag=av.actor,limit=1] av_vote = #value av_ctx

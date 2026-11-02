@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 $execute unless score @s ca_side matches $(from) unless score @s ca_side matches $(to) run return run function catan:ui/open
 function catan:ui/begin
 scoreboard players set @s ca_panel 5

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players remove @s ca_vlife 1
 data modify storage catan:visual motion set from entity @s item.components."minecraft:custom_data".catan_fx
 execute store result storage catan:visual remaining int 1 run scoreboard players get @s ca_vlife

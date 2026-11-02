@@ -3,6 +3,8 @@
 这是本地轻量规则策略，非围棋分析引擎。三档只改变候选数量和局部权重。
 不依赖外部服务，也不读取真人隐藏状态（围棋全部棋子本来公开）。
 """
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / 'data/weiqi/function/ai'
@@ -12,7 +14,7 @@ go_aiattempt go_aimoves go_tested go_aiweight'''.split()}
 
 def put(name, lines):
     p=ROOT/(name+'.mcfunction'); p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
+    write_guarded(p, ('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
 
 
 def main():

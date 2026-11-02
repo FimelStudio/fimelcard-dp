@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score #code ca_ctx matches 300 unless score @s ca_panel matches 1 run return run function catan:ui/open
 execute if score #code ca_ctx matches 501..504 unless score @s ca_panel matches 2 run return run function catan:ui/open
 execute if score #code ca_ctx matches 600..603 unless score @s ca_panel matches 4 run return run function catan:ui/open

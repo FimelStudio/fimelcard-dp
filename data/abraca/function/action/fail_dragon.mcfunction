@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute store result score #roll ab_ctx run random value 1..3
 scoreboard players operation @a[tag=ab.actor,limit=1] ab_hp -= #roll ab_ctx
 scoreboard players operation #ctx ab_ctx = @s ab_id

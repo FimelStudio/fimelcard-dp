@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 每次重画更换独立 nonce；旧选择窗即使同一回合也不能重放。
 scoreboard players add #ui_serial gd_ctx 1
 execute if score #ui_serial gd_ctx matches 200001.. run scoreboard players add #ui_load gd_ctx 1

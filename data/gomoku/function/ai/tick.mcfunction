@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute unless score @s ct_state matches 1 run return run function gomoku:ai/reset
 execute unless score @s gm_state matches 1 run return run function gomoku:ai/reset
 execute unless score @s gm_result matches 0 run return run function gomoku:ai/reset

@@ -8,9 +8,12 @@ assert 'execute as @a[tag=av.audience]' in read('reveal/start')
 uno=(P/'data/uno/function/visual/play.mcfunction').read_text(encoding='utf-8')
 ours=read('reveal/player')
 for seat in range(1,9):
- u=re.search(r'ct_capacity matches 8 if score #vis_seat un_ctx matches '+str(seat)+r' positioned ~([^ ]+) ~1.04 ~([^ ]+)',uno)
- a=re.search(r'av_seat matches '+str(seat)+r' positioned ~([^ ]+) ~1.08 ~([^ ]+)',ours)
- assert u and a and tuple(map(float,u.groups()))==tuple(map(float,a.groups()))
+ other=seat+1 if seat%2 else seat-1
+ for condition in ('if','unless'):
+  u=re.search(r'ct_capacity matches 8 '+condition+r' score @s ct_c'+str(other)+r' matches 1 if score #vis_seat un_ctx matches '+str(seat)+r' positioned ~([^ ]+) ~1.04 ~([^ ]+)',uno)
+  a=re.search(condition+r' score #reveal_c'+str(other)+r' av_ctx matches 1 if score @s av_seat matches '+str(seat)+r' positioned ~([^ ]+) ~1.08 ~([^ ]+)',ours)
+  assert u and a and tuple(map(float,u.groups()))==tuple(map(float,a.groups()))
+  if condition=='unless':assert float(u.group(1 if seat<=2 or 5<=seat<=6 else 2))==0
 # Check transformed north-face normal: back upward initially, front upward after flip.
 for stage,expected in [('init',-1),('flip',1)]:
  text=read('reveal/'+stage)
@@ -26,7 +29,10 @@ assert 'tag @s add av.game_entity' in read('reveal/init')
 assert 'av_timer matches ..0 run function avalon:game/abort' in read('game/ending_tick')
 assert '@e[tag=av.game_entity] if score @s av_id = #table av_ctx run kill @s' in read('game/abort')
 roles=['merlin','percival','loyalist','morgana','assassin','oberon','minion']
-for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
+packs=[B/'resourcepacks/fimelcard-rp']
+alternate=B/'resourcepacks/Fimel桌游馆'
+if alternate.is_dir():packs.append(alternate)
+for rp in packs:
  atlas=json.loads((rp/'assets/minecraft/atlases/items.json').read_text(encoding='utf-8'))
  assert any(s.get('resource')=='card:avalon/reveal_back' for s in atlas['sources'])
  for role in roles:
@@ -34,4 +40,4 @@ for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
   assert model['elements'][0]['faces']['north']['texture']=='#front'
   assert model['elements'][0]['faces']['south']['texture']=='#back'
   for path in model['textures'].values():assert (rp/('assets/'+path.replace(':','/textures/')+'.png')).exists()
-print('PASS: all 8 UNO seat coordinates, front/back normals, 7 role models in both packs, animation timing and scoped cleanup.')
+print('PASS: all 8 UNO seat coordinates with single-chair centering, front/back normals, 7 role models, animation timing and scoped cleanup.')

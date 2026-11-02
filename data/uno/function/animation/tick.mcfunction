@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 单桌持久队列，每两刻一张；正常出牌/等待质疑时也继续播放。
 execute unless score @s un_anim_wait matches 0..1 run scoreboard players set @s un_anim_wait 0
 execute if score @s un_anim_wait matches 1 run return run scoreboard players remove @s un_anim_wait 1

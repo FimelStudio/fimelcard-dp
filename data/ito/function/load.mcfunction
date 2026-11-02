@@ -28,6 +28,6 @@ scoreboard players add #epoch it_ctx 100
 scoreboard players set #hundred it_ctx 100
 scoreboard players set #four it_ctx 4
 function ito:themes/load
-execute in minecraft:overworld as @e[type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
-execute in minecraft:the_nether as @e[type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
-execute in minecraft:the_end as @e[type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
+execute in minecraft:overworld as @e[distance=0..,type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
+execute in minecraft:the_nether as @e[distance=0..,type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload
+execute in minecraft:the_end as @e[distance=0..,type=minecraft:marker,tag=it.controller] at @s run function ito:system/reload

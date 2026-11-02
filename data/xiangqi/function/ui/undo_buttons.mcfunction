@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 data modify storage xiangqi:ui phase set value "悔棋"
 execute if entity @e[tag=xq.current,scores={xq_undo=0},limit=1] run function xiangqi:ui/button {code:6,label:"申请悔棋",color:"yellow"}
 execute unless entity @e[tag=xq.current,scores={xq_undo=0},limit=1] if score @s xq_side = @e[tag=xq.current,limit=1] xq_undo run data modify storage xiangqi:ui phase set value "悔棋申请已发出，等待对手回应。"

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 编码：当前 epoch × 1000 + 动作；旧对话框及选色页不能操作后续回合。
 scoreboard players operation @s un_ui_tmp = @s un_action
 scoreboard players set @s un_action 0

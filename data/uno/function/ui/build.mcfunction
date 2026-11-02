@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 function uno:ui/append {"id":0,"glyph":"","name":"红0"}
 function uno:ui/append {"id":1,"glyph":"","name":"红1"}
 function uno:ui/append {"id":2,"glyph":"","name":"红2"}

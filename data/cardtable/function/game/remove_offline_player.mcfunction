@@ -5,11 +5,11 @@ execute if entity @s[tag=hb.player] run function hanabi:player/clear_state
 execute if entity @s[tag=ab.player] run function abraca:player/clear_state
 execute if entity @s[tag=bw.player] run function bullshit:player/clear_state
 execute if entity @s[tag=dc.player] run function decrypto:player/clear_state
-execute if entity @s[tag=cp.player] run function critical_point:game/player_left
+execute if entity @s[tag=cp.player] run function critical_point:player/clear_state
 
 execute if entity @s[tag=wq.player] run function wenfei:player/clear_state
 
-# 离线即视为离开牌桌；保持静默，不发送入座或离座提示
+# 仅用于旧局已经结束/桌被移除的重连者；仍在进行的同局交给session恢复。
 execute if entity @s[tag=sk.player] run function skull:player/clear_state
 execute if entity @s[tag=dd.player] run function doudizhu:player/clear_state
 execute if entity @s[tag=un.player] run function uno:player/clear_state

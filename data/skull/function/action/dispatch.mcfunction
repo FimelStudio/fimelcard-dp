@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score @s sk_state matches 2..3 if score @s sk_turn = #actor_seat sk_ctx if score #choice sk_ctx matches 11..29 run return run function skull:auction/bid
 execute if score @s sk_state matches 2..3 if score @s sk_turn = #actor_seat sk_ctx if score #choice sk_ctx matches 70..74 run return run function skull:auction/bid
 execute if score @s sk_state matches 3 if score @s sk_turn = #actor_seat sk_ctx if score #choice sk_ctx matches 30 run return run function skull:auction/pass

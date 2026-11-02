@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score #ui_card ll_ctx matches 0 run data merge storage love_letter:ui {"role_name":"0 · 间谍","role":{"text":"0 · 间谍","color":"yellow"},"effect":"本轮唯一仍存活、曾打出或弃过间谍的玩家额外获得1枚好感。","glyph":""}
 execute if score #ui_card ll_ctx matches 1 run data merge storage love_letter:ui {"role_name":"1 · 侍卫","role":{"text":"1 · 侍卫","color":"yellow"},"effect":"选择另一位未受保护的玩家，猜测其手牌（不能猜侍卫），猜中则淘汰。","glyph":""}
 execute if score #ui_card ll_ctx matches 2 run data merge storage love_letter:ui {"role_name":"2 · 牧师","role":{"text":"2 · 牧师","color":"yellow"},"effect":"秘密查看另一位未受保护玩家的手牌。","glyph":""}

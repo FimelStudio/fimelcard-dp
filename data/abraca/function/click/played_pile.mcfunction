@@ -1,4 +1,9 @@
 advancement revoke @s only abraca:click/played_pile
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 tag @s add ab.pile_actor
 scoreboard players set #pile_found ab_ctx 0
 execute if entity @e[type=minecraft:interaction,tag=ab.pile_button,distance=..6,sort=nearest,limit=1] run scoreboard players set #pile_found ab_ctx 1

@@ -1,4 +1,6 @@
 """生成国际象棋输入、Dialog、桌内设置和规则，不修改规则引擎或公共牌桌。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -10,7 +12,7 @@ ROOT = PACK / "data/chess/function"
 def put(name, lines):
     path = ROOT / (name + ".mcfunction")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(lines.strip() + "\n", encoding="utf-8")
+    write_guarded(path, lines.strip() + "\n", encoding="utf-8")
 
 
 def js(value):
@@ -287,7 +289,7 @@ sections = [
     ("吃过路兵与升变", "对方兵从起始格一步前进两格、恰好经过己方相邻兵可吃的位置时，仅在紧接的下一手可吃过路兵；选中己方兵并点击对方兵经过的空格。兵到达最后一横行时必须升变为后、车、象或马，通过普通玩家可用的面板选择。"),
     ("胜负与和棋", "将死或对手认输获胜。无合法走法且未被将军是逼和；双方约定和棋、子力不足、五次重复、75回合无吃子或兵移动时自动和棋，末步将死优先。轮到自己时，可在面板认领当前局面三次重复或50回合无吃子和兵移动的和棋；系统会复验。结束5秒后返回大厅，保留终局棋面，直到切换游戏或开始新局。"),
     ("设置与计时", "大厅的同一设置页可即时选择配色、棋盘方向、黑白方分配、人机难度、可走格提示及每人无限制、5、10、15、20、25或30分钟。自行选边时坐到所选颜色一侧，人机对局由电脑执另一色；随机模式由系统分配黑白。开局自动安排对应一侧的座位，始终白方先走。计时显示在棋盘上方，只扣当前行棋方；升变等待计时，移动动画暂停计时，无加秒。超时一般判负；对手已无任何可能将死的局面则和棋。"),
-    ("权限与中止", "正常游玩无需管理员权限。玩家离线会中止本场并返回大厅；/reload保留局面和时钟，旧面板请按Q重开。可用桌边结束投票中止。管理员可在桌旁执行 /function chess:admin/abort。"),
+    ("权限与中止", "正常游玩无需管理员权限。玩家离线后暂停，等待上线或结束游戏；/reload保留局面和时钟，旧面板请按Q重开。可用桌边结束投票中止。管理员可在桌旁执行 /function chess:admin/abort。"),
 ]
 rules = {"type": "minecraft:notice", "title": {"text": "国际象棋 · 游戏规则", "color": "gold", "bold": True}, "body": [], "pause": False}
 for title, content in sections:
@@ -297,7 +299,7 @@ put("rules/show", "dialog show @a[tag=ct.rules_actor,limit=1] " + js(rules))
 advancement = {"criteria": {"click": {"trigger": "minecraft:player_interacted_with_entity", "conditions": {"entity": [{"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"minecraft:entity_type": "minecraft:interaction"}}, {"condition": "minecraft:entity_scores", "entity": "this", "scores": {"ch_sq": {"min": 0, "max": 63}}}]}}}, "rewards": {"function": "chess:input/click_dispatch"}}
 adv_path = PACK / "data/chess/advancement/click_cell.json"
 adv_path.parent.mkdir(parents=True, exist_ok=True)
-adv_path.write_text(json.dumps(advancement, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+write_guarded(adv_path, json.dumps(advancement, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 # 独立 GameTest 世界调用这些宏，检查所有 Dialog 的 codec 和动态模板。
 sample_ui = {"phase": "轮到白方行棋。", "buttons": [{"label": {"text": "认输"}, "action": {"type": "minecraft:run_command", "command": "trigger ch_action set 101"}}], "code": 101, "label": "认输", "color": "red"}
@@ -313,5 +315,5 @@ for name, values in [("DEFAULT", (0,0,0,0,10,2,1)), ("MINIMUM", (0,0,0,0,0,1,0))
     sample_settings["close"] = 100000000
     checks += ["data merge storage chess:settings " + js(sample_settings), "function chess:settings/root", "say CHESS_DIALOG_SETTING_" + name + "_COMPILED"]
 checks += ["function chess:rules/show", "say CHESS_DIALOG_RULES_COMPILED", "say CHESS_DIALOGS_END"]
-(PACK / "tools/test_chess_dialogs.mcfunction").write_text("\n".join(checks) + "\n", encoding="utf-8")
+write_guarded(PACK / "tools/test_chess_dialogs.mcfunction", "\n".join(checks) + "\n", encoding="utf-8")
 print("Chess input / dialogs / settings / rules generated")

@@ -3,6 +3,8 @@
 规则引擎、对话框、展示分别由独立的 build_weiqi_* 脚本维护。
 围棋独占 go_ / go.*，绝不复用问非所答的 wq_ 状态。
 """
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import importlib.util
 import json
@@ -23,7 +25,7 @@ OBJECTIVES['go_drop'] = 'minecraft.dropped:minecraft.paper'
 def put(name, lines):
     p = ROOT / (name + '.mcfunction')
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
+    write_guarded(p, ('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
 
 
 def say(text, target='@a[tag=go.audience]', color='yellow'):

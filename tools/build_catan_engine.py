@@ -1,4 +1,5 @@
 """生成21号卡坦岛纯NBT规则引擎；不依赖真人/展示实体，不改其他模块。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 from textwrap import dedent
 import json
@@ -8,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]/'data/catan/function/engine'
 
 def put(name,text):
     p=ROOT/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text('\n'.join(s.strip() for s in dedent(text).strip().splitlines())+'\n',encoding='utf-8')
+    write_guarded(p, '\n'.join(s.strip() for s in dedent(text).strip().splitlines())+'\n',encoding='utf-8')
 
 def snbt(v):return json.dumps(v,separators=(',',':'),ensure_ascii=False)
 def fail(n):return f'return run function catan:engine/error {{id:{n}}}'

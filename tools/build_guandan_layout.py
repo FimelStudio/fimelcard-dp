@@ -1,8 +1,9 @@
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import json,math,shutil
 from PIL import Image
 P=Path(__file__).resolve().parents[1];F=P/'data/guandan/function';R=P.parents[3]/'resourcepacks/fimelcard-rp'
-def put(n,s):(F/(n+'.mcfunction')).write_text(s.strip()+'\n',encoding='utf8')
+def put(n,s):write_guarded(F/(n+'.mcfunction'), s.strip()+'\n',encoding='utf8')
 def build_layout():
  full={};part={};neg={}
  for v,name in enumerate(['normal','selected','wild','selected_wild']):
@@ -12,8 +13,8 @@ def build_layout():
    for j in range(6):
     box=c.crop((0,j*8,36,j*8+8)).getchannel('A').getbbox();a=math.floor((box[2] if box else 0)*9/8+.5)+1;part[chr(0xD000+v*324+i*6+j)]=42-a
  for name,adv in [(f'hand_{i}',full) for i in range(8)]+[('stack',part)]:
-  q=R/f'assets/card/font/guandan/{name}.json';d=json.loads(q.read_text(encoding='utf8'));d['providers']=[x for x in d['providers'] if x['type']!='space']+[{'type':'space','advances':adv}];q.write_text(json.dumps(d,ensure_ascii=False),encoding='utf8')
- q=R/'assets/card/font/guandan/hud_neg.json';d=json.loads(q.read_text(encoding='utf8'));d['providers'][0]['advances'].update(neg);q.write_text(json.dumps(d,ensure_ascii=False),encoding='utf8')
+  q=R/f'assets/card/font/guandan/{name}.json';d=json.loads(q.read_text(encoding='utf8'));d['providers']=[x for x in d['providers'] if x['type']!='space']+[{'type':'space','advances':adv}];write_guarded(q, json.dumps(d,ensure_ascii=False),encoding='utf8')
+ q=R/'assets/card/font/guandan/hud_neg.json';d=json.loads(q.read_text(encoding='utf8'));d['providers'][0]['advances'].update(neg);write_guarded(q, json.dumps(d,ensure_ascii=False),encoding='utf8')
  for name in ['hud/type','ui/type']:
   s=(F/(name+'.mcfunction')).read_text(encoding='utf8')
   for v in range(4):
@@ -64,12 +65,12 @@ function guandan:hud/public_type
 data remove storage guandan:hud shown[0]
 function guandan:hud/public_cards''')
  put('hud/public_type','\n'.join(f'execute if score #public_type gd_ctx matches {i} run data modify storage fimel_title:io text.extra append value {{text:"{chr(0xEC00+i)}",color:"white"}}' for i in range(54)))
- q=F/'hud/build.mcfunction';s=q.read_text(encoding='utf8').replace('function guandan:hud/public\n','').replace('function guandan:hud/status\n','');s=s.replace('scoreboard players operation panel_id fbt_io','function guandan:hud/public\nscoreboard players operation panel_id fbt_io');q.write_text(s,encoding='utf8')
+ q=F/'hud/build.mcfunction';s=q.read_text(encoding='utf8').replace('function guandan:hud/public\n','').replace('function guandan:hud/status\n','');s=s.replace('scoreboard players operation panel_id fbt_io','function guandan:hud/public\nscoreboard players operation panel_id fbt_io');write_guarded(q, s,encoding='utf8')
  provider={'type':'bitmap','file':'card:font/guandan/normal.png','height':24,'ascent':12,'chars':[''.join(chr(0xEC00+r*9+c) for c in range(9)) for r in range(6)]};adv={};im=Image.open(R/'assets/card/textures/font/guandan/normal.png')
  for i in range(54):
   right=im.crop((i%9*36,i//9*48,i%9*36+36,i//9*48+48)).getchannel('A').getbbox()[2];adv[chr(0xEC00+i)]=-(math.floor(right*24/48+.5)+1)/2
  for n,d in [('public',{'providers':[provider,{'type':'reference','id':'minecraft:default_mod'}]}),('public_neg',{'providers':[{'type':'space','advances':adv},{'type':'reference','id':'minecraft:default_neg'}]})]:
-  (R/f'assets/card/font/guandan/{n}.json').write_text(json.dumps(d,ensure_ascii=False),encoding='utf8')
+  write_guarded(R/f'assets/card/font/guandan/{n}.json', json.dumps(d,ensure_ascii=False),encoding='utf8')
  for folder in ['assets/card/font/guandan','assets/card/textures/font/guandan']:shutil.copytree(R/folder,R.parent/'Fimel桌游馆'/folder,dirs_exist_ok=True)
  __import__('fix_card_stack_seams').build()
 if __name__=='__main__':build_layout()

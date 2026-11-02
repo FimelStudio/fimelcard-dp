@@ -4,6 +4,8 @@
 重复规则采用完整局面键；三次同局面判和，只有一方全程连续将军则该方负。
 复杂长捉与一将一捉不自动裁判，非吃子 120 半回合采用明确的休闲简化规则。
 """
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 from textwrap import dedent
 import re
@@ -14,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1] / 'data/xiangqi/function/engine'
 def put(name, text):
     path = ROOT / (name + '.mcfunction')
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text('\n'.join(re.sub(r' {2,}', ' ', s.strip()) for s in dedent(text).strip().splitlines())+'\n', encoding='utf-8')
+    write_guarded(path, '\n'.join(re.sub(r' {2,}', ' ', s.strip()) for s in dedent(text).strip().splitlines())+'\n', encoding='utf-8')
 
 
 def sq(f, r):

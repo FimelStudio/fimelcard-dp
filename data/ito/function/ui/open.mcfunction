@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 function ito:input/context
 execute unless score #valid it_ctx matches 1 run return 0
 execute if score @e[tag=it.current,limit=1] it_input matches 1 if score @e[tag=it.current,limit=1] it_state matches 2 run return run function ito:form/open

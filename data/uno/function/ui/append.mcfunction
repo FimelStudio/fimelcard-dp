@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 $execute store result score #ui_count un_ctx if entity @e[tag=un.uihand,scores={un_card=$(id)}]
 execute if score #ui_count un_ctx matches 0 run return 0
 # 每行仍为8牌型；七个9px换行给54px牌面留出9px行距。

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # actor必须同时属于这张公共牌桌及围棋对局，复盘另校验原局资格。
 tag @a[tag=go.actor] remove go.actor
 tag @e[tag=go.current] remove go.current

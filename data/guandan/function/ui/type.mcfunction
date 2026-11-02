@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score #ui_type gd_ctx matches 0 run data merge storage guandan:ui {"card_name":"梅花2","slices":["퀀","퀁","퀂","퀃","퀄","퀅"],"selected_slices":["텄","텅","텆","텇","텈","텉"],"wild_slices":["튈","튉","튊","튋","튌","튍"],"selected_wild_slices":["폌","폍","폎","폏","폐","폑"]}
 execute if score #ui_type gd_ctx matches 1 run data merge storage guandan:ui {"card_name":"梅花3","slices":["퀆","퀇","퀈","퀉","퀊","퀋"],"selected_slices":["텊","텋","테","텍","텎","텏"],"wild_slices":["튎","튏","튐","튑","튒","튓"],"selected_wild_slices":["폒","폓","폔","폕","폖","폗"]}
 execute if score #ui_type gd_ctx matches 2 run data merge storage guandan:ui {"card_name":"梅花4","slices":["퀌","퀍","퀎","퀏","퀐","퀑"],"selected_slices":["텐","텑","텒","텓","텔","텕"],"wild_slices":["튔","튕","튖","튗","튘","튙"],"selected_wild_slices":["폘","폙","폚","폛","폜","폝"]}

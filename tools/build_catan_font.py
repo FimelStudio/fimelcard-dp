@@ -3,6 +3,7 @@
 先运行 build_catan_visual.py 生成资源牌，再执行本脚本和 build_catan_ui.py。
 资源图案沿用资源牌；开发牌标记为本项目原创像素图形，保留独立源清单。
 """
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import hashlib
 import json
@@ -62,15 +63,15 @@ def build(rp=RP):
         providers.append({'type': 'bitmap', 'file': 'card:font/catan/' + name + '.png', 'ascent': 12, 'height': 14, 'chars': [glyph]})
     font = root / 'assets/card/font/catan.json'
     font.parent.mkdir(parents=True, exist_ok=True)
-    font.write_text(json.dumps({'providers': providers}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    write_guarded(font, json.dumps({'providers': providers}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     source_dir = root / '.source/catan/font'
     source_dir.mkdir(parents=True, exist_ok=True)
-    (source_dir / 'manifest.json').write_text(json.dumps({'font': FONT_ID, 'source_generator': 'fimel_cards/tools/build_catan_font.py',
+    write_guarded(source_dir / 'manifest.json', json.dumps({'font': FONT_ID, 'source_generator': 'fimel_cards/tools/build_catan_font.py',
         'rebuild': ['python tools/build_catan_visual.py', 'python tools/build_catan_font.py', 'python tools/build_catan_ui.py'],
         'resources': sources, 'development_icons': 'Fimel Cards 原创像素图形；不含商业 CATAN 图稿',
         'glyphs': dict(zip(RESOURCE_NAMES + DEVELOPMENT_NAMES, RESOURCE_GLYPHS + DEVELOPMENT_GLYPHS)),
         'display': {'height': 14, 'ascent': 12, 'slice_pixels': [32, 32], 'text_color': 'white', 'line_spacing': '多行文本使用空行，防止高于默认文字的图标重叠'}}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    (source_dir / 'README.md').write_text('''# 卡坦岛对话框图片字体
+    write_guarded(source_dir / 'README.md', '''# 卡坦岛对话框图片字体
 
 字体为 `card:catan`，仅用于卡坦岛 Dialog 内的资源及开发牌图标，不修改其他游戏字体。
 木材、砖块、羊毛、粮食、矿石复用本资源包现有资源牌图案；五种开发牌图标由 Fimel Cards 原创。

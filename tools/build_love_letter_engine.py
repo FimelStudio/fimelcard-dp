@@ -1,4 +1,6 @@
 """情书 21 牌版纯规则引擎；marker 保存手牌，控制器保存牌库与阶段。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 
 PACK = Path(__file__).resolve().parents[1]
@@ -10,7 +12,7 @@ def build(root=ROOT):
     def put(name, lines):
         p = root / (name + '.mcfunction')
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(('\n'.join(lines) if isinstance(lines, list) else lines).strip()+'\n', encoding='utf-8')
+        write_guarded(p, ('\n'.join(lines) if isinstance(lines, list) else lines).strip()+'\n', encoding='utf-8')
 
     put('engine/start_round', '''
 # 仅初始化新一轮；累计好感保留。首位 0 随机，非 0 为实际座号。

@@ -1,5 +1,8 @@
 """生成 UNO 单页即时设置；26.2 原版输入控件没有值改变时的提交回调。"""
+from build_table_pause_guards import write_guarded
 
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 
@@ -11,7 +14,7 @@ def build(root: Path = DEFAULT_ROOT) -> None:
     def put(name: str, text: str) -> None:
         path = root / (name + ".mcfunction")
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text.strip() + "\n", encoding="utf-8")
+        write_guarded(path, augment_dialog(text).strip() + "\n", encoding="utf-8")
 
     def js(value: object) -> str:
         return json.dumps(value, ensure_ascii=False, separators=(",", ":"))

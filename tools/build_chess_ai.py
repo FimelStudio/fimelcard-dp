@@ -4,6 +4,7 @@ No search writes the real board, clocks, rights or history. Each tick reconstruc
 the engine cache from this controller's markers. Hard searches the four best
 heuristic candidates and every legal reply (a bounded two-ply beam search).
 """
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 from textwrap import dedent
 
@@ -33,7 +34,7 @@ def build(root):
     def put(name, body):
         dest = root / 'ai' / (name+'.mcfunction')
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text('\n'.join(line.strip() for line in dedent(body).strip().splitlines())+'\n', encoding='utf-8')
+        write_guarded(dest, '\n'.join(line.strip() for line in dedent(body).strip().splitlines())+'\n', encoding='utf-8')
     put('reset', '''
         # 只清理本桌搜索；提交走法后调用时不改规则引擎的临时分数。
         scoreboard players set @s ch_aistate 0

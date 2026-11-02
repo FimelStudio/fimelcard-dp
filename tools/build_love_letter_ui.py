@@ -1,4 +1,6 @@
 """情书：私人手牌、目标/猜牌/大臣选择、公开历史及 Q 操作。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -20,7 +22,7 @@ def put(name, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     if isinstance(text, list):
         text = '\n'.join(text)
-    path.write_text(text.strip() + '\n', encoding='utf-8')
+    write_guarded(path, text.strip() + '\n', encoding='utf-8')
 
 
 def build():
@@ -40,7 +42,7 @@ kill @e[type=minecraft:item_display,tag=ll.name_resolver,distance=..1,sort=neare
     loot = {'pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':'minecraft:paper','functions':[{'function':'minecraft:set_name','entity':'this','name':{'selector':'@s'}}]}]}]}
     path = PACK/'data/love_letter/loot_table/player_name.json'
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(loot,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    write_guarded(path, json.dumps(loot,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     put('input/give', '''
 clear @s *[minecraft:custom_data~{love_letter:{tool:1b}}]
 execute store result storage love_letter:input table int 1 run scoreboard players get @s ll_table
@@ -383,7 +385,7 @@ data remove storage love_letter:private actor_card
 data remove storage love_letter:private target_card
 ''')
     rules={'type':'minecraft:notice','title':{'text':'情书 · 游戏规则','color':'gold'},'body':[],'pause':False,'can_close_with_escape':True}
-    sections=[('人数与目标','2～6人，四人桌最多4人。使用21张新版角色牌；各轮赢取好感，达到目标者共同获胜。默认2人6枚、3人5枚、4人4枚、5～6人3枚。'),('回合与操作','每人起始1张，顺时针轮流摸1张、出1张并结算效果。第1格手牌物品按Q打开，点牌选择、再点取消、换牌转移亮框，再按出牌；目标和角色猜测用按钮。最后一格按Q查看菜单，可确认本轮认输。'),('牌组与保护','角色数量：0间谍2、1侍卫6、2牧师2、3男爵2、4侍女2、5王子2、6大臣2、7国王1、8伯爵夫人1、9公主1。每轮暗置1张备用；双人再公开移出3张。不能选择已淘汰或受保护者；1/2/3/7无合法他人时无效，5王子则必须选择自己。'),('计分与下一轮','仅剩1人则立即轮胜；完整回合结束牌库为空，存活玩家比留牌，最高同值者均获1枚，不以弃牌和破平。唯一存活且曾出/弃过间谍者额外1枚。间谍奖励不算轮胜；本轮胜者先手，并列从胜者中随机。'),('边界与恢复','王子遇空牌库使用暗置备用，弃公主不补牌；大臣最多摸2张，保留1张、余牌自行排序回牌库底，不使用备用牌。伯爵夫人与王子/国王同手必须打出，但大臣临时选牌不受此限制。时限到期自动合法完成当前回合。普通玩家无需管理员，重载保留手牌与阶段，旧窗口按Q重开；离线或离桌中止整场。')]
+    sections=[('人数与目标','2～6人，四人桌最多4人。使用21张新版角色牌；各轮赢取好感，达到目标者共同获胜。默认2人6枚、3人5枚、4人4枚、5～6人3枚。'),('回合与操作','每人起始1张，顺时针轮流摸1张、出1张并结算效果。第1格手牌物品按Q打开，点牌选择、再点取消、换牌转移亮框，再按出牌；目标和角色猜测用按钮。最后一格按Q查看菜单，可确认本轮认输。'),('牌组与保护','角色数量：0间谍2、1侍卫6、2牧师2、3男爵2、4侍女2、5王子2、6大臣2、7国王1、8伯爵夫人1、9公主1。每轮暗置1张备用；双人再公开移出3张。不能选择已淘汰或受保护者；1/2/3/7无合法他人时无效，5王子则必须选择自己。'),('计分与下一轮','仅剩1人则立即轮胜；完整回合结束牌库为空，存活玩家比留牌，最高同值者均获1枚，不以弃牌和破平。唯一存活且曾出/弃过间谍者额外1枚。间谍奖励不算轮胜；本轮胜者先手，并列从胜者中随机。'),('边界与恢复','王子遇空牌库使用暗置备用，弃公主不补牌；大臣最多摸2张，保留1张、余牌自行排序回牌库底，不使用备用牌。伯爵夫人与王子/国王同手必须打出，但大臣临时选牌不受此限制。时限到期自动合法完成当前回合。普通玩家无需管理员，重载保留手牌与阶段，旧窗口按Q重开；主动离桌中止整场；离线则暂停，等待上线或结束游戏。')]
     sections += [(f'{i} · {name}',effect) for i,(name,effect) in enumerate(zip(ROLES,EFFECTS))]
     for title,text in sections:
         rules['body'].append({'type':'minecraft:plain_message','width':480,'contents':[{'text':title+'\n','color':'aqua','bold':True},{'text':text,'color':'white'}]})

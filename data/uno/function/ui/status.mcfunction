@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players operation #ui_top_idx un_ctx = @e[tag=un.current,limit=1] un_top
 scoreboard players set #ui_top_type un_ctx -1
 execute as @e[type=minecraft:marker,tag=un.card] if score @s ct_id = #ui_table un_ctx if score @s un_idx = #ui_top_idx un_ctx run scoreboard players operation #ui_top_type un_ctx = @s un_card

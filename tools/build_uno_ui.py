@@ -1,4 +1,5 @@
 """生成 UNO Dialog、名字解析、输入路由与规则；不修改核心规则或通用牌桌。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import json
 
@@ -8,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1] / "data/uno/function"
 def put(name, lines):
     path = ROOT / (name + ".mcfunction")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text((lines.strip() + "\n"), encoding="utf-8")
+    write_guarded(path, (lines.strip() + "\n"), encoding="utf-8")
 
 
 def js(value):
@@ -28,7 +29,7 @@ def action(label, command, color="white"):
 # 与花火相同：Dialog不会解析selector，先在战利品上下文中解析名字为静态组件。
 name_loot = ROOT.parent / "loot_table/player_name.json"
 name_loot.parent.mkdir(parents=True, exist_ok=True)
-name_loot.write_text(json.dumps({"pools": [{"rolls": 1, "entries": [{
+write_guarded(name_loot, json.dumps({"pools": [{"rolls": 1, "entries": [{
     "type": "minecraft:item", "name": "minecraft:paper", "functions": [{
         "function": "minecraft:set_name", "entity": "this", "name": {"selector": "@s"}
     }]
@@ -384,7 +385,7 @@ sections = [
     ("+4与质疑", "只有手中没有当前颜色牌时，+4才合法；有相同数字或功能、但颜色不同的牌仍可合法出+4。开启质疑时允许冒险违规出牌：下家接受则摸4并跳过；质疑成功，出牌者摸4，质疑者正常行动；质疑失败，质疑者摸6并跳过。系统只公布是否合法，不公开整手牌。关闭质疑时，系统直接禁止违规+4。"),
     ("喊UNO", "打到只剩1张时应选择“出牌并喊UNO”。漏喊会弹出响应框：本人可补喊，其他玩家可抓UNO；他人先抓到则漏喊者摸2。本人先补喊或无人抓到均不受罚。默认窗口3秒，期间不允许下一位出牌。设置可调整1～5秒或开启自动喊UNO。+4的接受或质疑也通过响应框处理，关闭后可点击聊天中的入口重开。"),
     ("结算与积分", "默认单局，出完即胜。可在游戏设置选择固定局数或目标积分赛（默认500分）；每轮胜者获得其他玩家剩牌总分。数字牌按牌面分，跳过/反转/+2各20分，变色/+4各50分。末张+2/+4先处理罚牌与质疑再结算；末张+4被质疑成功须摸4并继续本轮。固定局数完成后总分最高者获胜，同分并列。"),
-    ("特殊情况与管理", "牌库耗尽时，保留弃牌堆顶牌，将其余弃牌洗回牌库。玩家离线则中止整场并回大厅；/reload保留本场手牌、回合与计分，旧窗口需按Q重开。普通玩家无需管理员权限；结束游戏使用桌边投票。管理员可站在牌桌旁执行 /function uno:admin/abort。"),
+    ("特殊情况与管理", "牌库耗尽时，保留弃牌堆顶牌，将其余弃牌洗回牌库。玩家离线后暂停，等待上线或结束游戏；/reload保留本场手牌、回合与计分，旧窗口需按Q重开。普通玩家无需管理员权限；结束游戏使用桌边投票。管理员可站在牌桌旁执行 /function uno:admin/abort。"),
 ]
 dialog = {"type":"minecraft:notice","title":{"text":"UNO · 游戏规则","color":"gold","bold":True},"body":[],"pause":False}
 for title, text in sections:

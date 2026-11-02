@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute unless score #ui_role ll_ctx matches 5 if score @s ll_seat = #ui_seat ll_ctx run return 0
 scoreboard players operation #ui_code ll_ctx = @s ll_seat
 scoreboard players add #ui_code ll_ctx 100

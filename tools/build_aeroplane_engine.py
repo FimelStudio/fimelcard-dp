@@ -1,4 +1,5 @@
 """飞行棋固定路径与纯规则计划器。位置 -1 机场、0 起飞、1..51 外环、52..57 内道。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import json
 
@@ -72,8 +73,8 @@ def reference_plan(pos,dice,takeoff=0,jump=1,fly=1,finish=0):
 def build(root=ROOT):
     def put(name,lines):
         p=root/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
-        p.write_text(('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
-    (PACK/'tools/aeroplane_path.json').write_text(json.dumps(path_manifest(),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        write_guarded(p, ('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
+    write_guarded(PACK/'tools/aeroplane_path.json', json.dumps(path_manifest(),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     put('engine/init_board',['function aeroplane_chess:system/context','kill @e[tag=ac.board]','kill @e[tag=ac.sides]']+
         [f'execute summon minecraft:marker run function aeroplane_chess:engine/side {{color:{c}}}' for c in range(4)]+
         [f'execute summon minecraft:marker run function aeroplane_chess:engine/plane {{color:{c},plane:{p}}}' for c in range(4) for p in range(4)]+

@@ -1,4 +1,7 @@
 """情书：同页即时生效的桌内设置，校验会话与当前桌状态。"""
+from build_table_pause_guards import write_guarded
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 
@@ -12,7 +15,7 @@ def build():
     def put(name, text):
         path = ROOT / ('settings/' + name + '.mcfunction')
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text.strip()+'\n', encoding='utf-8')
+        write_guarded(path, augment_dialog(text).strip()+'\n', encoding='utf-8')
 
     def js(value):
         return json.dumps(value, ensure_ascii=False, separators=(',', ':'))

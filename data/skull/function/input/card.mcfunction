@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players set #card_epoch sk_ctx -1
 scoreboard players set #slot sk_ctx -1
 execute store result score #card_epoch sk_ctx run data get entity @e[tag=sk.drop,limit=1] Item.components."minecraft:custom_data".skull.epoch

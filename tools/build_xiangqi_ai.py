@@ -2,6 +2,8 @@
 
 搜索只修改临时棋面，每刻从本桌重新建立缓存，真实提交仍由规则引擎复核。
 """
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 from textwrap import dedent
 
@@ -29,7 +31,7 @@ def build(root):
     def put(name, body):
         dest = root / 'ai' / (name+'.mcfunction')
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text('\n'.join(line.strip() for line in dedent(body).strip().splitlines())+'\n', encoding='utf-8')
+        write_guarded(dest, '\n'.join(line.strip() for line in dedent(body).strip().splitlines())+'\n', encoding='utf-8')
     put('reset', '''
         # 只清理本桌搜索；提交走法后调用时不改规则引擎的临时分数。
         scoreboard players set @s xq_aistate 0

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # #choice 为本次选择，dc_pos 为正在填写的第几位；白队先填，黑队后填。
 execute unless score @s dc_pos matches 1..3 run return 0
 execute unless score #choice dc_ctx matches 1..4 run return 0

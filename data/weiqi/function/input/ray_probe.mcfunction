@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute store result storage weiqi:ray distance double 0.000244140625 run scoreboard players get #ray_mid go_ctx
 function weiqi:input/ray_position with storage weiqi:ray
 scoreboard players set #ray_below go_ctx 0

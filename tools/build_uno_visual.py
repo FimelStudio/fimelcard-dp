@@ -1,4 +1,5 @@
 """生成 UNO 桌面展示函数；复用原卡片几何，正面朝上，按实际座号放置。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import math
 
@@ -9,7 +10,7 @@ DEST = ROOT / 'data/uno/function/visual'
 def write(name, text):
     path = DEST / (name + '.mcfunction')
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text.strip() + '\n', encoding='utf-8')
+    write_guarded(path, text.strip() + '\n', encoding='utf-8')
 
 
 def main():
@@ -74,7 +75,14 @@ data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:
     pos8 = [(-.85, -1.42, 0), (.85, -1.42, 0), (1.42, -.85, -90), (1.42, .85, -90), (.85, 1.42, 180), (-.85, 1.42, 180), (-1.42, .85, 90), (-1.42, -.85, 90)]
     for capacity, positions in [(4, pos4), (8, pos8)]:
         for seat, (x, z, yaw) in enumerate(positions, 1):
-            lines.append(f'execute if score @s ct_capacity matches {capacity} if score #vis_seat un_ctx matches {seat} positioned ~{x} ~1.04 ~{z} summon minecraft:item_display run function uno:visual/seat{seat}_{capacity} with storage uno:visual')
+            variants=[('',x,z)]
+            if capacity==8:
+                other=seat+1 if seat%2 else seat-1
+                center=(0,z) if seat<=2 or 5<=seat<=6 else (x,0)
+                variants=[(f'if score @s ct_c{other} matches 1 ',x,z),
+                          (f'unless score @s ct_c{other} matches 1 ',*center)]
+            for condition,px,pz in variants:
+                lines.append(f'execute if score @s ct_capacity matches {capacity} {condition}if score #vis_seat un_ctx matches {seat} positioned ~{px} ~1.04 ~{pz} summon minecraft:item_display run function uno:visual/seat{seat}_{capacity} with storage uno:visual')
     lines += ['function uno:visual/status']
     write('play', '\n'.join(lines))
     configs = [('seat0', 0, 0)] + [(f'seat{s}_{cap}', s, yaw) for cap, positions in [(4,pos4),(8,pos8)] for s, (_,_,yaw) in enumerate(positions,1)]

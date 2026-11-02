@@ -1,4 +1,5 @@
 """原创飞行棋棋盘、飞机、真实六面骰，以及两桌型的逐段插值动画。"""
+from build_table_pause_guards import write_guarded
 import json
 import math
 from PIL import Image, ImageDraw, ImageFont, ImageColor
@@ -178,7 +179,7 @@ def resources():
     source=RP/'.source/aeroplane_chess/models/dice.bbmodel'
     source_model=json.loads(source.read_text(encoding='utf-8'))
     source_model['display']=die_model['display']
-    source.write_text(json.dumps(source_model,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    write_guarded(source, json.dumps(source_model,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     export_texture('aeroplane_chess','selection',Image.new('RGB',(16,16),'#fff0a3'))
     export_model('aeroplane_chess','selection',outline('card:item/aeroplane_chess/selection'))
     preview=Image.new('RGB',(1536,1536))

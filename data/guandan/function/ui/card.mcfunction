@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute unless score @s gd_strength = #ui_previous gd_ctx run data modify storage guandan:ui stack_columns append value {cards:[]}
 execute unless score @s gd_strength = #ui_previous gd_ctx run scoreboard players set #ui_depth gd_ctx 0
 scoreboard players operation #ui_type gd_ctx = @s gd_type

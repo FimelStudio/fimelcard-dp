@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 data modify storage catan:ui hand set value {resources:[0,0,0,0,0],dev:[0,0,0,0,0],fresh:[0,0,0,0,0],vp:0,roads_left:15,settlements_left:5,cities_left:4,discard_due:0}
 $data modify storage catan:ui hand merge from entity @e[tag=ca.current,limit=1] data.catan.p$(side)
 $data modify storage catan:ui hand.side set value $(side)

@@ -131,8 +131,13 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         c+=self.call('system/reload')+self.check(f'data entity {C} data.catan{{vertex_owner:[1]}}','lobby_reload_retains_building')+self.count('@e[tag=ca.surface,scores={ct_id=101}]',0,'lobby_reload_no_interaction')
         c+=self.call('game/start')+self.check(f'data entity {C} data.catan{{vertex_owner:[0,0,0]}}','new_game_clears_review')
         self.case('cleanup_animation_reload',c)
-        c=self.start()+[f'tag {person(3)} remove ca.player',f'scoreboard players set {C} ca_offline 199']+self.call('game/tick')+self.score(C,'ct_state',0,'offline_timeout_aborts')
-        self.case('offline_timeout',c)
+        c=self.start()+[f'scoreboard players set {C} ct_paused 1',f'scoreboard players set {C} ca_offline 199',f'scoreboard players set {C} ca_anim 15']+self.call('game/tick')*220
+        c+=self.score(C,'ct_state',1,'offline_waits_without_timeout')+self.score(C,'ca_offline',199,'offline_counter_frozen')+self.score(C,'ca_anim',15,'offline_animation_frozen')
+        c+=[f'scoreboard players set {C} ca_vtimer 7',f'data modify entity {C} data.catan.visual_events set value [{{kind:"trade",from_seat:1,to_seat:2}}]']+self.call('system/reload')
+        c+=self.score(C,'ca_anim',15,'paused_reload_keeps_animation_timer')+self.score(C,'ca_vtimer',7,'paused_reload_keeps_visual_timer')+self.check(f'data entity {C} data.catan.visual_events[0]','paused_reload_keeps_visual_queue')
+        c+=[f'data modify entity {C} data.catan.visual_events set value []',f'scoreboard players set {C} ca_vtimer 0']
+        c+=[f'scoreboard players set {C} ct_paused 0']+self.call('game/tick')+self.score(C,'ca_anim',14,'rejoin_animation_resumes')
+        self.case('offline_pause',c)
         self.finish()
 
 

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 每次打开生成新令牌，拒绝旧窗口和上一回合的提交。
 scoreboard players add #form_sequence dc_ctx 1
 scoreboard players operation @s dc_form = #form_sequence dc_ctx

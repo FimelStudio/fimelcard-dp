@@ -6,7 +6,7 @@ scoreboard players add @s go_epoch 1
 function weiqi:ai/reset
 function weiqi:game/reseat
 # 动画被重载截断时直接完成，不重走一次、也不重置时钟。
-execute if score @s go_state matches 2 run scoreboard players set @s go_state 1
+execute unless score @s ct_paused matches 1 if score @s go_state matches 2 run scoreboard players set @s go_state 1
 function weiqi:visual/refresh
 execute if score @s go_state matches 3 run function weiqi:engine/score
 execute if score @s go_state matches 3 run function weiqi:visual/estimate

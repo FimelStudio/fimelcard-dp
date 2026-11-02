@@ -4,6 +4,7 @@
 所有入口以本桌控制器执行。真实棋格 marker 与 ch.board 临时标签由公共适配层维护。
 生成器只拥有 data/chess/function/engine/，不接触界面、视觉和生命周期。
 """
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import re
 from textwrap import dedent
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1] / "data/chess/function/engine"
 def put(name, text):
     target = ROOT / (name + ".mcfunction")
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text("\n".join(re.sub(r" {2,}", " ", line.strip()) for line in dedent(text).strip().splitlines()) + "\n", encoding="utf-8")
+    write_guarded(target, "\n".join(re.sub(r" {2,}", " ", line.strip()) for line in dedent(text).strip().splitlines()) + "\n", encoding="utf-8")
 
 
 def sq(f, r):

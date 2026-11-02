@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # F会把主手牌交换到副手；先读取牌位，再清除副手中的操作副本
 scoreboard players set #slot hb_ctx 0
 execute if items entity @s weapon.offhand minecraft:paper[minecraft:custom_data~{hanabi:{card:1b,slot:1}}] run scoreboard players set #slot hb_ctx 1

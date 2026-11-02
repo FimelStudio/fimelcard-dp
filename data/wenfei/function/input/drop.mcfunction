@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players set #item_table wq_ctx -1
 execute store result score #item_table wq_ctx run data get entity @s Item.components."minecraft:custom_data".wenfei.table
 execute unless score #item_table wq_ctx = #scan_table wq_ctx run return 0

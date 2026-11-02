@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute unless score #ui_card ll_ctx matches 0..9 run return 0
 $scoreboard players set #ui_card_slot ll_ctx $(slot)
 $scoreboard players set #ui_code ll_ctx $(offset)

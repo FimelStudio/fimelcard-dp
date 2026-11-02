@@ -1,4 +1,5 @@
 """飞行棋普通玩家 Q 操作、精确实体右键与对局面板。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]/'data/aeroplane_chess/function'
@@ -6,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]/'data/aeroplane_chess/function'
 def build(root=ROOT):
  def put(name,lines):
   p=root/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
-  p.write_text(('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
+  write_guarded(p, ('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
  def js(v):return json.dumps(v,ensure_ascii=False,separators=(',',':'))
  # 给物和回合资格由 build_turn_tools.build_aeroplane 统一生成。
  put('input/place','''

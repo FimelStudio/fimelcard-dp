@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 data modify storage love_letter:ui phase set value {text:"选择目标。",color:"green"}
 scoreboard players operation #ui_role ll_ctx = @e[tag=ll.current,limit=1] ll_card
 execute as @e[tag=ll.board,scores={ll_seat=1,ll_alive=1,ll_protect=0}] run function love_letter:ui/target_button

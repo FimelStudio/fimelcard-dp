@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if entity @e[tag=ca.current,scores={ca_state=1},limit=1] run data modify storage catan:ui phase set value "初始布置：放置村庄"
 execute if entity @e[tag=ca.current,scores={ca_state=2},limit=1] run data modify storage catan:ui phase set value "初始布置：放置相邻道路"
 execute if entity @e[tag=ca.current,scores={ca_state=3},limit=1] run data modify storage catan:ui phase set value "投掷双骰"

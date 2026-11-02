@@ -1,4 +1,6 @@
 """情书17：牌桌生命周期、私密发牌动画、多轮计分与恢复。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -16,7 +18,7 @@ def put(name, body):
     target = ROOT/(name+'.mcfunction')
     target.parent.mkdir(parents=True, exist_ok=True)
     body = '\n'.join(body) if isinstance(body, list) else body
-    target.write_text(body.strip()+'\n', encoding='utf-8')
+    write_guarded(target, body.strip()+'\n', encoding='utf-8')
 
 
 def build():

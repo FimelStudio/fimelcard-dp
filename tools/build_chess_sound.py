@@ -1,4 +1,5 @@
 """生成按桌隔离的国际象棋音效函数，音频素材由配套资源包提供。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 
 
@@ -6,7 +7,7 @@ def build(root: Path) -> None:
     def put(name: str, lines: list[str]) -> None:
         target = root / 'sound' / (name + '.mcfunction')
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+        write_guarded(target, '\n'.join(lines) + '\n', encoding='utf-8')
 
     # 每步只播放一种提示：终局优先于落子，将军优先于易位／吃子。
     # 过路兵的目标格虽然为空，last 仍保存实际被吃的棋子。

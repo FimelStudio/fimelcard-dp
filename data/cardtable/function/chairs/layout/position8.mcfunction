@@ -1,0 +1,16 @@
+execute if score #layout_seat ct_ctx matches 1 if score @s ct_c2 matches 1 run data modify storage cardtable:layout position set value {x:-1.0d,y:0.32d,z:-2.5d}
+execute if score #layout_seat ct_ctx matches 1 unless score @s ct_c2 matches 1 run data modify storage cardtable:layout position set value {x:0.0d,y:0.32d,z:-2.5d}
+execute if score #layout_seat ct_ctx matches 2 if score @s ct_c1 matches 1 run data modify storage cardtable:layout position set value {x:1.0d,y:0.32d,z:-2.5d}
+execute if score #layout_seat ct_ctx matches 2 unless score @s ct_c1 matches 1 run data modify storage cardtable:layout position set value {x:0.0d,y:0.32d,z:-2.5d}
+execute if score #layout_seat ct_ctx matches 3 if score @s ct_c4 matches 1 run data modify storage cardtable:layout position set value {x:2.5d,y:0.32d,z:-1.0d}
+execute if score #layout_seat ct_ctx matches 3 unless score @s ct_c4 matches 1 run data modify storage cardtable:layout position set value {x:2.5d,y:0.32d,z:0.0d}
+execute if score #layout_seat ct_ctx matches 4 if score @s ct_c3 matches 1 run data modify storage cardtable:layout position set value {x:2.5d,y:0.32d,z:1.0d}
+execute if score #layout_seat ct_ctx matches 4 unless score @s ct_c3 matches 1 run data modify storage cardtable:layout position set value {x:2.5d,y:0.32d,z:0.0d}
+execute if score #layout_seat ct_ctx matches 5 if score @s ct_c6 matches 1 run data modify storage cardtable:layout position set value {x:1.0d,y:0.32d,z:2.5d}
+execute if score #layout_seat ct_ctx matches 5 unless score @s ct_c6 matches 1 run data modify storage cardtable:layout position set value {x:0.0d,y:0.32d,z:2.5d}
+execute if score #layout_seat ct_ctx matches 6 if score @s ct_c5 matches 1 run data modify storage cardtable:layout position set value {x:-1.0d,y:0.32d,z:2.5d}
+execute if score #layout_seat ct_ctx matches 6 unless score @s ct_c5 matches 1 run data modify storage cardtable:layout position set value {x:0.0d,y:0.32d,z:2.5d}
+execute if score #layout_seat ct_ctx matches 7 if score @s ct_c8 matches 1 run data modify storage cardtable:layout position set value {x:-2.5d,y:0.32d,z:1.0d}
+execute if score #layout_seat ct_ctx matches 7 unless score @s ct_c8 matches 1 run data modify storage cardtable:layout position set value {x:-2.5d,y:0.32d,z:0.0d}
+execute if score #layout_seat ct_ctx matches 8 if score @s ct_c7 matches 1 run data modify storage cardtable:layout position set value {x:-2.5d,y:0.32d,z:-1.0d}
+execute if score #layout_seat ct_ctx matches 8 unless score @s ct_c7 matches 1 run data modify storage cardtable:layout position set value {x:-2.5d,y:0.32d,z:0.0d}

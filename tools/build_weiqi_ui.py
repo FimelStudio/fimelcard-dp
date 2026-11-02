@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """围棋对局、占地、终局点目与复盘Dialog；只调用经过game校验的入口。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 from build_weiqi_settings import build as settings_build, OBJECTIVES as SET_OBJECTIVES
@@ -16,7 +18,7 @@ def message(contents,color=None,width=470):
 
 def build(root=ROOT):
  def put(name,text):
-  path=root/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text.strip()+'\n',encoding='utf8')
+  path=root/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True);write_guarded(path, text.strip()+'\n',encoding='utf8')
  put('name/capture','''
 # loot的set_name在玩家上下文提前解析姓名，Dialog不读取未解析的selector。
 data modify storage weiqi:runtime name.value set value {text:"未知玩家"}
@@ -31,7 +33,7 @@ kill @e[type=minecraft:item_display,tag=go.name_resolver,distance=..1,sort=neare
 ''')
  put('name/read','function weiqi:name/capture')
  loot=PACK/'data/weiqi/loot_table/player_name.json';loot.parent.mkdir(parents=True,exist_ok=True)
- loot.write_text(json.dumps({'pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':'minecraft:paper','functions':[{'function':'minecraft:set_name','entity':'this','name':{'selector':'@s'}}]}]}]},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+ write_guarded(loot, json.dumps({'pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':'minecraft:paper','functions':[{'function':'minecraft:set_name','entity':'this','name':{'selector':'@s'}}]}]}]},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
  put('ui/refresh','''
 # 阶段推进只恢复trigger资格，不强制打断视角弹窗。
 function weiqi:system/context
@@ -191,7 +193,7 @@ tag @a[tag=go.actor] remove go.actor
  ('终局与点目','连续两次停一手进入终局点目。右键棋子可整组标记死子，再右键可恢复；任何改动都会清除双方确认。死子移除后按面积计分，并加白方贴目；双方确认才结算。有争议时选择继续下棋，由当前行棋方继续。人机局由玩家确认。'),
  ('对局菜单与复盘','快捷栏最后一格菜单按Q：停一手、占地、坐标落子、悔棋及认输。双人悔棋须对方同意，认输须本人确认。终局返回大厅后保留棋面，原对局玩家可逐手回看、跳到首尾或自动播放；复盘不改终局记录。'),
  ('设置与计时','所有设置集中一页，点击立即生效，开局后锁定。可调棋盘大小、经典/木色、方向、黑白方分配、贴目、人机难度、坐标、最后一手标记、落子确认和占地。每人无限制或5～30分钟，当前行棋方超时判负；动画及点目时暂停。黑方始终先手，默认按座位选边。'),
- ('重载与管理','普通玩家无需管理员。/reload保留棋局与时钟，旧菜单按Q重开；玩家离线中止本局。管理员可在桌旁执行 /function weiqi:admin/abort。'),
+ ('重载与管理','普通玩家无需管理员。/reload保留棋局与时钟，旧菜单按Q重开；玩家离线后暂停，等待重新上线；其间可投票结束或由管理员中止。管理员可在桌旁执行 /function weiqi:admin/abort。'),
  ]
  rules={'type':'minecraft:notice','title':{'text':'围棋 · 游戏规则','color':'gold'},'body':[message([{'text':title+'\n','color':'aqua','bold':True},{'text':text,'color':'white'}],width=480) for title,text in sections],'pause':False}
  put('rules/show','dialog show @a[tag=ct.rules_actor,limit=1] '+js(rules))

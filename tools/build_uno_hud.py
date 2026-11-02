@@ -4,6 +4,7 @@
 UNO 导出器生成的普通／高亮牌面；不会改变 BetterTitle 或上游字体。
 """
 from __future__ import annotations
+from build_table_pause_guards import write_guarded
 
 import argparse
 import json
@@ -31,7 +32,7 @@ LAYOUTS = {
 def put(name: str, commands: str) -> None:
     target = DEST / (name + ".mcfunction")
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text("\n".join(line.lstrip() for line in dedent(commands).strip().splitlines()) + "\n", encoding="utf-8")
+    write_guarded(target, "\n".join(line.lstrip() for line in dedent(commands).strip().splitlines()) + "\n", encoding="utf-8")
 
 
 def functions() -> None:
@@ -221,7 +222,7 @@ def fonts(resource_pack: Path) -> None:
         definitions[layout + ".json"] = {"providers": providers}
         definitions[layout + "_neg.json"] = {"providers": [{"type": "space", "advances": advances}, {"type": "reference", "id": "minecraft:default_neg"}]}
     for name, definition in definitions.items():
-        (target / name).write_text(json.dumps(definition, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        write_guarded(target / name, json.dumps(definition, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> None:

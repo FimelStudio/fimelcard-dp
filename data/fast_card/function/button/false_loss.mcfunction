@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 判负规则下，乱按者立即减1分并结束本局；本局没有胜利加分
 function fast_card:log {text:"检测到无有效牌型乱按，按配置立即判负"}
 scoreboard players remove @a[tag=fc.clicker,limit=1] fc_score 1

@@ -1,4 +1,6 @@
 """生成中国象棋输入、Dialog、桌内设置和规则，不修改规则引擎或公共牌桌。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -10,7 +12,7 @@ ROOT = PACK / "data/xiangqi/function"
 def put(name, lines):
     path = ROOT / (name + ".mcfunction")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(lines.strip() + "\n", encoding="utf-8")
+    write_guarded(path, lines.strip() + "\n", encoding="utf-8")
 
 
 def js(value):
@@ -253,7 +255,7 @@ sections = [
     ("结束与和棋", "将死、困毙、对手超时或认输即获胜。双方同意、双方均无车马炮兵等进攻子力、连续120着（双方合计）未吃子时和棋；重复局面按本包简化规则处理：单方持续将军者判负，其他三次重复和棋，不裁定长捉、将军扣除等正式竞赛细则。结束5秒后返回大厅并保留终局棋面，重新开局或切换游戏才重摆。"),
     ("揭棋", "设置中可切换为揭棋：将帅明置，其余每方15子随机盖放；暗子第一次按所在位置原本棋子的规则走，合法落子后翻开，之后按真实身份走。明士可出九宫、过河，明象可过河但仍须不塞象眼；将帅仍不能出九宫或照面。双方都看不到暗子的真实身份，被吃的暗子保持盖面。电脑与可走点提示也只使用公开信息。"),
     ("设置与计时", "单页点击设置立即生效；可调标准象棋／揭棋、棋盘与棋子配色、方向、红黑方分配、人机难度、落点提示及每人无限制或5～30分钟计时。按座位选边或随机分配，开局自动坐到对应侧。只扣行棋方时间，移动动画暂停，无加秒。"),
-    ("中止", "正常游玩无需管理员。玩家离线会中止本场。/reload保留棋局与时钟，旧菜单请按Q重开。管理员可在桌旁执行 /function xiangqi:admin/abort。"),
+    ("中止", "正常游玩无需管理员。玩家离线后暂停，等待重新上线；其间可投票结束或由管理员中止。/reload保留棋局与时钟，旧菜单请按Q重开。管理员可在桌旁执行 /function xiangqi:admin/abort。"),
 ]
 rules = {"type": "minecraft:notice", "title": {"text": "中国象棋 · 游戏规则", "color": "gold", "bold": True}, "body": [], "pause": False}
 for title, content in sections:
@@ -263,7 +265,7 @@ put("rules/show", "dialog show @a[tag=ct.rules_actor,limit=1] " + js(rules))
 advancement = {"criteria": {"click": {"trigger": "minecraft:player_interacted_with_entity", "conditions": {"entity": [{"condition": "minecraft:entity_properties", "entity": "this", "predicate": {"minecraft:entity_type": "minecraft:interaction"}}, {"condition": "minecraft:entity_scores", "entity": "this", "scores": {"xq_sq": {"min": 0, "max": 89}}}]}}}, "rewards": {"function": "xiangqi:input/click_dispatch"}}
 adv_path = PACK / "data/xiangqi/advancement/click_cell.json"
 adv_path.parent.mkdir(parents=True, exist_ok=True)
-adv_path.write_text(json.dumps(advancement, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+write_guarded(adv_path, json.dumps(advancement, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 # 独立 GameTest 世界调用这些宏，检查所有 Dialog 的 codec 和动态模板。
 sample_ui = {"phase": "轮到红方行棋。", "buttons": [{"label": {"text": "认输"}, "action": {"type": "minecraft:run_command", "command": "trigger xq_action set 101"}}], "code": 101, "label": "认输", "color": "red"}
@@ -278,5 +280,5 @@ for name, values in [("DEFAULT", (0,0,0,1,10,2,1,0)), ("MINIMUM", (0,0,0,0,0,1,0
     sample_settings["close"] = 100000000
     checks += ["data merge storage xiangqi:settings " + js(sample_settings), "function xiangqi:settings/root", "say XIANGQI_DIALOG_SETTING_" + name + "_COMPILED"]
 checks += ["function xiangqi:rules/show", "say XIANGQI_DIALOG_RULES_COMPILED", "say XIANGQI_DIALOGS_END"]
-(PACK / "tools/test_xiangqi_dialogs.mcfunction").write_text("\n".join(checks) + "\n", encoding="utf-8")
+write_guarded(PACK / "tools/test_xiangqi_dialogs.mcfunction", "\n".join(checks) + "\n", encoding="utf-8")
 print("Xiangqi input / dialogs / settings / rules generated")

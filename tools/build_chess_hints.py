@@ -1,4 +1,5 @@
 """生成选中棋子的合法目标提示，只读规则缓存。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 
 
@@ -7,7 +8,7 @@ def build(root: Path):
     target.mkdir(parents=True, exist_ok=True)
 
     def put(name, lines):
-        (target / (name + '.mcfunction')).write_text(
+        write_guarded(target / (name + '.mcfunction'),
             ('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
 
     put('clear', '''

@@ -15,6 +15,11 @@ execute if score #version ct_ctx matches 2 run function cardtable:system/upgrade
 execute if score #version ct_ctx matches 3 run function cardtable:system/upgrade_v4
 execute if score #version ct_ctx matches 4 run function cardtable:system/upgrade_v5
 
+# BEGIN public session load
+function cardtable:settings/load
+function cardtable:chairs/settings/load
+function cardtable:session/load
+# END public session load
 # 重载后旧选择窗口失效；保留所有实际游戏设置和进度。
 scoreboard players reset * ct_game_pick
 scoreboard players reset * ct_pick_table

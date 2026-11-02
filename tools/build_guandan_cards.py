@@ -1,4 +1,6 @@
 """掼蛋纯牌型引擎：按牌点缺口识别百搭，不枚举两张百搭的所有花色解释。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -20,7 +22,7 @@ def build(root=ROOT):
     def put(name, lines):
         p = root / (name+'.mcfunction')
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(('\n'.join(lines) if isinstance(lines, list) else lines).strip()+'\n', encoding='utf-8')
+        write_guarded(p, ('\n'.join(lines) if isinstance(lines, list) else lines).strip()+'\n', encoding='utf-8')
 
     put('cards/install', ['# 仅补充牌型模块所用目标；由游戏 load 调用。'] + [f'scoreboard objectives add {o} dummy' for o in OBJECTIVES])
     put('cards/constants', [f'scoreboard players set #{n} gd_ctx {n}' for n in (10, 13, 54, 1000, 100000)])

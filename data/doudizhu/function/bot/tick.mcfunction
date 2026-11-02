@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score @s dd_state matches 2 if score @s dd_bidmode matches 2 run return run function doudizhu:bot/speed_tick
 scoreboard players add @s dd_bot_timer 1
 execute unless score @s dd_bot_timer matches 20.. run return 0

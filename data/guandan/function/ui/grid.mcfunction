@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 data modify storage guandan:ui grid set value {text:"",shadow_color:0,extra:[]}
 execute if score #ui_maxdepth gd_ctx matches 1.. run function guandan:ui/stack_cell {column:0,line:0}
 execute if score #ui_maxdepth gd_ctx matches 1.. run function guandan:ui/stack_cell {column:1,line:0}

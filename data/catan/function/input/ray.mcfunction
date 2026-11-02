@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 同步调用内最多一个临时marker；完成后删除，不给客户端产生实体。
 kill @e[type=minecraft:marker,tag=ca.ray]
 scoreboard players set #ray_ok ca_ctx 0

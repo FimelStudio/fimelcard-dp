@@ -1,11 +1,12 @@
 """生成飞行棋：持久骰值、逐段移动、四方生命周期和电脑补位。"""
+from build_table_pause_guards import write_guarded
 from pathlib import Path
 import json
 
 ROOT=Path(__file__).resolve().parents[1]/'data/aeroplane_chess/function'
 def put(name,lines):
     p=ROOT/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
+    write_guarded(p, ('\n'.join(lines) if isinstance(lines,list) else lines).strip()+'\n',encoding='utf-8')
 def say(text,color='yellow',target='@a[tag=ac.audience]'):
     return 'tellraw '+target+' '+json.dumps({'text':'[飞行棋] '+text,'color':color},ensure_ascii=False)
 

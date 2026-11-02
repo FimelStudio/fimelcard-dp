@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute at @s run function uno:name/resolve
 data modify storage uno:ui line_name set value {text:"",color:"white",extra:[]}
 data modify storage uno:ui line_name.extra append from storage uno:name resolved

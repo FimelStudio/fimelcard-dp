@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 玩家入口：同时核验通用座位、游戏归属与控制器当前游戏。
 tag @a[tag=un.actor] remove un.actor
 tag @e[tag=un.current] remove un.current

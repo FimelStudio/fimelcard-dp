@@ -3,6 +3,9 @@
 Ordinary players submit trigger values; the server binds every action to the
 player, table, lobby epoch, reload generation and a one-use window nonce.
 """
+from build_table_pause_guards import write_guarded
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 
@@ -23,7 +26,7 @@ def build(root=ROOT):
     def put(name, lines):
         path = root / (name + '.mcfunction')
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
+        write_guarded(path, augment_dialog('\n'.join(lines) if isinstance(lines, list) else lines).strip() + '\n', encoding='utf-8')
     def js(value):
         return json.dumps(value, ensure_ascii=False, separators=(',', ':'))
     put('settings/load', [
@@ -144,7 +147,7 @@ execute if score #set_field ca_ctx matches 0 run return run function catan:setti
         '每回合最多使用一张旧开发牌，可在掷骰前使用；本回合新买的非胜利点牌不能用。骑士移动强盗但不触发弃半；修路免费建最多两路；发明取两张资源；垄断收取所有对手某种资源。',
         '最长道路至少 5 段，同一路段只能经过一次，可以绕环和重复经过交点；对手建筑截断穿行。最大军队至少 3 张已用骑士；原持有者并列时保留奖励。',
         '手持第 1 格操作物按 Q，按准星选择远处目标；近处也能右键棋盘。第 9 格按 Q 打开资源、交易、开发牌与回合菜单。未确认的预选不扣资源。',
-        '具体资源与未用开发牌仅本人可见。音乐可在设置／局内菜单切换，音量属于「唱片机／音符盒」。有人离线时暂停操作，持续 200 刻则中止；重载不重新投骰或重复发资源。',
+        '具体资源与未用开发牌仅本人可见。音乐可在设置／局内菜单切换，音量属于「唱片机／音符盒」。有人离线后暂停，等待上线或结束游戏；重载不重新投骰或重复发资源。',
     ]
     rules = {'type': 'minecraft:notice', 'title': {'text': '卡坦岛 · 规则与操作', 'color': 'gold'},
         'body': [{'type': 'minecraft:plain_message', 'width': 460, 'contents': {'text': p, 'color': 'white'}} for p in paragraphs],

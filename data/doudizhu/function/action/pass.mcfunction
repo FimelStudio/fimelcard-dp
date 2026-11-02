@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute unless score @e[tag=dd.current,limit=1] dd_state matches 3 run return 0
 execute unless score @s dd_seat = @e[tag=dd.current,limit=1] dd_turn run return run function doudizhu:action/not_turn
 execute if score @e[tag=dd.current,limit=1] dd_type matches 0 run tellraw @s {text:"你是本轮领出者，必须出牌。",color:"red"}

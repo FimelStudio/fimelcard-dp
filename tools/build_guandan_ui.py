@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """掼蛋的私人实卡多选、明确牌型解释、贡还牌及普通玩家 Q 操作。"""
+from build_table_pause_guards import write_guarded
+
 from pathlib import Path
 import json
 
@@ -18,7 +20,7 @@ def js(v):return json.dumps(v,ensure_ascii=False,separators=(',',':'))
 
 def put(name,body):
     path=ROOT/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(('\n'.join(body) if isinstance(body,list) else body).strip()+'\n',encoding='utf8')
+    write_guarded(path, ('\n'.join(body) if isinstance(body,list) else body).strip()+'\n',encoding='utf8')
 
 
 def build():
@@ -35,7 +37,7 @@ kill @e[type=minecraft:item_display,tag=gd.name_resolver,distance=..1,sort=neare
 ''')
     loot={'pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':'minecraft:paper','functions':[{'function':'minecraft:set_name','entity':'this','name':{'selector':'@s'}}]}]}]}
     path=PACK/'data/guandan/loot_table/player_name.json';path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(json.dumps(loot,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+    write_guarded(path, json.dumps(loot,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     put('input/give','clear @s *[minecraft:custom_data~{guandan:{tool:1b}}]\nexecute store result storage guandan:input table int 1 run scoreboard players get @s gd_table\nfunction guandan:input/give_tools with storage guandan:input')
     put('input/give_tools','''
 $function guandan:input/place_tool {table:$(table),slot:0,action:0,name:"掼蛋 · 手牌",model:"card:poker/back"}
@@ -398,7 +400,7 @@ data modify storage guandan:ui buttons append from storage guandan:ui option_but
     for key in ['phase','rows','info','grid','buttons']:text=text.replace('"__'+key+'__"','$('+key+')')
     put('ui/normalize','\n'.join(f'execute unless data storage guandan:ui {key}.extra[0] run data remove storage guandan:ui {key}.extra' for key in ['phase','rows','info','grid']))
     put('ui/show','$dialog show @s '+text)
-    sections=[('人数与目标','4名真人，两副扑克共108张，每人27张。对家为搭档；四人桌与八人桌均只打四方。按逆时针轮流出牌，先出完为头游。'),('选牌与操作','第1格手牌物品按Q打开，点击实卡多选、再点取消，选好点击出牌；成功出牌立刻关闭窗口。最后一格按Q打开对局菜单。贡还阶段选择一张牌再确定。普通玩家无需管理员。'),('级牌与逢人配','从设定级数开始。大王>小王>级牌>A>K>…>2；顺子、三连对、钢板按自然连续点数比较，A级可作A2345或10JQKA。红桃级牌为逢人配，可代替除大小王之外的牌，参与多种解释时自行选择牌型。'),('合法牌型','单张、对子、三张、三带二、连续三对、连续两组三张、五张顺子、四张及以上同点炸弹、五张同花顺、两大王加两小王。三带二可带自然王对；逢人配不能配王。普通5张天然同花仅作同花顺。'),('压制与接风','普通牌须牌型与张数相同且点数更大；炸弹依张数与点数比较，同花顺大于五炸小于六炸，四王最大。可自愿不出；无人跟牌后，由上手重新领出，上手已出完则由其搭档接风。'),('升级与贡还','头游与二游同队升3级，与三游同队升2级，与末游同队升1级。单下末游向头游进贡；双下败方两人分别进贡；符合双大王条件自动抗贡。贡除逢人配外的最大牌，受贡方还不大于10的牌，没有时还最小牌。'),('胜负与恢复','完整升级赛须打过A，固定副数则比较最终级数及副胜。可设置行动时限，超时由系统完成合法操作。重载保留手牌与贡还阶段；离桌或离线中止整场，旧窗口按Q重开。')]
+    sections=[('人数与目标','4名真人，两副扑克共108张，每人27张。对家为搭档；四人桌与八人桌均只打四方。按逆时针轮流出牌，先出完为头游。'),('选牌与操作','第1格手牌物品按Q打开，点击实卡多选、再点取消，选好点击出牌；成功出牌立刻关闭窗口。最后一格按Q打开对局菜单。贡还阶段选择一张牌再确定。普通玩家无需管理员。'),('级牌与逢人配','从设定级数开始。大王>小王>级牌>A>K>…>2；顺子、三连对、钢板按自然连续点数比较，A级可作A2345或10JQKA。红桃级牌为逢人配，可代替除大小王之外的牌，参与多种解释时自行选择牌型。'),('合法牌型','单张、对子、三张、三带二、连续三对、连续两组三张、五张顺子、四张及以上同点炸弹、五张同花顺、两大王加两小王。三带二可带自然王对；逢人配不能配王。普通5张天然同花仅作同花顺。'),('压制与接风','普通牌须牌型与张数相同且点数更大；炸弹依张数与点数比较，同花顺大于五炸小于六炸，四王最大。可自愿不出；无人跟牌后，由上手重新领出，上手已出完则由其搭档接风。'),('升级与贡还','头游与二游同队升3级，与三游同队升2级，与末游同队升1级。单下末游向头游进贡；双下败方两人分别进贡；符合双大王条件自动抗贡。贡除逢人配外的最大牌，受贡方还不大于10的牌，没有时还最小牌。'),('胜负与恢复','完整升级赛须打过A，固定副数则比较最终级数及副胜。可设置行动时限，超时由系统完成合法操作。重载保留手牌与贡还阶段；主动离桌中止整场；离线则暂停等待上线或结束游戏，旧窗口按Q重开。')]
     rule={'type':'minecraft:notice','title':{'text':'掼蛋 · 游戏规则','color':'gold'},'body':[{'type':'minecraft:plain_message','width':480,'contents':[{'text':title+'\n','color':'aqua','bold':True},{'text':text,'color':'white'}]} for title,text in sections],'pause':False,'can_close_with_escape':True}
     put('rules/show','dialog show @a[tag=ct.rules_actor,limit=1] '+js(rule))
     put('rules/player','dialog show @s '+js(rule))

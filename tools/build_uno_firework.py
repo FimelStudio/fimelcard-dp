@@ -1,4 +1,5 @@
 """生成 UNO 胜者烟花；使用已合并 SK Firework 的公开接口。"""
+from build_table_pause_guards import write_guarded
 
 from pathlib import Path
 
@@ -10,7 +11,7 @@ DEST = ROOT / "data/uno/function/firework"
 def write(name, content):
     path = DEST / f"{name}.mcfunction"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content.strip() + "\n", encoding="utf-8")
+    write_guarded(path, content.strip() + "\n", encoding="utf-8")
 
 
 def main():

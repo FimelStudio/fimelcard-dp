@@ -1,4 +1,7 @@
 """掼蛋：一页点击立即生效的本桌设置与失效会话保护。"""
+from build_table_pause_guards import write_guarded
+
+from table_chair_settings import augment_dialog
 from pathlib import Path
 import json
 
@@ -23,7 +26,7 @@ def js(value):
 def build():
     def put(name,body):
         path=ROOT/(name+'.mcfunction');path.parent.mkdir(parents=True,exist_ok=True)
-        path.write_text(body.strip()+'\n',encoding='utf-8')
+        write_guarded(path, augment_dialog(body).strip()+'\n',encoding='utf-8')
     put('open','''
 function guandan:game/init_table
 execute unless entity @a[tag=ct.settings_actor,tag=ct.player,limit=1] run return 0
