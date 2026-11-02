@@ -6,7 +6,7 @@ PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'data/cardtable/function/chairs/settings'
 MINIMUM = {1: 4, 2: 2, 3: 2, 4: 2, 5: 3, 6: 3, 7: 3, 8: 2, 9: 2,
            10: 1, 11: 2, 12: 1, 13: 1, 14: 1, 15: 1, 16: 5, 17: 2,
-           18: 1, 19: 2, 20: 1, 21: 3}
+           18: 1, 19: 2, 20: 1, 21: 3, 22: 2}
 OBJECTIVES = {name: 'dummy' for name in ('ct_ch_epoch ct_ch_nonce ct_ch_load ct_ch_table '
               'ct_ch_game ct_ch_seen ct_ch_seat').split()}
 OBJECTIVES['ct_chair_pick'] = 'trigger'

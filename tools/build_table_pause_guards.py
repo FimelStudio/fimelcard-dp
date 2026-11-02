@@ -17,7 +17,7 @@ GAMES = {
     'doudizhu': 'dd', 'uno': 'un', 'chess': 'ch',
     'xiangqi': 'xq', 'gomoku': 'gm', 'aeroplane_chess': 'ac',
     'avalon': 'av', 'love_letter': 'll', 'guandan': 'gd',
-    'ito': 'it', 'weiqi': 'go', 'catan': 'ca',
+    'ito': 'it', 'weiqi': 'go', 'catan': 'ca', 'splendor': 'sp',
 }
 BEGIN = '# table-pause: begin (tools/build_table_pause_guards.py)'
 END = '# table-pause: end'

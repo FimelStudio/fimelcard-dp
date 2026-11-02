@@ -1,3 +1,7 @@
+# BEGIN guandan clear music mode
+tag @s remove gd.music_exciting
+tag @s remove gd.music_suspended
+# END guandan clear music mode
 function guandan:system/context
 scoreboard players set @s gd_state 0
 scoreboard players set @s gd_phase 0

@@ -33,6 +33,8 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 19 run functi
 execute if score @s ct_game matches 19 run function ito:game/remove
 execute if score @s ct_state matches 1 if score @s ct_game matches 21 run function catan:game/abort
 execute if score @s ct_game matches 21 run function catan:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 22 run function splendor:game/abort
+execute if score @s ct_game matches 22 run function splendor:game/remove
 execute if score @s ct_skin matches 1..6 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
 execute if score @s ct_skin matches 1..6 if score @s ct_capacity matches 8 run function cardtable:skin/default8
 # BEGIN public session end

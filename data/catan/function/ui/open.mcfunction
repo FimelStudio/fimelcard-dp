@@ -26,6 +26,7 @@ execute if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn if entity @e[ta
 execute if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn if entity @e[tag=ca.current,scores={ca_state=7,ca_anim=0},limit=1] if data entity @e[tag=ca.current,limit=1] data.catan{eligible:[3]} run function catan:ui/named_button {code:403,side:3}
 execute if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn if entity @e[tag=ca.current,scores={ca_state=7,ca_anim=0},limit=1] if data entity @e[tag=ca.current,limit=1] data.catan{eligible:[4]} run function catan:ui/named_button {code:404,side:4}
 execute if data entity @e[tag=ca.current,limit=1] data.catan.trade run function catan:ui/button {"code":240,"label":"查看交易请求","color":"aqua"}
+function catan:ui/button {"code":270,"label":"新手入门","color":"aqua"}
 function catan:ui/button {"code":250,"label":"音乐开关","color":"gray"}
 function catan:ui/button {"code":260,"label":"规则","color":"gray"}
 function catan:ui/show with storage catan:ui

@@ -37,6 +37,8 @@ execute if score #code ca_ctx matches 230 run return run function catan:ui/disca
 execute if score #code ca_ctx matches 240 run return run function catan:ui/trade_response
 execute if score #code ca_ctx matches 250 run return run function catan:ui/music
 execute if score #code ca_ctx matches 260 run return run function catan:ui/rules
+execute if score #code ca_ctx matches 270 run return run function catan:ui/help
+execute if score #code ca_ctx matches 280 run return run function catan:ui/open
 execute if score #code ca_ctx matches 300 run return run function catan:ui/place
 execute if score #code ca_ctx matches 350 run return run function catan:ui/send_trade
 execute if score #code ca_ctx matches 351 run return run function catan:ui/send_discard

@@ -14,5 +14,6 @@ data modify storage catan:ui button_width set value 145
 function catan:ui/private with storage catan:ui
 execute as @e[tag=ca.current,limit=1] run function catan:ui/public
 function catan:ui/phase
+function catan:ui/guidance
 data modify storage catan:ui turn_name set value {text:"—",color:"gray"}
 function catan:ui/turn_name with storage catan:ui

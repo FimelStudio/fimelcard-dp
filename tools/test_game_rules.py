@@ -13,7 +13,7 @@ TABLE='@e[type=minecraft:marker,tag=gr.table,limit=1]'
 
 
 def static_checks():
-    assert len(RECORDS)==21
+    assert len(RECORDS)==22
     for namespace,record in RECORDS.items():
         dialog=make_dialog(namespace)
         assert dialog['pause'] is False and dialog['can_close_with_escape'] is True
@@ -59,7 +59,7 @@ class Suite(BaseSuite):
         self.file('reset','kill @e[tag=gr.fixture]')
         for namespace,record in RECORDS.items():
             # 强制宏化标题，哨兵仅在整条真实Dialog成功编译后才能执行。
-            text=(PACK/f'data/{namespace}/function/rules'/('show_dialog.mcfunction' if namespace=='hanabi' else 'open.mcfunction' if namespace=='aeroplane_chess' else 'show.mcfunction')).read_text(encoding='utf-8')
+            text=(PACK/f'data/{namespace}/function/rules'/('show_dialog.mcfunction' if namespace=='hanabi' else 'open.mcfunction' if namespace=='aeroplane_chess' else 'panel.mcfunction' if namespace=='splendor' else 'show.mcfunction')).read_text(encoding='utf-8')
             line=next(line for line in text.splitlines() if line.startswith(('dialog show ','$dialog show ')))
             line='$'+line.lstrip('$')
             title=json.dumps(record['name']+' · 游戏规则',ensure_ascii=False)

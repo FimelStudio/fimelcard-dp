@@ -33,3 +33,4 @@ execute if data entity @s data.catan.anim_production[0] run function catan:game/
 data modify entity @s data.catan.last set from storage catan:runtime event
 execute if score @s ca_winner matches 1..4 run return run function catan:game/win
 execute as @a[tag=ca.audience] run function catan:input/give
+function catan:game/hud

@@ -25,7 +25,7 @@ def validate_styles():
         assert all(row['width'] == 440 for row in dialog['body']), path
         assert dialog['pause'] is False, path
         pages.append(path)
-    assert len(pages) == 21, [str(path) for path in pages]
+    assert len(pages) == 22, [str(path) for path in pages]
     return pages
 
 

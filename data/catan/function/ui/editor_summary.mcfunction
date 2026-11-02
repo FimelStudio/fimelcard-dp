@@ -20,6 +20,13 @@ execute store result storage catan:ui batch int 1 run scoreboard players get @s 
 execute store result storage catan:ui a int 1 run scoreboard players get @s ca_a
 execute store result storage catan:ui b int 1 run scoreboard players get @s ca_b
 execute store result storage catan:ui edit int 1 run scoreboard players get @s ca_edit
+scoreboard players set #ui_selected ca_ctx 0
+scoreboard players operation #ui_selected ca_ctx += @s ca_g0
+scoreboard players operation #ui_selected ca_ctx += @s ca_g1
+scoreboard players operation #ui_selected ca_ctx += @s ca_g2
+scoreboard players operation #ui_selected ca_ctx += @s ca_g3
+scoreboard players operation #ui_selected ca_ctx += @s ca_g4
+execute store result storage catan:ui selected int 1 run scoreboard players get #ui_selected ca_ctx
 data modify storage catan:ui due set from storage catan:ui hand.discard_due
 data modify storage catan:ui partner_name set value {text:"—"}
 function catan:ui/partner_name with storage catan:ui

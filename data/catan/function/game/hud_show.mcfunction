@@ -1,1 +1,1 @@
-$title @a[tag=ca.audience] actionbar [{text:"卡坦岛 · ",color:"gold"},{nbt:"data.catan.p$(turn).name",entity:"@s",interpret:true},{text:" · ",color:"gray"},{nbt:"data.catan.hint",entity:"@s",interpret:false,color:"yellow"}]
+execute as @a[tag=ca.audience] run function catan:game/hud_player

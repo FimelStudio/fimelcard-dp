@@ -104,10 +104,10 @@ class Suite(sound_test.Suite):
             c = self.setup_ui(phase) + self.player_call('ui/open')
             c += self.score('#dialog', 'lt', 1, f'ui_phase_{phase}_codec')
             c += self.storage('turn_name', {'text': 'Alice'}, f'ui_phase_{phase}_static_turn_name')
-            c += ['execute store result score #buttons lt run data get storage catan:ui buttons'] + self.score('#buttons', 'lt', buttons, f'ui_phase_{phase}_actions')
+            c += ['execute store result score #buttons lt run data get storage catan:ui buttons'] + self.score('#buttons', 'lt', buttons + 1, f'ui_phase_{phase}_actions')
             self.case('ui_phase_' + str(phase), c)
         c = self.setup_ui(actor=2) + self.player_call('ui/open', 2)
-        c += ['execute store result score #buttons lt run data get storage catan:ui buttons'] + self.score('#buttons', 'lt', 3, 'offturn_can_offer_trade')
+        c += ['execute store result score #buttons lt run data get storage catan:ui buttons'] + self.score('#buttons', 'lt', 4, 'offturn_can_offer_trade')
         c += self.player_call('ui/partners', 2) + ['execute store result score #buttons lt run data get storage catan:ui buttons']
         c += self.score('#buttons', 'lt', 1, 'offturn_partner_only_current_actor') + self.storage('buttons[0].label', {'text': 'Alice'}, 'partner_static_name')
         self.case('ui_offturn_trade', c)
@@ -178,10 +178,60 @@ class Suite(sound_test.Suite):
         c = self.setup_ui(phase=3) + self.player_call('ui/open') + ['scoreboard players set #panel_serial ca_ctx 99999'] + self.player_call('ui/open', 2)
         c += self.score('#ui_load', 'ca_ctx', 2, 'ui_wrap_generation') + self.click(10) + self.score('#submitted', 'lt', 0, 'ui_wrap_old_nonce_refused')
         self.case('ui_wrap', c)
+        # Personal next steps are read-only: everyone with a seven discard receives
+        # their own exact count; waiting players do not receive build instructions.
+        c = self.setup_ui(phase=1) + self.player_call('ui/open')
+        c += self.storage('phase', '初始布置 · 第一轮（顺序）', 'guide_first_setup_round')
+        c += self.storage('hud_guidance.text', '放村庄 · 第1格 Q 选交点', 'guide_settlement_intersection')
+        c += [f'data modify entity {TABLE} data.catan.setup_step set value 4'] + self.player_call('ui/open')
+        c += self.storage('phase', '初始布置 · 第二轮（逆序）', 'guide_second_reverse_round')
+        c += self.player_call('ui/open', 2) + self.storage('hud_guidance.text', '等待行动者 · 第9格 Q 菜单', 'guide_setup_waiter')
+        self.case('guide_setup', c)
+        for state,hint in [(2,'放相邻道路 · 第1格 Q 选边'),(3,'请投骰 · 第9格 Q 菜单'),(4,'建造／交易 · 第9格 Q 菜单'),(6,'移动强盗 · 第1格 Q 选地块'),(7,'选偷取对象 · 第9格 Q 菜单'),(10,'计算最长道路，请稍候'),(11,'对局结束，稍后返回大厅')]:
+            c = self.setup_ui(phase=state) + self.player_call('ui/open')
+            c += self.storage('hud_guidance.text', hint, f'guide_stage_{state}')
+            self.case(f'guide_stage_{state}', c)
+        c = self.setup_ui(phase=5,actor=2) + [f'data modify entity {TABLE} data.catan.p2.discard_due set value 6'] + self.player_call('ui/open',2)
+        c += self.storage('hud_guidance.text', '你须弃 6 张 · 第9格 Q 菜单', 'guide_offturn_private_discard_count')
+        c += self.player_call('ui/discard',2) + self.click(1000,2)
+        c += self.storage('selected', 1, 'guide_discard_selected_total')
+        c += [f'data modify entity {TABLE} data.catan.p2.discard_due set value 0'] + self.player_call('ui/open',2)
+        c += self.storage('hud_guidance.text', '等待其他玩家弃牌', 'guide_discard_done_waits')
+        self.case('guide_discard',c)
+        c = self.setup_ui(phase=8) + [f'data modify entity {TABLE} data.catan.free_left set value 1'] + self.player_call('ui/open')
+        c += self.storage('hud_guidance.text', '免费修路余 1 次 · 第1格 Q 选边', 'guide_remaining_free_road')
+        self.case('guide_free_roads',c)
+        c = self.setup_ui(actor=2) + [f'data modify entity {TABLE} data.catan.trade set value '+json.dumps(trade)] + self.player_call('ui/open',2)
+        c += self.storage('hud_guidance.text', '收到报价 · 第9格 Q 查看交易请求', 'guide_trade_recipient')
+        c += self.player_call('ui/open',3) + self.storage('hud_guidance.text','等待行动者 · 第9格 Q 菜单','guide_trade_third_party_no_prompt')
+        c += [f'scoreboard players set {TABLE} ca_anim 12'] + self.player_call('ui/open')
+        c += self.storage('hud_guidance.text','动画中，请稍候','guide_animation_overrides_move_prompt')
+        c += [f'scoreboard players set {TABLE} ca_anim 0',f'scoreboard players set {TABLE} ca_vtimer 10'] + self.player_call('ui/open')
+        c += self.storage('hud_guidance.text','动画中，请稍候','guide_visual_queue_overrides_move_prompt')
+        self.case('guide_trade_animation',c)
+        c = self.setup_ui(phase=3) + self.player_call('ui/open') + self.click(270)
+        c += self.storage('title','卡坦岛 · 新手入门','guide_help_opened') + self.score('#dialog','lt',2,'guide_help_codec')
+        c += self.score('#submitted','lt',0,'guide_help_never_submits_action')
+        c += self.click(280) + self.storage('title','卡坦岛 · 对局菜单','guide_help_return_menu')
+        c += self.score('#submitted','lt',0,'guide_help_return_no_action')
+        self.case('guide_help',c)
+        c=self.setup_ui(phase=5)+[f'data modify entity {TABLE} data.catan.p2.discard_due set value 6',f'data modify entity {TABLE} data.catan.p3.discard_due set value 0',f'scoreboard players set {TABLE} ca_pulse 17',f'execute as {TABLE} at @s run function catan:game/hud']
+        c += self.storage('recorded.p1.text','你须弃 4 张 · 第9格 Q 菜单','guide_production_hud_actor_private_due')
+        c += self.storage('recorded.p2.text','你须弃 6 张 · 第9格 Q 菜单','guide_production_hud_offturn_private_due')
+        c += self.storage('recorded.p3.text','等待其他玩家弃牌','guide_production_hud_finished_waits')
+        c += self.score(TABLE,'ca_pulse',0,'guide_production_hud_resets_display_pulse_only')
+        c += self.score(TABLE,'ca_state',5,'guide_production_hud_preserves_phase')
+        c += self.score('#submitted','lt',0,'guide_production_hud_no_action_submitted')
+        self.case('guide_production_hud',c)
+        for phase,mode in [(1,2),(2,3),(4,2),(4,3),(4,4),(6,1),(8,3)]:
+            c=self.setup_ui(phase=phase)+[f'scoreboard players set {listener()} ca_mode {mode}',f'scoreboard players set {listener()} ca_pick 0']+self.player_call('ui/confirm')
+            c += self.score('#dialog','lt',1,f'guide_confirm_{phase}_{mode}_codec')
+            c += self.score('#submitted','lt',0,f'guide_confirm_{phase}_{mode}_no_payment')
+            self.case(f'guide_confirm_{phase}_{mode}',c)
         for i, name in enumerate(self.cases[original_count:], original_count):
             self.files['case/' + name] += 'schedule function love_letter_test:' + ('case/' + self.cases[i + 1] if i + 1 < len(self.cases) else 'finish') + ' 1t\n'
         existing = {'ca_nonce', 'ca_ui_load', 'ca_ui_table', 'ca_seen'}
-        extra = {**ui.OBJECTIVES, 'ca_mode': 'dummy', 'ca_pick': 'dummy', 'ca_turn': 'dummy', 'ca_anim': 'dummy', 'ca_action': 'trigger'}
+        extra = {**ui.OBJECTIVES, 'ca_mode': 'dummy', 'ca_pick': 'dummy', 'ca_turn': 'dummy', 'ca_anim': 'dummy', 'ca_vtimer':'dummy', 'ca_pulse':'dummy', 'ca_action': 'trigger'}
         self.files['bootstrap'] = self.files['bootstrap'].replace('schedule function love_letter_test:case/',
             '\n'.join(f'scoreboard objectives add {key} {kind}' for key, kind in extra.items()) + '\nschedule function love_letter_test:case/', 1)
 
@@ -190,6 +240,13 @@ def prepare_target(target):
     sound_test.prepare_target(target)
     dest = target / 'data/catan/function'
     shutil.copytree(base.PACK / 'data/catan/function/ui', dest / 'ui')
+    for name in ('hud','hud_show','hud_player','hud_text'):
+        source=base.PACK/'data/catan/function/game'/(name+'.mcfunction')
+        path=dest/'game'/(name+'.mcfunction')
+        path.parent.mkdir(parents=True,exist_ok=True)
+        lines=[sound_test.fixtures(line) if 'title ' not in line else line for line in source.read_text(encoding='utf-8').splitlines()]
+        if name=='hud_text':lines += ['$data modify storage catan:ui recorded.p$(side) set value $(hud_guidance)']
+        path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
     for name in ('input/context', 'system/context'):
         path = dest / (name + '.mcfunction')
         path.parent.mkdir(parents=True, exist_ok=True)

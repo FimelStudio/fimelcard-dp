@@ -33,5 +33,7 @@ function catan:input/create_surface
 execute as @a[tag=ca.audience] run function catan:input/give
 function catan:sound/start
 scoreboard players set @s ct_start 1
-tellraw @a[tag=ca.audience] {"text": "[卡坦岛] 按顺序放置村庄和道路；第二轮逆序。第 1 格按 Q 瞄准，最后一格按 Q 打开菜单。", "color": "yellow"}
+tellraw @a[tag=ca.audience] {"text": "[卡坦岛] 先顺序、再逆序免费放村庄＋相邻道路；第二个村庄领取起始资源。", "color": "yellow"}
+tellraw @a[tag=ca.audience] {"text": "[卡坦岛] 第1格 Q 瞄准交点／边，第9格 Q 打开菜单；看屏幕下方提示，菜单内可随时查看「新手入门」。", "color": "aqua"}
+function catan:game/hud
 function cardtable:log {text:"卡坦岛开始"}

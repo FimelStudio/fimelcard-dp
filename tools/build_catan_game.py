@@ -126,7 +126,9 @@ execute as @a[tag=ca.audience] run function catan:input/give
         'scoreboard players set @s ca_offline 0',
         'function catan:game/sync','function catan:visual/refresh','function catan:input/create_surface',
         'execute as @a[tag=ca.audience] run function catan:input/give','function catan:sound/start',
-        'scoreboard players set @s ct_start 1',msg('按顺序放置村庄和道路；第二轮逆序。第 1 格按 Q 瞄准，最后一格按 Q 打开菜单。'),
+        'scoreboard players set @s ct_start 1',msg('先顺序、再逆序免费放村庄＋相邻道路；第二个村庄领取起始资源。'),
+        msg('第1格 Q 瞄准交点／边，第9格 Q 打开菜单；看屏幕下方提示，菜单内可随时查看「新手入门」。','aqua'),
+        'function catan:game/hud',
         'function cardtable:log {text:"卡坦岛开始"}',
     ])
     assign=[]
@@ -175,7 +177,16 @@ execute unless score #ok ca_ctx matches 1 run return run function catan:game/ill
 function catan:game/after_action
 ''')
     put('game/busy',msg('动画进行中，请稍候。','gray','@a[tag=ca.actor]'))
-    put('game/illegal',[msg('该操作目前不合法：请检查轮次、位置、费用或是否仍有棋子。','red','@a[tag=ca.actor]'),'function catan:sound/illegal','execute as @a[tag=ca.actor] run function catan:ui/open'])
+    illegal=['data modify storage catan:runtime error set value "当前操作不可用，请重新打开菜单查看下一步。"',
+        'scoreboard players set #illegal_code ca_ctx 0',
+        'execute store result score #illegal_code ca_ctx run data get storage catan:action input.code']
+    for error,note in [(1,'对局状态不可用，请等待恢复或结束本局。'),(2,'你不在本局的参与名单中。'),(3,'这个窗口已经过期，请从第9格 Q 菜单重新操作。'),(4,'当前不是执行该操作的阶段或轮次，请看菜单顶部的个人提示。'),(5,'目标位置不合法，请重新瞄准交点、边或另一块地块。'),(6,'本次支付或领取所需的资源不足。请检查自己的资源、银行库存或交易报价。'),(7,'所需棋子或开发牌不足。'),(8,'资源数量不符合要求：弃牌须恰好选满，交易须双方均有给出且不含相同种类。'),(10,'开发牌不可使用：须有旧牌、每回合至多一张；新买牌下回合才能用。'),(11,'该请求已完成或不属于你，请重新查看当前请求。'),(12,'正在计算或结算，请稍候。')]:
+        illegal += [f'execute if score #error ca_ctx matches {error} run data modify storage catan:runtime error set value '+json.dumps(note,ensure_ascii=False)]
+    for codes,note in [('1','村庄须放在空交点，且与已有村庄／城市至少隔一个空交点。'),('2','初始道路须放在刚放村庄紧邻的空边中段。'),('20','道路须选空边，并接到己方道路或建筑；不能穿过对手建筑。'),('21','村庄须接己方道路，交点未占用，且与其他建筑至少隔一个空交点。'),('22','城市只能升级己方已有村庄，请瞄准该村庄交点。'),('12','强盗须移动到另一块六边形地块，不能仍留在原格。')]:
+        illegal += [f'execute if score #error ca_ctx matches 5 if score #illegal_code ca_ctx matches {codes} run data modify storage catan:runtime error set value '+json.dumps(note,ensure_ascii=False)]
+    illegal += ['function catan:game/illegal_message with storage catan:runtime','function catan:sound/illegal','execute as @a[tag=ca.actor] run function catan:ui/open']
+    put('game/illegal',illegal)
+    put('game/illegal_message','$tellraw @a[tag=ca.actor] {text:"[卡坦岛] $(error)",color:"red"}')
     after=['function catan:game/sync','data modify storage catan:runtime event set from entity @s data.catan.last','scoreboard players set #event ca_ctx -1','execute store result score #event ca_ctx run data get entity @s data.catan.last.code','execute as @a[tag=ca.audience] run scoreboard players set @s ca_pick -1','data remove entity @s data.catan.preview','function catan:visual/clear_selection','function catan:visual/update']
     kinds={1:('settlement',16),2:('road',12),10:('dice',24),12:('robber',18),20:('road',12),21:('settlement',16),22:('city',20),23:('development',16),30:('development',16),41:('trade',18),50:('trade',18)}
     for code,(kind,ticks) in kinds.items():
@@ -186,7 +197,7 @@ function catan:game/after_action
         if code==41:ev+=['function catan:game/trade_seats with entity @s data.catan.last']
         ev+=['function catan:visual/animate',f'function catan:sound/{"roll" if code==10 else kind}','function catan:game/log_event']
         put(f'game/event_{code}', ev)
-    after += ['data modify entity @s data.catan.anim_production set from storage catan:runtime event.production','execute if data entity @s data.catan.anim_production[0] run function catan:game/production','data modify entity @s data.catan.last set from storage catan:runtime event','execute if score @s ca_winner matches 1..4 run return run function catan:game/win','execute as @a[tag=ca.audience] run function catan:input/give']
+    after += ['data modify entity @s data.catan.anim_production set from storage catan:runtime event.production','execute if data entity @s data.catan.anim_production[0] run function catan:game/production','data modify entity @s data.catan.last set from storage catan:runtime event','execute if score @s ca_winner matches 1..4 run return run function catan:game/win','execute as @a[tag=ca.audience] run function catan:input/give','function catan:game/hud']
     put('game/after_action',after)
     put('game/event_seats', '''
 $data modify entity @s data.catan.last.seat set from entity @s data.catan.p$(owner).seat
@@ -259,8 +270,10 @@ scoreboard players set #live ca_ctx 0
 execute as @a[tag=ca.audience] run scoreboard players add #live ca_ctx 1
 execute store result score #required ca_ctx run data get entity @s data.catan.n
 ''')
-    put('game/hud',['scoreboard players set @s ca_pulse 0','function catan:game/hud_show with entity @s data.catan'])
-    put('game/hud_show','$title @a[tag=ca.audience] actionbar [{text:"卡坦岛 · ",color:"gold"},{nbt:"data.catan.p$(turn).name",entity:"@s",interpret:true},{text:" · ",color:"gray"},{nbt:"data.catan.hint",entity:"@s",interpret:false,color:"yellow"}]')
+    put('game/hud',['scoreboard players set @s ca_pulse 0','function catan:game/hud_show'])
+    put('game/hud_show','execute as @a[tag=ca.audience] run function catan:game/hud_player')
+    put('game/hud_player',['function catan:ui/guidance','execute store result storage catan:ui turn int 1 run scoreboard players get @e[tag=ca.current,limit=1] ca_turn','data modify storage catan:ui turn_name set value {text:"—",color:"gray"}','function catan:ui/turn_name with storage catan:ui','function catan:game/hud_text with storage catan:ui'])
+    put('game/hud_text','$title @s actionbar [{text:"卡坦岛 · ",color:"gold"},$(turn_name),{text:" · ",color:"gray"},$(hud_guidance)]')
     put('game/win',['execute if score @s ca_finish matches 1.. run return 0','execute unless score @s ca_winner matches 1..4 run return 0','scoreboard players set @s ca_finish 100','scoreboard players set @s ca_anim 0','function catan:input/clear_surface','function catan:sound/result','data modify entity @s data.catan.last.kind set value "win"','execute store result entity @s data.catan.last.owner int 1 run scoreboard players get @s ca_winner','function catan:visual/animate','function catan:game/winner_announce with entity @s data.catan','function catan:game/firework'])
     put('game/winner_announce','$tellraw @a[tag=ca.audience] [{text:"[卡坦岛] ",color:"gold"},{nbt:"data.catan.p$(winner).name",entity:"@s",interpret:true},{text:" 达到 10 分，获得胜利！",color:"gold"}]')
     put('game/firework','''

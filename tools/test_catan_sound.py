@@ -56,12 +56,17 @@ def asset_checks():
     # Generation checks run into temporary paths, never rewrite another agent's files.
     import tempfile
     with tempfile.TemporaryDirectory(prefix='fimel-catan-source-check-') as directory:
-        target = Path(directory)
+        # 保留真实 data/<namespace>/function 路径，让公共暂停、设置和规则
+        # 归一化适配器参与生成；扁平临时目录会跳过适配器，误报规则不一致。
+        target = Path(directory) / 'data/catan/function'
+        target.mkdir(parents=True, exist_ok=True)
         settings.build(target)
         sound.build(target)
         for path in target.rglob('*.mcfunction'):
             actual = base.PACK / 'data/catan/function' / path.relative_to(target)
-            assert path.read_bytes() == actual.read_bytes(), ('generator mismatch', actual)
+            # Git在Windows检出时可能使用CRLF；函数语义与生成内容须一致，
+            # 不把这一文本换行转换当成资源或规则被覆盖。
+            assert path.read_text(encoding='utf-8') == actual.read_text(encoding='utf-8'), ('generator mismatch', actual)
             checked += 1
     print(f'Catan assets/source: {checked} checks passed', flush=True)
 

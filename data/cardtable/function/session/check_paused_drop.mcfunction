@@ -21,6 +21,7 @@ execute if items entity @s contents *[minecraft:custom_data~{guandan:{}}] run ta
 execute if items entity @s contents *[minecraft:custom_data~{ito:{}}] run tag @s add ct.pause_candidate
 execute if items entity @s contents *[minecraft:custom_data~{weiqi:{}}] run tag @s add ct.pause_candidate
 execute if items entity @s contents *[minecraft:custom_data~{catan:{}}] run tag @s add ct.pause_candidate
+execute if items entity @s contents *[minecraft:custom_data~{splendor:{}}] run tag @s add ct.pause_candidate
 execute unless entity @s[tag=ct.pause_candidate] run return 0
 tag @s remove ct.pause_candidate
 execute on origin if entity @s[type=minecraft:player,tag=ct.player,scores={ct_paused=1}] if score @s ct_id = #pause_table ct_id run tag @s add ct.pause_owner

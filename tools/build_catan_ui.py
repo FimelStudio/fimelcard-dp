@@ -93,6 +93,7 @@ data modify storage catan:ui button_width set value 145
 function catan:ui/private with storage catan:ui
 execute as @e[tag=ca.current,limit=1] run function catan:ui/public
 function catan:ui/phase
+function catan:ui/guidance
 data modify storage catan:ui turn_name set value {text:"—",color:"gray"}
 function catan:ui/turn_name with storage catan:ui
 ''')
@@ -125,7 +126,48 @@ function catan:ui/public_append with storage catan:ui person
         phase += [f'execute if entity @e[tag=ca.current,scores={{ca_state={p}}},limit=1] run data modify storage catan:ui phase set value "{t}"']
     phase += ['execute store result storage catan:ui turn int 1 run scoreboard players get @e[tag=ca.current,limit=1] ca_turn']
     put('ui/phase',phase)
-    put('ui/show','$dialog show @s {type:"minecraft:multi_action",title:{text:"$(title)",color:"gold"},body:[{type:"minecraft:plain_message",width:470,contents:{text:"$(phase)",color:"yellow"}},{type:"minecraft:plain_message",width:470,contents:{text:"当前行动：",color:"gray",extra:[$(turn_name)]}},{type:"minecraft:plain_message",width:470,contents:$(private)},{type:"minecraft:plain_message",width:470,contents:$(public)},{type:"minecraft:plain_message",width:470,contents:$(note)}],columns:$(columns),actions:$(buttons),exit_action:{label:{text:"返回棋盘"}},pause:false,after_action:"none"}')
+    guidance = ['execute store result storage catan:ui side int 1 run scoreboard players get @s ca_side',
+        'data modify storage catan:ui guide_due set value 0',
+        'data modify storage catan:ui guide_free set value 0',
+        'function catan:ui/guidance_private with storage catan:ui',
+        'data modify storage catan:ui guidance set value {text:"等待当前行动者；第9格按 Q 查看资源与菜单。",color:"gray"}',
+        'data modify storage catan:ui hud_guidance set value {text:"等待行动者 · 第9格 Q 菜单",color:"gray"}',
+        'scoreboard players set #guide_step ca_ctx 0',
+        'scoreboard players set #guide_n ca_ctx 4',
+        'execute store result score #guide_step ca_ctx run data get entity @e[tag=ca.current,limit=1] data.catan.setup_step',
+        'execute store result score #guide_n ca_ctx run data get entity @e[tag=ca.current,limit=1] data.catan.n',
+        'execute if entity @e[tag=ca.current,scores={ca_state=1..2},limit=1] if score #guide_step ca_ctx < #guide_n ca_ctx run data modify storage catan:ui phase set value "初始布置 · 第一轮（顺序）"',
+        'execute if entity @e[tag=ca.current,scores={ca_state=1..2},limit=1] if score #guide_step ca_ctx >= #guide_n ca_ctx run data modify storage catan:ui phase set value "初始布置 · 第二轮（逆序）"']
+    own = 'if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn '
+    for state, hint in [(1,'轮到你：第1格按 Q 瞄准交点，确认免费放村庄。'),
+                        (2,'轮到你：第1格按 Q 瞄准刚放村庄旁的边，确认免费放道路。'),
+                        (3,'轮到你：第9格按 Q 打开菜单，点击「投骰子」。'),
+                        (4,'轮到你：第9格 Q 选择建造／交易；完成后点「结束回合」。'),
+                        (6,'轮到你：第1格按 Q 瞄准另一块六边形地块，确认移动强盗。'),
+                        (7,'轮到你：第9格 Q 打开菜单，点击可偷取玩家的姓名。'),
+                        (8,'轮到你：第1格 Q 瞄准边免费修路；也可在菜单放弃剩余道路。')]:
+        guidance += [f'execute {own}if entity @e[tag=ca.current,scores={{ca_state={state}}},limit=1] run data modify storage catan:ui guidance set value '+json.dumps(text(hint,'aqua'),ensure_ascii=False,separators=(',',':'))]
+    for state,hint in [(1,'放村庄 · 第1格 Q 选交点'),(2,'放相邻道路 · 第1格 Q 选边'),(3,'请投骰 · 第9格 Q 菜单'),(4,'建造／交易 · 第9格 Q 菜单'),(6,'移动强盗 · 第1格 Q 选地块'),(7,'选偷取对象 · 第9格 Q 菜单'),(8,'免费修路 · 第1格 Q 选边')]:
+        guidance += [f'execute {own}if entity @e[tag=ca.current,scores={{ca_state={state}}},limit=1] run data modify storage catan:ui hud_guidance set value '+json.dumps(text(hint,'aqua'),ensure_ascii=False,separators=(',',':'))]
+    guidance += ['execute if entity @e[tag=ca.current,scores={ca_state=4},limit=1] unless score @s ca_side = @e[tag=ca.current,limit=1] ca_turn run data modify storage catan:ui guidance set value {text:"等待当前行动者；第9格 Q 可与其交易，或回应自己的报价。",color:"gray"}',
+        'execute if entity @e[tag=ca.current,scores={ca_state=5},limit=1] run data modify storage catan:ui guidance set value {text:"你无需再弃牌；等待所有须弃牌的玩家完成，随后移动强盗。",color:"gray"}',
+        'execute if entity @e[tag=ca.current,scores={ca_state=5},limit=1] run data modify storage catan:ui hud_guidance set value {text:"等待其他玩家弃牌",color:"gray"}',
+        'execute if entity @e[tag=ca.current,scores={ca_state=5},limit=1] unless data storage catan:ui {guide_due:0} run function catan:ui/guidance_discard with storage catan:ui',
+        'execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn run function catan:ui/guidance_roads with storage catan:ui',
+        'execute if data entity @e[tag=ca.current,limit=1] data.catan.trade run function catan:ui/guidance_trade with entity @e[tag=ca.current,limit=1] data.catan.trade',
+        'execute if entity @e[tag=ca.current,scores={ca_state=10},limit=1] run data modify storage catan:ui guidance set value {text:"正在计算最长道路，请稍候；无需重复点击。",color:"gray"}',
+        'execute if entity @e[tag=ca.current,scores={ca_state=11},limit=1] run data modify storage catan:ui guidance set value {text:"对局已结束，稍后返回大厅并保留公开棋面。",color:"gold"}',
+        'execute if entity @e[tag=ca.current,scores={ca_anim=1..},limit=1] run data modify storage catan:ui guidance set value {text:"动画进行中，请稍候；结果已经保存，无需重复操作。",color:"gray"}',
+        'execute if entity @e[tag=ca.current,scores={ca_vtimer=1..},limit=1] run data modify storage catan:ui guidance set value {text:"动画进行中，请稍候；结果已经保存，无需重复操作。",color:"gray"}',
+        'execute if entity @e[tag=ca.current,scores={ct_paused=1},limit=1] run data modify storage catan:ui guidance set value {text:"对局暂停：等待原参与者重连，或使用牌桌结束投票。",color:"yellow"}']
+    for condition,hint in [('ca_state=10','计算最长道路，请稍候'),('ca_state=11','对局结束，稍后返回大厅'),('ca_anim=1..','动画中，请稍候'),('ca_vtimer=1..','动画中，请稍候'),('ct_paused=1','已暂停，等待原玩家重连')]:
+        guidance += [f'execute if entity @e[tag=ca.current,scores={{{condition}}},limit=1] run data modify storage catan:ui hud_guidance set value '+json.dumps(text(hint,'gray'),ensure_ascii=False,separators=(',',':'))]
+    put('ui/guidance',guidance)
+    put('ui/guidance_private',['$data modify storage catan:ui guide_due set from entity @e[tag=ca.current,limit=1] data.catan.p$(side).discard_due','data modify storage catan:ui guide_free set from entity @e[tag=ca.current,limit=1] data.catan.free_left'])
+    put('ui/guidance_discard', ['$data modify storage catan:ui guidance set value {text:"你须弃 $(guide_due) 张：第9格 Q → 选择弃牌，用 ＋／− 选满后确认。",color:"red"}','$data modify storage catan:ui hud_guidance set value {text:"你须弃 $(guide_due) 张 · 第9格 Q 菜单",color:"red"}'])
+    put('ui/guidance_roads', ['$data modify storage catan:ui guidance set value {text:"还可免费修 $(guide_free) 路：第1格 Q 瞄准边；无处可建时在菜单放弃。",color:"aqua"}','$data modify storage catan:ui hud_guidance set value {text:"免费修路余 $(guide_free) 次 · 第1格 Q 选边",color:"aqua"}'])
+    put('ui/guidance_trade', ['$execute if score @s ca_side matches $(to) if entity @e[tag=ca.current,scores={ca_state=4},limit=1] run data modify storage catan:ui guidance set value {text:"你收到交易报价：第9格 Q → 查看交易请求，检查价格后同意／拒绝。",color:"aqua"}','$execute if score @s ca_side matches $(to) if entity @e[tag=ca.current,scores={ca_state=4},limit=1] run data modify storage catan:ui hud_guidance set value {text:"收到报价 · 第9格 Q 查看交易请求",color:"aqua"}'])
+    put('ui/show','$dialog show @s {type:"minecraft:multi_action",title:{text:"$(title)",color:"gold"},body:[{type:"minecraft:plain_message",width:470,contents:{text:"$(phase)",color:"yellow"}},{type:"minecraft:plain_message",width:470,contents:{text:"当前行动：",color:"gray",extra:[$(turn_name)]}},{type:"minecraft:plain_message",width:470,contents:$(guidance)},{type:"minecraft:plain_message",width:470,contents:$(private)},{type:"minecraft:plain_message",width:470,contents:$(public)},{type:"minecraft:plain_message",width:470,contents:$(note)}],columns:$(columns),actions:$(buttons),exit_action:{label:{text:"返回棋盘"}},pause:false,after_action:"none"}')
     op=['function catan:input/context','execute unless entity @s[tag=ca.actor] run return 0','function catan:ui/begin']
     turn='if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn '
     normal=turn+'if entity @e[tag=ca.current,scores={ca_state=4,ca_anim=0},limit=1]'
@@ -137,9 +179,13 @@ function catan:ui/public_append with storage catan:ui person
     op[-1]=button(230,'选择弃牌','red','if entity @e[tag=ca.current,scores={ca_state=5,ca_anim=0},limit=1] unless data storage catan:ui hand{discard_due:0}')
     for p in range(1,5):
         op += [f'execute {turn}if entity @e[tag=ca.current,scores={{ca_state=7,ca_anim=0}},limit=1] if data entity @e[tag=ca.current,limit=1] data.catan{{eligible:[{p}]}} run function catan:ui/named_button {{code:{400+p},side:{p}}}']
-    op += [button(240,'查看交易请求','aqua','if data entity @e[tag=ca.current,limit=1] data.catan.trade'),button(250,'音乐开关','gray'),button(260,'规则','gray'),'function catan:ui/show with storage catan:ui']
+    op += [button(240,'查看交易请求','aqua','if data entity @e[tag=ca.current,limit=1] data.catan.trade'),button(270,'新手入门','aqua'),button(250,'音乐开关','gray'),button(260,'规则','gray'),'function catan:ui/show with storage catan:ui']
     put('ui/open',op)
-    put('ui/confirm',['function catan:ui/begin','scoreboard players set @s ca_panel 1','data modify storage catan:ui title set value "卡坦岛 · 确认位置"','execute store result storage catan:ui target int 1 run scoreboard players get @s ca_pick','data modify storage catan:ui note set value {text:"金色标记为目标位置。确认后按规则扣除费用。",color:"aqua"}',button(300,'确认放置','green'),button(100,'重新瞄准','yellow'),'function catan:ui/show with storage catan:ui'])
+    confirm=['function catan:ui/begin','scoreboard players set @s ca_panel 1','data modify storage catan:ui title set value "卡坦岛 · 确认位置"','execute store result storage catan:ui target int 1 run scoreboard players get @s ca_pick']
+    for mode,note in [(1,'金色标记为强盗目的地。确认移动，不消耗资源。'),(2,'金色标记为村庄交点。费用：木材、砖块、羊毛、粮食各1。'),(3,'金色标记为道路边。费用：木材、砖块各1。'),(4,'金色标记为城市交点。须选己方村庄，费用：粮食2、矿石3。')]:
+        confirm += [f'execute if score @s ca_mode matches {mode} run data modify storage catan:ui note set value '+json.dumps(text(note,'aqua'),ensure_ascii=False,separators=(',',':'))]
+    confirm += ['execute if entity @e[tag=ca.current,scores={ca_state=1..2},limit=1] run data modify storage catan:ui note set value {text:"金色标记为预选位置。初始布置免费，确认前不会放置。",color:"aqua"}','execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] run data modify storage catan:ui note set value {text:"金色标记为道路边。消耗一次修路卡机会，不扣资源。",color:"aqua"}',button(300,'确认放置','green'),button(100,'重新瞄准','yellow'),'function catan:ui/show with storage catan:ui']
+    put('ui/confirm',confirm)
     put('ui/handle','''
 scoreboard players operation #encoded ca_ctx = @s ca_action
 scoreboard players set @s ca_action 0
@@ -169,7 +215,7 @@ function catan:ui/dispatch
     dispatch += ['execute if score #code ca_ctx matches 100 run return run function catan:input/aim']
     for code,mode in [(102,2),(103,3),(104,4)]:
         dispatch += [f'execute if score #code ca_ctx matches {code} run scoreboard players set @s ca_mode {mode}',f'execute if score #code ca_ctx matches {code} run return run function catan:ui/aim_note']
-    for code,name in [(200,'partners'),(210,'bank'),(220,'development'),(230,'discard'),(240,'trade_response'),(250,'music'),(260,'rules'),(300,'place'),(350,'send_trade'),(351,'send_discard'),(352,'send_bank'),(353,'send_monopoly'),(354,'send_plenty'),(360,'accept'),(361,'refuse')]:
+    for code,name in [(200,'partners'),(210,'bank'),(220,'development'),(230,'discard'),(240,'trade_response'),(250,'music'),(260,'rules'),(270,'help'),(280,'open'),(300,'place'),(350,'send_trade'),(351,'send_discard'),(352,'send_bank'),(353,'send_monopoly'),(354,'send_plenty'),(360,'accept'),(361,'refuse')]:
         dispatch += [f'execute if score #code ca_ctx matches {code} run return run function catan:ui/{name}']
     for p in range(1,5):
         dispatch += [f'execute if score #code ca_ctx matches {400+p} run return run function catan:ui/steal {{target:{p}}}',f'execute if score #code ca_ctx matches {500+p} run scoreboard players set @s ca_partner {p}',f'execute if score #code ca_ctx matches {500+p} run return run function catan:ui/trade_begin']
@@ -182,7 +228,14 @@ function catan:ui/dispatch
             dispatch += [f'execute if score #code ca_ctx matches {base+i} run scoreboard players set @s ca_{obj} {i}',f'execute if score #code ca_ctx matches {base+i} run return run function catan:ui/editor']
     for c,d in [(1140,1),(1141,-1)]:dispatch += [f'execute if score #code ca_ctx matches {c} run scoreboard players {"add" if d>0 else "remove"} @s ca_batch {abs(d)}',f'execute if score @s ca_batch matches ..0 run scoreboard players set @s ca_batch 1',f'execute if score @s ca_batch matches 20.. run scoreboard players set @s ca_batch 19',f'execute if score #code ca_ctx matches {c} run return run function catan:ui/editor']
     put('ui/dispatch',dispatch)
-    put('ui/aim_note',['dialog clear @s','tellraw @s {text:"[卡坦岛] 右键棋盘选择位置；也可瞄准后在第 1 格按 Q。",color:"aqua"}'])
+    aim_note=['dialog clear @s']
+    for mode,note in [(1,'瞄准另一块六边形地块，再用第1格按 Q；金色预选后确认移动强盗。'),(2,'瞄准地块交会的交点，再用第1格按 Q；金色预选后确认村庄。'),(3,'瞄准两个交点之间的边中段，再用第1格按 Q；金色预选后确认道路。'),(4,'瞄准己方村庄所在交点，再用第1格按 Q；金色预选后确认升级城市。')]:
+        aim_note += [f'execute if score @s ca_mode matches {mode} run tellraw @s '+json.dumps(text('[卡坦岛] '+note,'aqua'),ensure_ascii=False,separators=(',',':'))]
+    put('ui/aim_note',aim_note)
+    help_page=['function catan:ui/begin','data modify storage catan:ui title set value "卡坦岛 · 新手入门"']
+    help_parts=[text('两件操作物\n','gold'),text('第9格按 Q：菜单。第1格按 Q：瞄准放置；近处也可右键棋盘。位置先变金色，再确认，不会误点就扣费。\n\n'),text('交点、边、地块\n','gold'),text('村庄／城市放地块交会的交点；道路放两交点之间的边；强盗放六边形地块中央。先在菜单选择建什么，再回棋盘瞄准。\n\n'),text('开局先免费布置两组\n','gold'),text('每人依次放村庄＋相邻道路，再倒序各放第二组（末位连续放两组）。只有第二个村庄领取起始资源；村庄之间至少隔一个空交点。\n\n'),text('每轮该做什么\n','gold'),text('轮到你先从菜单投骰。按数字为所有相邻建筑生产资源；然后交易、建造、买／用开发牌，最后主动点击「结束回合」。7点须由所有超7张资源的玩家各弃一半，再由掷骰者移动强盗并选择偷谁。\n\n'),text('如何赢与卡住时怎么办\n','gold'),text('村庄1分、城市2分；最长道路与最大军队各2分，胜利点牌私下计分。自己回合先到10分获胜。缺资源可交易或用港口；没事可做就结束回合。看本菜单顶部和屏幕下方的个人提示即可找到下一步。')]
+    help_page += [component_line('note',help_parts).removeprefix('$'),button(280,'返回对局菜单','green'),'function catan:ui/show with storage catan:ui']
+    put('ui/help',help_page)
     put('ui/prepare','''
 data modify storage catan:action input set value {actor:0,code:0,target:-1,a:-1,b:-1,epoch:0,offer:[0,0,0,0,0],want:[0,0,0,0,0]}
 execute store result storage catan:action input.actor int 1 run scoreboard players get @s ca_side
@@ -214,6 +267,7 @@ execute store result storage catan:action input.epoch int 1 run scoreboard playe
     for x in ('g','w'):
         es += [f'execute store result storage catan:ui {x}{i} int 1 run scoreboard players get @s ca_{x}{i}' for i in range(5)]
     for name in ('partner','pay','receive','batch','a','b','edit'):es += [f'execute store result storage catan:ui {name} int 1 run scoreboard players get @s ca_{name}']
+    es += ['scoreboard players set #ui_selected ca_ctx 0']+[f'scoreboard players operation #ui_selected ca_ctx += @s ca_g{i}' for i in range(5)]+['execute store result storage catan:ui selected int 1 run scoreboard players get #ui_selected ca_ctx']
     es += ['data modify storage catan:ui due set from storage catan:ui hand.discard_due',
            'data modify storage catan:ui partner_name set value {text:"—"}',
            'function catan:ui/partner_name with storage catan:ui','function catan:ui/resource_labels',
@@ -225,7 +279,7 @@ execute store result storage catan:action input.epoch int 1 run scoreboard playe
     for obj in ('pay','receive','a','b'):
         for i,label in enumerate(R):labels += [f'execute if score @s ca_{obj} matches {i} run data modify storage catan:ui {obj}_label set value "{label}"']
     put('ui/resource_labels',labels)
-    put('ui/editor_note_1',component_line('note',[text('须弃 $(due) 张\n\n','red')]+resources('g','已选：','yellow')))
+    put('ui/editor_note_1',component_line('note',[text('须弃 $(due) 张，已选 $(selected) 张；恰好选满后确认。\n\n','red')]+resources('g','已选：','yellow')))
     put('ui/editor_note_2',component_line('note',[text('交易对象：','aqua'),{'nbt':'partner_name','storage':'catan:ui','interpret':True},text('\n\n')]+resources('g','你给予：','yellow')+[text('\n\n')]+resources('w','你索取：','aqua')).replace('{"nbt":"partner_name","storage":"catan:ui","interpret":true}','$(partner_name)'))
     bank_parts=[text('支付 $(pay_label)，换取 $(receive_label) ×$(batch)\n\n','aqua')]
     for i in range(5):

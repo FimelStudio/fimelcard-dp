@@ -26,6 +26,9 @@ function guandan:sound/play
 execute if score @s gd_kind matches 8 run function guandan:sound/bomb
 execute if score @s gd_kind matches 9..10 run function guandan:sound/straight_flush
 function guandan:game/announce_play
+# BEGIN guandan exciting music
+function guandan:music/check_exciting
+# END guandan exciting music
 function guandan:round/check_end
 execute if score @s gd_state matches 3 run function guandan:game/next_turn
 function guandan:game/bump_epoch

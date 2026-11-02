@@ -1,0 +1,112 @@
+data modify storage splendor:engine bag set value [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+function splendor:engine/shuffle {max:39,tier:1}
+function splendor:engine/shuffle {max:38,tier:1}
+function splendor:engine/shuffle {max:37,tier:1}
+function splendor:engine/shuffle {max:36,tier:1}
+function splendor:engine/shuffle {max:35,tier:1}
+function splendor:engine/shuffle {max:34,tier:1}
+function splendor:engine/shuffle {max:33,tier:1}
+function splendor:engine/shuffle {max:32,tier:1}
+function splendor:engine/shuffle {max:31,tier:1}
+function splendor:engine/shuffle {max:30,tier:1}
+function splendor:engine/shuffle {max:29,tier:1}
+function splendor:engine/shuffle {max:28,tier:1}
+function splendor:engine/shuffle {max:27,tier:1}
+function splendor:engine/shuffle {max:26,tier:1}
+function splendor:engine/shuffle {max:25,tier:1}
+function splendor:engine/shuffle {max:24,tier:1}
+function splendor:engine/shuffle {max:23,tier:1}
+function splendor:engine/shuffle {max:22,tier:1}
+function splendor:engine/shuffle {max:21,tier:1}
+function splendor:engine/shuffle {max:20,tier:1}
+function splendor:engine/shuffle {max:19,tier:1}
+function splendor:engine/shuffle {max:18,tier:1}
+function splendor:engine/shuffle {max:17,tier:1}
+function splendor:engine/shuffle {max:16,tier:1}
+function splendor:engine/shuffle {max:15,tier:1}
+function splendor:engine/shuffle {max:14,tier:1}
+function splendor:engine/shuffle {max:13,tier:1}
+function splendor:engine/shuffle {max:12,tier:1}
+function splendor:engine/shuffle {max:11,tier:1}
+function splendor:engine/shuffle {max:10,tier:1}
+function splendor:engine/shuffle {max:9,tier:1}
+function splendor:engine/shuffle {max:8,tier:1}
+function splendor:engine/shuffle {max:7,tier:1}
+function splendor:engine/shuffle {max:6,tier:1}
+function splendor:engine/shuffle {max:5,tier:1}
+function splendor:engine/shuffle {max:4,tier:1}
+function splendor:engine/shuffle {max:3,tier:1}
+function splendor:engine/shuffle {max:2,tier:1}
+function splendor:engine/shuffle {max:1,tier:1}
+function splendor:engine/shuffle {max:0,tier:1}
+function splendor:engine/refill {slot:0,tier:1}
+function splendor:engine/refill {slot:1,tier:1}
+function splendor:engine/refill {slot:2,tier:1}
+function splendor:engine/refill {slot:3,tier:1}
+data modify storage splendor:engine bag set value [40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69]
+function splendor:engine/shuffle {max:29,tier:2}
+function splendor:engine/shuffle {max:28,tier:2}
+function splendor:engine/shuffle {max:27,tier:2}
+function splendor:engine/shuffle {max:26,tier:2}
+function splendor:engine/shuffle {max:25,tier:2}
+function splendor:engine/shuffle {max:24,tier:2}
+function splendor:engine/shuffle {max:23,tier:2}
+function splendor:engine/shuffle {max:22,tier:2}
+function splendor:engine/shuffle {max:21,tier:2}
+function splendor:engine/shuffle {max:20,tier:2}
+function splendor:engine/shuffle {max:19,tier:2}
+function splendor:engine/shuffle {max:18,tier:2}
+function splendor:engine/shuffle {max:17,tier:2}
+function splendor:engine/shuffle {max:16,tier:2}
+function splendor:engine/shuffle {max:15,tier:2}
+function splendor:engine/shuffle {max:14,tier:2}
+function splendor:engine/shuffle {max:13,tier:2}
+function splendor:engine/shuffle {max:12,tier:2}
+function splendor:engine/shuffle {max:11,tier:2}
+function splendor:engine/shuffle {max:10,tier:2}
+function splendor:engine/shuffle {max:9,tier:2}
+function splendor:engine/shuffle {max:8,tier:2}
+function splendor:engine/shuffle {max:7,tier:2}
+function splendor:engine/shuffle {max:6,tier:2}
+function splendor:engine/shuffle {max:5,tier:2}
+function splendor:engine/shuffle {max:4,tier:2}
+function splendor:engine/shuffle {max:3,tier:2}
+function splendor:engine/shuffle {max:2,tier:2}
+function splendor:engine/shuffle {max:1,tier:2}
+function splendor:engine/shuffle {max:0,tier:2}
+function splendor:engine/refill {slot:4,tier:2}
+function splendor:engine/refill {slot:5,tier:2}
+function splendor:engine/refill {slot:6,tier:2}
+function splendor:engine/refill {slot:7,tier:2}
+data modify storage splendor:engine bag set value [70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89]
+function splendor:engine/shuffle {max:19,tier:3}
+function splendor:engine/shuffle {max:18,tier:3}
+function splendor:engine/shuffle {max:17,tier:3}
+function splendor:engine/shuffle {max:16,tier:3}
+function splendor:engine/shuffle {max:15,tier:3}
+function splendor:engine/shuffle {max:14,tier:3}
+function splendor:engine/shuffle {max:13,tier:3}
+function splendor:engine/shuffle {max:12,tier:3}
+function splendor:engine/shuffle {max:11,tier:3}
+function splendor:engine/shuffle {max:10,tier:3}
+function splendor:engine/shuffle {max:9,tier:3}
+function splendor:engine/shuffle {max:8,tier:3}
+function splendor:engine/shuffle {max:7,tier:3}
+function splendor:engine/shuffle {max:6,tier:3}
+function splendor:engine/shuffle {max:5,tier:3}
+function splendor:engine/shuffle {max:4,tier:3}
+function splendor:engine/shuffle {max:3,tier:3}
+function splendor:engine/shuffle {max:2,tier:3}
+function splendor:engine/shuffle {max:1,tier:3}
+function splendor:engine/shuffle {max:0,tier:3}
+function splendor:engine/refill {slot:8,tier:3}
+function splendor:engine/refill {slot:9,tier:3}
+function splendor:engine/refill {slot:10,tier:3}
+function splendor:engine/refill {slot:11,tier:3}
+data modify storage splendor:engine bag set value [0,1,2,3,4,5,6,7,8,9]
+execute if score #players sp_ctx matches 2..4 run function splendor:engine/noble_draw {max:9,slot:0}
+execute if score #players sp_ctx matches 2..4 run function splendor:engine/noble_draw {max:8,slot:1}
+execute if score #players sp_ctx matches 2..4 run function splendor:engine/noble_draw {max:7,slot:2}
+execute if score #players sp_ctx matches 3..4 run function splendor:engine/noble_draw {max:6,slot:3}
+execute if score #players sp_ctx matches 4..4 run function splendor:engine/noble_draw {max:5,slot:4}
+data remove storage splendor:engine bag

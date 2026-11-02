@@ -1,3 +1,4 @@
+execute if score @s sp_setnonce matches 1.. run function splendor:settings/clear_session
 # BEGIN public session member departure
 function cardtable:session/drop_member
 # END public session member departure

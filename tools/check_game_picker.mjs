@@ -5,16 +5,16 @@ import zlib from 'node:zlib';
 import assert from 'node:assert/strict';
 
 const read=n=>fs.readFileSync('data/cardtable/function/'+n+'.mcfunction','utf8').replace(/\r\n/g,'\n');
-const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主','UNO','国际象棋','中国象棋','五子棋','飞行棋','阿瓦隆','情书','掼蛋','命悬一线','围棋','卡坦岛'];
-const min=[4,2,2,2,3,3,3,2,2,1,2,1,1,1,1,5,2,1,2,1,3];
-const max=[4,8,5,5,8,8,6,8,6,3,8,2,2,2,4,8,6,4,8,2,4];
+const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主','UNO','国际象棋','中国象棋','五子棋','飞行棋','阿瓦隆','情书','掼蛋','命悬一线','围棋','卡坦岛','璀璨宝石'];
+const min=[4,2,2,2,3,3,3,2,2,1,2,1,1,1,1,5,2,1,2,1,3,2];
+const max=[4,8,5,5,8,8,6,8,6,3,8,2,2,2,4,8,6,4,8,2,4,4];
 const ai=new Set([10,12,13,14,15,18,20]);
 const ids=names.map((_,i)=>i+1),count=ids.length,highest=Math.max(...ids);
 const rp=path.resolve('../../../..','resourcepacks/fimelcard-rp');
 const font=JSON.parse(fs.readFileSync(path.join(rp,'assets/card/font/game_icons.json'),'utf8'));
 const bitmaps=font.providers.filter(p=>p.type==='bitmap');
 const space=font.providers.find(p=>p.type==='space');
-assert.equal(bitmaps.length,21);assert.ok(space);
+assert.equal(bitmaps.length,count);assert.ok(space);
 const allChars=new Set();
 
 // 解码RGBA PNG，以真实透明边界验证切片字距；无需额外图片库。
@@ -141,10 +141,10 @@ for(const base of [10,100,200,1000,1999999900])for(const game of ids){
 for(const base of [100,200,1000]){
  assert.equal(accepted(true,base+19,base,12,12,0,true),true);
  assert.equal(accepted(true,base+16,base,12,12,0,true,4),false);
- for(const invalid of [0,22,-1])assert.equal(accepted(true,base+invalid,base,12,12,0,true),false);
+ for(const invalid of [0,highest+1,-1])assert.equal(accepted(true,base+invalid,base,12,12,0,true),false);
 }
 assert.match(handle,/scores=\{ct_state=0\}.*ct_id = #pick_table ct_ctx/);
 assert.ok(handle.indexOf('reset @s ct_game_pick')<handle.indexOf('menu/select_game'));
 for(const f of ['load','seat/remove_player','game/start'])assert.ok(read(f).includes('reset')&&read(f).includes('ct_pick_table'));
 assert.ok(read('tick').includes('scores={ct_game_pick=1..}'));
-console.log(`通过：${iconCount}个游戏图标、${sliceCount}个可点切片，21张PNG/字体映射/透明边界字距、人数与人机提示，${checks}种提交与过期窗口情形。客户端外观与真人点击仍待实测。`);
+console.log(`通过：${iconCount}个游戏图标、${sliceCount}个可点切片，${count}张PNG/字体映射/透明边界字距、人数与人机提示，${checks}种提交与过期窗口情形。客户端外观与真人点击仍待实测。`);

@@ -7,7 +7,7 @@ from game_picker_ui import load_picker, write_picker, game_number
 PACK=Path(__file__).resolve().parents[1]
 COMMON=PACK/'data/cardtable/function'
 GAMES=((14,'gomoku','gm','五子棋',2),(15,'aeroplane_chess','ac','飞行棋',4))
-MINIMUM={12:1,13:1,14:1,15:1,16:5,17:2,18:1,19:2,20:1,21:3}
+MINIMUM={12:1,13:1,14:1,15:1,16:5,17:2,18:1,19:2,20:1,21:3,22:2}
 COMPUTER={12,13,14,15,18,20}
 
 

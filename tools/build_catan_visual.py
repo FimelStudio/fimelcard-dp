@@ -25,6 +25,7 @@ SIZES = {4:(.25,1.35),8:(.35,1.8)}
 HALF = math.sqrt(.5)
 FACE_ROTATIONS = {1:(0,0,0,1),6:(1,0,0,0),2:(HALF,0,0,HALF),5:(-HALF,0,0,HALF),3:(0,0,HALF,HALF),4:(0,0,-HALF,HALF)}
 USED = set()
+RESOURCE_NAMES = ('wood', 'brick', 'wool', 'grain', 'ore')
 
 
 def fmt(value):
@@ -114,6 +115,128 @@ def sheep(draw,x,y,size=1):
     for lx in (-3,2):draw.rectangle((x+lx*size,y+4*size,x+(lx+1)*size,y+6*size),fill='#5c5845')
 
 
+def resource_icon(name):
+    """Original 32px resource symbols; never crop a port token to make a card.
+
+    Broad shapes and dark outlines survive the 14px Dialog font. The square
+    canvas also avoids stretching the former 80x59 port crop into a square.
+    """
+    image = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    ink = '#34342d'
+    backgrounds = {'wood': '#bad09a', 'brick': '#e5b79b', 'wool': '#a9c5b6',
+                   'grain': '#b8c3a1', 'ore': '#adbfce'}
+    # Chamfered parchment frame rather than fragments of a circular port rim.
+    draw.polygon([(3, 0), (28, 0), (31, 3), (31, 28), (28, 31),
+                  (3, 31), (0, 28), (0, 3)], fill=ink)
+    draw.polygon([(4, 2), (27, 2), (29, 4), (29, 27), (27, 29),
+                  (4, 29), (2, 27), (2, 4)], fill='#f2e3bf')
+    draw.rectangle((4, 4, 27, 27), fill=backgrounds[name])
+    if name == 'wood':
+        # Two whole logs with visible round end grain, not a generic brown rock.
+        for offset in (5, 0):
+            draw.polygon([(5, 8 + offset), (12, 5 + offset), (26, 12 + offset),
+                          (26, 18 + offset), (19, 22 + offset), (5, 14 + offset)], fill=ink)
+            draw.polygon([(7, 9 + offset), (12, 7 + offset), (24, 13 + offset),
+                          (19, 16 + offset)], fill='#bc864b')
+            draw.polygon([(7, 12 + offset), (18, 18 + offset), (18, 20 + offset),
+                          (7, 14 + offset)], fill='#765332')
+            draw.polygon([(19, 17 + offset), (24, 14 + offset), (24, 17 + offset),
+                          (19, 20 + offset)], fill='#f1c47b')
+            draw.line((21, 17 + offset, 22, 17 + offset), fill='#765332', width=1)
+            draw.line((10, 11 + offset, 15, 14 + offset), fill='#e6b16c', width=1)
+    elif name == 'brick':
+        # Four separate rectangular bricks, with a broad light horizontal joint
+        # and staggered vertical joints that remain visible at 14px high.
+        draw.rectangle((7, 6, 26, 15), fill=ink)
+        draw.rectangle((4, 14, 28, 25), fill=ink)
+        draw.rectangle((6, 13, 26, 16), fill='#f2d3a5')
+        draw.rectangle((16, 7, 18, 13), fill='#f2d3a5')
+        draw.rectangle((13, 16, 15, 24), fill='#f2d3a5')
+        for x0, y0, x1, y1, color in ((8, 7, 15, 12, '#c75c43'),
+                                    (19, 7, 25, 12, '#bd503c'),
+                                    (5, 17, 12, 24, '#cf6547'),
+                                    (16, 17, 27, 24, '#b74c38')):
+            draw.rectangle((x0, y0, x1, y1), fill=color)
+            draw.line((x0, y0, x1, y0), fill='#ee9b71', width=1)
+            draw.line((x0, y1, x1, y1), fill='#8c3e30', width=1)
+    elif name == 'wool':
+        # A cream wool/yarn ball on sage green; its silhouette stays visible.
+        draw.line((6, 26, 10, 23), fill=ink, width=3)
+        draw.line((4, 26, 8, 26), fill=ink, width=2)
+        draw.ellipse((5, 5, 27, 26), fill=ink)
+        draw.ellipse((7, 7, 25, 24), fill='#fff3d7')
+        draw.arc((8, 6, 29, 25), 112, 250, fill='#b99d74', width=2)
+        draw.arc((6, 8, 24, 28), 202, 324, fill='#b99d74', width=2)
+        draw.line((10, 9, 21, 21), fill='#b99d74', width=2)
+        draw.line((14, 8, 24, 17), fill='#b99d74', width=2)
+        draw.line((8, 15, 16, 23), fill='#b99d74', width=2)
+        draw.arc((7, 6, 25, 24), 235, 325, fill='#fffdf0', width=2)
+    elif name == 'grain':
+        # One large wheat ear: broad gold kernels survive a 14px font cell.
+        draw.line((16, 6, 16, 27), fill=ink, width=3)
+        draw.line((16, 7, 16, 26), fill='#b77b30', width=1)
+        draw.polygon([(16, 4), (19, 8), (16, 13), (13, 8)], fill='#f3ce69', outline='#695130')
+        for y in (10, 16, 22):
+            draw.polygon([(15, y + 4), (8, y), (8, y - 4), (15, y)],
+                         fill='#db9e35', outline='#695130')
+            draw.polygon([(17, y + 4), (24, y), (24, y - 4), (17, y)],
+                         fill='#f2c85b', outline='#695130')
+            draw.line((9, y - 2, 13, y), fill='#f0bf51', width=1)
+            draw.line((19, y + 1, 23, y - 1), fill='#f7df87', width=1)
+    elif name == 'ore':
+        # Large angular grey ore with a pale blue mineral vein/highlight.
+        draw.polygon([(5, 18), (9, 8), (17, 4), (25, 11), (28, 22),
+                      (23, 27), (10, 27)], fill=ink)
+        draw.polygon([(8, 18), (11, 10), (17, 7), (20, 17), (13, 24)], fill='#9cabb4')
+        draw.polygon([(19, 8), (23, 12), (26, 21), (22, 24), (20, 17)], fill='#637a8b')
+        draw.polygon([(9, 20), (13, 25), (21, 25), (19, 19), (14, 20)], fill='#4e6472')
+        draw.polygon([(11, 12), (15, 9), (18, 15), (14, 19), (11, 17)], fill='#d9e8e7')
+        draw.line((15, 11, 16, 15), fill='#f8f5df', width=2)
+    else:
+        raise ValueError('Unknown Catan resource: ' + name)
+    return image
+
+
+def resource_assets():
+    """Rebuild resource cards without touching terrain or runtime functions."""
+    preview = Image.new('RGB', (160 * 5, 224), '#303a3d')
+    draw = ImageDraw.Draw(preview)
+    records = {}
+    for index, name in enumerate(RESOURCE_NAMES):
+        icon = resource_icon(name)
+        png('resource/' + name, icon.resize((64, 64), Image.Resampling.NEAREST))
+        model('resource/' + name, {'credit': 'Fimel Cards original pixel resource artwork',
+              'parent': 'minecraft:item/generated',
+              'textures': {'layer0': 'card:item/catan/resource/' + name}})
+        large = icon.resize((128, 128), Image.Resampling.NEAREST)
+        small = icon.resize((14, 14), Image.Resampling.NEAREST).resize((42, 42), Image.Resampling.NEAREST)
+        preview.paste(large, (160 * index + 16, 12), large)
+        preview.paste(small, (160 * index + 59, 158), small)
+        draw.text((160 * index + 80, 213), name, anchor='mm', font=font(13), fill='#f2e3bf')
+        path = CARD / ('textures/item/catan/resource/' + name + '.png')
+        records[name] = {'texture': path.relative_to(RP).as_posix(),
+                         'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+    target = SOURCE / 'resource'
+    target.mkdir(parents=True, exist_ok=True)
+    preview.save(target / 'preview.png')
+    json_file(target / 'manifest.json', {'author': 'Fimel Cards', 'artwork': 'Original procedural pixel artwork',
+              'generator': 'fimel_cards/tools/build_catan_visual.py:resource_icon',
+              'logical_pixels': [32, 32], 'item_texture_pixels': [64, 64],
+              'resize': 'nearest-neighbor, integer scale 2', 'resources': records})
+    text_file(target / 'README.md', '''# 卡坦岛资源牌
+
+五种资源使用 Fimel Cards 原创像素图案：木材为双木段，砖块为红砖堆，羊毛为浅色毛线团，粮食为金色麦穗，矿石为带浅色矿脉的灰色矿块。
+资源牌不再裁切港口圆牌；图案在 32×32 逻辑像素上绘制，以整数倍近邻放大到 64×64，避免非等比拉伸与港口圆框残角。
+深色轮廓、不同底色与大面积剪影用于改善小字号下的辨认；颜色不是唯一识别依据。
+
+在数据包仓库运行 `python tools/build_catan_visual.py --resources-only` 后，运行 `python tools/build_catan_font.py` 同步对话框图片字体。
+资源字体保留原有字形编号、显示高 14 和 ascent 12，桌面飞行资源物品保留原有 item_model 路径。
+可编辑模型见 `../models/resource/*.bbmodel`，其嵌入纹理与发布 PNG 同步；`manifest.json` 保存纹理哈希。
+`preview.png` 上排为放大图，下排为实际 14 像素图标的三倍近邻检查图，不是游戏截图。
+''')
+
+
 def resources():
     SOURCE.mkdir(parents=True,exist_ok=True)
     terrain_sources=('Grass/grass_12','Dirt/dirt_04','Grass/grass_05','Dirt/dirt_06','Stone/stone_07','Sand/sand_07')
@@ -191,10 +314,7 @@ def resources():
         key={-1:'generic',0:'wood',1:'brick',2:'wool',3:'grain',4:'ore'}[resource]
         png('port/'+key,token)
         model('port/'+key,disc('card:item/catan/port/'+key,'card:item/catan/wood_edge',height=.65,segments=8))
-        if resource>=0:
-            icon=token.crop((24,57,104,116)).resize((64,64),Image.Resampling.NEAREST)
-            png('resource/'+key,icon)
-            model('resource/'+key,{'parent':'minecraft:item/generated','textures':{'layer0':'card:item/catan/resource/'+key}})
+    resource_assets()
     model('port/dock',{'textures':{'all':'card:item/catan/wood_edge','particle':'card:item/catan/wood_edge'},
                        'elements':[wall((0,8),(8,12),'all',height=.18,thickness=.65),wall((16,8),(8,12),'all',height=.18,thickness=.65)]})
     for index,(name,color) in enumerate(zip(COLORS,COLORS_RGB)):
@@ -690,7 +810,12 @@ def functions():
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--assets-only',action='store_true')
+    parser.add_argument('--resources-only',action='store_true',help='Only rebuild the five resource cards and editable sources.')
     args=parser.parse_args()
+    if args.resources_only:
+        resource_assets()
+        print('Generated Catan resource cards only.')
+        raise SystemExit(0)
     resources()
     from render_catan_preview import render_preview
     render_preview(layouts()['c4o0'])

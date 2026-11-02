@@ -63,6 +63,9 @@ execute if score @s ll_action matches 1.. run scoreboard players set @s ll_actio
 execute if score @s ll_drop matches 1.. run scoreboard players set @s ll_drop 0
 execute if score @s ll_settings matches 1.. run scoreboard players set @s ll_settings 0
 execute if score @s sk_action matches 1.. run scoreboard players set @s sk_action 0
+execute if score @s sp_action matches 1.. run scoreboard players set @s sp_action 0
+execute if score @s sp_drop matches 1.. run scoreboard players set @s sp_drop 0
+execute if score @s sp_settings matches 1.. run scoreboard players set @s sp_settings 0
 execute if score @s un_action matches 1.. run scoreboard players set @s un_action 0
 execute if score @s un_drop matches 1.. run scoreboard players set @s un_drop 0
 execute if score @s un_settings matches 1.. run scoreboard players set @s un_settings 0
@@ -94,6 +97,7 @@ execute if items entity @s weapon.offhand *[minecraft:custom_data~{guandan:{}}] 
 execute if items entity @s weapon.offhand *[minecraft:custom_data~{ito:{}}] run scoreboard players set #pause_offhand ct_id 1
 execute if items entity @s weapon.offhand *[minecraft:custom_data~{weiqi:{}}] run scoreboard players set #pause_offhand ct_id 1
 execute if items entity @s weapon.offhand *[minecraft:custom_data~{catan:{}}] run scoreboard players set #pause_offhand ct_id 1
+execute if items entity @s weapon.offhand *[minecraft:custom_data~{splendor:{}}] run scoreboard players set #pause_offhand ct_id 1
 execute if score #pause_offhand ct_id matches 1 run function cardtable:session/return_paused_offhand
 # 暂停期间丢出的道具完整复制回空槽，不补执行游戏操作。
 execute at @s as @e[type=minecraft:item,distance=..6,tag=!ct.paused_return] run function cardtable:session/check_paused_drop

@@ -1,0 +1,12 @@
+execute store result score #n sp_ctx run data get storage splendor:engine state.n
+execute store result score #phase sp_ctx run data get storage splendor:engine state.phase
+execute store result score #turn sp_ctx run data get storage splendor:engine state.turn
+execute store result score #epoch sp_ctx run data get storage splendor:engine state.epoch
+execute store result score #round sp_ctx run data get storage splendor:engine state.round
+execute store result score #final_round sp_ctx run data get storage splendor:engine state.final_round
+execute store result score #bank0 sp_ctx run data get storage splendor:engine state.bank[0]
+execute store result score #bank1 sp_ctx run data get storage splendor:engine state.bank[1]
+execute store result score #bank2 sp_ctx run data get storage splendor:engine state.bank[2]
+execute store result score #bank3 sp_ctx run data get storage splendor:engine state.bank[3]
+execute store result score #bank4 sp_ctx run data get storage splendor:engine state.bank[4]
+execute store result score #bank5 sp_ctx run data get storage splendor:engine state.bank[5]

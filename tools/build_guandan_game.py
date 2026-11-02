@@ -840,3 +840,6 @@ def apply_test_bots():
 if __name__=='__main__':
     build()
     apply_test_bots()
+    # 最后增补，避免测试人机覆盖层擦掉共享音乐生命周期。
+    from build_guandan_music import build as build_music
+    build_music()

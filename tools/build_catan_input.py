@@ -1,5 +1,6 @@
 """卡坦岛单点击面：仅操作时求视线，精确区分六角地块、顶点和边。"""
 import math
+import json
 from catan_topology import HEXES, VERTICES, EDGES, hex_position, vertex_position
 from build_catan_game import put, PACK
 
@@ -41,9 +42,9 @@ data remove entity @s interaction
     put('input/aim','''
 function catan:input/context
 execute unless entity @s[tag=ca.actor] run return 0
-execute unless score @s ca_side = @e[tag=ca.current,limit=1] ca_turn run return 0
-execute unless entity @e[tag=ca.current,scores={ca_anim=0},limit=1] run return 0
-execute if entity @e[tag=ca.current,scores={ca_vtimer=1..},limit=1] run return 0
+execute unless score @s ca_side = @e[tag=ca.current,limit=1] ca_turn run return run function catan:input/wait_note
+execute unless entity @e[tag=ca.current,scores={ca_anim=0},limit=1] run return run function catan:input/wait_note
+execute if entity @e[tag=ca.current,scores={ca_vtimer=1..},limit=1] run return run function catan:input/wait_note
 scoreboard players set #aim ca_ctx 0
 execute if entity @e[tag=ca.current,scores={ca_state=1..2},limit=1] run scoreboard players set #aim ca_ctx 1
 execute if entity @e[tag=ca.current,scores={ca_state=4},limit=1] run scoreboard players set #aim ca_ctx 1
@@ -56,11 +57,17 @@ execute if entity @e[tag=ca.current,scores={ca_state=6},limit=1] run scoreboard 
 execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] run scoreboard players set @s ca_mode 3
 execute unless score @s ca_mode matches 1..4 run return run function catan:ui/open
 function catan:input/ray
-execute unless score #ray_ok ca_ctx matches 1 run return 0
+execute unless score #ray_ok ca_ctx matches 1 run return run function catan:input/miss_note
 scoreboard players operation @s ca_pick = #target ca_ctx
 execute as @e[tag=ca.current,limit=1] at @s run function catan:input/preview
 function catan:ui/confirm
 ''')
+    put('input/wait_note','function catan:game/hud_player')
+    miss=['data modify storage catan:ui miss set value "请将准星对准棋盘范围内的目标。"']
+    for mode,note in [(1,'请瞄准六边形地块内部，再按 Q 选择强盗目的地。'),(2,'请瞄准地块边缘相交的交点，村庄不能放在格子中央。'),(3,'请瞄准两个交点之间的边中段，道路不能放在交点或格子中央。'),(4,'请瞄准己方村庄所在交点，再确认升级城市。')]:
+        miss += [f'execute if score @s ca_mode matches {mode} run data modify storage catan:ui miss set value '+json.dumps(note,ensure_ascii=False)]
+    put('input/miss_note',miss+['function catan:input/miss_message with storage catan:ui'])
+    put('input/miss_message','$tellraw @s {text:"[卡坦岛] $(miss)",color:"yellow"}')
     put('input/preview','''
 data modify entity @s data.catan.preview set value {type:1,target:0,building:1}
 execute store result entity @s data.catan.preview.target int 1 run scoreboard players get @a[tag=ca.actor,limit=1] ca_pick

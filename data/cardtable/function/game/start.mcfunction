@@ -27,6 +27,7 @@ execute if score @s ct_game matches 18 run function guandan:game/start
 execute if score @s ct_game matches 20 run function weiqi:game/start
 execute if score @s ct_game matches 19 run function ito:game/start
 execute if score @s ct_game matches 21 run function catan:game/start
+execute if score @s ct_game matches 22 run function splendor:game/start
 execute unless score @s ct_start matches 1 run return fail
 
 # 游戏确认成功后才隐藏中央菜单并生成结束投票按钮

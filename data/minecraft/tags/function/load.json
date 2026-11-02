@@ -22,6 +22,7 @@
     "guandan:load",
     "weiqi:load",
     "ito:load",
-    "catan:load"
+    "catan:load",
+    "splendor:load"
   ]
 }

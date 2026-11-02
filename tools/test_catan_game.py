@@ -138,6 +138,30 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         c+=[f'data modify entity {C} data.catan.visual_events set value []',f'scoreboard players set {C} ca_vtimer 0']
         c+=[f'scoreboard players set {C} ct_paused 0']+self.call('game/tick')+self.score(C,'ca_anim',14,'rejoin_animation_resumes')
         self.case('offline_pause',c)
+        # Real UI-to-engine rejection must explain the player's next step without
+        # spending anything or changing the stage; misses are not silent.
+        def stored(path,value,name):
+            import json
+            return ['data modify storage guandan_test:run cmp set value '+json.dumps(value,ensure_ascii=False),
+                f'execute store success score #source gt run data get storage catan:runtime {path}',
+                f'execute store success score #different gt run data modify storage guandan_test:run cmp set from storage catan:runtime {path}',
+                'execute unless score #source gt matches 1 run scoreboard players set #different gt 1']+self.score('#different','gt',0,name)
+        c=self.start()+[f'execute as {person(1)} at @s run function catan:input/context',
+            'data modify storage catan:action input set value {actor:1,code:1,target:-1}',
+            f'execute store result storage catan:action input.epoch int 1 run scoreboard players get {C} ca_epoch']+self.call('game/action')
+        c+=self.score('#error','ca_ctx',5,'guidance_bad_intersection_engine_refused')
+        c+=stored('error','村庄须放在空交点，且与已有村庄／城市至少隔一个空交点。','guidance_intersection_explained')
+        c+=self.data(C,'data.catan.p1.resources',[0,0,0,0,0],'guidance_bad_intersection_no_charge')+self.score(C,'ca_state',1,'guidance_bad_intersection_same_phase')
+        c+=[f'data modify entity {C} data.catan.phase set value 4']+self.call('game/sync')
+        c+=[f'execute as {person(1)} at @s run function catan:input/context','data modify storage catan:action input set value {actor:1,code:23,target:-1}',f'execute store result storage catan:action input.epoch int 1 run scoreboard players get {C} ca_epoch']+self.call('game/action')
+        c+=self.score('#error','ca_ctx',6,'guidance_insufficient_resources_engine_refused')
+        c+=stored('error','本次支付或领取所需的资源不足。请检查自己的资源、银行库存或交易报价。','guidance_insufficient_resources_explained')
+        c+=self.data(C,'data.catan.p1.resources',[0,0,0,0,0],'guidance_no_resources_unchanged')+self.data(C,'data.catan.p1.fresh',[0,0,0,0,0],'guidance_no_resources_no_card_draw')
+        for mode in (1,2,3,4):
+            c += [f'scoreboard players set {person(1)} ca_mode {mode}',f'execute as {person(1)} run function catan:input/miss_note']
+            c += self.check('data storage catan:ui miss',f'guidance_miss_mode_{mode}_explained')
+        c+=self.data(C,'data.catan.p1.resources',[0,0,0,0,0],'guidance_miss_no_charge')
+        self.case('guidance_errors',c)
         self.finish()
 
 

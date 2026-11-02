@@ -10,3 +10,6 @@ scoreboard players add @s gd_tick 1
 execute if score @s gd_tick matches 20.. run function guandan:game/maintenance
 
 execute if score @s gd_state matches 2..3 if score @s gd_anim matches 0 run function guandan:bot/tick
+# BEGIN guandan music tick
+function guandan:music/table_tick
+# END guandan music tick

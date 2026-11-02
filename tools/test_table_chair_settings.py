@@ -143,7 +143,7 @@ if __name__ == '__main__':
     from table_chair_settings import augment_dialog
     pages = [p for p in (PACK / 'data').glob('*/function/settings/*.mcfunction')
              if 'ct_chair_pick set 1' in p.read_text(encoding='utf-8')]
-    assert len(pages) == 21, f'Expected all 21 games, found {len(pages)}'
+    assert len(pages) == 22, f'Expected all 22 games, found {len(pages)}'
     for path in pages:
         text = path.read_text(encoding='utf-8')
         assert text.index('ct_skin_pick') < text.index('ct_chair_pick'), path

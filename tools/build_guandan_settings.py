@@ -16,6 +16,7 @@ FIELDS = [
     (4,'rounds','固定副数',[(v,str(v)+'副') for v in (1,2,3,5,8,10,16,32)]),
     (5,'show','显示其他玩家余牌数',[(1,'开启'),(0,'关闭')]),
     (6,'limit','每步操作时限',[(0,'无限制')]+[(v,str(v)+'秒') for v in (30,60,90,120)]),
+    (7,'audio','游戏音乐',[(1,'开启'),(0,'关闭')]),
 ]
 
 
@@ -93,7 +94,7 @@ scoreboard players operation #setting_field gd_ctx = #setting_input gd_ctx
 scoreboard players operation #setting_field gd_ctx /= #setting_factor gd_ctx
 scoreboard players operation #setting_value gd_ctx = #setting_input gd_ctx
 scoreboard players operation #setting_value gd_ctx %= #setting_factor gd_ctx
-execute unless score #setting_field gd_ctx matches 0..6 run return run function guandan:settings/invalid
+execute unless score #setting_field gd_ctx matches 0..7 run return run function guandan:settings/invalid
 execute if score #setting_field gd_ctx matches 0 unless score #setting_value gd_ctx matches 0 run return run function guandan:settings/invalid
 '''+ '\n'.join(validations)+'''
 tag @e[tag=gd.setting_table] remove gd.setting_table

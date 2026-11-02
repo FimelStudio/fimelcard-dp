@@ -1,3 +1,6 @@
+# BEGIN guandan stop music
+function guandan:music/stop
+# END guandan stop music
 function guandan:hud/deactivate
 function guandan:input/clear
 function guandan:settings/clear_session

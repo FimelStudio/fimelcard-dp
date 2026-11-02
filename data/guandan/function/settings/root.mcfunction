@@ -36,4 +36,7 @@ function guandan:settings/choice {"key":"limit","value":30,"code":6030,"label":"
 function guandan:settings/choice {"key":"limit","value":60,"code":6060,"label":"60秒"}
 function guandan:settings/choice {"key":"limit","value":90,"code":6090,"label":"90秒"}
 function guandan:settings/choice {"key":"limit","value":120,"code":6120,"label":"120秒"}
+data modify storage guandan:settings audio_row set value {"text":"游戏音乐\n","color":"white","extra":[]}
+function guandan:settings/choice {"key":"audio","value":1,"code":7001,"label":"开启"}
+function guandan:settings/choice {"key":"audio","value":0,"code":7000,"label":"关闭"}
 function guandan:settings/show with storage guandan:settings

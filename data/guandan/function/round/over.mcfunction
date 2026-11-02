@@ -35,6 +35,9 @@ function guandan:visual/upgrade
 function guandan:sound/round_win
 execute if score @s gd_matchwin matches 0..1 run function guandan:round/match_over
 execute if score @s gd_mode matches 1 if score @s gd_round >= @s gd_rounds run function guandan:round/fixed_over
+# BEGIN guandan result music
+function guandan:music/table_tick
+# END guandan result music
 function guandan:visual/refresh
 function guandan:hud/refresh
 function guandan:ui/refresh

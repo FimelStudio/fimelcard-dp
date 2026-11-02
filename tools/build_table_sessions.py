@@ -5,7 +5,7 @@ import json
 PACK=Path(__file__).resolve().parents[1]
 ROOT=PACK/'data/cardtable/function'
 DIMS=('minecraft:overworld','minecraft:the_nether','minecraft:the_end')
-GAMES=[('fast_card','fc'),('liars_holdem','lh'),('hanabi','hb'),('abraca','ab'),('bullshit','bw'),('decrypto','dc'),('critical_point','cp'),('wenfei','wq'),('skull','sk'),('doudizhu','dd'),('uno','un'),('chess','ch'),('xiangqi','xq'),('gomoku','gm'),('aeroplane_chess','ac'),('avalon','av'),('love_letter','ll'),('guandan','gd'),('ito','it'),('weiqi','go'),('catan','ca')]
+GAMES=[('fast_card','fc'),('liars_holdem','lh'),('hanabi','hb'),('abraca','ab'),('bullshit','bw'),('decrypto','dc'),('critical_point','cp'),('wenfei','wq'),('skull','sk'),('doudizhu','dd'),('uno','un'),('chess','ch'),('xiangqi','xq'),('gomoku','gm'),('aeroplane_chess','ac'),('avalon','av'),('love_letter','ll'),('guandan','gd'),('ito','it'),('weiqi','go'),('catan','ca'),('splendor','sp')]
 
 def put(name,lines):
     p=ROOT/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
@@ -161,6 +161,8 @@ def build():
         'execute if score @s ct_paused matches 1 run function cardtable:session/wait'])
     put('session/pause',[
         'scoreboard players set @s ct_wait 0',
+        'execute if score @s ct_game matches 18 run function guandan:music/pause',
+        'execute if score @s ct_game matches 22 run function splendor:sound/pause',
         'execute as @a[tag=ct.player] if score @s ct_id = #session_table ct_ctx run dialog clear @s',
         'execute as @a[tag=ct.player] if score @s ct_id = #session_table ct_ctx run tellraw @s {text:"[牌桌] 有玩家离线，对局已暂停；全部玩家回来后继续，也可投票结束游戏。",color:"yellow"}'])
     put('session/wait',[

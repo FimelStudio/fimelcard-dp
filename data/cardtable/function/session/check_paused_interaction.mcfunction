@@ -21,3 +21,4 @@ execute if score @s gd_id = #pause_table ct_id run return run function cardtable
 execute if score @s it_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
 execute if score @s go_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
 execute if score @s ca_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s sp_id = #pause_table ct_id run return run function cardtable:session/discard_game_click

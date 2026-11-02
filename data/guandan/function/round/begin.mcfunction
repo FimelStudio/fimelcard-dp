@@ -29,5 +29,8 @@ execute as @e[tag=gd.board] if score @s gd_seat = #first gd_ctx run scoreboard p
 function guandan:visual/refresh
 function guandan:visual/shuffle
 function guandan:sound/start
+# BEGIN guandan round music
+function guandan:music/begin
+# END guandan round music
 tellraw @a[tag=gd.audience] [{text:"[掼蛋] 第",color:"gold"},{score:{name:"@s",objective:"gd_round"}},{text:"副开始，打 "},{score:{name:"@s",objective:"gd_level"}},{text:" 级。"}]
 function guandan:hud/refresh

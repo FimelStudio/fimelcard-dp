@@ -22,4 +22,5 @@ execute store result storage guandan:settings mode int 1 run scoreboard players 
 execute store result storage guandan:settings rounds int 1 run scoreboard players get @s gd_rounds
 execute store result storage guandan:settings show int 1 run scoreboard players get @s gd_show
 execute store result storage guandan:settings limit int 1 run scoreboard players get @s gd_limit
+execute store result storage guandan:settings audio int 1 run scoreboard players get @s gd_audio
 function guandan:settings/root

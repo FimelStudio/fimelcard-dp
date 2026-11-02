@@ -28,3 +28,4 @@ execute if score @s ct_game matches 19 run function ito:hud/refresh
 execute if score @s ct_game matches 20 run function weiqi:ui/refresh
 execute if score @s ct_game matches 20 as @a[tag=go.player] if score @s ct_id = #session_table ct_ctx run function weiqi:input/give
 execute if score @s ct_game matches 21 as @a[tag=ca.player] if score @s ct_id = #session_table ct_ctx run function catan:input/give
+execute if score @s ct_game matches 22 as @a[tag=sp.player] if score @s ct_id = #session_table ct_ctx run function splendor:input/give

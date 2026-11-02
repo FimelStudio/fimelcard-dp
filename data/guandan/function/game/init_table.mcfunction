@@ -5,6 +5,9 @@ execute unless score @s gd_mode matches 0..1 run scoreboard players set @s gd_mo
 execute unless score @s gd_rounds matches 1..32 run scoreboard players set @s gd_rounds 8
 execute unless score @s gd_show matches 0..1 run scoreboard players set @s gd_show 1
 execute unless score @s gd_limit matches 0..120 run scoreboard players set @s gd_limit 0
+# BEGIN guandan music setting
+execute unless score @s gd_audio matches 0..1 run scoreboard players set @s gd_audio 1
+# END guandan music setting
 execute if score @s ct_state matches 1 run return 0
 scoreboard players set @s gd_state 0
 function guandan:visual/setup

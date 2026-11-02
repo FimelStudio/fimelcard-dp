@@ -85,6 +85,9 @@ function guandan:cards/constants
 scoreboard players add #ui_load gd_ctx 1
 scoreboard players reset * gd_action
 scoreboard players reset * gd_settings
+# BEGIN guandan shared music load
+function guandan:music/load
+# END guandan shared music load
 function guandan:visual/load
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=18}] at @s run function guandan:system/reload
 
