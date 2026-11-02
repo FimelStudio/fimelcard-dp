@@ -15,7 +15,7 @@ scoreboard players set #slot it_ctx 2
 function ito:form/validate {slot:2}
 scoreboard players set #slot it_ctx 3
 function ito:form/validate {slot:3}
-execute if score #batch_bad it_ctx matches 1 run tellraw @s {text:"每张未出数字牌都需填写1至48字，本次未保存。",color:"red"}
+execute if score #batch_bad it_ctx matches 1 run tellraw @s {text:"每张未出数字牌都需填写1至80字，本次未保存。",color:"red"}
 execute if score #batch_bad it_ctx matches 1 run return 0
 scoreboard players set #slot it_ctx 1
 function ito:form/save_field {slot:1}
