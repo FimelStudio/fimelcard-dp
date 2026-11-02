@@ -1,3 +1,4 @@
+execute if score @s ca_setnonce matches 1.. run function catan:settings/clear_session
 execute if score @s it_setnonce matches 1.. run function ito:settings/clear_session
 execute if score @s go_setnonce matches 1.. run function weiqi:settings/clear_session
 execute if score @s gd_setnonce matches 1.. run function guandan:settings/clear_session

@@ -20,6 +20,7 @@ execute if entity @s[tag=ll.player] run function love_letter:player/clear_state
 execute if entity @s[tag=gd.player] run function guandan:player/clear_state
 execute if entity @s[tag=go.player] run function weiqi:player/clear_state
 execute if entity @s[tag=it.player] run function ito:player/clear_state
+execute if entity @s[tag=ca.player] run function catan:player/clear_state
 function cardtable:seat/remove_player
 execute if entity @s[tag=ch.player] run function chess:player/clear_state
 execute if entity @s[tag=xq.player] run function xiangqi:player/clear_state

@@ -18,3 +18,4 @@ execute if score @s ct_game matches 17 run return run function love_letter:game/
 execute if score @s ct_game matches 18 run return run function guandan:game/end_vote
 execute if score @s ct_game matches 20 run return run function weiqi:game/end_vote
 execute if score @s ct_game matches 19 run return run function ito:game/end_vote
+execute if score @s ct_game matches 21 run return run function catan:game/end_vote

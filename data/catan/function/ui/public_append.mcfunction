@@ -1,0 +1,1 @@
+$data modify storage catan:ui public.extra append value {text:"",extra:[{text:"$(side)号（$(color_label)）· ",color:"$(color)"},$(name),{text:" · $(public_vp)分 · $(resource_count)资源 · $(dev_count)开发牌\n",color:"gray"}]}

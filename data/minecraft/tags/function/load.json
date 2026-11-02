@@ -21,6 +21,7 @@
     "love_letter:load",
     "guandan:load",
     "weiqi:load",
-    "ito:load"
+    "ito:load",
+    "catan:load"
   ]
 }
