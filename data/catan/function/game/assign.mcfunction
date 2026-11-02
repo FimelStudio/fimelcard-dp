@@ -1,0 +1,40 @@
+execute if score #players ca_ctx matches 1.. run scoreboard players set #side ca_ctx 1
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 0 as @a[tag=ca.audience,scores={ca_side=0},sort=random,limit=1] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=1},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=2},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=3},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=4},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=5},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=6},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=7},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 1.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=8},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=1}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. run scoreboard players set #side ca_ctx 2
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 0 as @a[tag=ca.audience,scores={ca_side=0},sort=random,limit=1] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=1},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=2},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=3},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=4},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=5},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=6},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=7},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 2.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=8},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=2}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. run scoreboard players set #side ca_ctx 3
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 0 as @a[tag=ca.audience,scores={ca_side=0},sort=random,limit=1] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=1},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=2},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=3},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=4},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=5},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=6},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=7},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 3.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=8},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=3}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. run scoreboard players set #side ca_ctx 4
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 0 as @a[tag=ca.audience,scores={ca_side=0},sort=random,limit=1] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=1},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=2},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=3},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=4},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=5},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=6},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=7},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign
+execute if score #players ca_ctx matches 4.. if score @s ca_first matches 1 as @a[tag=ca.audience,scores={ca_side=0,ca_seat=8},limit=1] unless entity @a[tag=ca.audience,scores={ca_side=4}] run function catan:player/assign

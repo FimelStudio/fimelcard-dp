@@ -21,7 +21,7 @@ scoreboard players reset * ct_pick_table
 scoreboard players reset * ct_pick_base
 
 # 当前注册游戏编号必须连续排列
-scoreboard players set #game_count ct_ctx 20
+scoreboard players set #game_count ct_ctx 21
 
 # 重载时升级已加载牌桌；尚未加载的牌桌会由低频维护逻辑补做
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{menu_version:13}}} run function cardtable:table/migrate_v13

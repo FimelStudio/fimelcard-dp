@@ -1,0 +1,41 @@
+data modify storage catan:engine bag set value [5,3,2,1,2,0,4,0,3,1,0,2,3,1,4,0,4,3,2]
+function catan:engine/draw_terrain {hex:0,max:18}
+function catan:engine/draw_terrain {hex:1,max:17}
+function catan:engine/draw_terrain {hex:2,max:16}
+function catan:engine/draw_terrain {hex:3,max:15}
+function catan:engine/draw_terrain {hex:4,max:14}
+function catan:engine/draw_terrain {hex:5,max:13}
+function catan:engine/draw_terrain {hex:6,max:12}
+function catan:engine/draw_terrain {hex:7,max:11}
+function catan:engine/draw_terrain {hex:8,max:10}
+function catan:engine/draw_terrain {hex:9,max:9}
+function catan:engine/draw_terrain {hex:10,max:8}
+function catan:engine/draw_terrain {hex:11,max:7}
+function catan:engine/draw_terrain {hex:12,max:6}
+function catan:engine/draw_terrain {hex:13,max:5}
+function catan:engine/draw_terrain {hex:14,max:4}
+function catan:engine/draw_terrain {hex:15,max:3}
+function catan:engine/draw_terrain {hex:16,max:2}
+function catan:engine/draw_terrain {hex:17,max:1}
+function catan:engine/draw_terrain {hex:18,max:0}
+data remove storage catan:engine bag
+scoreboard players set #number ca_ctx 0
+function catan:engine/number_hex {hex:0}
+function catan:engine/number_hex {hex:3}
+function catan:engine/number_hex {hex:7}
+function catan:engine/number_hex {hex:12}
+function catan:engine/number_hex {hex:16}
+function catan:engine/number_hex {hex:17}
+function catan:engine/number_hex {hex:18}
+function catan:engine/number_hex {hex:15}
+function catan:engine/number_hex {hex:11}
+function catan:engine/number_hex {hex:6}
+function catan:engine/number_hex {hex:2}
+function catan:engine/number_hex {hex:1}
+function catan:engine/number_hex {hex:4}
+function catan:engine/number_hex {hex:8}
+function catan:engine/number_hex {hex:13}
+function catan:engine/number_hex {hex:14}
+function catan:engine/number_hex {hex:10}
+function catan:engine/number_hex {hex:5}
+function catan:engine/number_hex {hex:9}

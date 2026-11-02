@@ -1,0 +1,1 @@
+$item replace entity @s hotbar.8 with minecraft:paper[minecraft:custom_name={text:"卡坦岛 · 菜单",color:"gold",italic:false},minecraft:item_model="minecraft:book",minecraft:custom_data={catan:{tool:1b,action:0,table:$(table)}},minecraft:lore=[{text:"按 Q 使用",color:"gray",italic:false}]]
