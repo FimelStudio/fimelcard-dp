@@ -12,4 +12,10 @@ data modify storage ito:settings book set value true
 data modify storage ito:settings form set value false
 execute if score @s it_input matches 1 run data modify storage ito:settings book set value false
 execute if score @s it_input matches 1 run data modify storage ito:settings form set value true
+execute unless score @s it_mode matches 0..1 run scoreboard players set @s it_mode 0
+data modify storage ito:settings mode set value "$(mode)"
+data modify storage ito:settings spider set value true
+data modify storage ito:settings red set value false
+execute if score @s it_mode matches 1 run data modify storage ito:settings spider set value false
+execute if score @s it_mode matches 1 run data modify storage ito:settings red set value true
 function ito:settings/show with storage ito:settings

@@ -5,6 +5,10 @@ scoreboard players operation #mode it_ctx = #setting it_ctx
 scoreboard players operation #mode it_ctx %= #ten it_ctx
 scoreboard players operation #setting it_ctx /= #ten it_ctx
 execute unless score #mode it_ctx matches 1..2 run return 0
+scoreboard players operation #game_mode it_ctx = #setting it_ctx
+scoreboard players operation #game_mode it_ctx %= #ten it_ctx
+scoreboard players operation #setting it_ctx /= #ten it_ctx
+execute unless score #game_mode it_ctx matches 0..1 run return 0
 execute unless score #setting it_ctx = @s it_setnonce run return 0
 execute unless entity @s[tag=ct.player] run return 0
 execute unless score @s ct_id = @s it_settable run return 0
@@ -15,4 +19,6 @@ execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=19,ct_stat
 execute if score #saved it_ctx matches 0 run tellraw @s {text:"牌桌已开始或切换游戏，设置未保存。",color:"red"}
 execute if score #saved it_ctx matches 1 if score #mode it_ctx matches 0 run tellraw @s {text:"[命悬一线] 输入方式已设为：书本。",color:"green"}
 execute if score #saved it_ctx matches 1 if score #mode it_ctx matches 1 run tellraw @s {text:"[命悬一线] 输入方式已设为：对话框。按Q使用紫色染料自行打开。",color:"green"}
+execute if score #saved it_ctx matches 1 if score #game_mode it_ctx matches 0 run tellraw @s {text:"玩法：蛛丝（共享3生命）。",color:"green"}
+execute if score #saved it_ctx matches 1 if score #game_mode it_ctx matches 1 run tellraw @s {text:"玩法：红线（配对抢分，目标5分）。",color:"red"}
 function ito:settings/clear_session

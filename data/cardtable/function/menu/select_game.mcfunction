@@ -51,8 +51,8 @@ execute if score @s ct_game matches 18 run tellraw @a[tag=ct.switch_actor,limit=
 execute if score @s ct_game matches 18 run function cardtable:log {text:"切换游戏：掼蛋"}
 execute if score @s ct_game matches 20 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：围棋",color:"gold"}
 execute if score @s ct_game matches 20 run function cardtable:log {text:"切换游戏：围棋"}
-execute if score @s ct_game matches 19 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：命悬一线·蛛丝",color:"gold"}
-execute if score @s ct_game matches 19 run function cardtable:log {text:"切换游戏：命悬一线·蛛丝"}
+execute if score @s ct_game matches 19 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：命悬一线",color:"gold"}
+execute if score @s ct_game matches 19 run function cardtable:log {text:"切换游戏：命悬一线"}
 execute if score @s ct_game matches 21 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：卡坦岛",color:"gold"}
 execute if score @s ct_game matches 21 run function cardtable:log {text:"切换游戏：卡坦岛"}
 function cardtable:game/init_selected

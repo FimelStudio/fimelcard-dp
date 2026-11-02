@@ -1,3 +1,4 @@
+scoreboard players set @s it_total 0
 tag @s add it.player
 scoreboard players operation @s it_table = @s ct_id
 scoreboard players operation @s it_seat = @s ct_seat
