@@ -10,8 +10,6 @@ execute as @e[tag=it.parts,scores={it_order=0}] run function ito:hud/participant
 execute as @e[tag=it.parts,scores={it_order=1}] run function ito:hud/participant
 execute as @e[tag=it.parts,scores={it_order=2}] run function ito:hud/participant
 execute as @e[tag=it.parts,scores={it_order=3}] run function ito:hud/participant
-data modify storage fimel_title:io x set value 268.0d
-data modify storage fimel_title:io y set value -12.0d
 execute as @e[tag=it.parts,scores={it_order=4}] run function ito:hud/participant
 execute as @e[tag=it.parts,scores={it_order=5}] run function ito:hud/participant
 execute as @e[tag=it.parts,scores={it_order=6}] run function ito:hud/participant
@@ -26,4 +24,3 @@ function ito:hud/text
 scoreboard players operation panel_id fbt_io = @s it_panel
 function fimel_title:replace_panel
 scoreboard players operation @s fbt_panel = @s it_panel
-
