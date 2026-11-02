@@ -50,15 +50,15 @@ def build():
  for cap in [4,8]:
   path=P/f'data/cardtable/function/menu/picker/show{cap}.mcfunction';backup=D/f'picker{cap}-original.json'
   if not backup.exists():backup.write_text(path.read_text(encoding='utf8').split(' ',3)[3],encoding='utf8')
-  original=json.loads(backup.read_text(encoding='utf8'));actions=original['actions'];body=[{'type':'minecraft:plain_message','width':330,'contents':{'text':'点击图标选择游戏；悬停查看人数。','color':'gray'}}]
-  for row in range(0,len(actions),4):
+  original=json.loads(backup.read_text(encoding='utf8'));actions=original['actions'];body=[{'type':'minecraft:plain_message','width':410,'contents':{'text':'点击图标选择游戏；悬停查看人数。','color':'gray'}}]
+  for row in range(0,len(actions),5):
    extra=[]
    for strip in range(8):
-    for col,a in enumerate(actions[row:row+4]):
+    for col,a in enumerate(actions[row:row+5]):
      id=int(re.search(r'\$\(p(\d+)\)',a['action']['command'])[1]);extra.append({'text':chr(0xE600+id*8+strip),'font':'card:game_icons','color':'white','shadow_color':0,'click_event':{'action':'run_command','command':a['action']['command']},'hover_event':{'action':'show_text','value':a['label']}})
      extra.append({'text':chr(0xE800+id*8+strip),'font':'card:game_icons'})
     if strip<7:extra.append({'text':'\n'})
-   body.append({'type':'minecraft:plain_message','width':330,'contents':{'text':'','extra':extra}})
+   body.append({'type':'minecraft:plain_message','width':410,'contents':{'text':'','extra':extra}})
   dialog={'type':'minecraft:notice','title':original['title'],'body':body,'action':{'label':{'text':'取消'}},'pause':False,'after_action':'close'}
   path.write_text('$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf8')
  for folder in ['assets/card/textures/gui/game_icons','assets/card/font']:

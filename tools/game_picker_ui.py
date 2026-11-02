@@ -5,6 +5,8 @@ import json
 import re
 
 PACK=Path(__file__).resolve().parents[1]
+ICON_COLUMNS=5
+ICON_ROW_WIDTH=ICON_COLUMNS*80+10
 
 
 def game_number(action):
@@ -38,11 +40,11 @@ def load_picker(pack,capacity):
 
 def render_icons(meta):
     actions=meta['actions']
-    body=[{'type':'minecraft:plain_message','width':330,'contents':{'text':'点击图标选择游戏；悬停查看人数。','color':'gray'}}]
-    for row in range(0,len(actions),4):
+    body=[{'type':'minecraft:plain_message','width':ICON_ROW_WIDTH,'contents':{'text':'点击图标选择游戏；悬停查看人数。','color':'gray'}}]
+    for row in range(0,len(actions),ICON_COLUMNS):
         extra=[]
         for strip in range(8):
-            for action in actions[row:row+4]:
+            for action in actions[row:row+ICON_COLUMNS]:
                 game=game_number(action)
                 assert 1<=game<64,'新编号超出当前图标字体编码范围，须先扩展字形协议'
                 extra.append({'text':chr(0xE600+game*8+strip),'font':'card:game_icons','color':'white','shadow_color':0,
@@ -50,7 +52,7 @@ def render_icons(meta):
                               'hover_event':{'action':'show_text','value':action['label']}})
                 extra.append({'text':chr(0xE800+game*8+strip),'font':'card:game_icons'})
             if strip<7:extra.append({'text':'\n'})
-        body.append({'type':'minecraft:plain_message','width':330,'contents':{'text':'','extra':extra}})
+        body.append({'type':'minecraft:plain_message','width':ICON_ROW_WIDTH,'contents':{'text':'','extra':extra}})
     return {'type':'minecraft:notice','title':meta['title'],'body':body,'action':{'label':{'text':'取消'}},'pause':False,'after_action':'close'}
 
 
