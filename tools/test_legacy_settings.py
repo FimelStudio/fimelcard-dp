@@ -78,20 +78,21 @@ class Suite(ChairSuite):
             'leave': [f'tag {actor()} remove ct.player'],
         }
         stable = '@e[type=minecraft:marker,tag=cs.person,limit=1]'
+        input_field = next(index for index, field in enumerate(GAMES[19][3], 1) if field['key'] == 'it_input')
         for name, mutation in changes.items():
             c = self.fixture(game=19) + self.opening()
             c += [f'scoreboard players operation #setting_encoded gt = {actor()} ct_st_nonce',
                   'scoreboard players set #setting_factor gt 100000',
                   'scoreboard players operation #setting_encoded gt *= #setting_factor gt',
-                  'scoreboard players add #setting_encoded gt 1001'] + mutation
+                  f'scoreboard players add #setting_encoded gt {input_field*1000+1}'] + mutation
             c += [f'scoreboard players operation {stable} ct_setting = #setting_encoded gt',
                   f'execute as {stable} at @s run function cardtable:settings/handle']
             c += self.score(TABLE, 'it_input', 0, f'ito_stale_{name}_preserved')
             self.case('stale_' + name, c)
         c = self.fixture(game=19) + self.fixture(game=19, table=202, reset=False) + self.opening() + self.opening(202)
-        c += self.setting(1, 1) + self.score(TABLE, 'it_input', 1, 'two_tables_own_changes')
+        c += self.setting(input_field, 1) + self.score(TABLE, 'it_input', 1, 'two_tables_own_changes')
         c += self.score(OTHER, 'it_input', 0, 'two_tables_other_preserved')
-        c += [f'scoreboard players set {TABLE} it_input 0'] + self.setting(1, 1, replay=True)
+        c += [f'scoreboard players set {TABLE} it_input 0'] + self.setting(input_field, 1, replay=True)
         c += self.score(TABLE, 'it_input', 0, 'replay_rejected')
         self.case('isolation_replay', c)
         c = self.fixture(game=19) + self.opening()

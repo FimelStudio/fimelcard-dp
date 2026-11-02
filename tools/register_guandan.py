@@ -3,12 +3,13 @@ import contextlib
 import io
 import json
 import register_boardgames as base
+from game_picker_ui import load_picker, write_picker
 
 
 def main():
     labels={}
     for capacity in (4,8):
-        body=base.read(f'menu/picker/show{capacity}');dialog=json.loads(body[body.index('{'):])
+        dialog=load_picker(base.PACK,capacity)
         for button in dialog['actions']:
             if button.get('action',{}).get('command','').endswith('$(p18)'):
                 labels[capacity]=button['label']
@@ -16,12 +17,11 @@ def main():
     with contextlib.redirect_stdout(io.StringIO()):
         base.main()
     for capacity in (4,8):
-        name=f'menu/picker/show{capacity}'
-        body=base.read(name);dialog=json.loads(body[body.index('{'):])
+        dialog=load_picker(base.PACK,capacity)
         for button in dialog['actions']:
             if button.get('action',{}).get('command','').endswith('$(p18)'):
                 button['label']=labels.get(capacity,{'text':'掼蛋（1–4人+人机）'})
-        base.write(name,'$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':')))
+        write_picker(base.PACK,capacity,dialog)
     print('掼蛋18已注册；保留既有菜单文本、人机补位与其他游戏分派。')
 
 

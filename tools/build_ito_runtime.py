@@ -143,6 +143,13 @@ scoreboard players reset @s it_seat
 scoreboard players reset @s it_action
 scoreboard players reset @s it_window
 scoreboard players reset @s it_form
+scoreboard players reset @s it_total
+scoreboard players reset @s it_offer
+scoreboard players reset @s it_done
+scoreboard players reset @s it_sum
+scoreboard players reset @s it_rank
+tag @s remove it.partner
+tag @s remove it.winner
 ''')
  put('round/begin','''function ito:system/context
 function ito:game/epoch

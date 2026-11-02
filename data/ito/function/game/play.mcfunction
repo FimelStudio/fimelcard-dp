@@ -1,3 +1,4 @@
+execute if score @s it_mode matches 1 run return 0
 execute unless score @s it_state matches 2 run return 0
 scoreboard players set #missing it_ctx 0
 execute as @e[tag=it.cards,scores={it_owner=1..8,it_used=0},nbt={data:{description:""}}] run scoreboard players add #missing it_ctx 1

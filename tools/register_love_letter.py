@@ -3,6 +3,7 @@ import contextlib
 import io
 import json
 import register_boardgames as base
+from game_picker_ui import set_label
 
 
 def main():
@@ -10,13 +11,7 @@ def main():
     with contextlib.redirect_stdout(io.StringIO()):
         base.main()
     for capacity, maximum in ((4,4),(8,6)):
-        name=f'menu/picker/show{capacity}'
-        body=base.read(name)
-        dialog=json.loads(body[body.index('{'):])
-        for button in dialog['actions']:
-            if button.get('action',{}).get('command','').endswith('$(p17)'):
-                button['label']['text']=f'情书（2–{maximum}人）'
-        base.write(name,'$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':')))
+        set_label(base.PACK,capacity,17,f'情书（2–{maximum}人）')
     print('情书17已注册，阿瓦隆16与既有分派保留。')
 
 

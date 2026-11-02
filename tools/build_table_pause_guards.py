@@ -75,7 +75,7 @@ def is_input_entry(name):
     leaf = name.rsplit('/', 1)[-1]
     if leaf in ('clear', 'give', 'give_tools', 'sync', 'restore') or leaf.startswith(('clear_', 'invalidate', 'reset_', 'restore_', 'give_', 'refresh_')):
         return False
-    return name.startswith(('input/', 'action/', 'ui/', 'click/', 'button/',
+    return name.startswith(('input/', 'action/', 'ui/', 'click/', 'button/', 'red/',
                             'vote/handle', 'swap/apply', 'prompt/', 'question/open'))
 
 

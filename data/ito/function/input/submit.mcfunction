@@ -13,6 +13,7 @@ scoreboard players operation #choice it_ctx %= #hundred it_ctx
 scoreboard players operation #request it_ctx /= #hundred it_ctx
 execute unless score #request it_ctx = @s it_window run return 0
 execute unless score @s it_win_epoch = @e[tag=it.current,limit=1] it_epoch run return 0
+execute if score @e[tag=it.current,limit=1] it_mode matches 1 if score #choice it_ctx matches 31..40 run return run function ito:red/choose
 execute if score #choice it_ctx matches 1..2 run return run function ito:themes/vote
 scoreboard players operation #slot it_ctx = #choice it_ctx
 execute if score #choice it_ctx matches 11..13 run scoreboard players remove #slot it_ctx 10

@@ -22,4 +22,6 @@ def build():
  cards()
  from build_ito_batch_form import build as batch_form
  batch_form()
+ from build_ito_red import build as red
+ red()
 if __name__=='__main__':build()

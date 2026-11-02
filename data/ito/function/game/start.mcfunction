@@ -1,3 +1,4 @@
+execute unless score @s it_mode matches 0..1 run scoreboard players set @s it_mode 0
 scoreboard players set @s ct_start 0
 execute if score @s ct_state matches 1 run return fail
 execute unless score @s ct_joined matches 2..8 run return run function ito:game/bad_start

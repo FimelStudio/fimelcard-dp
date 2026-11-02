@@ -1,6 +1,8 @@
 """幂等注册游戏12；保留公共牌桌现有游戏及手工改动。"""
 from pathlib import Path
 import json
+import register_boardgames as base
+from game_picker_ui import load_picker, write_picker, game_number
 
 PACK = Path(__file__).resolve().parents[1]
 COMMON = PACK / 'data/cardtable/function'
@@ -60,16 +62,15 @@ for name in ['seat/leave','seat/remove_player']:
     if line not in text:
         path.write_text(line+'\n'+text, encoding='utf-8')
 source=(COMMON/'menu/game_name_uno.mcfunction').read_text(encoding='utf-8')
-(COMMON/'menu/game_name_chess.mcfunction').write_text(source.replace('"UNO"','"国际象棋"').replace('color:"red"','color:"gold"'), encoding='utf-8')
+if not (COMMON/'menu/game_name_chess.mcfunction').exists():
+    (COMMON/'menu/game_name_chess.mcfunction').write_text(source.replace('"UNO"','"国际象棋"').replace('color:"red"','color:"gold"'), encoding='utf-8')
 for capacity in [4,8]:
-    path=COMMON/f'menu/picker/show{capacity}.mcfunction'
-    raw=path.read_text(encoding='utf-8')
-    dialog=json.loads(raw[raw.index('{'):])
-    if len(dialog['actions'])==11:
+    dialog=load_picker(PACK,capacity)
+    if not any(game_number(action)==12 for action in dialog['actions']):
         dialog['actions'].append({'label':{'text':'国际象棋（1–2人+人机）'},'width':150,'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p12)'}})
-    dialog['actions'][11]['label']['text'] = '国际象棋（1–2人+人机）'
-    path.write_text('$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
-update(COMMON/'menu/picker/open.mcfunction', 'execute if score @s ct_capacity matches 8 run return', 'scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p12 int 1 run scoreboard players get #pick_button ct_ctx\nexecute if score @s ct_capacity matches 8 run return')
+    write_picker(PACK,capacity,dialog)
+base.picker_button(12)
+base.normalize_picker_ids()
 for name in ['load','tick']:
     path=PACK/f'data/minecraft/tags/function/{name}.json'
     data=json.loads(path.read_text(encoding='utf-8'))

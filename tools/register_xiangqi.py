@@ -1,6 +1,8 @@
 """幂等接入第13款游戏中国象棋，保留既有游戏与牌桌接口。"""
 from pathlib import Path
 import json
+import register_boardgames as base
+from game_picker_ui import load_picker, write_picker, game_number
 
 
 PACK = Path(__file__).resolve().parents[1]
@@ -44,7 +46,8 @@ def main():
     insert('menu/render','execute if score @s ct_game matches 13 run function cardtable:menu/game_name_xiangqi',
            'execute unless score @s ct_capacity matches 4')
     source = read('menu/game_name_chess').replace('国际象棋','中国象棋')
-    write('menu/game_name_xiangqi', source)
+    if not (COMMON/'menu/game_name_xiangqi.mcfunction').exists():
+        write('menu/game_name_xiangqi', source)
     insert('menu/select_game','execute if score @s ct_game matches 13 run function xiangqi:game/remove',
            'scoreboard players operation @s ct_game = #pick_choice ct_ctx')
     insert('menu/select_game','execute if score @s ct_game matches 13 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：中国象棋",color:"gold"}',
@@ -57,20 +60,14 @@ def main():
         if line not in read(name):
             write(name,line+'\n'+read(name))
     for capacity in (4,8):
-        name = f'menu/picker/show{capacity}'
-        raw = read(name)
-        dialog = json.loads(raw[raw.index('{'):])
-        assert len(dialog['actions']) >= 12
+        dialog = load_picker(PACK,capacity)
         action = {'label':{'text':'中国象棋（1–2人+人机）'},'width':150,
                   'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p13)'}}
-        if len(dialog['actions']) == 12:
+        if not any(game_number(entry)==13 for entry in dialog['actions']):
             dialog['actions'].append(action)
-        else:
-            dialog['actions'][12] = action
-        write(name,'$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':')))
-    if 'store result storage cardtable:picker p13 int' not in read('menu/picker/open'):
-        insert('menu/picker/open','scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p13 int 1 run scoreboard players get #pick_button ct_ctx',
-               'execute if score @s ct_capacity matches 8 run return')
+        write_picker(PACK,capacity,dialog)
+    base.picker_button(13)
+    base.normalize_picker_ids()
     for kind in ('load','tick'):
         path = PACK/f'data/minecraft/tags/function/{kind}.json'
         data = json.loads(path.read_text(encoding='utf-8'))

@@ -1,3 +1,9 @@
+scoreboard objectives add it_mode dummy
+scoreboard objectives add it_total dummy
+scoreboard objectives add it_offer dummy
+scoreboard objectives add it_done dummy
+scoreboard objectives add it_sum dummy
+scoreboard objectives add it_rank dummy
 scoreboard objectives add it_input dummy
 scoreboard objectives add it_settings trigger
 scoreboard objectives add it_settable dummy

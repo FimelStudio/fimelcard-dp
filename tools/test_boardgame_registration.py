@@ -8,9 +8,10 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from game_picker_ui import load_picker, write_picker, build_picker
 
 PACK=Path(__file__).resolve().parents[1]
-REGISTRARS=('register_boardgames.py','register_xiangqi.py','register_love_letter.py','register_guandan.py','register_weiqi.py','register_catan.py')
+REGISTRARS=('register_chess.py','register_boardgames.py','register_xiangqi.py','register_avalon.py','register_love_letter.py','register_guandan.py','register_weiqi.py','register_catan.py')
 
 
 def hashes(root):
@@ -21,23 +22,30 @@ def main():
     output=Path(tempfile.mkdtemp(prefix='fimel-boardgame-register-'))
     shutil.copytree(PACK/'data/cardtable',output/'data/cardtable')
     shutil.copytree(PACK/'data/minecraft/tags/function',output/'data/minecraft/tags/function')
-    for name in [*REGISTRARS,'check_game_picker.mjs','check_admin_abort.mjs','check_table_end_reentry.cjs','check_table_vote_remote.mjs']:
+    for name in [*REGISTRARS,'game_picker_ui.py','check_game_picker.mjs','check_admin_abort.mjs','check_table_end_reentry.cjs','check_table_vote_remote.mjs']:
         path=output/'tools'/name;path.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(PACK/'tools'/name,path)
+    for cap in (4,8):
+        dest=output/f'docs/game-icons/picker{cap}-original.json';dest.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(PACK/f'docs/game-icons/picker{cap}-original.json',dest)
     common=output/'data/cardtable/function'
+    original_icons={cap:(common/f'menu/picker/show{cap}.mcfunction').read_bytes() for cap in (4,8)}
+    build_picker(output)
+    assert all((common/f'menu/picker/show{cap}.mcfunction').read_bytes()==original_icons[cap] for cap in (4,8)), '便携重建器改变了同伴图标布局或切片'
     def buttons(capacity):
-        text=(common/f'menu/picker/show{capacity}.mcfunction').read_text(encoding='utf-8')
-        dialog=json.loads(text[text.index('{'):])
+        dialog=load_picker(output,capacity)
         return {int(re.search(r'\$\(p(\d+)\)',button['action']['command'])[1]):button for button in dialog['actions']}
     preserved={capacity:{game:buttons(capacity)[game] for game in (18,19,21)} for capacity in (4,8)}
     for capacity in (4,8):
         assert preserved[capacity][18]['label']['text']=='掼蛋（1–4人+人机）'
-        assert preserved[capacity][19]['label']['text']==f'命悬一线·蛛丝（2–{capacity}人）'
+        assert preserved[capacity][19]['label']['text']==f'命悬一线（2–{capacity}人）'
         assert preserved[capacity][21]['label']['text']=='卡坦岛（3–4人）'
     def check_preserved_buttons():
         for capacity in (4,8):
             actual=buttons(capacity)
             for game,button in preserved[capacity].items():
                 assert actual[game]==button,(capacity,game,'旧注册脚本覆盖了既有按钮或人数说明')
+            text=(common/f'menu/picker/show{capacity}.mcfunction').read_text(encoding='utf-8')
+            assert json.loads(text[text.index('{'):])['type']=='minecraft:notice','注册不得把图标界面变回旧按钮'
     def register(script):
         process=subprocess.run([sys.executable,str(output/'tools'/script)],cwd=output,env={**os.environ,'PYTHONUTF8':'1'},capture_output=True,text=True,encoding='utf-8')
         assert process.returncode==0,process.stdout+process.stderr
@@ -55,12 +63,12 @@ def main():
     future={'label':{'text':'未来游戏 · 保留此文本'},'width':123,'action':{'type':'minecraft:run_command','command':f'trigger ct_game_pick set $(p{future_id})'}}
     expected_actions={}
     for capacity in (4,8):
-        path=common/f'menu/picker/show{capacity}.mcfunction';text=path.read_text(encoding='utf-8');dialog=json.loads(text[text.index('{'):])
+        dialog=load_picker(output,capacity)
         expected_actions[capacity]=len(dialog['actions'])+1
         # 缺少按钮时重新注册也要恢复掼蛋的人机人数说明。
         dialog['actions']=[action for action in dialog['actions'] if action['action']['command'] not in ('trigger ct_game_pick set $(p14)','trigger ct_game_pick set $(p15)','trigger ct_game_pick set $(p18)')]
         dialog['actions'].append(future)
-        path.write_text('$dialog show @a[tag=ct.switch_actor,limit=1] '+json.dumps(dialog,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+        write_picker(output,capacity,dialog)
     path=common/'menu/picker/open.mcfunction';text=path.read_text(encoding='utf-8')
     text=re.sub(r'(?:scoreboard players operation #pick_button ct_ctx = #pick_nonce ct_ctx\n)?scoreboard players add #pick_button ct_ctx \d+\nexecute store result storage cardtable:picker p(?:14|15) int 1 run scoreboard players get #pick_button ct_ctx\n','',text)
     text=text.replace('execute if score @s ct_capacity matches 8 run return',f'scoreboard players add #pick_button ct_ctx 1\nexecute store result storage cardtable:picker p{future_id} int 1 run scoreboard players get #pick_button ct_ctx\nexecute if score @s ct_capacity matches 8 run return')
@@ -77,7 +85,7 @@ def main():
     register_all()
     check_preserved_buttons()
     for capacity in (4,8):
-        text=(common/f'menu/picker/show{capacity}.mcfunction').read_text(encoding='utf-8');dialog=json.loads(text[text.index('{'):])
+        dialog=load_picker(output,capacity)
         assert len(dialog['actions'])==expected_actions[capacity] and dialog['actions'][-1]==future
     text=(common/'menu/picker/open.mcfunction').read_text(encoding='utf-8')
     assert [int(n) for n in re.findall(r'cardtable:picker p(\d+) int',text)]==registered+[future_id]
