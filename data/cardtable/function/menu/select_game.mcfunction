@@ -14,6 +14,7 @@ execute if score @s ct_game matches 20 run function weiqi:game/remove
 execute if score @s ct_game matches 19 run function ito:game/remove
 execute if score @s ct_game matches 21 run function catan:game/remove
 execute if score @s ct_game matches 22 run function splendor:game/remove
+execute if score @s ct_game matches 23 run function magical_athlete:game/remove
 scoreboard players operation @s ct_game = #pick_choice ct_ctx
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 # 其他人的旧窗口也失效，防止覆盖刚刚选定的游戏。
@@ -60,5 +61,7 @@ execute if score @s ct_game matches 21 run tellraw @a[tag=ct.switch_actor,limit=
 execute if score @s ct_game matches 21 run function cardtable:log {text:"切换游戏：卡坦岛"}
 execute if score @s ct_game matches 22 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：璀璨宝石",color:"gold"}
 execute if score @s ct_game matches 22 run function cardtable:log {text:"切换游戏：璀璨宝石"}
+execute if score @s ct_game matches 23 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：胡闹运动会",color:"gold"}
+execute if score @s ct_game matches 23 run function cardtable:log {text:"切换游戏：胡闹运动会"}
 function cardtable:game/init_selected
 function cardtable:menu/render

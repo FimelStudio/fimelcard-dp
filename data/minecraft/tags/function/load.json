@@ -23,6 +23,7 @@
     "weiqi:load",
     "ito:load",
     "catan:load",
-    "splendor:load"
+    "splendor:load",
+    "magical_athlete:load"
   ]
 }

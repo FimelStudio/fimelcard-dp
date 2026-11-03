@@ -5,9 +5,9 @@ import zlib from 'node:zlib';
 import assert from 'node:assert/strict';
 
 const read=n=>fs.readFileSync('data/cardtable/function/'+n+'.mcfunction','utf8').replace(/\r\n/g,'\n');
-const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主','UNO','国际象棋','中国象棋','五子棋','飞行棋','阿瓦隆','情书','掼蛋','命悬一线','围棋','卡坦岛','璀璨宝石'];
-const min=[4,2,2,2,3,3,3,2,2,1,2,1,1,1,1,5,2,1,2,1,3,2];
-const max=[4,8,5,5,8,8,6,8,6,3,8,2,2,2,4,8,6,4,8,2,4,4];
+const names=['Fast Card','赌命德州扑克','花火','出包魔法师','瞎掰王','谍报风云','临界点','问非所答','骷髅牌','斗地主','UNO','国际象棋','中国象棋','五子棋','飞行棋','阿瓦隆','情书','掼蛋','命悬一线','围棋','卡坦岛','璀璨宝石','胡闹运动会'];
+const min=[4,2,2,2,3,3,3,2,2,1,2,1,1,1,1,5,2,1,2,1,3,2,2];
+const max=[4,8,5,5,8,8,6,8,6,3,8,2,2,2,4,8,6,4,8,2,4,4,6];
 const ai=new Set([10,12,13,14,15,18,20]);
 const ids=names.map((_,i)=>i+1),count=ids.length,highest=Math.max(...ids);
 const rp=path.resolve('../../../..','resourcepacks/fimelcard-rp');

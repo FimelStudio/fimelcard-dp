@@ -21,5 +21,6 @@ execute if score @s ct_game matches 19 run scoreboard players set #chair_min ct_
 execute if score @s ct_game matches 20 run scoreboard players set #chair_min ct_ctx 1
 execute if score @s ct_game matches 21 run scoreboard players set #chair_min ct_ctx 3
 execute if score @s ct_game matches 22 run scoreboard players set #chair_min ct_ctx 2
+execute if score @s ct_game matches 23 run scoreboard players set #chair_min ct_ctx 2
 # 飞行棋关闭电脑补位时须给至少两名真人留座。
 execute if score @s ct_game matches 15 if score @s ac_fill matches 2 run scoreboard players set #chair_min ct_ctx 2

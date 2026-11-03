@@ -34,12 +34,13 @@ def main():
     def buttons(capacity):
         dialog=load_picker(output,capacity)
         return {int(re.search(r'\$\(p(\d+)\)',button['action']['command'])[1]):button for button in dialog['actions']}
-    preserved={capacity:{game:buttons(capacity)[game] for game in (18,19,21,22)} for capacity in (4,8)}
+    preserved={capacity:{game:buttons(capacity)[game] for game in (18,19,21,22,23)} for capacity in (4,8)}
     for capacity in (4,8):
         assert preserved[capacity][18]['label']['text']=='掼蛋（1–4人+人机）'
         assert preserved[capacity][19]['label']['text']==f'命悬一线（2–{capacity}人）'
         assert preserved[capacity][21]['label']['text']=='卡坦岛（3–4人）'
         assert preserved[capacity][22]['label']['text']=='璀璨宝石（2–4人）'
+        assert preserved[capacity][23]['label']['text']==f'胡闹运动会（2–{min(capacity,6)}人）'
     def check_preserved_buttons():
         for capacity in (4,8):
             actual=buttons(capacity)
@@ -90,7 +91,7 @@ def main():
         assert len(dialog['actions'])==expected_actions[capacity] and dialog['actions'][-1]==future
     text=(common/'menu/picker/open.mcfunction').read_text(encoding='utf-8')
     assert [int(n) for n in re.findall(r'cardtable:picker p(\d+) int',text)]==registered+[future_id]
-    for game in (19,21,22):
+    for game in (19,21,22,23):
         assert f'cardtable:picker p{game} int' in text
         assert f'if score #pick_choice ct_ctx matches {game} run return run function cardtable:menu/picker/invalid' not in (common/'menu/picker/handle.mcfunction').read_text(encoding='utf-8')
     assert f'#game_count ct_ctx {future_id}' in (common/'load.mcfunction').read_text(encoding='utf-8')
@@ -99,11 +100,11 @@ def main():
     assert future_branch in (common/'game/open_settings.mcfunction').read_text(encoding='utf-8')
     for kind in ('load','tick'):
         values=json.loads((output/f'data/minecraft/tags/function/{kind}.json').read_text(encoding='utf-8'))['values']
-        for namespace in ('avalon','love_letter','guandan','ito','weiqi','catan','splendor'):
+        for namespace in ('avalon','love_letter','guandan','ito','weiqi','catan','splendor','magical_athlete'):
             assert values.count(f'{namespace}:{kind}')==1,f'{namespace}:{kind} 必须恰好登记一次'
     for name,endpoint in [('game/init_selected','game/init_table'),('game/start','game/start'),('game/open_settings','settings/open'),('game/open_rules','rules/show'),('vote/finish','game/end_vote')]:
         source=(common/(name+'.mcfunction')).read_text(encoding='utf-8')
-        for game,namespace in ((16,'avalon'),(17,'love_letter'),(18,'guandan'),(19,'ito'),(20,'weiqi'),(21,'catan'),(22,'splendor')):
+        for game,namespace in ((16,'avalon'),(17,'love_letter'),(18,'guandan'),(19,'ito'),(20,'weiqi'),(21,'catan'),(22,'splendor'),(23,'magical_athlete')):
             pattern=rf'ct_game matches {game} run (?:return run )?function {namespace}:{endpoint}(?:\n|$)'
             assert len(re.findall(pattern,source))==1,(name,game,'分派必须保留且不能重复')
     baseline=hashes(output);register_all()

@@ -1,3 +1,4 @@
+execute if score @s ma_setnonce matches 1.. run function magical_athlete:settings/clear_session
 execute if score @s sp_setnonce matches 1.. run function splendor:settings/clear_session
 # BEGIN public session player reset
 function cardtable:session/end_player

@@ -20,3 +20,4 @@ execute if score @s ct_game matches 19 if entity @a[tag=ct.reconnect_actor,tag=i
 execute if score @s ct_game matches 20 if entity @a[tag=ct.reconnect_actor,tag=go.player,limit=1] run scoreboard players set #rejoin_valid ct_ctx 1
 execute if score @s ct_game matches 21 if entity @a[tag=ct.reconnect_actor,tag=ca.player,limit=1] run scoreboard players set #rejoin_valid ct_ctx 1
 execute if score @s ct_game matches 22 if entity @a[tag=ct.reconnect_actor,tag=sp.player,limit=1] run scoreboard players set #rejoin_valid ct_ctx 1
+execute if score @s ct_game matches 23 if entity @a[tag=ct.reconnect_actor,tag=ma.player,limit=1] run scoreboard players set #rejoin_valid ct_ctx 1

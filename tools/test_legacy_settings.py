@@ -25,7 +25,8 @@ def validate_styles():
         assert all(row['width'] == 440 for row in dialog['body']), path
         assert dialog['pause'] is False, path
         pages.append(path)
-    assert len(pages) == 22, [str(path) for path in pages]
+    from build_table_chair_settings import MINIMUM
+    assert len(pages) == len(MINIMUM), [str(path) for path in pages]
     return pages
 
 

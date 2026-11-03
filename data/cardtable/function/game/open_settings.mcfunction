@@ -25,4 +25,5 @@ execute if score @s ct_game matches 20 run return run function weiqi:settings/op
 execute if score @s ct_game matches 19 run return run function ito:settings/open
 execute if score @s ct_game matches 21 run return run function catan:settings/open
 execute if score @s ct_game matches 22 run return run function splendor:settings/open
+execute if score @s ct_game matches 23 run return run function magical_athlete:settings/open
 tellraw @a[tag=ct.settings_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供设置界面。',color:'yellow'}]

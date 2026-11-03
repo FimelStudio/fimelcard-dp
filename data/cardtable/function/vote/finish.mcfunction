@@ -20,3 +20,4 @@ execute if score @s ct_game matches 20 run return run function weiqi:game/end_vo
 execute if score @s ct_game matches 19 run return run function ito:game/end_vote
 execute if score @s ct_game matches 21 run return run function catan:game/end_vote
 execute if score @s ct_game matches 22 run return run function splendor:game/end_vote
+execute if score @s ct_game matches 23 run return run function magical_athlete:game/end_vote

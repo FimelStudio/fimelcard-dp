@@ -15,4 +15,4 @@ execute if score #maintenance av_ctx matches 20.. as @a[tag=av.player] unless sc
 execute if score #maintenance av_ctx matches 20.. run scoreboard players set #maintenance av_ctx 0
 
 # Keep completed public status visible until the next state update.
-execute as @e[tag=av.hud_animated,tag=fimel.anim_text.positional.typewriter] unless data entity @s data.input[0] run tag @s remove fimel.anim_text.positional.typewriter
+execute as @e[tag=av.hud_animated,tag=fimel.anim_text.positional.typewriter] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] unless data entity @s data.input[0] run tag @s remove fimel.anim_text.positional.typewriter
