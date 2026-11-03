@@ -8,8 +8,16 @@ scoreboard players set #blocked ca_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx run scoreboard players add #online ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.0 * unless items entity @s hotbar.0 minecraft:paper[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.0 * unless items entity @s hotbar.0 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.1 * unless items entity @s hotbar.1 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.2 * unless items entity @s hotbar.2 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.6 * unless items entity @s hotbar.6 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute unless score #online ca_ctx = @s ct_joined run return fail
-execute if score #blocked ca_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {"text": "[卡坦岛] 请先清空快捷栏第 1 格和最后一格。", "color": "red"}
+execute if score #blocked ca_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {"text": "[卡坦岛] 请先清空快捷栏。", "color": "red"}
 execute if score #blocked ca_ctx matches 1 run return fail
 execute as @a[tag=ca.player] if score @s ca_table = #table ca_ctx run function catan:player/clear_state
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx run function catan:player/init

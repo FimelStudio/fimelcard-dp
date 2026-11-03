@@ -1,3 +1,4 @@
+execute if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{splendor:{tool:1b}}] run return run tellraw @s {text:"请腾空游戏操作物品需要的快捷栏位置",color:"yellow"}
 # table-pause: begin (tools/build_table_pause_guards.py)
 execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0

@@ -14,3 +14,5 @@ scoreboard players set #visited sp_ctx -1
 execute store result score #visited sp_ctx run data get entity @s data.splendor.last.noble
 execute if score #visited sp_ctx matches 0..9 unless data entity @s data.splendor.last{code:5} run function splendor:sound/noble
 execute if score @s sp_state matches 4 run function splendor:game/win
+
+execute as @a[tag=sp.audience] run function splendor:direct/inventory

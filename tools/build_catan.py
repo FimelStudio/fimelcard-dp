@@ -20,5 +20,8 @@ def main():
         subprocess.run([sys.executable,str(TOOLS/f'build_catan_{module}.py'),*options],cwd=TOOLS.parent,check=True)
     subprocess.run([sys.executable,str(TOOLS/'register_catan.py')],cwd=TOOLS.parent,check=True)
 
+    from build_direct_interactions import build as direct_interactions
+    direct_interactions("catan")
+
 
 if __name__=='__main__':main()

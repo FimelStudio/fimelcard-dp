@@ -28,10 +28,3 @@ function splendor:visual/bank {slot:5,model:"token/gold"}
 function splendor:visual/deck {slot:0,tier:1}
 function splendor:visual/deck {slot:1,tier:2}
 function splendor:visual/deck {slot:2,tier:3}
-data modify storage splendor:visual b0 set from entity @s data.splendor.bank[0]
-data modify storage splendor:visual b1 set from entity @s data.splendor.bank[1]
-data modify storage splendor:visual b2 set from entity @s data.splendor.bank[2]
-data modify storage splendor:visual b3 set from entity @s data.splendor.bank[3]
-data modify storage splendor:visual b4 set from entity @s data.splendor.bank[4]
-data modify storage splendor:visual b5 set from entity @s data.splendor.bank[5]
-function splendor:visual/counts_layout with storage splendor:visual

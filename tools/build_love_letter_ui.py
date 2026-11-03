@@ -397,3 +397,7 @@ data remove storage love_letter:private target_card
 
 if __name__ == '__main__':
     build()
+
+if __name__ == "__main__":
+ from build_direct_interactions import build as direct_interactions
+ direct_interactions("love_letter")

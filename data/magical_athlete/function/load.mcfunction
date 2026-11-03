@@ -12,3 +12,19 @@ function magical_athlete:visual/load
 execute in minecraft:overworld as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_game=23}] at @s run function magical_athlete:system/reload
 execute in minecraft:the_nether as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_game=23}] at @s run function magical_athlete:system/reload
 execute in minecraft:the_end as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_game=23}] at @s run function magical_athlete:system/reload
+
+scoreboard objectives add ma_dye minecraft.dropped:minecraft.purple_dye
+
+scoreboard objectives add ma_choicepage dummy
+
+scoreboard objectives add ma_choiceepoch dummy
+
+scoreboard objectives add ma_chatturn dummy
+
+scoreboard objectives add ma_chatpending dummy
+
+scoreboard objectives add ma_chatstate dummy
+
+scoreboard objectives add ma_chatround dummy
+
+scoreboard objectives add ma_notice dummy
