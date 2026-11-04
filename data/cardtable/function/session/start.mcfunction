@@ -1,4 +1,5 @@
 # 仅在具体游戏开局成功、玩家换座完成后调用，真人与机器人分开计数。
+scoreboard players set @s ct_finishing 0
 scoreboard players add #session ct_ctx 1
 scoreboard players operation @s ct_session = #session ct_ctx
 function cardtable:session/mark_active

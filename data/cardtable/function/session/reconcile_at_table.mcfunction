@@ -1,4 +1,5 @@
 scoreboard players set #rejoin_found ct_ctx 1
+execute if score @s ct_finishing matches 1 run return 0
 execute unless score @s ct_state matches 1 run return 0
 execute unless score @s ct_session matches 1.. run return 0
 execute if score @a[tag=ct.reconnect_actor,limit=1] ct_session = @s ct_session run scoreboard players set #rejoin_valid ct_ctx 1

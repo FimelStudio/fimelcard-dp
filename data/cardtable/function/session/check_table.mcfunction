@@ -1,3 +1,4 @@
+execute if score @s ct_finishing matches 1 run return 0
 scoreboard players operation #session_table ct_ctx = @s ct_id
 scoreboard players operation #session_id ct_ctx = @s ct_session
 scoreboard players set #session_online ct_ctx 0

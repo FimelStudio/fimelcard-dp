@@ -16,6 +16,11 @@ execute if score #version ab_ctx matches 3 run function abraca:system/upgrade_v4
 execute if score #version ab_ctx matches 4 run function abraca:system/upgrade_v5
 execute if score #version ab_ctx matches 5 run function abraca:system/upgrade_v6
 
+# 兼容旧版卡住的终局：清理已结束会话中的在线残留者，不恢复旧法术 HUD。
+# 仍在进行或控制器区块暂未载入的会话由公共注册表保留。
+execute as @a[tag=ab.player,tag=ct.player] at @s run function cardtable:session/reconcile_player
+execute as @a[tag=ab.player,tag=!ct.player] run function abraca:player/clear_state
+
 # 升级移除旧物品牌背，真实手牌marker保持不变。
 execute as @a[tag=ab.player] run function abraca:input/clear_tools
 execute as @e[type=minecraft:item] if items entity @s contents minecraft:paper[minecraft:custom_data~{abraca:{stone:1b}}] run kill @s

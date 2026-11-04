@@ -3,6 +3,7 @@ function cardtable:log {text:"收到开始游戏请求"}
 
 # BEGIN public pause reset
 scoreboard players set @s ct_paused 0
+scoreboard players set @s ct_finishing 0
 # END public pause reset
 scoreboard players set @s ct_start 0
 execute if score @s ct_joined > @s ct_capacity run return fail

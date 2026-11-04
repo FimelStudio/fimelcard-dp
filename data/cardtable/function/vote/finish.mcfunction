@@ -1,3 +1,9 @@
+# BEGIN public session finish
+execute unless score @s ct_state matches 1 run return 0
+execute if score @s ct_finishing matches 1 run return 0
+execute unless score @s ct_game matches 1..23 run return 0
+function cardtable:session/finish
+# END public session finish
 execute if score @s ct_game matches 1 run return run function fast_card:game/end_vote
 execute if score @s ct_game matches 2 run return run function liars_holdem:game/end_vote
 execute if score @s ct_game matches 3 run return run function hanabi:game/end_vote

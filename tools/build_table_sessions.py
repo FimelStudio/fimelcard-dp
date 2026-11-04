@@ -6,6 +6,28 @@ PACK=Path(__file__).resolve().parents[1]
 ROOT=PACK/'data/cardtable/function'
 DIMS=('minecraft:overworld','minecraft:the_nether','minecraft:the_end')
 GAMES=[('fast_card','fc'),('liars_holdem','lh'),('hanabi','hb'),('abraca','ab'),('bullshit','bw'),('decrypto','dc'),('critical_point','cp'),('wenfei','wq'),('skull','sk'),('doudizhu','dd'),('uno','un'),('chess','ch'),('xiangqi','xq'),('gomoku','gm'),('aeroplane_chess','ac'),('avalon','av'),('love_letter','ll'),('guandan','gd'),('ito','it'),('weiqi','go'),('catan','ca'),('splendor','sp'),('magical_athlete','ma')]
+# 仅整场终局，不能把尚有下一局的局间结算当成结束。
+# 统一检测也能在升级/重载时解开已经卡在最终展示的旧桌。
+FINAL_CONDITIONS = {
+    2: 'if score @s lh_state matches 17',
+    3: 'if score @s hb_state matches 3',
+    4: 'if score @s ab_state matches 3',
+    7: 'if score @s cp_state matches 4',
+    10: 'if score @s dd_state matches 4 if score @s dd_round >= @s dd_limit',
+    11: 'if score @s un_state matches 5 if score @s un_matchend matches 1',
+    12: 'if score @s ch_state matches 4',
+    13: 'if score @s xq_state matches 4',
+    14: 'if score @s gm_state matches 4',
+    15: 'if score @s ac_state matches 5',
+    16: 'if score @s av_state matches 5',
+    17: 'if score @s ll_state matches 4',
+    18: 'if score @s gd_state matches 5',
+    19: 'if score @s it_state matches 4',
+    20: 'if score @s go_state matches 4',
+    21: 'if score @s ca_state matches 11',
+    22: 'if score @s sp_state matches 4',
+    23: 'if score @s ma_state matches 5',
+}
 
 def put(name,lines):
     p=ROOT/(name+'.mcfunction');p.parent.mkdir(parents=True,exist_ok=True)
@@ -28,12 +50,14 @@ def hook(name,key,body,before=None,after=None):
 def build():
     put('session/load',[
         '# 会话编号持久递增，重载不重置；离线玩家的旧编号留待重新上线核验。',
-        *[f'scoreboard objectives add {o} dummy' for o in ('ct_session','ct_expected','ct_paused','ct_rejoin','ct_wait')],
+        *[f'scoreboard objectives add {o} dummy' for o in ('ct_session','ct_expected','ct_paused','ct_rejoin','ct_wait','ct_finishing')],
         'execute unless score #session ct_ctx matches 0.. run scoreboard players set #session ct_ctx 0',
-        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s unless score @s ct_session matches 1.. run function cardtable:session/migrate' for d in DIMS],
-        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1,ct_session=1..}}] run function cardtable:session/mark_active' for d in DIMS]])
+        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s run function cardtable:session/detect_finish' for d in DIMS],
+        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s unless score @s ct_finishing matches 1 unless score @s ct_session matches 1.. run function cardtable:session/migrate' for d in DIMS],
+        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1,ct_session=1..}}] unless score @s ct_finishing matches 1 run function cardtable:session/mark_active' for d in DIMS]])
     put('session/start',[
         '# 仅在具体游戏开局成功、玩家换座完成后调用，真人与机器人分开计数。',
+        'scoreboard players set @s ct_finishing 0',
         'scoreboard players add #session ct_ctx 1',
         'scoreboard players operation @s ct_session = #session ct_ctx',
         'function cardtable:session/mark_active',
@@ -58,11 +82,22 @@ def build():
         'execute store result storage cardtable:session member.seat int 1 run scoreboard players get @s ct_seat',
         'data modify entity @e[tag=ct.session_build,limit=1] data.cardtable.members append from storage cardtable:session member'])
     put('session/migrate',[
+        'execute if score @s ct_finishing matches 1 run return 0',
         '# 为升级前已经开局的桌建立快照，尽量保留旧joined记录中的离线席位。',
         'scoreboard players operation #legacy_joined ct_ctx = @s ct_joined',
         'function cardtable:session/start',
         'execute if score #legacy_joined ct_ctx > @s ct_expected run scoreboard players operation @s ct_expected = #legacy_joined ct_ctx',
         'data modify entity @s data.cardtable.session_legacy set value 1b'])
+    put('session/finish',[
+        '# 最终结果或结束投票已锁定：先注销会话，再让结算动画独立走完。',
+        'execute if score @s ct_finishing matches 1 run return 0',
+        'scoreboard players set @s ct_finishing 1',
+        'function cardtable:session/end'])
+    put('session/detect_finish',[
+        '# 必须先于重连和旧局迁移；终局不能重新接回离线成员或再次暂停。',
+        'execute if score @s ct_finishing matches 1 run return 0',
+        *[f'execute if score @s ct_game matches {game} {condition} run return run function cardtable:session/finish'
+          for game,condition in FINAL_CONDITIONS.items()]])
     put('session/end',[
         '# 先使会话失效；离线成员上线时只清理自己，绝不再触发旧游戏abort。',
         'scoreboard players operation #session_table ct_ctx = @s ct_id',
@@ -92,7 +127,8 @@ def build():
         'function cardtable:chairs/settings/clear_session'])
     put('session/pre_tick',[
         '# 必须早于游戏tick与通用调度库；本刻掉线立刻暂停，不让计时多走一刻。',
-        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s unless score @s ct_session matches 1.. run function cardtable:session/migrate' for d in DIMS],
+        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s run function cardtable:session/detect_finish' for d in DIMS],
+        *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s unless score @s ct_finishing matches 1 unless score @s ct_session matches 1.. run function cardtable:session/migrate' for d in DIMS],
         'execute as @a[tag=ct.player,tag=!ct.rejoining] unless score @s ct_online matches 1 run function cardtable:session/begin_rejoin',
         'execute as @a[tag=ct.player,tag=ct.rejoining] at @s run function cardtable:session/reconcile_player',
         *[f'execute in {d} as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={{ct_state=1}}] at @s run function cardtable:session/check_table' for d in DIMS],
@@ -128,6 +164,7 @@ def build():
     put('session/registry_check',['$execute if score #round.$(round) ct_session matches 1 run scoreboard players set #round_active ct_ctx 1'])
     put('session/reconcile_at_table',[
         'scoreboard players set #rejoin_found ct_ctx 1',
+        'execute if score @s ct_finishing matches 1 run return 0',
         'execute unless score @s ct_state matches 1 run return 0',
         'execute unless score @s ct_session matches 1.. run return 0',
         'execute if score @a[tag=ct.reconnect_actor,limit=1] ct_session = @s ct_session run scoreboard players set #rejoin_valid ct_ctx 1',
@@ -144,6 +181,7 @@ def build():
         'scoreboard players set @s ct_online 1','scoreboard players set @s ct_rejoin 0',
         'tag @s remove ct.rejoining','function cardtable:seat/mount'])
     put('session/check_table',[
+        'execute if score @s ct_finishing matches 1 run return 0',
         'scoreboard players operation #session_table ct_ctx = @s ct_id',
         'scoreboard players operation #session_id ct_ctx = @s ct_session',
         'scoreboard players set #session_online ct_ctx 0',
@@ -214,7 +252,12 @@ def build():
     hook('load','public session load','function cardtable:settings/load\nfunction cardtable:chairs/settings/load\nfunction cardtable:session/load',before='# 重载后旧选择窗口失效')
     hook('game/start','public session start','function cardtable:session/start',after='scoreboard players set @s ct_state 1')
     # 上局结束后新开局前不要沿用暂停位，具体game/start内也会调用输入刷新。
-    hook('game/start','public pause reset','scoreboard players set @s ct_paused 0',before='scoreboard players set @s ct_start 0')
+    hook('game/start','public pause reset','scoreboard players set @s ct_paused 0\nscoreboard players set @s ct_finishing 0',before='scoreboard players set @s ct_start 0')
+    hook('vote/finish','public session finish',
+         'execute unless score @s ct_state matches 1 run return 0\n'
+         'execute if score @s ct_finishing matches 1 run return 0\n'
+         f'execute unless score @s ct_game matches 1..{len(GAMES)} run return 0\n'
+         'function cardtable:session/finish')
     hook('game/return_lobby','public session end','function cardtable:session/end',before='scoreboard players set @s ct_state 0')
     hook('table/remove','public session end','function cardtable:session/end',before='scoreboard players operation #ctx_id ct_ctx = @s ct_id')
     for name in ('seat/leave','seat/remove_player'):
