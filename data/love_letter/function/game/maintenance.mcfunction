@@ -8,3 +8,5 @@ function love_letter:system/context
 scoreboard players set #online ll_ctx 0
 execute as @a[tag=ll.audience] run scoreboard players add #online ll_ctx 1
 function love_letter:hud/refresh
+
+execute as @a[tag=ll.audience] run function love_letter:input/give

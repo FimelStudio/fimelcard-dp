@@ -10,3 +10,7 @@ execute in minecraft:overworld as @e[type=minecraft:marker,tag=ct.controller,dis
 execute in minecraft:the_nether as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_game=23,ct_state=1}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function magical_athlete:game/tick
 execute in minecraft:the_end as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_game=23,ct_state=1}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function magical_athlete:game/tick
 execute as @a[tag=ma.player] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] unless entity @s[tag=ct.player] run function magical_athlete:player/clear_state
+
+execute as @a[tag=ma.player,scores={ma_dye=1..}] at @s run function magical_athlete:direct/dye_drop
+
+scoreboard players remove @a[scores={ma_notice=1..}] ma_notice 1

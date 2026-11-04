@@ -20,4 +20,3 @@ execute if score #error ca_ctx matches 5 if score #illegal_code ca_ctx matches 2
 execute if score #error ca_ctx matches 5 if score #illegal_code ca_ctx matches 12 run data modify storage catan:runtime error set value "强盗须移动到另一块六边形地块，不能仍留在原格。"
 function catan:game/illegal_message with storage catan:runtime
 function catan:sound/illegal
-execute as @a[tag=ca.actor] run function catan:ui/open

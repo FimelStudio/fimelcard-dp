@@ -11,3 +11,7 @@ function catan:visual/load
 function catan:sound/load
 function catan:settings/load
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=21}] at @s run function catan:system/reload
+
+scoreboard objectives add ca_dye minecraft.dropped:minecraft.purple_dye
+
+scoreboard objectives add ca_inv_epoch dummy

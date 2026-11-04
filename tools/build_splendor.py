@@ -12,6 +12,9 @@ def main():
     for name in ('build_table_chair_settings','build_table_sessions','build_table_pause_guards'):
         subprocess.run([sys.executable,str(tools/(name+'.py'))],cwd=tools.parent,check=True)
 
+    from build_direct_interactions import build as direct_interactions
+    direct_interactions("splendor")
+
 
 if __name__ == '__main__':
     main()

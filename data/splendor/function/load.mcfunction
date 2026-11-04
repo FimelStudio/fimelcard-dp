@@ -11,3 +11,9 @@ function splendor:settings/load
 function splendor:visual/load
 function splendor:sound/load
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=22}] at @s run function splendor:system/reload
+
+scoreboard objectives add sp_dye minecraft.dropped:minecraft.purple_dye
+
+scoreboard objectives add sp_hpanel dummy
+
+scoreboard objectives add sp_hprev dummy

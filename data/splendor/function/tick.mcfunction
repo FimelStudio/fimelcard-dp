@@ -8,3 +8,9 @@ execute as @a[scores={sp_action=1..}] unless score @s ct_paused matches 1 unless
 execute as @a[tag=sp.player,scores={sp_drop=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function splendor:input/drop
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=22,ct_state=1}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function splendor:game/tick
 execute as @a[tag=sp.player] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] unless entity @s[tag=ct.player] run function splendor:player/clear_state
+
+execute as @e[type=minecraft:interaction,tag=sp.hit] if data entity @s interaction at @s run function splendor:direct/click
+
+execute as @a[tag=sp.player,scores={sp_dye=1..}] at @s run function splendor:direct/dye_drop
+
+execute as @e[type=minecraft:item] if items entity @s contents *[minecraft:custom_data~{splendor:{gem:1b}}] run kill @s

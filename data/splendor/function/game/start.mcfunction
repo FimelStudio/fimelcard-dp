@@ -6,8 +6,17 @@ scoreboard players set #online sp_ctx 0
 scoreboard players set #blocked sp_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx run scoreboard players add #online sp_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.0 * unless items entity @s hotbar.0 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.1 * unless items entity @s hotbar.1 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.2 * unless items entity @s hotbar.2 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.3 * unless items entity @s hotbar.3 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.4 * unless items entity @s hotbar.4 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.5 * unless items entity @s hotbar.5 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.6 * unless items entity @s hotbar.6 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
 execute unless score #online sp_ctx = @s ct_joined run return fail
-execute if score #blocked sp_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[璀璨宝石] 请先腾空快捷栏最后一格。",color:"red"}
+execute if score #blocked sp_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[璀璨宝石] 请先腾空快捷栏。",color:"red"}
 execute if score #blocked sp_ctx matches 1 run return fail
 execute as @a[tag=sp.player] if score @s sp_table = #table sp_ctx run function splendor:player/clear_state
 execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx run function splendor:player/init

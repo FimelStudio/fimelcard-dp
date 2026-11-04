@@ -11,6 +11,9 @@ def main():
     for script in ('register_magical_athlete', 'build_table_chair_settings', 'build_table_sessions', 'build_table_pause_guards'):
         subprocess.run([sys.executable, str(tools / (script + '.py'))], cwd=tools.parent, check=True)
 
+    from build_direct_interactions import build as direct_interactions
+    direct_interactions("magical_athlete")
+
 
 if __name__ == '__main__':
     main()

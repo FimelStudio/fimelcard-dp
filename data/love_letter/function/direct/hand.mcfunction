@@ -1,0 +1,23 @@
+execute unless score #hand_card ll_ctx matches 0..9 run return run function love_letter:direct/clear_hand_slot with storage love_letter:input
+execute if score #hand_card ll_ctx matches 0 run data modify storage love_letter:input model set value "spy"
+execute if score #hand_card ll_ctx matches 0 run data modify storage love_letter:input name set value "0 · 间谍（Q打出）"
+execute if score #hand_card ll_ctx matches 1 run data modify storage love_letter:input model set value "guard"
+execute if score #hand_card ll_ctx matches 1 run data modify storage love_letter:input name set value "1 · 卫兵（Q打出）"
+execute if score #hand_card ll_ctx matches 2 run data modify storage love_letter:input model set value "priest"
+execute if score #hand_card ll_ctx matches 2 run data modify storage love_letter:input name set value "2 · 牧师（Q打出）"
+execute if score #hand_card ll_ctx matches 3 run data modify storage love_letter:input model set value "baron"
+execute if score #hand_card ll_ctx matches 3 run data modify storage love_letter:input name set value "3 · 男爵（Q打出）"
+execute if score #hand_card ll_ctx matches 4 run data modify storage love_letter:input model set value "handmaid"
+execute if score #hand_card ll_ctx matches 4 run data modify storage love_letter:input name set value "4 · 侍女（Q打出）"
+execute if score #hand_card ll_ctx matches 5 run data modify storage love_letter:input model set value "prince"
+execute if score #hand_card ll_ctx matches 5 run data modify storage love_letter:input name set value "5 · 王子（Q打出）"
+execute if score #hand_card ll_ctx matches 6 run data modify storage love_letter:input model set value "chancellor"
+execute if score #hand_card ll_ctx matches 6 run data modify storage love_letter:input name set value "6 · 大臣（Q打出）"
+execute if score #hand_card ll_ctx matches 7 run data modify storage love_letter:input model set value "king"
+execute if score #hand_card ll_ctx matches 7 run data modify storage love_letter:input name set value "7 · 国王（Q打出）"
+execute if score #hand_card ll_ctx matches 8 run data modify storage love_letter:input model set value "countess"
+execute if score #hand_card ll_ctx matches 8 run data modify storage love_letter:input name set value "8 · 伯爵夫人（Q打出）"
+execute if score #hand_card ll_ctx matches 9 run data modify storage love_letter:input model set value "princess"
+execute if score #hand_card ll_ctx matches 9 run data modify storage love_letter:input name set value "9 · 公主（Q打出）"
+execute store result storage love_letter:input card int 1 run scoreboard players get #hand_card ll_ctx
+function love_letter:direct/hand_item with storage love_letter:input

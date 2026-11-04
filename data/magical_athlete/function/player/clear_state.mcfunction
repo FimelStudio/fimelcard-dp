@@ -1,5 +1,5 @@
 function magical_athlete:sound/stop_player
-clear @s minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}]
+clear @s *[minecraft:custom_data~{magical_athlete:{tool:1b}}]
 function magical_athlete:settings/clear_session
 dialog clear @s
 scoreboard players reset @s ma_nonce

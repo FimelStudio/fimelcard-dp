@@ -415,3 +415,7 @@ execute as @e[type=minecraft:marker,tag=ct.controller,tag=ll.controller,scores={
 
 if __name__ == '__main__':
     build()
+
+if __name__ == "__main__":
+ from build_direct_interactions import build as direct_interactions
+ direct_interactions("love_letter")
