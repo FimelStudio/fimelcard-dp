@@ -179,22 +179,8 @@ def build():
         'execute as @a[tag=ct.player] if score @s ct_id = #session_table ct_ctx run title @s actionbar {text:""}',
         'execute as @a[tag=ct.player] if score @s ct_id = #session_table ct_ctx run tellraw @s {text:"[牌桌] 玩家已全部返回，对局继续。",color:"green"}',
         'function cardtable:session/refresh_ui'])
-    refresh=[]
-    for i,(game,pre) in enumerate(GAMES,1):
-        # 只刷新已有手牌/操作物，不调用重新开局或推进回合的reload入口。
-        available=[]
-        for name in ('ui/refresh','input/give','input/give_tools'):
-            if (PACK/f'data/{game}/function/{name}.mcfunction').is_file():available.append(name)
-        for name in available:
-            call=f'execute if score @s ct_game matches {i}'
-            if name.startswith('input/'):
-                call+=f' as @a[tag={pre}.player] if score @s ct_id = #session_table ct_ctx'
-            refresh.append(call+f' run function {game}:{name}')
-        if game=='hanabi':refresh.append(f'execute if score @s ct_game matches {i} run function hanabi:input/restore_table')
-        if game=='doudizhu':refresh.append(f'execute if score @s ct_game matches {i} run function doudizhu:system/refresh')
-        if (PACK/f'data/{game}/function/hud/refresh.mcfunction').is_file():
-            refresh.append(f'execute if score @s ct_game matches {i} run function {game}:hud/refresh')
-    put('session/refresh_ui',refresh)
+    from build_session_refresh import build as build_refresh
+    build_refresh(GAMES)
     put('session/deal_tick',[
         '# 冻结在途实体，避免暂停时仍拾取/超时消失；恢复后使用原有补发路径。',
         'scoreboard players operation #flight_table ct_ctx = @s ct_id',

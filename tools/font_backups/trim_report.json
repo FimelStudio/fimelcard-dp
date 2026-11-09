@@ -1,0 +1,22 @@
+[
+  {
+    "pack": "fimelcard-rp",
+    "before": 65536,
+    "after": 39535,
+    "removed": 26001,
+    "bytes_before": 857818,
+    "bytes_after": 535929,
+    "backup": "C:\\Users\\Chen Yuru\\AppData\\Roaming\\.minecraft\\versions\\26.2-Fabric 0.19.3\\saves\\Fimel桌游馆\\datapacks\\fimelcard-dp\\tools\\font_backups\\fimelcard-rp_unifont_neg.json.gz",
+    "sha256": "beb331ac0d41fb2707432b3ecf976a83a3518a8394168fb50d56022ba35e2e07"
+  },
+  {
+    "pack": "Fimel桌游馆",
+    "before": 65536,
+    "after": 39535,
+    "removed": 26001,
+    "bytes_before": 857818,
+    "bytes_after": 535929,
+    "backup": "C:\\Users\\Chen Yuru\\AppData\\Roaming\\.minecraft\\versions\\26.2-Fabric 0.19.3\\saves\\Fimel桌游馆\\datapacks\\fimelcard-dp\\tools\\font_backups\\Fimel桌游馆_unifont_neg.json.gz",
+    "sha256": "beb331ac0d41fb2707432b3ecf976a83a3518a8394168fb50d56022ba35e2e07"
+  }
+]
