@@ -90,8 +90,8 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         c+=['execute store success score #resign_present lt if data storage love_letter:ui buttons[{action:{command:"trigger ll_action set 12345005"}}]']+self.score('#resign_present','lt',0,'eliminated_player_no_resign_button')
         self.case('eliminated_menu',c)
         for phase in (1,2,3,4,5):
-            c=self.setup((7,9,6),extra=3)+[f'scoreboard players set {TABLE} ll_phase {phase}',f'scoreboard players set {TABLE} ll_actor 2',f'data modify entity {TABLE} data.ll_buffer set value [8,7,5]']+self.call('ui/refresh')
-            c+=self.score('#last_viewer','lt',1 if phase==1 else 2,f'refresh_{phase}_only_decider')
+            c=self.setup((7,9,6),extra=3)+[f'scoreboard players set {TABLE} ll_phase {phase}',f'scoreboard players set {TABLE} ll_actor 2',f'data modify entity {TABLE} data.ll_buffer set value [8,7,5]','scoreboard players set #last_viewer lt 0']+self.call('ui/refresh')
+            c+=self.score('#last_viewer','lt',0 if phase==1 else 2,f'refresh_{phase}_only_decider')
             self.case('refresh_'+str(phase),c)
         for change,commands in [('epoch',[f'scoreboard players add {TABLE} ll_epoch 1']),('reload',['scoreboard players add #ui_load ll_ctx 1']),('game',[f'scoreboard players set {TABLE} ct_game 16']),('table',[f'scoreboard players set {person()} ct_id 202']),('inactive',[f'scoreboard players set {TABLE} ct_state 0'])]:
             actual=person()
@@ -131,7 +131,7 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
 
 def prepare_target(target):
     """仅替换视觉生命周期回调；所有 UI、Dialog、规则引擎和设置均使用生产文件。"""
-    for folder in ['ui','input','settings','rules','name']:
+    for folder in ['ui','input','settings','rules','name','direct']:
         shutil.copytree(PACK/'data/love_letter/function'/folder,target/'data/love_letter/function'/folder,dirs_exist_ok=True)
     shutil.copytree(PACK/'data/love_letter/loot_table',target/'data/love_letter/loot_table',dirs_exist_ok=True)
     for name,body in {'game/init_table':'# 此验收只检查已有合法设置，不创建桌面视觉。',

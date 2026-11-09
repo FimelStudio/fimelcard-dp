@@ -134,6 +134,12 @@ execute if score #extra ll_ctx matches 8 if score #hand ll_ctx matches 5 run sco
 execute if score #extra ll_ctx matches 8 if score #hand ll_ctx matches 7 run scoreboard players set #forced ll_ctx 1
 scoreboard players set #error ll_ctx 2
 execute if score #forced ll_ctx matches 1 unless score #card ll_ctx matches 8 run return 0
+scoreboard players set #error ll_ctx 0
+scoreboard players set #pre_target ll_ctx 0
+execute if score #card ll_ctx matches 1..3 run function love_letter:targeting/preflight
+execute if score #card ll_ctx matches 5 run function love_letter:targeting/preflight
+execute if score #card ll_ctx matches 7 run function love_letter:targeting/preflight
+execute if score #error ll_ctx matches 3.. run return 0
 data modify entity @s data.love_letter.action set value {actor:0,card:0,target:0,guess:-1,eliminated:[],forced:-1}
 execute store result entity @s data.love_letter.action.actor int 1 run scoreboard players get #actor ll_ctx
 execute store result entity @s data.love_letter.action.card int 1 run scoreboard players get #card ll_ctx
@@ -173,10 +179,74 @@ scoreboard players operation #owner ll_ctx = @s ll_actor
 execute as @e[tag=ll.board,scores={ll_alive=1,ll_protect=0}] unless score @s ll_seat = #owner ll_ctx run tag @s add ll.legal
 execute if score @s ll_card matches 5 as @e[tag=ll.board,scores={ll_alive=1,ll_protect=0}] run tag @s add ll.legal
 ''')
+    # 同步调用最多保留一个临时 marker，按头部与身体检测视线，避免误用玩家脚点。
+    scan = [
+        'function love_letter:targeting/scan_clear',
+        'scoreboard players set #aim ll_ctx 0',
+        'scoreboard players set #pitch ll_ctx 0',
+        'execute as @a[tag=ll.audience] if score @s ll_seat = #actor ll_ctx run tag @s add ll.aim_actor',
+        'execute as @a[tag=ll.aim_actor] store result score #pitch ll_ctx run data get entity @s Rotation[1]',
+        'execute if score #pitch ll_ctx matches 50.. run return run function love_letter:targeting/scan_clear',
+        'execute as @a[tag=ll.audience] unless score @s ll_seat = #actor ll_ctx run tag @s add ll.aim_candidate',
+        'execute as @a[tag=ll.aim_actor] at @s anchored eyes positioned ^ ^ ^ run summon minecraft:marker ~ ~ ~ {Tags:["ll.aim_ray"]}',
+    ]
+    for step in range(1, 19):
+        distance = f'{step * .35:.2f}'
+        scan += [
+            f'execute if score #aim ll_ctx matches 0 as @a[tag=ll.aim_actor] at @s anchored eyes positioned ^ ^ ^{distance} run tp @e[type=minecraft:marker,tag=ll.aim_ray,limit=1] ~ ~ ~',
+            'execute if score #aim ll_ctx matches 0 as @a[tag=ll.aim_candidate] at @s anchored eyes positioned ^ ^ ^ run function love_letter:targeting/body',
+        ]
+    put('targeting/scan', scan + ['function love_letter:targeting/scan_clear'])
+    put('targeting/body', [
+        f'execute if score #aim ll_ctx matches 0 positioned ~ ~{-offset:g} ~ if entity @e[type=minecraft:marker,tag=ll.aim_ray,distance=..0.45,limit=1] run scoreboard players operation #aim ll_ctx = @s ll_seat'
+        for offset in (0, .5, 1, 1.5)
+    ])
+    put('targeting/scan_clear', '''
+kill @e[type=minecraft:marker,tag=ll.aim_ray]
+tag @a[tag=ll.aim_actor] remove ll.aim_actor
+tag @a[tag=ll.aim_candidate] remove ll.aim_candidate
+''')
+    put('targeting/preflight', '''
+# 在真正弃牌之前锁定目标；失败时保持手牌、牌库和阶段原样。
+tag @e[tag=ll.legal] remove ll.legal
+execute as @e[tag=ll.board,scores={ll_alive=1,ll_protect=0}] unless score @s ll_seat = #actor ll_ctx run tag @s add ll.legal
+execute if score #card ll_ctx matches 5 as @e[tag=ll.board,scores={ll_alive=1,ll_protect=0}] run tag @s add ll.legal
+execute unless entity @e[tag=ll.legal] run return 0
+execute if score @s ll_timeout matches 1 run return 0
+function love_letter:targeting/scan
+execute as @e[tag=ll.legal] if score @s ll_seat = #aim ll_ctx run scoreboard players operation #pre_target ll_ctx = @s ll_seat
+execute if score #aim ll_ctx matches 1..8 unless score #pre_target ll_ctx matches 1..8 run scoreboard players set #error ll_ctx 4
+execute if score #aim ll_ctx matches 0 if score #card ll_ctx matches 5 run scoreboard players operation #pre_target ll_ctx = #actor ll_ctx
+execute if score #pre_target ll_ctx matches 0 unless score #error ll_ctx matches 4 run scoreboard players set #error ll_ctx 3
+''')
+    put('targeting/apply', '''
+scoreboard players operation #target ll_ctx = #pre_target ll_ctx
+function love_letter:engine/target
+''')
+    put('targeting/tick', '''
+function love_letter:system/context
+execute unless score @s ll_state matches 2 run return run function love_letter:targeting/clear
+execute unless score @s ll_phase matches 1 run return run function love_letter:targeting/clear
+execute unless score @s ll_anim matches 0 run return run function love_letter:targeting/clear
+scoreboard players operation #actor ll_ctx = @s ll_turn
+function love_letter:targeting/scan
+scoreboard players set #preview ll_ctx 0
+execute as @e[tag=ll.board,scores={ll_alive=1,ll_protect=0}] if score @s ll_seat = #aim ll_ctx run scoreboard players set #preview ll_ctx 1
+execute unless score #preview ll_ctx matches 1 run scoreboard players set #aim ll_ctx 0
+execute as @a[tag=ll.audience,tag=ll.aim_preview] unless score @s ll_seat = #aim ll_ctx run effect clear @s minecraft:glowing
+execute as @a[tag=ll.audience,tag=ll.aim_preview] unless score @s ll_seat = #aim ll_ctx run tag @s remove ll.aim_preview
+execute if score #aim ll_ctx matches 1..8 as @a[tag=ll.audience] if score @s ll_seat = #aim ll_ctx run tag @s add ll.aim_preview
+execute as @a[tag=ll.audience,tag=ll.aim_preview] run effect give @s minecraft:glowing 1 0 true
+''')
+    put('targeting/clear', '''
+execute as @a[tag=ll.audience,tag=ll.aim_preview] run effect clear @s minecraft:glowing
+tag @a[tag=ll.audience,tag=ll.aim_preview] remove ll.aim_preview
+''')
     put('engine/need_target', '''
 function love_letter:engine/targets
 execute unless entity @e[tag=ll.legal] run return run function love_letter:engine/done
 scoreboard players set @s ll_phase 2
+execute if score #pre_target ll_ctx matches 1..8 run return run function love_letter:targeting/apply
 function love_letter:game/await_choice
 ''')
     put('engine/target', '''

@@ -8,7 +8,7 @@ PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'data/love_letter/function'
 OBJECTIVES = {name: 'dummy' for name in '''ll_seen ll_pick ll_ui_tmp ll_ui_load'''.split()}
 OBJECTIVES.update({'ll_action':'trigger', 'll_drop':'minecraft.dropped:minecraft.purple_dye'})
-ROLES = ['间谍','侍卫','牧师','男爵','侍女','王子','大臣','国王','伯爵夫人','公主']
+ROLES = ['间谍','侍卫','牧师','男爵','侍女','王子','大臣','国王','女爵','公主']
 MODELS = ['spy','guard','priest','baron','handmaid','prince','chancellor','king','countess','princess']
 EFFECTS = ['本轮唯一仍存活、曾打出或弃过间谍的玩家额外获得1枚好感。','选择另一位未受保护的玩家，猜测其手牌（不能猜侍卫），猜中则淘汰。','秘密查看另一位未受保护玩家的手牌。','与你选的未受保护玩家秘密比较留牌，点数低者淘汰，同值均留下。','保护自己直到下一回合开始，其他玩家不能将你选为角色效果的目标。','选择任何未受保护的玩家（可以自己），公开弃掉手牌再补一张；弃公主则淘汰且不补。','最多再摸两张，秘密留一张，其余自行排序放回牌库底。','与另一位未受保护玩家交换留牌。','与国王或王子同时在手时必须打出；可以主动打出，其他玩家不知道是否被迫。','打出或被弃掉便立即淘汰。']
 
@@ -141,7 +141,11 @@ execute unless score @s ll_pick matches 0..1 run return run function love_letter
 scoreboard players operation #slot ll_ctx = @s ll_pick
 dialog clear @s
 execute as @e[tag=ll.current,limit=1] at @s run function love_letter:engine/play
-execute unless score #ok ll_ctx matches 1 run function love_letter:input/invalid
+execute if score #ok ll_ctx matches 1 run return 1
+execute if score #error ll_ctx matches 2 run return run title @s actionbar {text:"持有女爵和王子或国王时，必须打出女爵。",color:"yellow"}
+execute if score #error ll_ctx matches 3 run return run title @s actionbar {text:"请朝向一名可选玩家，再按 Q 出牌。",color:"yellow"}
+execute if score #error ll_ctx matches 4 run return run title @s actionbar {text:"目标已出局或受侍女保护，请重新选择。",color:"yellow"}
+title @s actionbar {text:"当前不能出这张牌，请确认轮到你且已选中手牌。",color:"yellow"}
 ''')
     for name, score, offset in [('target','target',100),('guess','guess',200),('keep','keep',300),('bottom','bottom',400)]:
         put('input/'+name,f'''scoreboard players operation #{score} ll_ctx = #ui_action ll_ctx
@@ -231,10 +235,10 @@ execute if entity @e[tag=ll.current,scores={ll_phase=4..5},limit=1] run function
     put('ui/play_choices', '''
 data modify storage love_letter:ui phase set value {text:"选择一张牌，点击出牌。",color:"green"}
 execute if score @s ll_pick matches 0..1 run function love_letter:ui/button {code:20,label:"出牌",color:"green"}
-execute if entity @e[tag=ll.me,scores={ll_hand=8,ll_extra=5},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出伯爵夫人。",color:"yellow"}
-execute if entity @e[tag=ll.me,scores={ll_hand=8,ll_extra=7},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出伯爵夫人。",color:"yellow"}
-execute if entity @e[tag=ll.me,scores={ll_extra=8,ll_hand=5},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出伯爵夫人。",color:"yellow"}
-execute if entity @e[tag=ll.me,scores={ll_extra=8,ll_hand=7},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出伯爵夫人。",color:"yellow"}
+execute if entity @e[tag=ll.me,scores={ll_hand=8,ll_extra=5},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出女爵。",color:"yellow"}
+execute if entity @e[tag=ll.me,scores={ll_hand=8,ll_extra=7},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出女爵。",color:"yellow"}
+execute if entity @e[tag=ll.me,scores={ll_extra=8,ll_hand=5},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出女爵。",color:"yellow"}
+execute if entity @e[tag=ll.me,scores={ll_extra=8,ll_hand=7},limit=1] run data modify storage love_letter:ui phase set value {text:"本回合必须打出女爵。",color:"yellow"}
 ''')
     put('ui/targets', '''
 data modify storage love_letter:ui phase set value {text:"选择目标。",color:"green"}

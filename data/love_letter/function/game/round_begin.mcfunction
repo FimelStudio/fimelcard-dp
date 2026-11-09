@@ -8,6 +8,7 @@ scoreboard players set @s ll_anim 0
 scoreboard players set @s ll_timeout 0
 function love_letter:game/bump_epoch
 function love_letter:engine/start_round
+execute as @e[tag=ll.board] run data remove entity @s data.ll_reveal
 function love_letter:visual/refresh
 function love_letter:sound/start
 tellraw @a[tag=ll.audience] [{text:"[情书] 第",color:"gold"},{score:{name:"@s",objective:"ll_round"}},{text:"轮开始。"}]

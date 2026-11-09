@@ -3,6 +3,7 @@ scoreboard players operation #resigning ll_ctx = #actor ll_ctx
 function love_letter:engine/resign
 execute unless score #ok ll_ctx matches 1 run return 0
 function love_letter:sound/eliminate
+function love_letter:visual/resign
 function love_letter:game/bump_epoch
 function love_letter:visual/refresh
 function love_letter:engine/check_round

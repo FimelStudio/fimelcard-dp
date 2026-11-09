@@ -7,6 +7,7 @@ def build(game):
   path=P/f'data/{game}/function/{name}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body,encoding='utf8')
  rp=P.resolve().parents[3]/'resourcepacks/fimelcard-rp'
  for root in (rp,rp.parent/'Fimel桌游馆'):
+  if root!=rp and not (root/'pack.mcmeta').is_file():continue
   if game=='love_letter':
    for model in ['spy','guard','priest','baron','handmaid','prince','chancellor','king','countess','princess']:
     obj={'model':{'type':'minecraft:select','property':'minecraft:display_context','cases':[{'when':['thirdperson_righthand','thirdperson_lefthand','ground'],'model':{'type':'minecraft:model','model':'card:item/love_letter/back'}}],'fallback':{'type':'minecraft:model','model':f'card:item/love_letter/{model}'}}}

@@ -1,4 +1,5 @@
 function love_letter:system/context
+function love_letter:targeting/clear
 scoreboard players set @s ll_state 0
 scoreboard players set @s ll_phase 0
 scoreboard players set @s ll_timer 0

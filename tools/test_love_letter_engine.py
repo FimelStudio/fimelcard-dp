@@ -80,6 +80,8 @@ scoreboard players set @s ct_capacity 8
 scoreboard players set @s ll_state 2
 scoreboard players set @s ll_phase 1
 scoreboard players set @s ll_anim 0
+# 纯规则用例沿用自动目标路径；准星提交由 test_love_letter_targeting 独立覆盖。
+scoreboard players set @s ll_timeout 1
 scoreboard players set @s ll_scored 0
 scoreboard players set @s ll_first 0
 scoreboard players set @s ll_actor 0
@@ -347,7 +349,8 @@ def run(suite, isolated=True, prefix='fimel-loveletter-', prepare_target=None):
     out=Path(tempfile.mkdtemp(prefix=prefix));target=out/'packs/fimel_cards'
     if not isolated:shutil.copytree(PACK/'data',target/'data')
     else:
-        shutil.copytree(PACK/'data/love_letter/function/engine',target/'data/love_letter/function/engine')
+        for folder in ('engine', 'targeting'):
+            shutil.copytree(PACK/'data/love_letter/function'/folder,target/'data/love_letter/function'/folder)
         ctx=target/'data/love_letter/function/system/context.mcfunction';ctx.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(PACK/'data/love_letter/function/system/context.mcfunction',ctx)
         for name,body in {'after_action':'scoreboard players add #after lt 1','await_choice':'scoreboard players add #await lt 1','round_over':'scoreboard players add #round lt 1'}.items():
             dest=target/'data/love_letter/function/game'/(name+'.mcfunction');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(body+'\n',encoding='utf-8')

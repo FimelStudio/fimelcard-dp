@@ -1,2 +1,2 @@
-function love_letter:system/context
-execute as @a[tag=ll.audience] run function love_letter:hud/update
+execute as @a[tag=ll.hud_active] run function love_letter:hud/deactivate
+execute as @a[tag=ll.owns_actionbar] run function love_letter:hud/deactivate

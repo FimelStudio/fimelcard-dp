@@ -5,7 +5,6 @@ execute unless score @s ct_capacity matches 4 unless score @s ct_capacity matche
 scoreboard players operation #table ll_ctx = @s ct_id
 scoreboard players set #occupied ll_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.0 * run scoreboard players set #occupied ll_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.8 * run scoreboard players set #occupied ll_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.1 * run scoreboard players set #occupied ll_ctx 1
 execute if score #occupied ll_ctx matches 1 run return run function love_letter:game/bad_slots
 function love_letter:game/clear

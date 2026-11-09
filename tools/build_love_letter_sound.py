@@ -9,6 +9,26 @@ from boardgame_assets import PACK, RP, CARD, json_file, text_file
 
 RATE=44100
 RNG=np.random.default_rng(20261101)
+SOUNDS=('start','play','draw','seal','swap','eliminate','round_win','end')
+
+
+def build_functions():
+    """只重建服务端回调；调整交互时无需重新编码已发布的原创音频。"""
+    for name in SOUNDS:
+        text_file(PACK/f'data/love_letter/function/sound/{name}.mcfunction',f'''
+function love_letter:system/context
+# 声源固定在本桌，仅发送给仍在本桌入座的参与者。
+execute at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound card:love_letter.{name} block @s ~ ~ ~ 0.6 1 0
+''')
+    # 角色提示仅依据已经公开打出的牌；保护、交换另有原创音效。
+    cues={0:('block.amethyst_block.chime',1.5),1:('entity.player.attack.crit',1.2),
+          2:('block.enchantment_table.use',1.3),3:('entity.player.attack.sweep',.9),
+          5:('item.book.page_turn',.8),6:('item.book.page_turn',1.4),
+          8:('block.note_block.pling',1.25),9:('block.glass.break',1.4)}
+    text_file(PACK/'data/love_letter/function/sound/role.mcfunction','\n'.join([
+        'function love_letter:system/context',
+        *[f'execute if score @s ll_card matches {role} at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:{sound} block @s ~ ~ ~ 0.4 {pitch} 0'
+          for role,(sound,pitch) in cues.items()]]))
 
 
 def paper(duration=.23):
@@ -74,11 +94,7 @@ def build():
         key=f'love_letter.{name}';sub=f'subtitles.card.{key}'
         sounds[key]={'subtitle':sub,'sounds':[{'name':f'card:love_letter/{name}','stream':False}]}
         langs['zh_cn'][sub]=chinese;langs['en_us'][sub]=english
-        text_file(PACK/f'data/love_letter/function/sound/{name}.mcfunction',f'''
-function love_letter:system/context
-# 声源固定在本桌，仅发送给仍在本桌入座的参与者。
-execute at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound card:{key} block @s ~ ~ ~ 0.6 1 0
-''')
+    build_functions()
     # 仅向最新共享清单合并本游戏的键，保留阿瓦隆及其他游戏的已有内容。
     latest=json.loads((CARD/'sounds.json').read_text(encoding='utf-8')) if (CARD/'sounds.json').exists() else {}
     latest.update({k:v for k,v in sounds.items() if k.startswith('love_letter.')})

@@ -13,6 +13,7 @@ def build():
         used.update(chr(int(x,16)) for x in re.findall(r'\\u([0-9a-fA-F]{4})',s))
     # Explicit custom glyphs and displacement characters must retain their widths.
     for root in [RP/'fimelcard-rp',RP/'Fimel桌游馆']:
+        if not (root/'pack.mcmeta').is_file():continue
         for p in root.glob('assets/*/font/**/*.json'):
             if p.name=='unifont_neg.json':continue
             d=json.loads(p.read_text(encoding='utf-8-sig'))
@@ -22,6 +23,7 @@ def build():
     reports=[]
     for name in ('fimelcard-rp','Fimel桌游馆'):
         p=RP/name/'assets/minecraft/font/include/unifont_neg.json'
+        if not (RP/name/'pack.mcmeta').is_file():continue
         backup=ROOT/'tools/font_backups'/f'{name}_unifont_neg.json.gz'
         backup.parent.mkdir(parents=True,exist_ok=True)
         if not backup.exists():backup.write_bytes(gzip.compress(p.read_bytes()))

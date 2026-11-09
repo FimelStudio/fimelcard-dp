@@ -19,6 +19,12 @@ execute if score #extra ll_ctx matches 8 if score #hand ll_ctx matches 5 run sco
 execute if score #extra ll_ctx matches 8 if score #hand ll_ctx matches 7 run scoreboard players set #forced ll_ctx 1
 scoreboard players set #error ll_ctx 2
 execute if score #forced ll_ctx matches 1 unless score #card ll_ctx matches 8 run return 0
+scoreboard players set #error ll_ctx 0
+scoreboard players set #pre_target ll_ctx 0
+execute if score #card ll_ctx matches 1..3 run function love_letter:targeting/preflight
+execute if score #card ll_ctx matches 5 run function love_letter:targeting/preflight
+execute if score #card ll_ctx matches 7 run function love_letter:targeting/preflight
+execute if score #error ll_ctx matches 3.. run return 0
 data modify entity @s data.love_letter.action set value {actor:0,card:0,target:0,guess:-1,eliminated:[],forced:-1}
 execute store result entity @s data.love_letter.action.actor int 1 run scoreboard players get #actor ll_ctx
 execute store result entity @s data.love_letter.action.card int 1 run scoreboard players get #card ll_ctx

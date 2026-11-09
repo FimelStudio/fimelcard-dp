@@ -48,6 +48,7 @@ def build():
             fx,fz=turn(-.36,0,yaw)
             values.append({'x':x,'z':z,'qx':round(qx,8),'qy':round(qy,8),'qz':round(qz,8),'qw':round(qw,8),
                            'tx':round(compx,7),'tz':round(compz,7),'favor_x':round(x+fx,7),'favor_z':round(z+fz,7),
+                           'reveal_x':round(x-fx,7),'reveal_z':round(z-fz,7),
                            'count':0,'points':0,'seat':index})
         load.append(f'data modify storage love_letter:layout c{capacity}.seats set value '+j(values))
         for index,seat in enumerate(values,1):
@@ -78,10 +79,13 @@ execute as @e[tag=ll.visual,tag=!ll.fx,tag=!ll.box] if score @s ct_id = #vis_tab
 function love_letter:system/context
 function love_letter:visual/context
 function love_letter:visual/clear_static
+scoreboard players operation #vis_state ll_ctx = @s ll_state
+scoreboard players operation #vis_turn ll_ctx = @s ll_turn
 scoreboard players set #box_found ll_ctx 0
 execute as @e[tag=ll.box] if score @s ct_id = #vis_table ll_ctx run scoreboard players set #box_found ll_ctx 1
 execute if score #box_found ll_ctx matches 0 positioned ~ ~1.04 ~ summon minecraft:item_display run function love_letter:visual/box
 execute as @e[type=minecraft:marker,tag=ll.board] run function love_letter:visual/participant
+function love_letter:visual/info
 # 牌库相关字段仅展示双人局公开移出的三张牌。
 data modify storage love_letter:visual public set value []
 data modify storage love_letter:visual public set from entity @s data.love_letter.public
@@ -104,11 +108,11 @@ execute store result storage love_letter:visual card int 1 run data get entity @
 execute if data entity @s data.discards[-1] run function love_letter:visual/resolve_model with storage love_letter:visual
 data modify storage love_letter:visual seat_data.model set from storage love_letter:visual model
 execute if data entity @s data.discards[-1] run function love_letter:visual/face_at with storage love_letter:visual seat_data
-function love_letter:visual/label_at with storage love_letter:visual seat_data
 execute if score @s ll_protect matches 1 run function love_letter:visual/protect_at with storage love_letter:visual seat_data
 execute if score @s ll_points matches 1.. run function love_letter:visual/favor_at with storage love_letter:visual seat_data
 execute if score @s ll_points > @s ll_v_point run function love_letter:visual/token
 scoreboard players operation @s ll_v_point = @s ll_points
+execute if score #vis_state ll_ctx matches 3..4 if score @s ll_alive matches 1 if data entity @s data.ll_reveal run function love_letter:visual/reveal
 ''')
     # 从临时公开牌值解析模型，不读取参与者的手牌分数。
     put('resolve_model',['data modify storage love_letter:visual model set value "back"']+
@@ -121,8 +125,55 @@ scoreboard players operation @s ct_id = #vis_table ll_ctx
 $scoreboard players set @s ll_v_seat $(seat)
 $data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:love_letter/$(model)"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0f,view_range:0.5f,transformation:{translation:[$(tx)f,0.022f,$(tz)f],left_rotation:[$(qx)f,$(qy)f,$(qz)f,$(qw)f],right_rotation:[0f,1f,0f,0f],scale:[0.44f,0.44f,0.44f]}}
 ''')
-    put('label_at','$execute positioned ~$(x) ~1.39 ~$(z) summon minecraft:text_display run function love_letter:visual/label with storage love_letter:visual seat_data')
-    put('label','tag @s add ll.visual\ntag @s add ll.label\nscoreboard players operation @s ct_id = #vis_table ll_ctx\n$scoreboard players set @s ll_v_seat $(seat)\n$data merge entity @s {text:{text:"$(seat)号位 · ♥$(points) · 弃$(count)",color:"gold"},billboard:"center",background:0,shadow:1b,see_through:0b,view_range:0.5f,line_width:240,transformation:{scale:[0.30f,0.30f,0.30f]}}\n')
+    put('reveal','''
+execute store result storage love_letter:visual card int 1 run data get entity @s data.ll_reveal
+function love_letter:visual/resolve_model
+data modify storage love_letter:visual seat_data.model set from storage love_letter:visual model
+data modify storage love_letter:visual seat_data.x set from storage love_letter:visual seat_data.reveal_x
+data modify storage love_letter:visual seat_data.z set from storage love_letter:visual seat_data.reveal_z
+function love_letter:visual/reveal_at with storage love_letter:visual seat_data
+''')
+    put('reveal_at','$execute positioned ~$(x) ~1.04 ~$(z) summon minecraft:item_display run function love_letter:visual/reveal_face with storage love_letter:visual seat_data')
+    put('reveal_face','''
+function love_letter:visual/face with storage love_letter:visual seat_data
+tag @s remove ll.face
+tag @s add ll.reveal
+''')
+    put('info','''
+data modify storage love_letter:visual info set value {lines:[],round:0}
+execute store result storage love_letter:visual info.round int 1 run scoreboard players get @s ll_round
+function love_letter:visual/info_heading with storage love_letter:visual info
+'''+ '\n'.join(f'execute as @e[tag=ll.board,scores={{ll_seat={seat}}}] run function love_letter:visual/info_player' for seat in range(1,9)) + '''
+execute positioned ~ ~1.79 ~ summon minecraft:text_display run function love_letter:visual/info_spawn with storage love_letter:visual info
+''')
+    put('info_heading','$data modify storage love_letter:visual info.lines append value {text:"情书 · 第$(round)轮\\n",color:"gold",bold:true}')
+    put('info_player','''
+data modify storage love_letter:visual info.name set value {text:"未知玩家"}
+execute if data entity @s data.ll_name run data modify storage love_letter:visual info.name set from entity @s data.ll_name
+data modify storage love_letter:visual info.lines append from storage love_letter:visual info.name
+execute store result storage love_letter:visual info.points int 1 run scoreboard players get @s ll_points
+function love_letter:visual/info_points with storage love_letter:visual info
+execute if score #vis_state ll_ctx matches 2 if score @s ll_alive matches 1 if score @s ll_seat = #vis_turn ll_ctx run data modify storage love_letter:visual info.lines append value {text:" · 行动中",color:"yellow"}
+execute if score @s ll_alive matches 0 run data modify storage love_letter:visual info.lines append value {text:" · 出局",color:"red"}
+execute if score @s ll_alive matches 1 if score @s ll_protect matches 1 run data modify storage love_letter:visual info.lines append value {text:" · 受保护",color:"aqua"}
+execute if score #vis_state ll_ctx matches 3..4 if score @s ll_won matches 1 run data modify storage love_letter:visual info.lines append value {text:" · 本轮胜者",color:"yellow"}
+execute if score #vis_state ll_ctx matches 3..4 if score @s ll_bonus matches 1 run data modify storage love_letter:visual info.lines append value {text:" · 间谍奖励",color:"light_purple"}
+execute if score #vis_state ll_ctx matches 4 if score @s ll_matchwin matches 1 run data modify storage love_letter:visual info.lines append value {text:" · 本场胜者",color:"gold"}
+execute if score #vis_state ll_ctx matches 3..4 if data entity @s data.ll_reveal run function love_letter:visual/info_reveal
+data modify storage love_letter:visual info.lines append value {text:"\\n"}
+''')
+    put('info_points','$data modify storage love_letter:visual info.lines append value {text:"  ♥$(points)",color:"light_purple"}')
+    put('info_reveal','''
+execute store result score #vis_role ll_ctx run data get entity @s data.ll_reveal
+data modify storage love_letter:visual info.lines append value {text:" · ",color:"gray"}
+'''+ '\n'.join(f'execute if score #vis_role ll_ctx matches {i} run data modify storage love_letter:visual info.lines append value '+j({'text':name,'color':'white'}) for i,name in enumerate(('间谍','侍卫','牧师','男爵','侍女','王子','大臣','国王','女爵','公主'))))
+    put('info_spawn','''
+tag @s add ll.visual
+tag @s add ll.info
+scoreboard players operation @s ct_id = #vis_table ll_ctx
+data merge entity @s {billboard:"vertical",alignment:"center",background:0,shadow:1b,see_through:0b,view_range:1.0f,line_width:300,brightness:{block:15,sky:15},transformation:{scale:[0.40f,0.40f,0.40f]}}
+$data modify entity @s text set value {text:"",extra:$(lines)}
+''')
     put('box','''
 tag @s add ll.visual
 tag @s add ll.box
@@ -168,8 +219,9 @@ function love_letter:visual/resolve_model
 data modify storage love_letter:visual seat_data.model set from storage love_letter:visual model
 function love_letter:visual/play_path with storage love_letter:visual
 execute positioned ~ ~1.04 ~ summon minecraft:item_display run function love_letter:visual/play_fx with storage love_letter:visual seat_data
-execute if data storage love_letter:visual {card:2} run function love_letter:visual/peek
-execute if data storage love_letter:visual {card:7} run function love_letter:visual/swap
+function love_letter:visual/role_fx
+execute if score #vis_target ll_ctx matches 1..8 if data storage love_letter:visual {card:2} run function love_letter:visual/peek
+execute if score #vis_target ll_ctx matches 1..8 if data storage love_letter:visual {card:7} run function love_letter:visual/swap
 data modify storage love_letter:visual eliminated set from entity @s data.love_letter.action.eliminated
 execute if data storage love_letter:visual eliminated[0] run function love_letter:visual/eliminated
 ''')
@@ -189,10 +241,32 @@ data modify entity @s data.ll_frames set from storage love_letter:visual frames
 data modify entity @s transformation.translation set from entity @s data.ll_frames[0]
 data remove entity @s data.ll_frames[0]
 ''')
+    put('role_fx','''
+function love_letter:visual/role_actor with storage love_letter:visual seat_data
+execute store result score #vis_target ll_ctx run data get storage love_letter:visual target
+execute unless score #vis_target ll_ctx matches 1..8 run return 0
+data modify storage love_letter:visual saved_seat set from storage love_letter:visual seat
+data modify storage love_letter:visual seat set from storage love_letter:visual target
+function love_letter:visual/event_seat with storage love_letter:visual
+function love_letter:visual/role_target with storage love_letter:visual seat_data
+data modify storage love_letter:visual seat set from storage love_letter:visual saved_seat
+function love_letter:visual/event_seat with storage love_letter:visual
+''')
+    actor_particles={0:('end_rod',10),1:('crit',10),2:('enchant',15),3:('damage_indicator',8),
+                     4:('heart',12),5:('poof',14),6:('enchant',18),7:('portal',15),
+                     8:('cherry_leaves',12),9:('firework',16)}
+    target_particles={1:('crit',10),2:('enchant',14),3:('damage_indicator',8),
+                      5:('poof',16),7:('portal',15)}
+    put('role_actor',[f'$execute if data storage love_letter:visual {{card:{role}}} run particle minecraft:{particle} ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 {count} force @a[tag=ll.audience]'
+                      for role,(particle,count) in actor_particles.items()])
+    put('role_target',[f'$execute if data storage love_letter:visual {{card:{role}}} run particle minecraft:{particle} ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 {count} force @a[tag=ll.audience]'
+                       for role,(particle,count) in target_particles.items()])
     put('token','''
 function love_letter:visual/token_path with storage love_letter:visual
 execute positioned ~ ~1.045 ~ summon minecraft:item_display run function love_letter:visual/token_fx
+function love_letter:visual/token_particle with storage love_letter:visual seat_data
 ''')
+    put('token_particle','$particle minecraft:happy_villager ~$(x) ~1.40 ~$(z) 0.18 0.14 0.18 0.04 16 force @a[tag=ll.audience]')
     put('token_path','$data modify storage love_letter:visual frames set from storage love_letter:layout c$(cap).token.s$(seat)')
     put('token_fx','''
 function love_letter:visual/favor
@@ -235,7 +309,17 @@ function love_letter:visual/eliminated_at with storage love_letter:visual seat_d
 data remove storage love_letter:visual eliminated[0]
 execute if data storage love_letter:visual eliminated[0] run function love_letter:visual/eliminated
 ''')
-    put('eliminated_at','$particle minecraft:angry_villager ~$(x) ~1.30 ~$(z) 0.10 0.12 0.10 0 4 force @a[tag=ll.audience]')
+    put('eliminated_at','''
+$particle minecraft:angry_villager ~$(x) ~1.30 ~$(z) 0.10 0.12 0.10 0 4 force @a[tag=ll.audience]
+$particle minecraft:poof ~$(x) ~1.30 ~$(z) 0.16 0.16 0.16 0.02 14 force @a[tag=ll.audience]
+''')
+    put('resign','''
+function love_letter:system/context
+function love_letter:visual/context
+execute store result storage love_letter:visual seat int 1 run scoreboard players get #resigning ll_ctx
+function love_letter:visual/event_seat with storage love_letter:visual
+function love_letter:visual/eliminated_at with storage love_letter:visual seat_data
+''')
     put('tick','''
 scoreboard players operation #vis_table ll_ctx = @s ct_id
 execute as @e[type=minecraft:item_display,tag=ll.fx] if score @s ct_id = #vis_table ll_ctx run function love_letter:visual/fx_tick

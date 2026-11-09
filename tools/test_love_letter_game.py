@@ -118,18 +118,32 @@ function love_letter_test:roles
         c+=self.play(actor=4)+self.score('#ok','ll_ctx',0,'draw_animation_rejects_action')+self.data(part(4),'data.discards',[],'draw_animation_no_discard')+self.ticks(7)+self.score(TABLE,'ll_anim',1,'draw_animation_seven_still_locked')+self.ticks(1)+self.score(TABLE,'ll_anim',0,'draw_animation_eight_unlocks')
         c+=[f'scoreboard players set {part(7)} ll_alive 0']+self.call('game/next_turn')+self.score(TABLE,'ll_turn',1,'next_turn_skips_dead_and_wraps')
         self.case('turn_animation',c)
-        # 一张牌库在尚未完成 Guard/Priest/Chancellor 效果时不得提前轮终。
-        c=self.playable(4,(1,3,4))+[f'scoreboard players set {part()} ll_hand 2',f'scoreboard players set {part()} ll_extra 8',f'data modify entity {TABLE} data.love_letter.deck set value []']+self.play()
-        c+=self.score(TABLE,'ll_phase',2,'last_draw_priest_wait_target')+self.score(TABLE,'ll_state',2,'last_draw_priest_still_playing')+self.target(3)+self.score(TABLE,'ll_state',3,'last_draw_priest_then_round_end')+self.score(TABLE,'ll_phase',6,'last_draw_priest_phase_six')
+        # 朝向已原子确定目标；末张侍卫仍须完成猜牌，才能进入轮末结算。
+        c=self.playable(4,(1,3,4))+[f'scoreboard players set {part()} ll_hand 1',f'scoreboard players set {part()} ll_extra 8',f'scoreboard players set {part(3)} ll_hand 2',f'scoreboard players set {part(4)} ll_hand 3',f'data modify entity {TABLE} data.love_letter.deck set value []']+self.play()
+        c+=self.score(TABLE,'ll_phase',3,'last_draw_guard_wait_guess')+self.score(TABLE,'ll_state',2,'last_draw_guard_still_playing')+['scoreboard players set #actor ll_ctx 1','scoreboard players set #guess ll_ctx 0']+self.call('engine/guess')+self.score(TABLE,'ll_state',3,'last_draw_guard_then_round_end')+self.score(TABLE,'ll_phase',6,'last_draw_guard_phase_six')
         self.case('complete_before_round_end',c)
         # 轮胜者和唯一存活间谍分别计分；同时达到目标的全部共同获胜。
         c=self.playable(4,(1,3,4))+[f'scoreboard players set {TABLE} ll_goal 1',f'scoreboard players set {TABLE} ll_phase 0',f'data modify entity {TABLE} data.love_letter.deck set value []',f'scoreboard players set {part()} ll_hand 9',f'scoreboard players set {part(3)} ll_hand 8',f'scoreboard players set {part(4)} ll_hand 7',f'scoreboard players set @e[tag=ll.part] ll_extra -1',f'scoreboard players set {part(3)} ll_spy 1']+self.call('engine/check_round')
         c+=self.score(TABLE,'ll_state',4,'match_two_achievers')+self.score(part(),'ll_won',1,'match_high_hand_winner')+self.score(part(3),'ll_won',0,'spy_not_round_winner')+self.score(part(3),'ll_bonus',1,'spy_bonus')+self.count('@e[tag=ll.part,scores={ll_matchwin=1}]',2,'match_all_target_players')+self.count('@e[type=minecraft:firework_rocket,tag=ll.firework,scores={ct_id=101}]',2,'match_sk_fireworks_each_winner')
+        c+=self.check('data entity @e[tag=ll.info,scores={ct_id=101},limit=1] text.extra[{text:" · 本场胜者"}]','match_central_victory_announced')
         c+=[f'scoreboard players set {TABLE} ll_timer 43']+self.call('game/match_over')+self.call('game/round_over')+self.score(TABLE,'ll_timer',43,'match_finish_idempotent_timer')+self.count('@e[type=minecraft:firework_rocket,tag=ll.firework,scores={ct_id=101}]',2,'match_finish_idempotent_fireworks')+self.call('game/cleanup')+self.score(TABLE,'ct_state',0,'match_cleanup_lobby')+self.count('@e[tag=ll.part]',0,'match_cleanup_parts')+self.count('@e[tag=ll.player]',0,'match_cleanup_players')
         self.case('scoring_match_finish',c)
         c=self.playable(4,(1,3,4))+[f'scoreboard players set {TABLE} ll_goal 10',f'scoreboard players set {TABLE} ll_phase 0',f'data modify entity {TABLE} data.love_letter.deck set value []',f'scoreboard players set {part()} ll_hand 9',f'scoreboard players set {part(3)} ll_hand 8',f'scoreboard players set {part(4)} ll_hand 7',f'scoreboard players set @e[tag=ll.part] ll_extra -1',f'scoreboard players set {part(3)} ll_spy 1']+self.call('engine/check_round')
         c+=self.score(TABLE,'ll_state',3,'next_round_wait')+[f'scoreboard players set {TABLE} ll_timer 1']+self.call('game/result_tick')+self.score(TABLE,'ll_round',2,'next_round_increment')+self.score(TABLE,'ll_first',1,'next_round_only_round_winner_starts')+self.score(part(),'ll_points',1,'next_round_keeps_winner_points')+self.score(part(3),'ll_points',1,'next_round_keeps_spy_points')+[f'execute as {TABLE} run function love_letter_test:conservation']+self.score('#total','lt',21,'next_round_new_21')
         self.case('next_round_first',c)
+        c=self.playable(4,(1,3,4))+[f'scoreboard players set {TABLE} ll_phase 0',
+                                   f'data modify entity {TABLE} data.love_letter.deck set value []',
+                                   f'scoreboard players set {part(1)} ll_hand 9',
+                                   f'scoreboard players set {part(3)} ll_alive 0',
+                                   f'data modify entity {part(3)} data.discards set value [2,7]',
+                                   f'scoreboard players set {part(4)} ll_hand 8']+self.call('engine/check_round')
+        c+=self.score(TABLE,'ll_state',3,'showdown_result_phase')
+        c+=self.data(part(1),'data.ll_reveal',9,'showdown_survivor_card')
+        c+=self.data(part(3),'data.ll_reveal',7,'showdown_eliminated_last_public_card')
+        c+=self.count('@e[tag=ll.reveal,scores={ct_id=101}]',2,'showdown_survivors_visible_cards')
+        c+=[f'scoreboard players set {TABLE} ll_timer 1']+self.call('game/result_tick')
+        c+=self.count('@e[tag=ll.part,nbt={data:{ll_reveal:9}}]',0,'showdown_reveal_cleared_next_round')
+        self.case('showdown_all_players',c)
         # 保护、秘密选择、时钟和牌库在 /reload 后保持；不触发洗牌或再次摸牌。
         for state,phase in ((1,1),(2,1),(2,2),(2,3),(2,4),(2,5),(3,6),(4,6)):
             key=f'reload_{state}_{phase}'
@@ -143,6 +157,14 @@ function love_letter_test:roles
         c+=[f'data modify entity {OTHER} data.love_letter.deck set value [9,8,7]',f'execute positioned 8.0 65.0 8.0 run summon minecraft:item ~ ~ ~ {{Tags:["lt.drop101"],Item:{{id:"minecraft:purple_dye",count:1,components:{{"minecraft:custom_data":{{love_letter:{{tool:1b,table:101}}}}}}}}}}',f'execute positioned 40.0 65.0 8.0 run summon minecraft:item ~ ~ ~ {{Tags:["lt.drop202"],Item:{{id:"minecraft:purple_dye",count:1,components:{{"minecraft:custom_data":{{love_letter:{{tool:1b,table:202}}}}}}}}}}',f'execute positioned 8.0 65.0 8.0 run summon minecraft:item ~ ~ ~ {{Tags:["lt.normal"],Item:{{id:"minecraft:paper",count:1}}}}']+self.call('game/abort')
         c+=self.count('@e[tag=ll.part,scores={ct_id=101}]',0,'isolation_first_parts_cleared')+self.count('@e[tag=ll.part,scores={ct_id=202}]',3,'isolation_second_parts_kept')+self.score(OTHER,'ll_state',2,'isolation_second_playing')+self.data(OTHER,'data.love_letter.deck',[9,8,7],'isolation_second_deck_kept')+self.count('@e[tag=lt.drop101]',0,'isolation_own_tool_drop_removed')+self.count('@e[tag=lt.drop202]',1,'isolation_other_tool_drop_kept')+self.count('@e[tag=lt.normal]',1,'isolation_normal_item_kept')
         self.case('two_table_cleanup',c)
+        # 旧局已清理后重连，也必须移除本游戏留下的目标发光预览。
+        c=self.playable()+[f'tag {person()} add ll.aim_preview',
+                           f'effect give {person()} minecraft:glowing 30 0 true']
+        c+=self.check(f'data entity {person()} active_effects[{{id:"minecraft:glowing"}}]','reconnect_preview_fixture_has_glowing')
+        c+=[f'execute as {person()} run function love_letter:player/clear_state']
+        c+=self.count('@e[tag=ll.aim_preview,scores={ct_id=101,ct_seat=1}]',0,'reconnect_preview_tag_removed')
+        c+=[f'execute store success score #old_glow lt run data get entity {person()} active_effects[{{id:"minecraft:glowing"}}]']+self.score('#old_glow','lt',0,'reconnect_preview_glowing_removed')
+        self.case('reconnect_preview_cleanup',c)
         # 超时推进沿用同一引擎，强制出牌和大臣多阶段不会跳过秘密选择。
         c=self.playable(4,(1,3,4))+[f'scoreboard players set {part()} ll_hand 4',f'scoreboard players set {part()} ll_extra 8',f'scoreboard players set {TABLE} ll_time_setting 30',f'scoreboard players set {TABLE} ll_clock 1']+self.ticks(1)
         c+=self.score(TABLE,'ll_turn',3,'timeout_finishes_action')+self.score(TABLE,'ll_clock',600,'timeout_next_clock_resets')+self.score(TABLE,'ll_anim',8,'timeout_next_draw_anim')
@@ -155,17 +177,20 @@ function love_letter_test:roles
         self.case('resign_last_legal_target_integrated',c)
         c=self.playable(4,(1,3))+[f'scoreboard players set {part()} ll_hand 6',f'scoreboard players set {part()} ll_extra 8',f'data modify entity {TABLE} data.love_letter.deck set value [2,7]']+self.play()+['scoreboard players set #actor ll_ctx 3']+self.call('game/resign')+self.score(TABLE,'ll_state',3,'resign_chancellor_last_round_end')+self.data(TABLE,'data.ll_buffer',[],'resign_chancellor_buffer_cleared')+self.data(TABLE,'data.love_letter.deck',[2,7],'resign_chancellor_cards_preserved')
         self.case('resign_chancellor_integrated',c)
-        c=self.playable(4,(1,3))+[f'tag {person(3)} remove ct.player',f'scoreboard players set {TABLE} ll_tick 19']+self.ticks(1)+self.score(TABLE,'ct_state',0,'offline_aborts_match')+self.count('@e[tag=ll.part]',0,'offline_cleans_all_parts')
-        self.case('offline_cleanup',c)
+        # 公共会话层设置暂停后，游戏保留原局与时钟；重新上线后从原状态继续。
+        c=self.playable(4,(1,3))+[f'tag {person(3)} remove ct.player',f'scoreboard players set {TABLE} ct_paused 1',f'scoreboard players set {TABLE} ll_clock 37',f'scoreboard players set {TABLE} ll_time_setting 30',f'scoreboard players set {TABLE} ll_tick 19']+self.ticks(3)
+        c+=self.score(TABLE,'ct_state',1,'offline_keeps_match')+self.count('@e[tag=ll.part]',2,'offline_keeps_parts')+self.score(TABLE,'ll_clock',37,'offline_pause_keeps_clock')
+        c+=[f'tag {person(3)} add ct.player',f'scoreboard players set {TABLE} ct_paused 0']+self.ticks(1)+self.score(TABLE,'ll_clock',36,'reconnect_resumes_clock')
+        self.case('offline_pause_resume',c)
         # 不替换任何生产回调，依次自动完成一整轮；每个子阶段持续核对各角色数量。
         for players in range(2,7):
             key=f'full_round_{players}'
             seats=(8,2,6,4,7,1)[:players]
             c=self.playable(8,seats)+[f'scoreboard players set {TABLE} ll_goal 1',f'scoreboard players set {TABLE} ll_time_setting 30','scoreboard players set #broken lt 0']
             self.case(key+'_init',c)
-            for batch in range(4):
-                c=[f'execute as {TABLE} at @s run function love_letter_test:play_step']*80+self.score('#broken','lt',0,key+f'_batch{batch}_21_roles')
-                if batch==3:
+            for batch in range(16):
+                c=[f'execute as {TABLE} at @s run function love_letter_test:play_step']*20+self.score('#broken','lt',0,key+f'_batch{batch}_21_roles')
+                if batch==15:
                     c+=self.score(TABLE,'ll_state',4,key+'_match_result')+self.score(TABLE,'ll_winners','1..6',key+'_has_round_winners')
                 self.case(key+f'_batch{batch}',c)
         self.finish()

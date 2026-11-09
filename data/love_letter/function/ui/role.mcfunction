@@ -11,5 +11,5 @@ execute if score #ui_card ll_ctx matches 4 run data merge storage love_letter:ui
 execute if score #ui_card ll_ctx matches 5 run data merge storage love_letter:ui {"role_name":"5 · 王子","role":{"text":"5 · 王子","color":"yellow"},"effect":"选择任何未受保护的玩家（可以自己），公开弃掉手牌再补一张；弃公主则淘汰且不补。","glyph":""}
 execute if score #ui_card ll_ctx matches 6 run data merge storage love_letter:ui {"role_name":"6 · 大臣","role":{"text":"6 · 大臣","color":"yellow"},"effect":"最多再摸两张，秘密留一张，其余自行排序放回牌库底。","glyph":""}
 execute if score #ui_card ll_ctx matches 7 run data merge storage love_letter:ui {"role_name":"7 · 国王","role":{"text":"7 · 国王","color":"yellow"},"effect":"与另一位未受保护玩家交换留牌。","glyph":""}
-execute if score #ui_card ll_ctx matches 8 run data merge storage love_letter:ui {"role_name":"8 · 伯爵夫人","role":{"text":"8 · 伯爵夫人","color":"yellow"},"effect":"与国王或王子同时在手时必须打出；可以主动打出，其他玩家不知道是否被迫。","glyph":""}
+execute if score #ui_card ll_ctx matches 8 run data merge storage love_letter:ui {"role_name":"8 · 女爵","role":{"text":"8 · 女爵","color":"yellow"},"effect":"与国王或王子同时在手时必须打出；可以主动打出，其他玩家不知道是否被迫。","glyph":""}
 execute if score #ui_card ll_ctx matches 9 run data merge storage love_letter:ui {"role_name":"9 · 公主","role":{"text":"9 · 公主","color":"yellow"},"effect":"打出或被弃掉便立即淘汰。","glyph":""}

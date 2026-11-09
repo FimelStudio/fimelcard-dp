@@ -95,7 +95,7 @@ execute unless score @s ct_capacity matches 4 unless score @s ct_capacity matche
 scoreboard players operation #table ll_ctx = @s ct_id
 scoreboard players set #occupied ll_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.0 * run scoreboard players set #occupied ll_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.8 * run scoreboard players set #occupied ll_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.1 * run scoreboard players set #occupied ll_ctx 1
 execute if score #occupied ll_ctx matches 1 run return run function love_letter:game/bad_slots
 function love_letter:game/clear
 function love_letter:game/init_table
@@ -127,7 +127,7 @@ function love_letter:log {text:"拒绝开局：人数或桌型不符合情书要
 return fail
 ''')
     put('game/bad_slots', '''
-execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx run tellraw @s {text:"[情书] 请先腾空快捷栏第1格与最后一格。",color:"yellow"}
+execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx run tellraw @s {text:"[情书] 请先腾空快捷栏第1、2格。",color:"yellow"}
 return fail
 ''')
     put('player/join', '''
@@ -163,6 +163,7 @@ scoreboard players set @s ll_anim 0
 scoreboard players set @s ll_timeout 0
 function love_letter:game/bump_epoch
 function love_letter:engine/start_round
+execute as @e[tag=ll.board] run data remove entity @s data.ll_reveal
 function love_letter:visual/refresh
 function love_letter:sound/start
 tellraw @a[tag=ll.audience] [{text:"[情书] 第",color:"gold"},{score:{name:"@s",objective:"ll_round"}},{text:"轮开始。"}]
@@ -209,6 +210,7 @@ function love_letter:game/begin_turn
 ''')
     put('game/begin_turn', 'function love_letter:system/context\nfunction love_letter:engine/start_turn\nfunction love_letter:game/bump_epoch\nscoreboard players set @s ll_anim 8\nscoreboard players set @s ll_timeout 0\nscoreboard players operation @s ll_clock = @s ll_time_setting\nscoreboard players set #twenty ll_ctx 20\nscoreboard players operation @s ll_clock *= #twenty ll_ctx\nscoreboard players operation #deal_seat ll_ctx = @s ll_turn\nfunction love_letter:deal/launch\nfunction love_letter:visual/refresh\nfunction love_letter:hud/refresh\n\nscoreboard players operation #announce_turn ll_ctx = @s ll_turn\nexecute as @e[tag=ll.audience] if score @s ll_seat = #announce_turn ll_ctx run tellraw @a[tag=ll.audience] [{text:"[情书] 轮到 ",color:"gold"},{selector:"@s"},{text:" 行动，请选择一张手牌打出。",color:"yellow"}]\n')
     put('game/live_tick', '''
+function love_letter:targeting/tick
 execute if score @s ll_anim matches 1.. run return run function love_letter:game/anim_tick
 execute if score @s ll_time_setting matches 0 run return 0
 execute if score @s ll_clock matches 1.. run scoreboard players remove @s ll_clock 1
@@ -234,6 +236,7 @@ execute unless score @s ll_timeout matches 1 run function love_letter:ui/refresh
 function love_letter:system/context
 function love_letter:game/bump_epoch
 function love_letter:game/announce
+function love_letter:sound/role
 execute if score @s ll_card matches 4 run function love_letter:sound/seal
 execute if score @s ll_card matches 7 if score @s ll_target matches 1..8 run function love_letter:sound/swap
 execute if data entity @s data.love_letter.action.eliminated[0] run function love_letter:sound/eliminate
@@ -264,11 +267,12 @@ function love_letter:sound/play
     put('game/announce_part', '''
 tellraw @a[tag=ll.audience] [{text:"[情书] ",color:"gold"},{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 打出 "},{nbt:"role",storage:"love_letter:runtime",interpret:true},{text:"。"}]
 ''')
-    roles=['间谍','侍卫','牧师','男爵','侍女','王子','大臣','国王','伯爵夫人','公主']
-    put('game/role_name', [f'execute if score #public_role ll_ctx matches {i} run data modify storage love_letter:runtime role set value '+json.dumps({'text':f'{i} · {name}','color':'yellow'},ensure_ascii=False,separators=(',',':')) for i,name in enumerate(roles)])
+    roles=['间谍','侍卫','牧师','男爵','侍女','王子','大臣','国王','女爵','公主']
+    put('game/role_name', ['data modify storage love_letter:runtime role set value {text:"无牌",color:"gray"}']+[f'execute if score #public_role ll_ctx matches {i} run data modify storage love_letter:runtime role set value '+json.dumps({'text':f'{i} · {name}','color':'yellow'},ensure_ascii=False,separators=(',',':')) for i,name in enumerate(roles)])
     put('game/round_over', '''
 execute if score @s ll_state matches 3..4 run return 0
 function love_letter:system/context
+function love_letter:targeting/clear
 function love_letter:engine/score_round
 scoreboard players set @s ll_state 3
 scoreboard players set @s ll_timer 120
@@ -278,7 +282,7 @@ function love_letter:game/bump_epoch
 tellraw @a[tag=ll.audience] {text:"[情书] 本轮结束。",color:"gold"}
 execute as @e[tag=ll.board,scores={ll_won=1}] run function love_letter:game/round_winner
 execute as @e[tag=ll.board,scores={ll_bonus=1}] run function love_letter:game/spy_winner
-execute as @e[tag=ll.board,scores={ll_alive=1}] run function love_letter:game/showdown
+execute as @e[tag=ll.board] run function love_letter:game/showdown
 scoreboard players operation #goal ll_ctx = @s ll_goal
 scoreboard players set @e[tag=ll.board] ll_matchwin 0
 execute as @e[tag=ll.board] if score @s ll_points >= #goal ll_ctx run scoreboard players set @s ll_matchwin 1
@@ -291,9 +295,13 @@ function love_letter:ui/refresh
     put('game/round_winner', 'tellraw @a[tag=ll.audience] [{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 赢得本轮，好感 +1。",color:"gold"}]')
     put('game/spy_winner', 'tellraw @a[tag=ll.audience] [{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 获得间谍奖励，好感 +1。",color:"light_purple"}]')
     put('game/showdown', '''
-scoreboard players operation #public_role ll_ctx = @s ll_hand
+scoreboard players set #public_role ll_ctx -1
+execute if score @s ll_alive matches 1 run scoreboard players operation #public_role ll_ctx = @s ll_hand
+execute if score @s ll_alive matches 0 if data entity @s data.discards[-1] store result score #public_role ll_ctx run data get entity @s data.discards[-1]
+execute if score #public_role ll_ctx matches 0..9 store result entity @s data.ll_reveal int 1 run scoreboard players get #public_role ll_ctx
 function love_letter:game/role_name
-tellraw @a[tag=ll.audience] [{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 的留牌："},{nbt:"role",storage:"love_letter:runtime",interpret:true}]
+execute if score @s ll_alive matches 1 run tellraw @a[tag=ll.audience] [{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 摊牌："},{nbt:"role",storage:"love_letter:runtime",interpret:true}]
+execute if score @s ll_alive matches 0 run tellraw @a[tag=ll.audience] [{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" 已出局，最后亮出的牌：",color:"gray"},{nbt:"role",storage:"love_letter:runtime",interpret:true}]
 ''')
     put('game/match_over', '''
 execute if score @s ll_state matches 4 run return 0
@@ -336,6 +344,7 @@ scoreboard players operation #resigning ll_ctx = #actor ll_ctx
 function love_letter:engine/resign
 execute unless score #ok ll_ctx matches 1 run return 0
 function love_letter:sound/eliminate
+function love_letter:visual/resign
 function love_letter:game/bump_epoch
 function love_letter:visual/refresh
 function love_letter:engine/check_round
@@ -366,6 +375,7 @@ function love_letter:game/init_table
     put('game/remove', 'function love_letter:game/clear')
     put('game/clear', '''
 function love_letter:system/context
+function love_letter:targeting/clear
 scoreboard players set @s ll_state 0
 scoreboard players set @s ll_phase 0
 scoreboard players set @s ll_timer 0
@@ -391,6 +401,8 @@ execute if score #drop_table ll_ctx = #table ll_ctx run kill @s
 function love_letter:hud/deactivate
 function love_letter:input/clear
 function love_letter:settings/clear_session
+execute if entity @s[tag=ll.aim_preview] run effect clear @s minecraft:glowing
+tag @s remove ll.aim_preview
 clear @s *[minecraft:custom_data~{love_letter:{tool:1b}}]
 execute if entity @s[tag=ll.player] run dialog clear @s
 tag @s remove ll.player
