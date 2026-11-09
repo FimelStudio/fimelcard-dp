@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+<title id="title">璀璨宝石 · SPLENDOR</title>
+<desc id="desc">原版像素钻石、Minecraft 发展卡与六色宝石，深板岩色背景和金色像素边框。</desc>
+<defs>
+ <linearGradient id="background" x2="1" y2="1"><stop stop-color="#244950"/><stop offset=".55" stop-color="#182e3c"/><stop offset="1" stop-color="#101b2b"/></linearGradient>
+ <radialGradient id="light" cx=".5" cy=".4" r=".65"><stop stop-color="#55e5d4" stop-opacity=".28"/><stop offset="1" stop-color="#55e5d4" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x2=".7" y2="1"><stop stop-color="#fff0af"/><stop offset=".5" stop-color="#ddb969"/><stop offset="1" stop-color="#a57c3c"/></linearGradient>
+ <clipPath id="border"><path d="M72 12H952V36H988V72H1012V952H988V988H952V1012H72V988H36V952H12V72H36V36H72Z"/></clipPath>
+ <pattern id="stone" width="160" height="96" patternUnits="userSpaceOnUse"><path d="M0 0H160V96H0Z" fill="#091e2a"/><path d="M4 4H156V44H4ZM-76 52H76V92H-76ZM84 52H236V92H84Z" fill="#26404a"/><path d="M4 4H156M84 52H160M4 52H76" fill="none" stroke="#41585c" stroke-width="4"/></pattern>
+ <!-- Minecraft item pixels are expanded into editable SVG rectangles by build_splendor_icon.py. -->
+ <!-- sprites -->
+ <g id="spark" fill="#d9fff4"><path d="M-8-32H8V-8H32V8H8V32H-8V8H-32V-8H-8Z"/><rect x="-4" y="-4" width="8" height="8" fill="#fff"/></g>
+</defs>
+<g clip-path="url(#border)">
+ <rect width="1024" height="1024" fill="url(#background)"/>
+ <rect width="1024" height="724" fill="url(#stone)" opacity=".3"/>
+ <rect width="1024" height="800" fill="url(#light)"/>
+ <path d="M80 108H208M80 108V236M816 108H944V236M80 640V704H176M848 704H944V640" fill="none" stroke="#7b9c8d" stroke-width="8" opacity=".5"/>
+ <!-- Two development cards: the same cream paper, bonus and cost language as the new deck. -->
+ <g transform="translate(173 246) rotate(-16 110 164)">
+  <rect x="8" y="16" width="220" height="328" rx="10" fill="#071723" opacity=".65"/>
+  <rect width="220" height="328" rx="10" fill="#f1e5c9" stroke="#accc9e" stroke-width="8"/>
+  <rect x="10" y="10" width="200" height="308" rx="4" fill="none" stroke="#438c6b" stroke-width="4"/>
+  <text x="24" y="60" fill="#35313b" font-family="Arial,sans-serif" font-size="50" font-weight="700">2</text>
+  <use href="#emerald" transform="translate(152 14) scale(3.3)"/>
+  <rect x="22" y="82" width="176" height="148" fill="#244a3c"/>
+  <path d="M22 104H66V132H110V160H154V188H198V230H22Z" fill="#4e824e"/><path d="M22 104H66V120H22ZM66 132H110V148H66ZM110 160H154V176H110Z" fill="#80a461"/>
+  <use href="#emerald" transform="translate(67 98) scale(5.6)"/>
+  <use href="#lapis_lazuli" transform="translate(44 246) scale(2.4)"/><use href="#redstone" transform="translate(136 246) scale(2.4)"/>
+  <text x="64" y="309" text-anchor="middle" fill="#35313b" font-family="Arial,sans-serif" font-size="28" font-weight="700">3</text><text x="156" y="309" text-anchor="middle" fill="#35313b" font-family="Arial,sans-serif" font-size="28" font-weight="700">2</text>
+ </g>
+ <g transform="translate(630 246) rotate(16 110 164)">
+  <rect x="8" y="16" width="220" height="328" rx="10" fill="#071723" opacity=".65"/>
+  <rect width="220" height="328" rx="10" fill="#f1e5c9" stroke="#e3b499" stroke-width="8"/>
+  <rect x="10" y="10" width="200" height="308" rx="4" fill="none" stroke="#ad4850" stroke-width="4"/>
+  <text x="24" y="60" fill="#35313b" font-family="Arial,sans-serif" font-size="50" font-weight="700">3</text>
+  <use href="#redstone" transform="translate(152 14) scale(3.3)"/>
+  <rect x="22" y="82" width="176" height="148" fill="#482631"/>
+  <path d="M22 88H198V116H22ZM22 124H102V152H22ZM110 124H198V152H110ZM22 160H198V188H22ZM22 196H102V224H22ZM110 196H198V224H110Z" fill="#7c3940"/>
+  <use href="#redstone" transform="translate(67 98) scale(5.6)"/>
+  <use href="#diamond" transform="translate(44 246) scale(2.4)"/><use href="#coal" transform="translate(136 246) scale(2.4)"/>
+  <text x="64" y="309" text-anchor="middle" fill="#35313b" font-family="Arial,sans-serif" font-size="28" font-weight="700">4</text><text x="156" y="309" text-anchor="middle" fill="#35313b" font-family="Arial,sans-serif" font-size="28" font-weight="700">3</text>
+ </g>
+ <!-- Pixel crown, main vanilla diamond and a stepped trading pedestal. -->
+ <path d="M420 126H452V158H484V110H540V158H572V126H604V206H420Z" fill="#071e29" stroke="#0d202b" stroke-width="16"/>
+ <path d="M428 126H452V166H484V118H540V166H572V126H596V194H428Z" fill="url(#gold)"/>
+ <rect x="428" y="202" width="168" height="16" fill="#e5bf71"/>
+ <ellipse cx="512" cy="578" rx="220" ry="32" fill="#061622" opacity=".7"/>
+ <path d="M340 526H684V550H724V574H700V598H324V574H300V550H340Z" fill="#876937"/>
+ <path d="M340 510H684V534H724V558H700V574H324V558H300V534H340Z" fill="url(#gold)"/>
+ <path d="M364 526H660V542H684V550H340V542H364Z" fill="#324c4d"/>
+ <use href="#diamond" transform="translate(330 236) scale(23)"/>
+ <use href="#spark" transform="translate(341 241) scale(.8)"/>
+ <use href="#spark" transform="translate(706 421) scale(.6)"/>
+ <!-- Six original item symbols, including wild gold, replace the old casino chips. -->
+ <rect x="146" y="622" width="732" height="96" rx="12" fill="#0c202c" stroke="#658078" stroke-width="3"/>
+ <path d="M268 634V706M390 634V706M512 634V706M634 634V706M756 634V706" stroke="#47615d" stroke-width="3"/>
+ <use href="#diamond" transform="translate(171 633) scale(4.5)"/><use href="#lapis_lazuli" transform="translate(293 633) scale(4.5)"/><use href="#emerald" transform="translate(415 633) scale(4.5)"/><use href="#redstone" transform="translate(537 633) scale(4.5)"/><use href="#coal" transform="translate(659 633) scale(4.5)"/><use href="#gold_ingot" transform="translate(781 633) scale(4.5)"/>
+ <path d="M60 752H964V952H60Z" fill="#101b29"/>
+ <path d="M60 752H964" stroke="url(#gold)" stroke-width="8"/>
+ <text x="512" y="851" text-anchor="middle" font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="92" font-weight="700" fill="#fff4d6">璀璨宝石</text>
+ <text x="512" y="924" text-anchor="middle" font-family="Arial,sans-serif" font-size="40" font-weight="700" letter-spacing="8" fill="#87d5cd">SPLENDOR</text>
+</g>
+<path d="M76 16H948V40H984V76H1008V948H984V984H948V1008H76V984H40V948H16V76H40V40H76Z" fill="none" stroke="#d4b479" stroke-width="12"/>
+<path d="M86 34H938V58H966V86H990V938H966V966H938V990H86V966H58V938H34V86H58V58H86Z" fill="none" stroke="#718d8a" stroke-width="4"/>
+</svg>

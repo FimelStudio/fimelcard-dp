@@ -7,6 +7,9 @@ scoreboard objectives add sp_drop minecraft.dropped:minecraft.paper
 scoreboard objectives add sp_epoch dummy
 scoreboard objectives add sp_finish dummy
 scoreboard objectives add sp_first dummy
+scoreboard objectives add sp_hpanel dummy
+scoreboard objectives add sp_hprev dummy
+scoreboard objectives add sp_htimer dummy
 scoreboard objectives add sp_load dummy
 scoreboard objectives add sp_music dummy
 scoreboard objectives add sp_nonce dummy
@@ -20,6 +23,10 @@ scoreboard objectives add sp_pick5 dummy
 scoreboard objectives add sp_pulse dummy
 scoreboard objectives add sp_seat dummy
 scoreboard objectives add sp_seen dummy
+scoreboard objectives add sp_select_epoch dummy
+scoreboard objectives add sp_select_id dummy
+scoreboard objectives add sp_select_kind dummy
+scoreboard objectives add sp_select_stage dummy
 scoreboard objectives add sp_setepoch dummy
 scoreboard objectives add sp_setlayout dummy
 scoreboard objectives add sp_setload dummy

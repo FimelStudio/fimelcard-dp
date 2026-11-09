@@ -28,3 +28,4 @@ function splendor:visual/bank {slot:5,model:"token/gold"}
 function splendor:visual/deck {slot:0,tier:1}
 function splendor:visual/deck {slot:1,tier:2}
 function splendor:visual/deck {slot:2,tier:3}
+function splendor:visual/selection

@@ -1,4 +1,5 @@
 function splendor:game/sync
+execute as @a[tag=sp.audience] run function splendor:direct/reset
 scoreboard players reset @a[tag=sp.audience] sp_nonce
 execute as @a[tag=sp.audience] run dialog clear @s
 function splendor:game/log_event with entity @s data.splendor.last
@@ -14,5 +15,5 @@ scoreboard players set #visited sp_ctx -1
 execute store result score #visited sp_ctx run data get entity @s data.splendor.last.noble
 execute if score #visited sp_ctx matches 0..9 unless data entity @s data.splendor.last{code:5} run function splendor:sound/noble
 execute if score @s sp_state matches 4 run function splendor:game/win
-
-execute as @a[tag=sp.audience] run function splendor:direct/inventory
+execute as @a[tag=sp.audience] run function splendor:inventory/sync
+execute as @a[tag=sp.audience] run function splendor:hud/build

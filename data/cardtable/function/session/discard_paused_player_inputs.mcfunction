@@ -10,6 +10,7 @@ execute if score @s bw_drop matches 1.. run scoreboard players set @s bw_drop 0
 execute if score @s bw_drop_dye matches 1.. run scoreboard players set @s bw_drop_dye 0
 execute if score @s ca_action matches 1.. run scoreboard players set @s ca_action 0
 execute if score @s ca_drop matches 1.. run scoreboard players set @s ca_drop 0
+execute if score @s ca_dye matches 1.. run scoreboard players set @s ca_dye 0
 execute if score @s ca_settings matches 1.. run scoreboard players set @s ca_settings 0
 execute if score @s ch_action matches 1.. run scoreboard players set @s ch_action 0
 execute if score @s ch_drop matches 1.. run scoreboard players set @s ch_drop 0
@@ -64,10 +65,12 @@ execute if score @s ll_drop matches 1.. run scoreboard players set @s ll_drop 0
 execute if score @s ll_settings matches 1.. run scoreboard players set @s ll_settings 0
 execute if score @s ma_action matches 1.. run scoreboard players set @s ma_action 0
 execute if score @s ma_drop matches 1.. run scoreboard players set @s ma_drop 0
+execute if score @s ma_dye matches 1.. run scoreboard players set @s ma_dye 0
 execute if score @s ma_settings matches 1.. run scoreboard players set @s ma_settings 0
 execute if score @s sk_action matches 1.. run scoreboard players set @s sk_action 0
 execute if score @s sp_action matches 1.. run scoreboard players set @s sp_action 0
 execute if score @s sp_drop matches 1.. run scoreboard players set @s sp_drop 0
+execute if score @s sp_idrop matches 1.. run scoreboard players set @s sp_idrop 0
 execute if score @s sp_settings matches 1.. run scoreboard players set @s sp_settings 0
 execute if score @s un_action matches 1.. run scoreboard players set @s un_action 0
 execute if score @s un_drop matches 1.. run scoreboard players set @s un_drop 0

@@ -6,3 +6,4 @@ $data modify storage splendor:visual id set value $(slot)
 function splendor:visual/card_model with storage splendor:visual
 function splendor:visual/card_pose with storage splendor:visual
 function splendor:visual/spawn
+function splendor:visual/free_check with storage splendor:visual

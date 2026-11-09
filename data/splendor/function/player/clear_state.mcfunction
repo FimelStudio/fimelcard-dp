@@ -1,5 +1,8 @@
 function splendor:sound/stop_player
+function splendor:inventory/clear
+function splendor:hud/deactivate
 clear @s *[minecraft:custom_data~{splendor:{tool:1b}}]
+function splendor:direct/clear_player
 function splendor:settings/clear_session
 scoreboard players reset @s sp_nonce
 scoreboard players reset @s sp_action
@@ -21,5 +24,3 @@ scoreboard players reset @s sp_pick2
 scoreboard players reset @s sp_pick3
 scoreboard players reset @s sp_pick4
 scoreboard players reset @s sp_pick5
-
-function splendor:hud/deactivate

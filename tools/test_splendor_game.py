@@ -70,6 +70,16 @@ class Suite(BaseSuite):
     def unchanged(self, name, table=101):
         return [f'execute store success score #different ce run data modify storage splendor_game_test:snapshot saved set from entity {TABLE if table==101 else OTHER} data.splendor']+self.score('#different','ce',0,name)
 
+    def direct(self, kind, target, side=1, table=101, epoch=None, cancel=False):
+        c=['data modify storage splendor_game_test:input hit set value '+json.dumps(dict(table=table,epoch=epoch or 0,kind=kind,id=target),separators=(',',':'))]
+        if epoch is None:
+            c+=[f'data modify storage splendor_game_test:input hit.epoch set from entity {TABLE if table==101 else OTHER} data.splendor.epoch']
+        return c+self.player(('direct/cancel' if cancel else 'direct/use')+' with storage splendor_game_test:input hit',side,table)
+
+    def reserved_q(self, side=1, table=101, slot=0):
+        return ['data modify storage splendor_game_test:input hand set value '+json.dumps(dict(table=table,epoch=0,owner=side,slot=slot)),
+                f'data modify storage splendor_game_test:input hand.epoch set from entity {TABLE if table==101 else OTHER} data.splendor.epoch']+self.player('direct/reserved_use with storage splendor_game_test:input hand',side,table)
+
     def build(self):
         self.file('table', '''
 tag @s add sg.fixture
@@ -105,50 +115,64 @@ $scoreboard players set @s sp_seat $(seat)
 scoreboard players set @s ct_paused 0
 data modify entity @s data.name set value {text:"Fixture"}
 ''')
-        c=self.setup()+self.player('ui/open')+self.score('#dialog','ce',1,'root_dialog_codec')+self.storage_equal('storage splendor:ui hand.reserve',[],'private_own_hand')
-        for code,panel,name in ((2,4,'market'),(5,5,'reserved'),(6,6,'assets'),(7,7,'nobles'),(4,8,'blind'),(3,1,'take')):
-            c+=self.click(code)+self.score(person(),'sp_panel',panel,name+'_panel')+self.click(1)
-        c+=self.check('data storage splendor:ui public.extra','public_summary_populated')
-        self.case('basic_pages',c)
-        for code,name in ((2,'market'),(5,'reserved'),(6,'assets'),(7,'nobles'),(4,'blind'),(3,'take')):
-            self.case('codec_'+name,self.setup()+self.player('ui/open')+self.click(code)+self.score('#dialog','ce',2,name+'_dialog_codec'))
+        c=self.setup()+self.snapshot()+self.direct(4,0)
+        c+=self.unchanged('first_gem_select_only')+self.score(person(),'sp_pick0',1,'first_gem_selected')
+        c+=self.direct(4,1)+self.direct(4,2)+self.data('p1.tokens',[1,1,1,0,0,0],'three_colors_auto')+self.data('turn',2,'three_colors_advances')
+        c+=self.score(TABLE,'sp_anim',12,'take_animation_lock')+self.snapshot()+self.direct(4,0,side=2)+self.unchanged('animation_cannot_submit')
+        self.case('direct_three_colors',c)
 
-        c=self.setup()+self.set('market',list(range(12)))+self.set('p1.reserve',[50,89])+self.player('ui/open')+self.click(2)
-        for slot in range(12):
-            c+=self.click(100+slot)+self.score(person(),'sp_target',slot,f'detail_target_{slot}')+self.storage_equal('storage splendor:ui card.id',slot,f'detail_card_{slot}')+self.click(2)
-        c+=self.click(5)+self.click(120)+self.storage_equal('storage splendor:ui card.id',50,'reserve_detail_first')+self.click(5)+self.click(121)+self.storage_equal('storage splendor:ui card.id',89,'reserve_detail_second')
-        c+=self.player('ui/open',side=2)+self.click(5,side=2)+self.storage_equal('storage splendor:ui hand.reserve',[],'other_cannot_see_reserved')
-        self.case('card_indices_privacy',c)
+        c=self.setup()+self.direct(4,0)+self.direct(4,0)+self.data('p1.tokens',[2,0,0,0,0,0],'same_color_two')
+        c+=self.setup()+self.set('bank[0]',3)+self.direct(4,0)+self.snapshot()+self.direct(4,0)+self.unchanged('double_requires_four')
+        c+=self.score(person(),'sp_pick0',1,'bad_double_selection_kept')+self.direct(4,0,cancel=True)+self.score(person(),'sp_pick0',0,'left_cancels_gem')
+        c+=self.setup()+self.direct(4,0)+self.direct(4,1)+self.snapshot()+self.direct(4,0)+self.unchanged('mixed_double_rejected')
+        c+=self.score(person(),'sp_pick0',1,'mixed_white_kept')+self.score(person(),'sp_pick1',1,'mixed_blue_kept')
+        self.case('direct_double_cancel',c)
 
-        c=self.setup()+self.player('ui/open')+self.click(3)
-        for code in (201,203,205):c+=self.click(code)
-        c+=self.score(person(),'sp_pick0',1,'take_editor_white')+self.score(person(),'sp_pick1',1,'take_editor_blue')+self.score(person(),'sp_pick2',1,'take_editor_green')+self.click(10)
-        c+=self.data('p1.tokens',[1,1,1,0,0,0],'take_ui_commits')+self.score(TABLE,'sp_turn',2,'take_ui_advances')
-        c+=self.score(TABLE,'sp_anim',12,'take_animation_lock')+self.snapshot()+self.player('ui/open',2)+self.click(3,2)+self.click(10,2)+self.unchanged('animation_cannot_submit')
-        self.case('take_editor_action',c)
+        c=self.setup()+self.snapshot()+self.direct(4,5)+self.unchanged('cannot_take_gold')
+        c+=self.set('bank',[1,0,0,0,1,5])+self.direct(4,0)+self.direct(4,4)+self.data('p1.tokens',[1,0,0,0,1,0],'two_available_colors_auto')
+        c+=self.setup()+self.set('bank',[2,0,0,0,0,5])+self.direct(4,0)+self.data('p1.tokens',[1,0,0,0,0,0],'one_available_color_auto')
+        c+=self.setup()+self.set('bank',[4,0,0,0,0,5])+self.direct(4,0)+self.data('p1.token_count',0,'single_color_four_waits')+self.direct(4,0)+self.data('p1.tokens',[2,0,0,0,0,0],'single_color_can_double')
+        self.case('thin_bank',c)
 
-        c=self.setup()+self.set('market[0]',0)+self.set('p1.tokens',[0,2,0,0,0,1])+self.set('bank',[7,5,7,7,7,4])+self.player('ui/open')+self.click(2)+self.click(100)
-        c+=self.score(person(),'sp_pick1',2,'autopay_colored')+self.score(person(),'sp_pick5',1,'autopay_gold')+self.click(12)+self.data('p1.cards',[0],'purchase_ui_commits')+self.data('p1.bonus[0]',1,'purchase_bonus_commits')
-        c+=self.setup()+self.set('market[0]',0)+self.player('ui/open')+self.click(100)+self.click(13)+self.data('p1.reserve',[0],'reserve_ui_commits')
-        c+=self.setup()+self.player('ui/open')+self.click(4)+self.click(142)+['execute store result score #reserved_count ce run data get entity '+TABLE+' data.splendor.p1.reserve']+self.score('#reserved_count','ce',1,'blind_ui_count')+self.data('p1.tokens[5]',1,'blind_ui_gold')
-        self.case('buy_reserve',c)
+        c=self.setup()+self.set('market[0]',0)+self.set('p1.tokens',[0,2,0,0,0,1])+self.snapshot()+self.direct(2,0)
+        c+=self.unchanged('first_card_select_only')+self.score(person(),'sp_select_kind',2,'card_is_selected')+self.direct(2,0)
+        c+=self.data('p1.cards',[0],'second_click_buys')+self.data('p1.tokens',[0,0,0,0,0,0],'auto_gold_exact')+self.data('p1.bonus[0]',1,'bought_bonus')
+        c+=self.setup()+self.set('market[0]',0)+self.set('p1.bonus',[0,3,0,0,0])+self.direct(2,0)+self.direct(2,0)+self.data('p1.cards',[0],'free_purchase')
+        self.case('direct_buy',c)
 
-        c=self.setup()+self.set('p1.tokens',[2,2,2,2,1,0])+self.player('ui/open')+self.click(3)
-        for code in (201,203,205):c+=self.click(code)
-        c+=self.click(10)+self.data('phase',2,'return_ui_pending')+[f'scoreboard players set {TABLE} sp_anim 0']+self.player('ui/open')+self.click(20)+self.click(201)+self.click(209)+self.click(11)
-        c+=self.data('p1.token_count',10,'return_ui_exact_ten')+self.data('phase',1,'return_ui_main_phase')
-        c+=self.setup()+self.set('nobles',[0,1,-1,-1,-1])+self.set('p1.bonus',[4,4,4,0,0])+self.player('ui/open')+self.click(4)+self.click(140)+self.data('phase',3,'noble_ui_pending')+[f'scoreboard players set {TABLE} sp_anim 0']+self.player('ui/open')+self.click(7)+self.click(161)+self.data('p1.nobles',[1],'noble_ui_chosen')+self.data('p1.vp',3,'noble_ui_points')
-        self.case('return_noble',c)
+        c=self.setup()+self.set('market[0]',0)+self.direct(2,0)+self.snapshot()+self.direct(2,0)
+        c+=self.unchanged('unaffordable_second_no_commit')+self.score(person(),'sp_select_stage',2,'third_click_reserve_pending')
+        c+=self.direct(2,0)+self.data('p1.reserve',[0],'third_click_reserves')+self.data('p1.tokens[5]',1,'reserve_gets_gold')
+        c+=self.setup()+self.set('market[0]',0)+self.set('p1.reserve',[1,2,3])+self.direct(2,0)+self.direct(2,0)+self.snapshot()+self.direct(2,0)
+        c+=self.unchanged('fourth_reserve_rejected')+self.score('#error','sp_ctx',11,'reserve_capacity_reason')
+        c+=self.setup()+self.direct(5,2)+self.snapshot()+self.direct(5,2)+[f'execute store result score #blind_count ce run data get entity {TABLE} data.splendor.p1.reserve']+self.score('#blind_count','ce',1,'blind_two_clicks')+[f'execute store result score #blind_count ce run data get entity {TABLE} data.splendor.deck3']+self.score('#blind_count','ce',15,'blind_tier_three_consumed')
+        c+=self.setup()+self.set('deck3',[])+self.direct(5,2)+self.snapshot()+self.direct(5,2)+self.unchanged('empty_blind_rejected')
+        self.case('direct_reservations',c)
 
-        for label,changes in {
-            'epoch':[f'scoreboard players add {TABLE} sp_epoch 1'],
-            'load':['scoreboard players add #ui_load sp_ctx 1'],
-            'table':[f'scoreboard players set {person()} sp_ui_table 202'],
-            'role':[f'tag {person()} remove ct.player'],
-            'paused':[f'scoreboard players set {TABLE} ct_paused 1'],
-        }.items():
-            c=self.setup()+self.player('ui/open')+self.click(3)+self.snapshot()+changes+self.click(10)+self.unchanged('stale_'+label+'_no_commit')
-            self.case('ui_stale_'+label,c)
+        c=self.setup()+self.set('p1.reserve',[0])+self.set('p1.bonus',[0,3,0,0,0])+self.reserved_q()+self.snapshot()
+        c+=self.unchanged('first_q_selects_only')+self.reserved_q()+self.data('p1.reserve',[],'reserved_q_removed')+self.data('p1.cards',[0],'reserved_q_bought')
+        c+=self.setup()+self.set('p1.reserve',[0])+self.reserved_q()+self.snapshot()+self.reserved_q()+self.unchanged('reserved_unaffordable_kept')
+        self.case('reserved_inventory_input',c)
+
+        c=self.setup()+self.set('p1.tokens',[2,2,2,2,1,0])+self.direct(4,0)+self.direct(4,1)+self.direct(4,2)+self.data('phase',2,'over_ten_requires_discard')
+        c+=self.data('discard_due',2,'discard_due_two')+[f'scoreboard players set {TABLE} sp_anim 0']+self.direct(4,0)+self.direct(4,0,cancel=True)
+        c+=self.score(person(),'sp_pick0',0,'discard_left_cancel')+self.direct(4,0)+self.direct(4,4)+self.data('p1.token_count',10,'discard_exact_ten')+self.data('turn',2,'discard_finishes_turn')
+        self.case('direct_return',c)
+
+        c=self.setup()+self.set('nobles',[0,-1,-1,-1,-1])+self.set('p1.bonus',[4,4,0,0,0])+self.direct(4,0)+self.direct(4,1)+self.direct(4,2)
+        c+=self.data('p1.nobles',[0],'single_noble_auto')+self.data('p1.vp',3,'single_noble_points')
+        c+=self.setup()+self.set('nobles',[0,1,-1,-1,-1])+self.set('p1.bonus',[4,4,4,0,0])+self.direct(4,0)+self.direct(4,1)+self.direct(4,2)
+        c+=self.data('phase',3,'multiple_nobles_pending')+[f'scoreboard players set {TABLE} sp_anim 0']+self.direct(3,1)+self.data('p1.nobles',[1],'noble_direct_choice')+self.data('p1.vp',3,'one_noble_only')
+        self.case('direct_nobles',c)
+
+        for label,changes,side,epoch in (
+            ('turn',[],2,None),('epoch',[],1,0),
+            ('paused',[f'scoreboard players set {TABLE} ct_paused 1'],1,None),
+            ('role',[f'tag {person()} remove ct.player'],1,None)):
+            c=self.setup()+self.snapshot()+changes+self.direct(4,0,side=side,epoch=epoch)+self.unchanged('direct_'+label+'_rejected')
+            self.case('direct_stale_'+label,c)
+        c=self.setup()+self.setup(table=202,reset=False)+self.snapshot(202)+self.direct(4,0)+self.direct(4,1)+self.direct(4,2)+self.unchanged('other_table_untouched',202)
+        self.case('direct_table_isolation',c)
 
         c=self.setup(state=0)+self.open_settings()+self.score('#setting_dialog','ce',1,'settings_codec')+self.setting(1,1)+self.score(TABLE,'sp_first',1,'settings_first_immediate')+self.score('#setting_dialog','ce',2,'settings_refresh_same_page')+self.setting(2,1)+self.score(TABLE,'sp_music',1,'settings_music_immediate')
         c+=[f'scoreboard players reset {person()} sp_settings',f'execute store success score #enabled ce run scoreboard players enable {person()} sp_settings']+self.score('#enabled','ce',1,'settings_trigger_enabled')

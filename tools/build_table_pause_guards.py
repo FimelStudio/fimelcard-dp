@@ -177,9 +177,9 @@ def write_guarded(path, text, *args, **kwargs):
         return output.write(text)
 
 
-def game_guards():
+def game_guards(namespaces=None):
     changed, manifest = 0, {}
-    for namespace in GAMES:
+    for namespace in (GAMES if namespaces is None else namespaces):
         root = DATA / namespace / 'function'
         entries = set()
         # 进度入口必须撤销自身后再阻止输入，避免暂停期间点一次导致以后失效。

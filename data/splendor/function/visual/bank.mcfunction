@@ -5,3 +5,4 @@ data modify storage splendor:visual kind set value 4
 $data modify storage splendor:visual id set value $(slot)
 function splendor:visual/bank_pose with storage splendor:visual
 function splendor:visual/spawn
+function splendor:visual/gem_count with storage splendor:visual

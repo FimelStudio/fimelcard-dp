@@ -3,6 +3,10 @@ from pathlib import Path
 import argparse,json
 P=Path(__file__).resolve().parents[1]
 def build(game):
+ if game=='splendor':
+  from build_splendor_direct import build as build_splendor_direct
+  build_splendor_direct()
+  return
  for name,body in json.loads((P/f'tools/direct_interaction_templates/{game}.json').read_text(encoding='utf8')).items():
   path=P/f'data/{game}/function/{name}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body,encoding='utf8')
  rp=P.resolve().parents[3]/'resourcepacks/fimelcard-rp'

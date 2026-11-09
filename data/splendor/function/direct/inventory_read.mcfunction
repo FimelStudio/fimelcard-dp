@@ -1,1 +1,2 @@
-$data modify storage splendor:direct hand set from entity @e[tag=sp.current,limit=1] data.splendor.p$(side)
+# 旧操作层已停用，保留路径以拒绝过期调用。
+return 0

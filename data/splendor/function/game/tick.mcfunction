@@ -7,6 +7,7 @@ execute if score @s ct_paused matches 1 run return 0
 function splendor:system/context
 function splendor:visual/tick
 function splendor:sound/tick
+execute as @a[tag=sp.audience] run function splendor:hud/tick
 scoreboard players add @s sp_pulse 1
 execute if score @s sp_pulse matches 20.. run function splendor:game/hud
 execute if score @s sp_finish matches 1.. run return run function splendor:game/finish_tick

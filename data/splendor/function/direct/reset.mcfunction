@@ -4,5 +4,9 @@ scoreboard players set @s sp_pick2 0
 scoreboard players set @s sp_pick3 0
 scoreboard players set @s sp_pick4 0
 scoreboard players set @s sp_pick5 0
-scoreboard players operation @s sp_seen = @e[tag=sp.current,limit=1] sp_epoch
+scoreboard players set @s sp_select_kind 0
+scoreboard players set @s sp_select_id -1
+scoreboard players set @s sp_select_stage 0
 scoreboard players set @s sp_panel 1
+scoreboard players operation @s sp_select_epoch = @e[tag=sp.current,limit=1] sp_epoch
+scoreboard players operation @s sp_seen = @e[tag=sp.current,limit=1] sp_epoch

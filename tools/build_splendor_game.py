@@ -22,7 +22,7 @@ def put(name, body):
 
 def main():
     objectives = dict(OBJECTIVES)
-    for name in ('sound', 'visual'):
+    for name in ('sound', 'visual', 'direct', 'inventory', 'hud'):
         path = Path(__file__).with_name('build_splendor_' + name + '.py')
         if path.exists():
             spec = importlib.util.spec_from_file_location('_splendor_' + name, path)
@@ -45,6 +45,9 @@ scoreboard players reset * sp_nonce
 function splendor:settings/load
 function splendor:visual/load
 function splendor:sound/load
+function splendor:direct/load
+function splendor:inventory/load
+function splendor:hud/load
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=22}] at @s run function splendor:system/reload
 ''')
     put('system/context', '''
@@ -76,6 +79,7 @@ execute unless data entity @s data.splendor.p1 run return run function splendor:
 data remove entity @s data.splendor.preview
 scoreboard players set @s sp_anim 0
 function splendor:game/sync
+execute as @a[tag=sp.audience] run function splendor:direct/reset
 function splendor:visual/refresh
 function splendor:sound/reload
 execute as @a[tag=sp.audience] run function splendor:input/give
@@ -88,9 +92,9 @@ execute unless score @s ct_joined matches 2..4 run return fail
 scoreboard players set #online sp_ctx 0
 scoreboard players set #blocked sp_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx run scoreboard players add #online sp_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{splendor:{tool:1b}}] run scoreboard players set #blocked sp_ctx 1
+'''+ '\n'.join(f'execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx if items entity @s hotbar.{i} * unless items entity @s hotbar.{i} *[minecraft:custom_data~{{splendor:{{asset:1b}}}}] unless items entity @s hotbar.{i} *[minecraft:custom_data~{{splendor:{{tool:1b}}}}] run scoreboard players set #blocked sp_ctx 1' for i in range(9))+'''
 execute unless score #online sp_ctx = @s ct_joined run return fail
-execute if score #blocked sp_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[璀璨宝石] 请先腾空快捷栏最后一格。",color:"red"}
+execute if score #blocked sp_ctx matches 1 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[璀璨宝石] 请先腾空快捷栏，前六格显示宝石，后三格显示预定牌。",color:"red"}
 execute if score #blocked sp_ctx matches 1 run return fail
 execute as @a[tag=sp.player] if score @s sp_table = #table sp_ctx run function splendor:player/clear_state
 execute as @a[tag=ct.player] if score @s ct_id = #table sp_ctx run function splendor:player/init
@@ -108,7 +112,7 @@ function splendor:visual/refresh
 execute as @a[tag=sp.audience] run function splendor:input/give
 function splendor:sound/start
 scoreboard players set @s ct_start 1
-tellraw @a[tag=sp.audience] {text:"[璀璨宝石] 开始交易！快捷栏最后一格按Q打开宝石市场与预约牌。",color:"gold"}
+tellraw @a[tag=sp.audience] {text:"[璀璨宝石] 右键桌面选择、再次右键确认，左键取消。宝石不足时第三次右键可预定；牌堆右键两次可盲预定。手持自己的预定牌按两次Q购买。",color:"gold"}
 function splendor:log {text:"璀璨宝石开始"}
 ''')
     assign = []
@@ -151,9 +155,10 @@ function splendor:engine/action
 execute unless score #ok sp_ctx matches 1 run return run function splendor:game/illegal
 function splendor:game/after_action
 ''')
-    put('game/illegal', ['tellraw @a[tag=sp.actor] {text:"[璀璨宝石] 操作未完成：请检查库存、支付数量、当前回合和待完成事项。",color:"red"}', 'function splendor:sound/illegal', 'execute as @a[tag=sp.actor] run function splendor:ui/open'])
+    put('game/illegal', ['execute as @a[tag=sp.actor] run function splendor:direct/error', 'function splendor:sound/illegal'])
     put('game/after_action', '''
 function splendor:game/sync
+execute as @a[tag=sp.audience] run function splendor:direct/reset
 scoreboard players reset @a[tag=sp.audience] sp_nonce
 execute as @a[tag=sp.audience] run dialog clear @s
 function splendor:game/log_event with entity @s data.splendor.last
@@ -169,6 +174,8 @@ scoreboard players set #visited sp_ctx -1
 execute store result score #visited sp_ctx run data get entity @s data.splendor.last.noble
 execute if score #visited sp_ctx matches 0..9 unless data entity @s data.splendor.last{code:5} run function splendor:sound/noble
 execute if score @s sp_state matches 4 run function splendor:game/win
+execute as @a[tag=sp.audience] run function splendor:inventory/sync
+execute as @a[tag=sp.audience] run function splendor:hud/build
 ''')
     put('game/log_event', '''
 $data modify storage splendor:runtime actor_name set from entity @s data.splendor.p$(actor).name
@@ -184,7 +191,10 @@ function splendor:game/log_show with storage splendor:runtime
     put('tick', '''
 execute as @a[scores={sp_settings=1..}] at @s run function splendor:settings/save
 execute as @a[scores={sp_action=1..}] at @s run function splendor:ui/handle
-execute as @a[tag=sp.player,scores={sp_drop=1..}] at @s run function splendor:input/drop
+execute as @e[type=minecraft:item] if items entity @s contents *[minecraft:custom_data~{splendor:{asset:1b}}] at @s run function splendor:inventory/item_drop
+execute as @a[tag=sp.player] at @s run function splendor:inventory/tick
+execute as @e[type=minecraft:interaction,tag=sp.hit] if data entity @s attack at @s run function splendor:direct/left
+execute as @e[type=minecraft:interaction,tag=sp.hit] if data entity @s interaction at @s run function splendor:direct/click
 execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=22,ct_state=1}] at @s run function splendor:game/tick
 execute as @a[tag=sp.player] unless entity @s[tag=ct.player] run function splendor:player/clear_state
 ''')
@@ -193,6 +203,7 @@ execute if score @s ct_paused matches 1 run return 0
 function splendor:system/context
 function splendor:visual/tick
 function splendor:sound/tick
+execute as @a[tag=sp.audience] run function splendor:hud/tick
 scoreboard players add @s sp_pulse 1
 execute if score @s sp_pulse matches 20.. run function splendor:game/hud
 execute if score @s sp_finish matches 1.. run return run function splendor:game/finish_tick
@@ -200,9 +211,8 @@ execute if score @s sp_anim matches 1.. run scoreboard players remove @s sp_anim
 execute if score @s sp_anim matches 1 run function splendor:game/after_animation
 execute if score @s sp_pulse matches 0 as @a[tag=sp.audience] run function splendor:input/give
 ''')
-    put('game/after_animation', ['scoreboard players set @s sp_anim 0', 'execute as @a[tag=sp.audience] if score @s sp_side = @e[tag=sp.current,limit=1] sp_turn if entity @e[tag=sp.current,scores={sp_state=2..3},limit=1] run function splendor:ui/open'])
-    put('game/hud', ['scoreboard players set @s sp_pulse 0', 'function splendor:game/hud_show with entity @s data.splendor'])
-    put('game/hud_show', '$title @a[tag=sp.audience] actionbar [{text:"璀璨宝石 · 第$(round)轮 · ",color:"gold"},{nbt:"data.splendor.p$(turn).name",entity:"@s",interpret:true},{text:" 行动 · Q打开市场",color:"yellow"}]')
+    put('game/after_animation', ['scoreboard players set @s sp_anim 0', 'execute as @a[tag=sp.audience] if score @s sp_side = @e[tag=sp.current,limit=1] sp_turn run function splendor:direct/pending'])
+    put('game/hud', ['scoreboard players set @s sp_pulse 0', 'execute as @a[tag=sp.audience] run function splendor:hud/build'])
     put('game/win', '''
 execute if score @s sp_finish matches 1.. run return 0
 scoreboard players set @s sp_finish 100
@@ -246,7 +256,10 @@ tag @s remove sp.controller
 ''')
     put('player/clear_state', '''
 function splendor:sound/stop_player
-clear @s minecraft:paper[minecraft:custom_data~{splendor:{tool:1b}}]
+function splendor:inventory/clear
+function splendor:hud/deactivate
+clear @s *[minecraft:custom_data~{splendor:{tool:1b}}]
+function splendor:direct/clear_player
 function splendor:settings/clear_session
 scoreboard players reset @s sp_nonce
 scoreboard players reset @s sp_action
@@ -275,35 +288,9 @@ execute unless entity @e[tag=sp.current,limit=1] run return 0
 tag @s add sp.actor
 execute as @e[tag=sp.current,limit=1] at @s run function splendor:system/context
 ''')
-    put('input/give', '''
-execute unless entity @s[tag=sp.player,tag=ct.player] run return 0
-execute unless score @s sp_table = @s ct_id run return 0
-execute if score @s ct_paused matches 1 run return 0
-execute if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{splendor:{tool:1b}}] run return 0
-execute store result storage splendor:input table int 1 run scoreboard players get @s sp_table
-execute unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{splendor:{tool:1b}}] run function splendor:input/menu_tool with storage splendor:input
-''')
-    put('input/menu_tool', '$item replace entity @s hotbar.8 with minecraft:paper[minecraft:custom_name={text:"璀璨宝石 · 市场",color:"gold",italic:false},minecraft:item_model="card:splendor/bag",minecraft:custom_data={splendor:{tool:1b,table:$(table)}},minecraft:lore=[{text:"Q 打开市场与预约牌",color:"gray",italic:false}]]')
-    put('input/drop', '''
-scoreboard players set @s sp_drop 0
-tag @a[tag=sp.dropper] remove sp.dropper
-tag @s add sp.dropper
-execute as @e[type=minecraft:item,distance=..6] if items entity @s contents minecraft:paper[minecraft:custom_data~{splendor:{tool:1b}}] run function splendor:input/check_drop
-tag @s remove sp.dropper
-''')
-    put('input/check_drop', '''
-scoreboard players set #owner sp_ctx 0
-execute on origin if entity @s[tag=sp.dropper] run scoreboard players set #owner sp_ctx 1
-execute unless score #owner sp_ctx matches 1 run return 0
-data modify storage splendor:input drop set from entity @s Item.components."minecraft:custom_data".splendor
-function splendor:input/use_drop with storage splendor:input drop
-kill @s
-''')
-    put('input/use_drop', '''
-$execute unless score @a[tag=sp.dropper,limit=1] sp_table matches $(table) run return 0
-execute as @a[tag=sp.dropper,limit=1] run function splendor:input/give
-execute as @a[tag=sp.dropper,limit=1] run function splendor:ui/open
-''')
+    put('input/give', ['clear @s *[minecraft:custom_data~{splendor:{tool:1b}}]', 'function splendor:inventory/sync'])
+    for endpoint in ('menu_tool','drop','check_drop','use_drop'):
+        put('input/'+endpoint, 'return 0')
     print('璀璨宝石生命周期和玩家入口已生成。')
 
 

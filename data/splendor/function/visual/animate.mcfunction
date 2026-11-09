@@ -17,6 +17,9 @@ data modify storage splendor:visual kind set value 9
 data modify storage splendor:visual id set value 0
 data modify storage splendor:visual pose set from entity @s data.splendor.visual_active.motion[0]
 function splendor:visual/spawn
+scoreboard players set #vis_noble sp_ctx -1
+execute store result score #vis_noble sp_ctx run data get storage splendor:visual event.noble
+execute if score #vis_noble sp_ctx matches 0..9 unless data storage splendor:visual event{code:5} run function splendor:visual/noble_bonus
 execute as @e[tag=sp.visual,scores={sp_vkind=9}] if score @s sp_table = #vis_table sp_ctx run tag @s add sp.anim
 scoreboard players set @s sp_vtimer 10
 scoreboard players set @s sp_vstep 0

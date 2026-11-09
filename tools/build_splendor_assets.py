@@ -1,11 +1,14 @@
-"""璀璨宝石：原创几何宝石、开发牌与低实体桌面资源。"""
+"""璀璨宝石：Minecraft 主题发展牌、贵族牌与低实体桌面资源。"""
 from __future__ import annotations
 
 import json
 import argparse
 import base64
+import hashlib
 import math
 import random
+import zipfile
+from functools import lru_cache
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -16,12 +19,86 @@ COLORS = ('diamond', 'sapphire', 'emerald', 'ruby', 'onyx', 'gold')
 INKS = ('#e6edf2', '#407bc5', '#439d77', '#ca5361', '#535062', '#e3b94d')
 DARK = ('#698492', '#224a85', '#23654d', '#8e283c', '#292435', '#a47426')
 PAPER, INK, GOLD = '#f1e5c9', '#352f39', '#c8a267'
+VANILLA = SOURCE / 'vanilla'
+TOKEN_ITEMS = ('diamond', 'lapis_lazuli', 'emerald', 'redstone', 'coal', 'gold_ingot')
+ART_ITEMS = (
+    ('diamond', 'iron_ingot', 'quartz', 'snowball', 'bone', 'iron_pickaxe'),
+    ('lapis_lazuli', 'blue_dye', 'prismarine_shard', 'heart_of_the_sea', 'echo_shard', 'diamond_pickaxe'),
+    ('emerald', 'slime_ball', 'ender_pearl', 'experience_bottle', 'green_dye', 'kelp'),
+    ('redstone', 'red_dye', 'nether_wart', 'fire_charge', 'brick', 'apple'),
+    ('coal', 'flint', 'ink_sac', 'netherite_scrap', 'netherite_ingot', 'netherite_pickaxe'),
+)
+ART_BLOCKS = ('quartz_block_side', 'prismarine', 'moss_block', 'red_nether_bricks', 'polished_blackstone_bricks')
+MOBS = (
+    ('villager/villager', (8, 8, 16, 18), '村民'),
+    ('wandering_trader/wandering_trader', (8, 8, 16, 18), '流浪商人'),
+    ('iron_golem/iron_golem', (8, 8, 16, 18), '铁傀儡'),
+    ('snow_golem/snow_golem', (8, 8, 16, 16), '雪傀儡'),
+    ('allay/allay', (5, 5, 10, 10), '悦灵'),
+    ('bee/bee', (7, 10, 19, 17), '蜜蜂'),
+    ('fox/fox', (5, 11, 17, 17), '狐狸'),
+    ('axolotl/axolotl_lucy', (2, 6, 16, 11), '美西螈'),
+    ('turtle/turtle', (3, 6, 21, 11), '海龟'),
+    ('pig/pig_temperate', (8, 8, 16, 16), '猪'),
+)
+_ART_RANKS = {}
 GUI = {'gui': {'rotation': [90, 0, 0], 'translation': [0, 0, 0], 'scale': [0.9, 0.9, 0.9]},
        'fixed': {'rotation': [90, 0, 0], 'translation': [0, 0, 0], 'scale': [0.9, 0.9, 0.9]}}
 
 
 def font(size, bold=False):
-    return ImageFont.truetype('C:/Windows/Fonts/' + ('georgiab.ttf' if bold else 'georgia.ttf'), size)
+    return ImageFont.truetype('C:/Windows/Fonts/' + ('arialbd.ttf' if bold else 'arial.ttf'), size)
+
+
+def signature(card):
+    """牌面、物品身份都只由奖励、分数和花费决定，不含实例或牌槽。"""
+    return (card.get('bonus', -1), card.get('points', 3), tuple(card['cost']))
+
+
+def signature_text(card):
+    bonus, points, cost = signature(card)
+    return f'{bonus}:{points}:' + ','.join(map(str, cost))
+
+
+@lru_cache(maxsize=None)
+def vanilla(resource):
+    """保留参与合成的原版像素源，已有源文件时无需客户端 jar。"""
+    path = VANILLA / (resource + '.png')
+    if not path.is_file():
+        version = PACK.parents[3]
+        archive = version / (version.name + '.jar')
+        with zipfile.ZipFile(archive) as client:
+            body = client.read('assets/minecraft/textures/' + resource + '.png')
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(body)
+    return Image.open(path).convert('RGBA')
+
+
+def paste_sprite(image, resource, box, outline=False):
+    sprite = vanilla(resource)
+    bbox = sprite.getbbox()
+    sprite = sprite.crop(bbox) if bbox else sprite
+    x, y, width, height = box
+    scale = min(width / sprite.width, height / sprite.height)
+    sprite = sprite.resize((max(1, round(sprite.width*scale)), max(1, round(sprite.height*scale))), Image.Resampling.NEAREST)
+    point = (round(x+(width-sprite.width)/2), round(y+(height-sprite.height)/2))
+    if outline:
+        shadow = Image.new('RGBA', sprite.size, '#101b23')
+        for dx, dy in ((-2, 0), (2, 0), (0, -2), (0, 2)):
+            image.paste(shadow, (point[0]+dx, point[1]+dy), sprite.getchannel('A'))
+    image.alpha_composite(sprite, point)
+
+
+def gem_icon(image, color, xy, size):
+    x, y = xy
+    paste_sprite(image, 'item/'+TOKEN_ITEMS[color], (x-size/2, y-size/2, size, size), outline=True)
+
+
+def star(draw, xy, radius, fill=GOLD):
+    x, y = xy
+    points = [(x+(radius if i%2 == 0 else radius*.45)*math.sin(i*math.pi/5),
+               y-(radius if i%2 == 0 else radius*.45)*math.cos(i*math.pi/5)) for i in range(10)]
+    draw.polygon(points, fill=fill)
 
 
 def gem(draw, xy, radius, color):
@@ -49,7 +126,7 @@ def texture(name, image):
 
 
 def model(name, body):
-    body.setdefault('credit', 'Fimel Cards original geometric gemstone artwork and models')
+    body.setdefault('credit', 'Fimel Cards Minecraft-themed card composition; Minecraft textures by Mojang')
     body.setdefault('gui_light', 'front')
     body.setdefault('display', GUI)
     export_model('splendor', name, body)
@@ -62,52 +139,86 @@ def plane_model(name, width=12, depth=16):
     model(name, {'textures': {'face': resource, 'particle': resource}, 'elements': [element]})
 
 
-def architecture(draw, tier, color, seed):
-    """同一版式中的原创矿场、作坊与宫殿剪影，避免复刻官方插画。"""
-    rng = random.Random(seed)
-    draw.rounded_rectangle((15, 78, 240, 239), radius=8, fill=DARK[color])
-    for i in range(13):
-        x, y = rng.randrange(23, 232), rng.randrange(88, 230)
-        draw.ellipse((x, y, x+2, y+2), fill=INKS[color])
-    if tier == 1:
-        for x, y, size in ((60, 182, 32), (126, 157, 47), (197, 185, 30)):
-            gem(draw, (x, y), size, color)
-        draw.line((35, 217, 222, 217), fill=GOLD, width=3)
-    elif tier == 2:
-        for x, h in ((40, 64), (92, 102), (146, 77), (196, 117)):
-            draw.rectangle((x, 227-h, x+21, 227), fill=PAPER)
-            draw.polygon([(x-3, 227-h), (x+10, 207-h), (x+24, 227-h)], fill=GOLD)
-        gem(draw, (128, 145), 27, color)
+def block(image, color, box, dark=False):
+    x, y, width, height = map(round, box)
+    source = vanilla('block/'+ART_BLOCKS[color]).resize((32, 32), Image.Resampling.NEAREST)
+    tile = Image.new('RGBA', (width, height))
+    for ty in range(0, height, 32):
+        for tx in range(0, width, 32):
+            tile.paste(source, (tx, ty))
+    image.alpha_composite(tile, (x, y))
+    draw = ImageDraw.Draw(image)
+    if dark:
+        draw.rectangle((x, y, x+width-1, y+height-1), fill=(10, 18, 28, 95))
+    draw.line((x, y+height-1, x+width-1, y+height-1, x+width-1, y), fill='#17212b', width=3)
+    draw.line((x, y+height-2, x, y, x+width-2, y), fill=INKS[color], width=2)
+
+
+def architecture(image, card):
+    """原版像素物品与三类方块场景；相同牌面签名始终取相同画面。"""
+    draw = ImageDraw.Draw(image)
+    color = card['bonus']
+    rank = _ART_RANKS.get(signature(card), int(hashlib.sha256(signature_text(card).encode()).hexdigest()[:8], 16)%18)
+    variant, item = rank//6, ART_ITEMS[color][rank%6]
+    draw.rectangle((14, 78, 241, 237), fill='#182733')
+    rng = random.Random(signature_text(card))
+    for _ in range(23):
+        x, y = rng.randrange(23, 233), rng.randrange(87, 214)
+        draw.rectangle((x, y, x+2, y+2), fill=INKS[color])
+    if variant == 0:
+        # 矿洞：不规则矿层与掉落物，工具依然保留原版像素轮廓。
+        for box in ((15, 202, 227, 35), (15, 78, 32, 32), (47, 78, 32, 20),
+                    (210, 78, 32, 62), (178, 78, 32, 27), (15, 171, 32, 32), (210, 184, 32, 25)):
+            block(image, color, box)
+        paste_sprite(image, 'item/'+item, (76, 100, 106, 102), outline=True)
+    elif variant == 1:
+        # 作坊：柱廊和工作台。
+        for box in ((20, 94, 32, 143), (204, 94, 32, 143), (20, 78, 216, 24),
+                    (59, 195, 138, 25), (72, 220, 25, 17), (159, 220, 25, 17)):
+            block(image, color, box)
+        paste_sprite(image, 'item/'+item, (79, 108, 99, 82), outline=True)
     else:
-        draw.rectangle((39, 169, 216, 228), fill=PAPER)
-        for x in (46, 87, 128, 169, 210):
-            draw.rectangle((x-5, 125, x+5, 225), fill=GOLD)
-        draw.polygon([(31, 165), (127, 93), (223, 165)], fill=PAPER)
-        draw.line((31, 165, 127, 93, 223, 165), fill=GOLD, width=5)
-        gem(draw, (127, 137), 21, color)
+        # 遗迹：阶梯、方柱与上方的珍藏。
+        for box in ((39, 213, 178, 24), (65, 190, 126, 24), (92, 167, 72, 24),
+                    (19, 126, 24, 111), (213, 126, 24, 111)):
+            block(image, color, box)
+        paste_sprite(image, 'item/'+item, (83, 86, 90, 79), outline=True)
+    # 层级只占一条小刻度，不与奖励宝石或费用争夺空间。
+    draw = ImageDraw.Draw(image)
+    for index in range(card['tier']):
+        draw.rectangle((112+index*13-(card['tier']-1)*6, 225, 120+index*13-(card['tier']-1)*6, 230), fill='#ffe3a5')
+    return {'item': item, 'scene': ('mine', 'workshop', 'ruins')[min(variant, 2)]}
 
 
-def cost_row(draw, values, y=288):
+def cost_row(image, values, y=273, development=False):
+    draw = ImageDraw.Draw(image)
     costs = [(i, amount) for i, amount in enumerate(values) if amount]
-    spacing = 45
+    spacing = min(66 if development else 54, 220/max(1, len(costs)))
     start = 128-(len(costs)-1)*spacing/2
     for index, (color, amount) in enumerate(costs):
         x = start+index*spacing
-        seal(draw, (x, y-13), 16, color)
-        draw.text((x, y+21), str(amount), font=font(26, True), anchor='mm', fill=INK)
+        if development:
+            # 贵族要求永久发展卡折扣：使用卡片轮廓，与支付筹码明确区分。
+            draw.rounded_rectangle((x-23, y-25, x+23, y+25), radius=3, fill=INKS[color], outline=INK, width=2)
+            draw.rectangle((x-18, y-20, x+18, y+19), fill='#f5eace')
+            draw.rectangle((x-18, y+8, x+18, y+19), fill=DARK[color])
+            gem_icon(image, color, (x, y-3), 29)
+        else:
+            gem_icon(image, color, (x, y), 36)
+        draw = ImageDraw.Draw(image)
+        draw.text((x, y+46), str(amount), font=font(34, True), anchor='mm', fill=INK)
 
 
 def front(card):
     image = Image.new('RGBA', (256, 352), (0, 0, 0, 0))
     draw = ImageDraw.Draw(image)
-    draw.rounded_rectangle((1, 1, 254, 350), radius=17, fill=PAPER, outline='#332e39', width=4)
-    draw.rounded_rectangle((9, 9, 246, 342), radius=12, outline=GOLD, width=2)
-    draw.text((33, 42), str(card['points']), font=font(46, True), anchor='mm', fill=INK)
-    draw.text((83, 42), 'VP', font=font(14, True), anchor='mm', fill='#776a57')
-    seal(draw, (207, 41), 28, card['bonus'])
-    architecture(draw, card['tier'], card['bonus'], card['id']+2200)
-    draw.text((128, 255), 'I'*card['tier'], font=font(17, True), anchor='mm', fill='#8a7248')
-    cost_row(draw, card['cost'])
+    draw.rounded_rectangle((1, 1, 254, 350), radius=12, fill=PAPER, outline=DARK[card['bonus']], width=6)
+    draw.rounded_rectangle((9, 9, 246, 342), radius=7, outline=INKS[card['bonus']], width=2)
+    draw.text((38, 43), str(card['points']), font=font(55, True), anchor='mm', fill=INK)
+    star(draw, (82, 44), 13)
+    gem_icon(image, card['bonus'], (208, 42), 53)
+    architecture(image, card)
+    cost_row(image, card['cost'])
     return image
 
 
@@ -116,14 +227,68 @@ def noble(card):
     draw = ImageDraw.Draw(image)
     draw.rounded_rectangle((1, 1, 254, 350), radius=17, fill='#d9c49b', outline='#3e3240', width=4)
     draw.rounded_rectangle((10, 10, 245, 341), radius=12, fill=PAPER, outline=GOLD, width=3)
-    draw.text((36, 40), '3', font=font(46, True), anchor='mm', fill=INK)
-    draw.text((85, 40), 'VP', font=font(14, True), anchor='mm', fill='#776a57')
-    draw.text((128, 83), 'NOBLE', font=font(22, True), anchor='mm', fill=INK)
-    draw.polygon([(65, 118), (191, 118), (191, 193), (128, 232), (65, 193)], fill='#423f60', outline=GOLD, width=4)
-    draw.polygon([(81, 143), (99, 165), (128, 132), (157, 165), (175, 143), (164, 191), (92, 191)], fill=GOLD)
-    draw.rectangle((92, 197, 165, 206), fill=GOLD)
-    cost_row(draw, card['cost'])
+    draw.text((38, 42), '3', font=font(55, True), anchor='mm', fill=INK)
+    star(draw, (82, 43), 13)
+    # 贵族头冠图标，与发展牌右上角的宝石奖励区别。
+    draw.polygon(((183, 33), (196, 44), (208, 26), (221, 44), (234, 33), (229, 57), (188, 57)), fill=GOLD, outline=INK)
+    draw.rectangle((15, 78, 240, 234), fill='#253546')
+    draw.rectangle((22, 85, 233, 227), outline=GOLD, width=2)
+    portrait(image, card['id'])
+    cost_row(image, card['cost'], y=271, development=True)
     return image
+
+
+def portrait(image, index):
+    layer = Image.new('RGBA', image.size, (0, 0, 0, 0))
+    portrait_pixels(layer, index)
+    art = layer.crop(layer.getbbox())
+    scale = min(188/art.width, 132/art.height)
+    art = art.resize((round(art.width*scale), round(art.height*scale)), Image.Resampling.NEAREST)
+    image.alpha_composite(art, ((256-art.width)//2, 78+(156-art.height)//2))
+
+
+def portrait_pixels(image, index):
+    resource, uv, _ = MOBS[index%len(MOBS)]
+    source = vanilla('entity/'+resource)
+    face = source.crop(uv).resize((96, 100 if index in (0, 1, 2) else 84), Image.Resampling.NEAREST)
+    draw = ImageDraw.Draw(image)
+    # 脸部直接使用原版实体 UV，仅保留生物自身特征。
+    if index == 8:
+        # 海龟保持横向头部和龟壳轮廓，避免把展开 UV 拉成类人脸。
+        draw.ellipse((60, 146, 196, 226), fill='#657943', outline='#8c9d60', width=6)
+        for x in (84, 116, 148):
+            draw.rectangle((x, 170, x+22, 195), outline='#91a564', width=3)
+        face = source.crop(uv).resize((126, 43), Image.Resampling.NEAREST)
+        image.alpha_composite(face, (65, 112))
+        for x in (43, 181):
+            draw.rectangle((x, 189, x+31, 218), fill='#5a9a56')
+        return
+    top = 90 if index in (0, 1, 2) else 99
+    image.alpha_composite(face, (80, top))
+    if index in (0, 1, 2):
+        # 村民/流浪商人/铁傀儡的标志性鼻子。
+        nose = source.crop((26, 2, 28, 6)).resize((18, 34), Image.Resampling.NEAREST)
+        image.alpha_composite(nose, (119, top+56))
+    draw = ImageDraw.Draw(image)
+    if index == 4:
+        draw.polygon(((68, 175), (39, 142), (45, 205), (77, 201)), fill='#99f0f0')
+        draw.polygon(((188, 175), (217, 142), (211, 205), (179, 201)), fill='#99f0f0')
+    elif index == 5:
+        draw.ellipse((42, 101, 91, 141), fill='#dae9ed')
+        draw.ellipse((165, 101, 214, 141), fill='#dae9ed')
+        for x in (94, 150):
+            draw.rectangle((x, 88, x+7, 108), fill='#362d28')
+    elif index == 6:
+        draw.rectangle((80, 84, 102, 105), fill='#d78b36')
+        draw.rectangle((154, 84, 176, 105), fill='#d78b36')
+    elif index == 7:
+        for x in (65, 181):
+            for y in (107, 125, 143):
+                draw.rectangle((x, y, x+10, y+11), fill='#d773a4')
+    elif index == 9:
+        draw.rectangle((108, 147, 147, 171), fill='#d47d8b')
+        for x in (114, 136):
+            draw.rectangle((x, 154, x+5, 163), fill='#914e60')
 
 
 def back(tier):
@@ -136,19 +301,34 @@ def back(tier):
         for x in range(32, 230, 28):
             draw.polygon([(x, y-4), (x+4, y), (x, y+4), (x-4, y)], fill='#bfa777')
     draw.ellipse((48, 96, 207, 255), fill='#332f44', outline=GOLD, width=5)
-    gem(draw, (128, 160), 47, 5)
+    gem_icon(image, 5, (128, 158), 86)
     draw.text((128, 222), 'I'*tier, anchor='mm', font=font(30, True), fill=PAPER)
     return image
 
 
 def build():
     data = json.loads((PACK/'tools/splendor_cards.json').read_text(encoding='utf-8'))
+    canonical = {}
+    for card in data['cards']:
+        canonical.setdefault(signature(card), card)
+    _ART_RANKS.clear()
+    for color in range(5):
+        for rank, key in enumerate(sorted(key for key in canonical if key[0] == color)):
+            _ART_RANKS[key] = rank
     previews = []
     glyphs = []
     for card in data['cards']:
-        image = front(card)
+        identity = canonical[signature(card)]
+        image = front(identity)
         texture(card['name'], image)
         plane_model(card['name'])
+        # 本人 GUI/第一人称可看预定牌；其他展示上下文统一显示牌背。
+        # fixed/head 等也走牌背，防止展示框和其他穿戴方式泄露盲预定。
+        json_file(CARD/f'items/splendor/reserved/{card["name"]}.json', {
+            'model': {'type': 'minecraft:select', 'property': 'minecraft:display_context',
+                      'cases': [{'when': ['gui', 'firstperson_righthand', 'firstperson_lefthand'],
+                                 'model': {'type': 'minecraft:model', 'model': 'card:item/splendor/'+identity['name']}}],
+                      'fallback': {'type': 'minecraft:model', 'model': f'card:item/splendor/back/tier{identity["tier"]}'}}})
         glyphs.append((0xe900+card['id'], card['name'], image))
         if card['id'] in (0, 40, 70):
             previews.append(image)
@@ -179,7 +359,10 @@ def build():
             element['from'][1] += 8
             element['to'][1] += 8
         model('token/'+name, body)
-        glyphs.append((0xe980+color, 'token/'+name, image))
+        # 桌面银行由原版物品展示；HUD 也使用同一物品轮廓，颜色与费用区一致。
+        icon = Image.new('RGBA', (64, 64))
+        paste_sprite(icon, 'item/'+TOKEN_ITEMS[color], (2, 2, 60, 60))
+        glyphs.append((0xe980+color, 'token/'+name, icon))
     # 木框深蓝桌垫仅用一个展示实体，不给每个牌槽添加交互实体。
     image = Image.new('RGBA', (768, 768), '#44383b')
     draw = ImageDraw.Draw(image)
@@ -221,7 +404,7 @@ def build():
     glyphs.append((0xe986, 'bag', image))
     # 选游、物品与小字形共用完整矢量图标，不再放大小型资源宝石示意图。
     from build_splendor_icon import build as build_icon
-    icon = build_icon()
+    icon = build_icon(refresh_preview=False)
     texture('icon', icon)
     model('icon', {'parent': 'minecraft:item/generated', 'textures': {'layer0': 'card:item/splendor/icon'}, 'display': {}})
     glyphs.append((0xe987, 'icon', icon))
@@ -246,24 +429,43 @@ def build():
                               'chars': [chr(code)]})
         json_file(CARD/('font/splendor'+('/'+variant if variant else '')+'.json'), {'providers': providers})
     json_file(SOURCE/'resource_map.json', {'cards': [{'id': c['id'], 'model': 'card:splendor/'+c['name'],
-        'glyph': f'U+{0xe900+c["id"]:04X}'} for c in data['cards']],
-        'nobles': [{'id': c['id'], 'model': 'card:splendor/noble/'+c['name'], 'glyph': f'U+{0xea00+c["id"]:04X}'} for c in data['nobles']],
-        'tokens': [{'color': i, 'name': n, 'model': 'card:splendor/token/'+n, 'glyph': f'U+{0xe980+i:04X}'} for i, n in enumerate(COLORS)]})
-    sheet = Image.new('RGB', (256*4, 352), '#e8ddc3')
-    for index, image in enumerate(previews+[noble(data['nobles'][0])]):
-        sheet.paste(image, (index*256, 0), image)
+        'glyph': f'U+{0xe900+c["id"]:04X}', 'signature': signature_text(c),
+        'canonical_id': canonical[signature(c)]['id'], 'canonical_model': 'card:splendor/'+canonical[signature(c)]['name'],
+        'reserved_model': 'card:splendor/reserved/'+canonical[signature(c)]['name'],
+        'art': {'item': ART_ITEMS[c['bonus']][_ART_RANKS[signature(c)]%6],
+                'scene': ('mine', 'workshop', 'ruins')[_ART_RANKS[signature(c)]//6]}} for c in data['cards']],
+        'nobles': [{'id': c['id'], 'model': 'card:splendor/noble/'+c['name'], 'glyph': f'U+{0xea00+c["id"]:04X}',
+                   'mob': MOBS[c['id']%10][0], 'mob_name': MOBS[c['id']%10][2], 'requirement': 'development_cards'} for c in data['nobles']],
+        'tokens': [{'color': i, 'name': n, 'model': 'card:splendor/token/'+n, 'vanilla_item': 'minecraft:'+TOKEN_ITEMS[i],
+                    'glyph': f'U+{0xe980+i:04X}'} for i, n in enumerate(COLORS)]})
+    previews = [front(data['cards'][i]) for i in (0, 8, 16, 24, 32, 40, 46, 52, 58, 64, 70, 74, 78, 82, 86)]
+    previews += [noble(c) for c in data['nobles']]
+    sheet = Image.new('RGB', (256*5, 352*5), '#e8ddc3')
+    for index, image in enumerate(previews):
+        sheet.paste(image, ((index%5)*256, (index//5)*352), image)
     sheet.save(SOURCE/'preview.png')
-    text_file(SOURCE/'README.md', '''# 璀璨宝石原创资源
+    json_file(VANILLA/'manifest.json', {'source': 'Local Minecraft 26.2 client jar', 'owner': 'Mojang / Microsoft',
+        'purpose': 'Minecraft resource-pack card composition, with pixel art kept at nearest-neighbor scale',
+        'files': {p.relative_to(VANILLA).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                  for p in sorted(VANILLA.rglob('*.png'))}})
+    text_file(SOURCE/'README.md', '''# 璀璨宝石 Minecraft 主题资源
 
-宝石、筹码、开发牌、贵族徽章、桌垫与宝石袋均为 Fimel Cards 原创程序绘制，不复用原版游戏插画、卡面或商标图。
+发展牌、贵族牌、桌垫与宝石袋使用 Fimel Cards 自行设计的版式，不复刻璀璨宝石原作插画。
+宝石、材料、方块与生物脸部来自本机 Minecraft 26.2 客户端；权利归 Mojang / Microsoft，参与合成的原版源图保留在 vanilla/，SHA-256 见 vanilla/manifest.json。
+重建优先复用 vanilla/，源图缺失时才从本机版本 jar 提取。源图只供此 Minecraft 资源包合成使用，不宣称原创或 CC0。
 牌面数值来自数据包 tools/splendor_cards.json，数值引用见该文件 sources。
+发展牌顶部左侧大数字与星标为分数，右侧原版宝石为永久折扣；底部原版宝石和大数字为支付花费。中部为矿洞、作坊、遗迹三类方块场景与对应颜色的材料，共 90 种牌面。
+贵族使用村民、流浪商人、铁傀儡、雪傀儡、悦灵、蜜蜂、狐狸、美西螈、海龟和猪；下方要求采用发展卡轮廓，表示需要永久折扣而非支付宝石。
+牌面 canonical signature 为 bonus:points:cost；相同奖励、分数、花费使用同一 canonical_id/model 和同一纹理。物品组件也应只携带这种牌的身份，不携带取得时间或牌槽，才能叠加。
+预定牌物品入口位于 card:splendor/reserved/层级/牌名；本人 GUI 与第一人称显示正面，第三人称、掉落、展示框及其他上下文统一显示对应层牌背，避免暴露盲预定身份。
 以 tier1/diamond_01 等“层级／宝石／同组序号”命名；源模型位于 models/*.bbmodel，可在 Blockbench 编辑。
 纹理源位于 textures/，预览见 preview.png；所有源文件可由数据包 tools/build_splendor_assets.py 重建。
-选游图标原画为 icon.svg（1024×1024），导出 icon.png（256×256），完整保留双语铭牌；
-数据包 tools/build_splendor_icon.py 可单独重建，仅处理22号图标，不覆盖其他游戏。
+选游图标以 Minecraft 原版像素钻石、六色物品宝石和发展卡构图，保留双语铭牌。
+数据包 tools/splendor_icon.svg 为可编辑布局模板，build_splendor_icon.py 将缓存的原版物品像素展开为独立 SVG 色块；
+源 icon.svg（1024×1024）无外部图片依赖，导出 icon.png（256×256），仅更新22号图标与其字体切片。
 首次渲染使用本机 Edge/Chromium，可设置 SPLENDOR_SVG_BROWSER 指定；未修改SVG时直接复用已提交PNG，无需浏览器。
 
-字体 card:splendor 提供 E900～E959 开发牌、E980～E985 白蓝绿红黑金筹码、E986 宝石袋、E987 游戏图标、E990～E992 三层牌背、E993 分数星、EA00～EA09 贵族。
+字体 card:splendor 提供 E900～E959 发展牌、E980～E985 钻石/青金石/绿宝石/红石/煤炭/金锭图标、E986 宝石袋、E987 游戏图标、E990～E992 三层牌背、E993 分数星、EA00～EA09 贵族。
 card:splendor/small 使用较小字形，card:splendor/cards 使用较大牌面；单字形切片最多 96×132，不超过 26.2 客户端 256×256 限制。
 
 音频来源、许可和重建说明见 audio/README.md；桌面只展示公开市场、银行与贵族，不展示预约牌身份。
@@ -276,6 +478,29 @@ def check():
     data = json.loads((PACK/'tools/splendor_cards.json').read_text(encoding='utf-8'))
     mapping = json.loads((SOURCE/'resource_map.json').read_text(encoding='utf-8'))
     assert len(mapping['cards']) == 90 and len(mapping['nobles']) == 10 and len(mapping['tokens']) == 6
+    seen = {}
+    for card, entry in zip(data['cards'], mapping['cards']):
+        assert entry['signature'] == signature_text(card)
+        assert entry['canonical_model'] == 'card:splendor/'+data['cards'][entry['canonical_id']]['name']
+        png = (CARD/'textures/item/splendor'/f'{card["name"]}.png').read_bytes()
+        key = signature(card)
+        if key in seen:
+            assert seen[key] == png, (key, 'identical card properties must share the same face')
+        seen[key] = png
+        reserved = json.loads((CARD/f'items/splendor/reserved/{card["name"]}.json').read_text(encoding='utf-8'))['model']
+        assert reserved['type'] == 'minecraft:select' and reserved['property'] == 'minecraft:display_context'
+        assert len(reserved['cases']) == 1
+        assert set(reserved['cases'][0]['when']) == {'gui', 'firstperson_righthand', 'firstperson_lefthand'}
+        canonical_card = data['cards'][entry['canonical_id']]
+        assert reserved['cases'][0]['model'] == {'type': 'minecraft:model', 'model': 'card:item/splendor/'+canonical_card['name']}
+        assert reserved['fallback'] == {'type': 'minecraft:model', 'model': f'card:item/splendor/back/tier{canonical_card["tier"]}'}
+        assert entry['reserved_model'] == 'card:splendor/reserved/'+canonical_card['name']
+    assert len({hashlib.sha256(png).digest() for png in seen.values()}) == len(seen), 'different cards accidentally have identical faces'
+    for entry in mapping['nobles']:
+        assert entry['requirement'] == 'development_cards'
+    vanilla_manifest = json.loads((VANILLA/'manifest.json').read_text(encoding='utf-8'))
+    for name, digest in vanilla_manifest['files'].items():
+        assert hashlib.sha256((VANILLA/name).read_bytes()).hexdigest() == digest
     required = {c['name'] for c in data['cards']} | {'noble/'+c['name'] for c in data['nobles']}
     models = list((CARD/'models/item/splendor').rglob('*.json'))
     assert required <= {p.relative_to(CARD/'models/item/splendor').with_suffix('').as_posix() for p in models}
@@ -329,7 +554,9 @@ def check():
             namespace, location = definition['sounds'][0]['name'].split(':')
             path = RP/f'assets/{namespace}/sounds/{location}.ogg'
             assert hashlib.sha256(path.read_bytes()).hexdigest() == audio['references'][event]['sha256']
-    print(f'Splendor assets: {len(models)} models/items/editable sources, 3 fonts x 112 glyphs, references verified')
+    assert len(list((CARD/'items/splendor/reserved').rglob('*.json'))) == 90
+    print(f'Splendor assets: {len(models)} models/items/editable sources, 90 canonical card faces, 90 private reserved selectors, 10 Minecraft mobs, '
+          f'{len(vanilla_manifest["files"])} cached vanilla textures, 3 fonts x 112 glyphs, references verified')
 
 
 if __name__ == '__main__':

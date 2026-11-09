@@ -815,13 +815,18 @@
     "visual/tick_at"
   ],
   "splendor": [
+    "direct/click",
+    "direct/left",
     "game/finish_tick",
     "game/tick",
+    "hud/tick",
     "input/check_drop",
     "input/context",
     "input/drop",
     "input/menu_tool",
     "input/use_drop",
+    "inventory/item_drop",
+    "inventory/tick",
     "sound/tick",
     "tick",
     "ui/autopay",
