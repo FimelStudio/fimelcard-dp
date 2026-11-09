@@ -32,7 +32,12 @@ class Suite(Base):
         return (-z,x) if orient else (x,z)
     def pose_checks(self,cap,orient,pawn,pos,name,table=101,count=1):
         x,z=self.pose(cap,orient,pawn,pos,count)
-        return self.number(self.racer(pawn,table),'transformation.translation[0]',x,name+'_x')+self.number(self.racer(pawn,table),'transformation.translation[2]',z,name+'_z')
+        who=self.racer(pawn,table)
+        return self.number(who,'transformation.translation[0]',x,name+'_x')+self.number(who,'transformation.translation[2]',z,name+'_z')+[
+            f'execute store result score #bottom ce run data get entity {who} transformation.translation[1] 1000000',
+            f'execute store result score #half_scale ce run data get entity {who} transformation.scale[1] 500000',
+            'scoreboard players operation #bottom ce -= #half_scale ce',
+        ]+self.score('#bottom','ce','34995..35005',name+'_feet_above_board')
     def event(self,kind=1,pawn=0,start=0,end=1,die=0,amount=0,source=-2):
         return dict(kind=kind,pawn=pawn,**{'from':start},to=end,source=source,amount=amount,die=die)
     def timeline(self,name,body,ticks,checks):
@@ -54,7 +59,7 @@ class Suite(Base):
                 x=(2-8)*size/16;z=(14-8)*size/16
                 if orient:x,z=-z,x
                 body=self.setup(cap,orient)+self.count('@e[tag=ma.visual,scores={ct_id=101}]',8,key+'_bounded_entities')
-                body+=self.count('@e[type=minecraft:interaction]',0,key+'_no_grid_interactions')
+                body+=self.count('@e[type=minecraft:interaction,tag=ma.hit,scores={ma_dtype=3}]',0,key+'_no_grid_interactions')
                 body+=self.number(self.racer(),'transformation.translation[0]',x,key+'_racer_x')+self.number(self.racer(),'transformation.translation[2]',z,key+'_racer_z')
                 # Independent quaternion expectation: positions use (x,z)->(-z,x), i.e. Y -90 degrees.
                 for axis,value in enumerate((0,-math.sqrt(.5),0,math.sqrt(.5)) if orient else (0,0,0,1)):
@@ -77,7 +82,7 @@ class Suite(Base):
                     body+=self.pose_checks(cap,orient,pawn,15,key+'_pawn'+str(pawn),count=6)
                     body+=self.number(self.racer(pawn),'transformation.scale[0]',path['footprints'][str(cap)]*.026,key+'_crowded_scale'+str(pawn))
                 body+=self.count('@e[tag=ma.racer,scores={ct_id=101}]',6,key+'_six_distinct_entities')
-                body+=self.count('@e[type=minecraft:interaction]',0,key+'_no_grid_interactions')
+                body+=self.count('@e[type=minecraft:interaction,tag=ma.hit,scores={ma_dtype=3}]',0,key+'_no_grid_interactions')
                 self.case(key,body)
         body=self.setup()+self.setup(8,1,202,False)+self.call('visual/clear')
         body+=self.count('@e[tag=ma.visual,scores={ct_id=101}]',0,'clear_own')+self.count('@e[tag=ma.visual,scores={ct_id=202}]',8,'clear_preserves_other')

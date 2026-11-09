@@ -84,6 +84,9 @@ scoreboard players operation #vis_turn ll_ctx = @s ll_turn
 scoreboard players set #box_found ll_ctx 0
 execute as @e[tag=ll.box] if score @s ct_id = #vis_table ll_ctx run scoreboard players set #box_found ll_ctx 1
 execute if score #box_found ll_ctx matches 0 positioned ~ ~1.04 ~ summon minecraft:item_display run function love_letter:visual/box
+execute unless score @s ct_state matches 1 run return 0
+execute unless score @s ll_state matches 1..4 run return 0
+function love_letter:visual/deck_tick
 execute as @e[type=minecraft:marker,tag=ll.board] run function love_letter:visual/participant
 function love_letter:visual/info
 # 牌库相关字段仅展示双人局公开移出的三张牌。
@@ -322,7 +325,29 @@ function love_letter:visual/eliminated_at with storage love_letter:visual seat_d
 ''')
     put('tick','''
 scoreboard players operation #vis_table ll_ctx = @s ct_id
+function love_letter:visual/deck_tick
 execute as @e[type=minecraft:item_display,tag=ll.fx] if score @s ct_id = #vis_table ll_ctx run function love_letter:visual/fx_tick
+''')
+    put('deck_tick','''
+execute unless score @s ct_state matches 1 run return 0
+execute unless score @s ll_state matches 1..4 run return 0
+scoreboard players operation #vis_table ll_ctx = @s ct_id
+scoreboard players set #deck_label_found ll_ctx 0
+execute as @e[tag=ll.deck_count] if score @s ct_id = #vis_table ll_ctx run scoreboard players set #deck_label_found ll_ctx 1
+execute if score #deck_label_found ll_ctx matches 0 positioned ~ ~1.26 ~ summon minecraft:text_display run function love_letter:visual/deck_init
+data modify storage love_letter:visual deck_count set value {count:0}
+execute store result storage love_letter:visual deck_count.count int 1 run data get entity @s data.love_letter.deck
+execute as @e[tag=ll.deck_count] if score @s ct_id = #vis_table ll_ctx run function love_letter:visual/deck_text with storage love_letter:visual deck_count
+''')
+    put('deck_init','''
+tag @s add ll.visual
+tag @s add ll.deck_count
+scoreboard players operation @s ct_id = #vis_table ll_ctx
+data merge entity @s {billboard:"vertical",alignment:"center",background:0,shadow:1b,see_through:0b,view_range:0.7f,line_width:160,brightness:{block:15,sky:15},transformation:{scale:[0.20f,0.20f,0.20f]}}
+''')
+    put('deck_text','''
+$data modify entity @s text set value {text:"",extra:[{text:"剩余 ",color:"gray"},{text:"$(count)",color:"gold"},{text:" 张",color:"gray"}]}
+$data modify entity @s data.ll_count set value $(count)
 ''')
     put('fx_tick','''
 execute unless data entity @s data.ll_frames[0] run return run kill @s

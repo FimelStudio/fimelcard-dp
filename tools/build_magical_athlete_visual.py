@@ -83,7 +83,17 @@ $scoreboard players set @s ma_vid $(index)
 $data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/racer/$(model)"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0.04f,view_range:0.5f}
 function magical_athlete:visual/racer_pose with storage magical_athlete:visual pose
 ''')
-    put('visual/racer_pose','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}')
+    put('visual/racer_pose', [
+        # item_display 将模型 Y=8 作为原点；立牌底面为 Y=0，需补偿半个缩放高度。
+        # 在最后应用姿态时补偿，覆盖静止、同格缩小、行走和传送的每一帧。
+        '$data modify storage magical_athlete:visual draw_pose set value {x:$(x),y:$(y),z:$(z),scale:$(scale),duration:$(duration)}',
+        'execute store result score #racer_y ma_ctx run data get storage magical_athlete:visual draw_pose.y 1000000',
+        'execute store result score #racer_lift ma_ctx run data get storage magical_athlete:visual draw_pose.scale 500000',
+        'scoreboard players operation #racer_y ma_ctx += #racer_lift ma_ctx',
+        'execute store result storage magical_athlete:visual draw_pose.y double 0.000001 run scoreboard players get #racer_y ma_ctx',
+        'function magical_athlete:visual/racer_pose_apply with storage magical_athlete:visual draw_pose',
+    ])
+    put('visual/racer_pose_apply','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}')
     put('visual/dice_spawn','execute positioned ~ ~1.04 ~ summon minecraft:item_display run function magical_athlete:visual/dice_init')
     put('visual/dice_init',['tag @s add ma.visual','tag @s add ma.die','scoreboard players operation @s ct_id = #vis_table ma_ctx','data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/dice"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0.05f,view_range:0.5f,transformation:{translation:[0f,0.12f,0f],scale:[0.23f,0.23f,0.23f],right_rotation:[0f,1f,0f,0f]}}'])
     put('visual/dice_restore',['scoreboard players set #saved_die ma_ctx 0','execute store result score #saved_die ma_ctx run data get entity @s data.magical_athlete.dice','execute unless score #saved_die ma_ctx matches 1..6 run return 0','execute store result storage magical_athlete:visual die int 1 run scoreboard players get #saved_die ma_ctx','data modify storage magical_athlete:visual frame set value 12','function magical_athlete:visual/die_get with storage magical_athlete:visual'])

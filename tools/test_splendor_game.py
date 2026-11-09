@@ -139,6 +139,11 @@ data modify entity @s data.name set value {text:"Fixture"}
         c+=self.data('p1.cards',[0],'second_click_buys')+self.data('p1.tokens',[0,0,0,0,0,0],'auto_gold_exact')+self.data('p1.bonus[0]',1,'bought_bonus')
         c+=self.setup()+self.set('market[0]',0)+self.set('p1.bonus',[0,3,0,0,0])+self.direct(2,0)+self.direct(2,0)+self.data('p1.cards',[0],'free_purchase')
         self.case('direct_buy',c)
+        c=self.setup()+self.set('market[0]',0)+self.set('p1.tokens',[0,3,0,0,0,0])+self.set('p1.bonus',[0,2,0,0,0])
+        c+=self.direct(2,0)+self.direct(2,0)
+        c+=self.data('last.pay',[0,1,0,0,0,0],'discounted_buy_pays_one_sapphire')
+        c+=self.data('p1.tokens',[0,2,0,0,0,0],'discounted_buy_keeps_two_sapphires')
+        self.case('direct_buy_surplus_sapphires',c)
 
         c=self.setup()+self.set('market[0]',0)+self.direct(2,0)+self.snapshot()+self.direct(2,0)
         c+=self.unchanged('unaffordable_second_no_commit')+self.score(person(),'sp_select_stage',2,'third_click_reserve_pending')

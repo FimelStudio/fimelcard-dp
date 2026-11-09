@@ -52,18 +52,26 @@ def build():
         'data modify storage fimel_title:io panel_buffer set value []',
         'data modify storage fimel_title:io text_buffer set value []',
         'data modify storage fimel_title:io neg_text_buffer set value []',
-        'data modify storage splendor:hud anchor set value {x:8,origin:"up-left",align:"left"}',
-        'scoreboard players set #hud_y sp_ctx -8',
-        'data modify storage fimel_title:io text set value {text:"璀璨宝石",color:"gold",bold:false,shadow_color:0}',
-        'function splendor:hud/text',
-        *[f'execute if data entity @e[tag=sp.current,limit=1] data.splendor.p{i}.name run function splendor:hud/row '
-          +js({'side':i,'x':8 if i%2 else -8,'y':-24 if i<=2 else -80,
-               'origin':'up-left' if i%2 else 'up-right','align':'left' if i%2 else 'right'}) for i in range(1, 5)],
+        'execute store result score #hud_n sp_ctx run data get entity @e[tag=sp.current,limit=1] data.splendor.n',
+        *[f'execute if score #hud_n sp_ctx matches {i+1}..4 run function splendor:hud/relative_row '
+          +js({'offset':i,'x':8 if i%2==0 else -8,'y':-8 if i<2 else -64,
+               'origin':'up-left' if i%2==0 else 'up-right','align':'left' if i%2==0 else 'right'}) for i in range(4)],
         'execute if score @s sp_htimer matches 1.. run function splendor:hud/show_notice',
         'execute unless score @s sp_htimer matches 1.. run function splendor:hud/status with entity @e[tag=sp.current,limit=1] data.splendor',
         'scoreboard players operation panel_id fbt_io = @s sp_hpanel',
         'function fimel_title:replace_panel',
         'scoreboard players operation @s fbt_panel = @s sp_hpanel'])
+    put('relative_row', [
+        'scoreboard players operation #hud_side sp_ctx = @s sp_side',
+        '$scoreboard players add #hud_side sp_ctx $(offset)',
+        'scoreboard players remove #hud_side sp_ctx 1',
+        'scoreboard players operation #hud_side sp_ctx %= #hud_n sp_ctx',
+        'scoreboard players add #hud_side sp_ctx 1',
+        '$data modify storage splendor:hud placement set value {side:0,x:$(x),y:$(y),origin:"$(origin)",align:"$(align)"}',
+        'execute store result storage splendor:hud placement.side int 1 run scoreboard players get #hud_side sp_ctx',
+        'function splendor:hud/relative_show with storage splendor:hud placement',
+    ])
+    put('relative_show', '$execute if data entity @e[tag=sp.current,limit=1] data.splendor.p$(side).name run function splendor:hud/row {side:$(side),x:$(x),y:$(y),origin:"$(origin)",align:"$(align)"}')
     put('row', [
         '$data modify storage splendor:hud anchor set value {x:$(x),origin:"$(origin)",align:"$(align)"}',
         '$scoreboard players set #hud_y sp_ctx $(y)',
