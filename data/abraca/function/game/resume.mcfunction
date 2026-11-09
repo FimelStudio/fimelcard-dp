@@ -1,3 +1,5 @@
+scoreboard players operation #ctx ab_ctx = @s ab_id
+execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run function abraca:input/clear_tools
 # 保留发牌、结算计时；仅恢复当前施法入口。
 execute unless score @s ab_state matches 2 run return 0
 function abraca:hud/update

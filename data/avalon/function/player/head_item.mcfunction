@@ -1,0 +1,4 @@
+$execute if items entity @s inventory.* *[minecraft:custom_data~{avalon:{head:1b,table:$(table),epoch:$(epoch),seat:$(seat)}}] run return 0
+$execute if items entity @s hotbar.* *[minecraft:custom_data~{avalon:{head:1b,table:$(table),epoch:$(epoch),seat:$(seat)}}] run return 0
+$execute unless items entity @s hotbar.$(slot) * run return run item replace entity @s hotbar.$(slot) with minecraft:player_head[minecraft:profile={id:$(uuid)},minecraft:item_name=[$(name),{text:" · Q选中／取消"}],minecraft:custom_data={avalon:{head:1b,table:$(table),epoch:$(epoch),seat:$(seat)}},minecraft:max_stack_size=1]
+$give @s minecraft:player_head[minecraft:profile={id:$(uuid)},minecraft:item_name=[$(name),{text:" · Q选中／取消"}],minecraft:custom_data={avalon:{head:1b,table:$(table),epoch:$(epoch),seat:$(seat)}},minecraft:max_stack_size=1]

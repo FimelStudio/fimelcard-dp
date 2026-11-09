@@ -11,3 +11,6 @@ scoreboard players set #online av_ctx 0
 execute as @a[tag=av.audience] run scoreboard players add #online av_ctx 1
 execute as @a[tag=av.audience] run function avalon:player/identity
 execute as @a[tag=av.audience] run function avalon:player/private_info
+
+function avalon:player/heads
+execute if score @s av_state matches 1 as @a[tag=av.audience,scores={av_selected=1}] run effect give @s minecraft:glowing 2 0 true

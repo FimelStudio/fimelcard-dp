@@ -18,14 +18,12 @@ execute store result storage avalon:ui id int 1 run scoreboard players get @s av
 execute store result storage avalon:ui leader int 1 run scoreboard players get #leader av_ctx
 execute store result storage avalon:ui need int 1 run scoreboard players get @e[tag=av.current,limit=1] av_need
 function avalon:dialog/public with storage avalon:ui
-execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ctx as @a[tag=av.audience] run function avalon:dialog/team_button
 execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ctx run function avalon:dialog/button {code:10,label:"选好队伍，开始投票／强制出征"}
 execute if score #state av_ctx matches 1..3 if score #role av_ctx matches 5 run function avalon:dialog/button {code:40,label:"提前翻牌刺杀…"}
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 as @a[tag=av.audience,scores={av_role=1..3}] run function avalon:dialog/target_button
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 if score @s av_target matches 1..8 run function avalon:dialog/button {code:60,label:"确认刺杀所选玩家（结束游戏）"}
 function avalon:player/private_info
 scoreboard players set #show_ui av_ctx 0
-execute if score #state av_ctx matches 1 if score #viewer av_ctx = #leader av_ctx run scoreboard players set #show_ui av_ctx 1
 execute if score #state av_ctx matches 4 if score #role av_ctx matches 5 run scoreboard players set #show_ui av_ctx 1
 execute if score #manual_ui av_ctx matches 1 run scoreboard players set #show_ui av_ctx 1
 execute if score #show_ui av_ctx matches 1 run function avalon:dialog/show with storage avalon:ui

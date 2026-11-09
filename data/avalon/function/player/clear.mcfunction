@@ -15,3 +15,5 @@ scoreboard players reset @s av_action
 scoreboard players reset @s av_target
 tag @s remove av.actor
 tag @s remove av.target
+
+effect clear @s minecraft:glowing
