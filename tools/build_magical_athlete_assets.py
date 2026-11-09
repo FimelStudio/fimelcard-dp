@@ -308,6 +308,34 @@ def pawn(slug, index):
     model('token/'+slug,badge,gui={'gui':{'rotation':[90,0,0],'scale':[.9,.9,.9]}})
 
 
+def build_hand_models():
+    """徽章在 GUI 中平放，在手里用独立竖立几何，并沿用 poker 的手持位置。"""
+    poker=json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
+    for entry in [*CHARACTERS,{'slug':'back','id':-1}]:
+        slug=entry['slug']
+        portrait='card:item/magical_athlete/'+('prop/menu' if slug=='back' else 'racer/'+slug)
+        edge='card:item/magical_athlete/'+('prop/menu' if slug=='back' else 'racer_edge/'+slug)
+        elements=[]
+        # 与 poker 相同的中心 (7,9,8.5)，圆形头像保持原比例；两面均有实体厚度。
+        for index in range(16):
+            x0=index*14/16;x1=(index+1)*14/16
+            height=math.sqrt(7**2-((x0+x1)/2-7)**2)
+            part=cube([x0,9-height,8.25],[x1,9+height,8.75],'edge',f'held_badge_{index:02}')
+            uv=[x0/14*16,(7-height)/14*16,x1/14*16,(7+height)/14*16]
+            part['faces']['north']={'texture':'#portrait','uv':uv}
+            part['faces']['south']={'texture':'#portrait','uv':[uv[2],uv[1],uv[0],uv[3]]}
+            elements.append(part)
+        model('hand/'+slug,{'textures':{'portrait':portrait,'edge':edge,'particle':portrait},
+                           'elements':elements,'display':poker['display']})
+    for entry in CHARACTERS:
+        slug=entry['slug']
+        json_file(CARD/f'items/magical_athlete/hand/{slug}.json',{'model':{
+            'type':'minecraft:select','property':'minecraft:display_context','cases':[
+                {'when':['gui'],'model':{'type':'minecraft:model','model':'card:item/magical_athlete/token/'+slug}},
+                {'when':['firstperson_righthand','firstperson_lefthand'],'model':{'type':'minecraft:model','model':'card:item/magical_athlete/hand/'+slug}},
+            ],'fallback':{'type':'minecraft:model','model':'card:item/magical_athlete/hand/back'}}})
+
+
 def board(kind):
     size=1536;s=size/16
     image=Image.new('RGB',(size,size),'#194c59' if kind=='mild' else '#41365e')
@@ -471,6 +499,7 @@ def build():
     mild,wild=board('mild'),board('wild')
     for entry in CHARACTERS:pawn(entry['slug'],entry['id'])
     dice();props();fonts();previews(mild,wild)
+    build_hand_models()
     json_file(SOURCE/'asset-map.json',{'id':23,'namespace':GAME,'texture_style':'Original sports-medallion illustration',
         'track_source':'fimel_cards/tools/magical_athlete_track.json', 'layout':TRACK['layout'],
         'models':{'board':['card:magical_athlete/board/'+k for k in ('mild','wild')],

@@ -343,7 +343,7 @@ execute as @e[tag=ll.deck_count] if score @s ct_id = #vis_table ll_ctx run funct
 tag @s add ll.visual
 tag @s add ll.deck_count
 scoreboard players operation @s ct_id = #vis_table ll_ctx
-data merge entity @s {billboard:"vertical",alignment:"center",background:0,shadow:1b,see_through:0b,view_range:0.7f,line_width:160,brightness:{block:15,sky:15},transformation:{scale:[0.20f,0.20f,0.20f]}}
+data merge entity @s {billboard:"vertical",alignment:"center",background:0,shadow:1b,see_through:0b,view_range:0.7f,line_width:160,brightness:{block:15,sky:15},transformation:{scale:[0.30f,0.30f,0.30f]}}
 ''')
     put('deck_text','''
 $data modify entity @s text set value {text:"",extra:[{text:"剩余 ",color:"gray"},{text:"$(count)",color:"gold"},{text:" 张",color:"gray"}]}

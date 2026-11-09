@@ -455,15 +455,10 @@ def assets():
         for element in obj['elements']:
             if element.get('name')=='board':element['from'][1]=8;element['to'][1]=8.06
         path.write_text(json.dumps(obj,indent=2)+'\n',encoding='utf-8')
-    for c in CHARS:
-        obj = {'model': {'type': 'minecraft:select', 'property': 'minecraft:display_context', 'cases': [
-            {'when': ['thirdperson_righthand','thirdperson_lefthand','ground'], 'model': {'type': 'minecraft:model', 'model': 'card:item/magical_athlete/prop/menu'}}],
-            'fallback': {'type': 'minecraft:model', 'model': f'card:item/magical_athlete/token/{c["slug"]}'}}}
-        p = rp / f'assets/card/items/magical_athlete/hand/{c["slug"]}.json'
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(js(obj)+'\n', encoding='utf-8')
+    from build_magical_athlete_assets import build_hand_models
+    build_hand_models()
     p=rp/'.source/magical_athlete/direct-interaction.json'
-    p.write_text(js({'secret_hand': 'card:magical_athlete/hand/<slug>', 'hidden_contexts':['thirdperson_righthand','thirdperson_lefthand','ground'], 'source':'tools/build_magical_athlete_direct.py'})+'\n', encoding='utf-8')
+    p.write_text(js({'secret_hand':'card:magical_athlete/hand/<slug>','front_contexts':['gui','firstperson_righthand','firstperson_lefthand'],'fallback':'card:item/magical_athlete/hand/back','hand_pose_source':'card:item/fake_card','source':'tools/build_magical_athlete_direct.py'})+'\n',encoding='utf-8')
 
 
 def roster():

@@ -61,7 +61,11 @@ class Assets(unittest.TestCase):
                 self.assertTrue((RP/f'assets/{ns}/textures/{location}.png').exists(),resource)
             relative=path.relative_to(CARD/'models/item/magical_athlete')
             item=json.loads((CARD/'items/magical_athlete'/relative).read_text(encoding='utf-8'))
-            self.assertEqual(item['model']['model'],'card:item/magical_athlete/'+relative.with_suffix('').as_posix())
+            if relative.as_posix().startswith('hand/') and relative.stem!='back':
+                self.assertEqual(item['model']['type'],'minecraft:select')
+                self.assertEqual(item['model']['cases'][1]['model']['model'],'card:item/magical_athlete/'+relative.with_suffix('').as_posix())
+            else:
+                self.assertEqual(item['model']['model'],'card:item/magical_athlete/'+relative.with_suffix('').as_posix())
             source=SOURCE/'models'/relative.with_suffix('.bbmodel')
             self.assertTrue(source.exists(),source)
             editable=json.loads(source.read_text(encoding='utf-8'))
@@ -75,6 +79,32 @@ class Assets(unittest.TestCase):
                     self.assertLessEqual(a,b)
                     self.assertGreaterEqual(a,-16)
                     self.assertLessEqual(b,32)
+
+    def test_hand_badges_use_poker_pose_and_keep_other_views_private(self):
+        poker=json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
+        for entry in [*CHARS,{'slug':'back'}]:
+            slug=entry['slug']
+            body=json.loads((CARD/f'models/item/magical_athlete/hand/{slug}.json').read_text(encoding='utf-8'))
+            for context in ('firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand','ground'):
+                self.assertEqual(body['display'][context],poker['display'][context],(slug,context))
+            for axis,center in enumerate((7,9,8.5)):
+                low=min(e['from'][axis] for e in body['elements'])
+                high=max(e['to'][axis] for e in body['elements'])
+                self.assertAlmostEqual((low+high)/2,center,places=6)
+            if slug=='back':continue
+            item=json.loads((CARD/f'items/magical_athlete/hand/{slug}.json').read_text(encoding='utf-8'))['model']
+            for context in ('gui','firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand','ground','head','fixed','none'):
+                selected=item['fallback']
+                for case in item['cases']:
+                    if context in case['when']:
+                        selected=case['model'];break
+                if context=='gui':
+                    expected='card:item/magical_athlete/token/'+slug
+                elif context.startswith('firstperson_'):
+                    expected='card:item/magical_athlete/hand/'+slug
+                else:
+                    expected='card:item/magical_athlete/hand/back'
+                self.assertEqual(selected['model'],expected,(slug,context))
 
     def test_fonts_exact_mapping_and_small_glyphs(self):
         body=json.loads((RP/'assets/magical_athlete/font/icons.json').read_text(encoding='utf-8'))
