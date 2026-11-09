@@ -13,3 +13,5 @@ execute unless score @s ct_paused matches 1 run function catan:visual/refresh
 execute unless score @s ct_paused matches 1 unless score @s ca_state matches 11 run function catan:input/create_surface
 function catan:sound/reload
 execute as @a[tag=ca.audience] run function catan:input/give
+# direct-v2
+execute as @a[tag=ca.audience] run scoreboard players set @s ca_depoch -1

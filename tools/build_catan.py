@@ -18,8 +18,7 @@ def main():
     steps=[('engine',[]),('visual',[]),('font',[]),('sound',['--assets'] if args.audio else []),('settings',[]),('ui',[]),('input',[]),('game',[])]
     for module,options in steps:
         subprocess.run([sys.executable,str(TOOLS/f'build_catan_{module}.py'),*options],cwd=TOOLS.parent,check=True)
-    subprocess.run([sys.executable,str(TOOLS/'register_catan.py')],cwd=TOOLS.parent,check=True)
-
+    # 已有公共注册不重复生成，避免改变其他游戏的菜单顺序。
     from build_direct_interactions import build as direct_interactions
     direct_interactions("catan")
 

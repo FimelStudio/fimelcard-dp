@@ -28,3 +28,6 @@ scoreboard objectives add ma_chatstate dummy
 scoreboard objectives add ma_chatround dummy
 
 scoreboard objectives add ma_notice dummy
+# direct-v2
+function magical_athlete:direct/load
+function magical_athlete:hud/load

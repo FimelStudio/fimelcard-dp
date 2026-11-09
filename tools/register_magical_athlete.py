@@ -11,7 +11,7 @@ from build_table_pause_guards import write_guarded
 def register_rules():
     path = base.PACK / 'tools/game_rules.json'
     records = json.loads(path.read_text(encoding='utf-8'))
-    records['magical_athlete'] = {'id': 23, 'name': '胡闹运动会', 'sections': {
+    defaults = {'id': 23, 'name': '胡闹运动会', 'sections': {
         '人数与目标': [{'text': '2～6名真人。为自己的队伍招募奇妙选手，进行四场比赛，累计积分最高者获胜；总分相同共同获胜。四座桌最多4人，5～6人使用八座桌。'}],
         '操作方式': [{'text': '腾空快捷栏最后一格，手持「胡闹运动会 · 比赛菜单」按Q。选角、选择本场选手、掷骰、使用可选能力和指定目标均通过菜单操作；只有有待完成操作的玩家能提交。其他玩家可以查看赛况、公开角色能力与积分。'}],
         '对局流程': [
@@ -23,6 +23,7 @@ def register_rules():
             {'heading': '连锁与赛道', 'text': '默认依次比赛普通、狂野、普通、狂野赛道，可在开局前调整。狂野格会带来积分、推拉或绊倒。连锁按赛道、当前行动选手、其余选手的顺序结算，先完成一次移动再处理其触发。到达终点或淘汰后能力失效，角色明示的例外除外；共同到达的选手之间不互相触发同格能力。'}],
         '暂停与结束': [{'text': '任一真人离线，整桌暂停，投骰、移动动画和能力选择一起冻结；全部原玩家回来后继续。四场结算后公布总积分，平分共同获胜。提前结束可使用牌桌投票，管理员可中止。'}],
         '管理命令': []}}
+    records.setdefault('magical_athlete', defaults)
     path.write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     from build_game_rules import make_dialog
     dialog = make_dialog('magical_athlete')

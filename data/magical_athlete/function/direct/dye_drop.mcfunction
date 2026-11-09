@@ -1,5 +1,7 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
+clear @s minecraft:purple_dye[minecraft:custom_data~{magical_athlete:{tool:1b}}]
 scoreboard players set @s ma_dye 0
-tag @a[tag=ma.dye_owner] remove ma.dye_owner
-tag @s add ma.dye_owner
-execute as @e[type=minecraft:item,distance=..6] if items entity @s contents minecraft:purple_dye[minecraft:custom_data~{magical_athlete:{tool:1b}}] run function magical_athlete:direct/dye_check
-tag @s remove ma.dye_owner

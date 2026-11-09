@@ -3,6 +3,14 @@ from pathlib import Path
 import argparse,json
 P=Path(__file__).resolve().parents[1]
 def build(game):
+ if game=='catan':
+  from build_catan_direct import build as build_catan_direct
+  build_catan_direct()
+  return
+ if game=='magical_athlete':
+  from build_magical_athlete_direct import build as build_magical_athlete_direct
+  build_magical_athlete_direct()
+  return
  if game=='splendor':
   from build_splendor_direct import build as build_splendor_direct
   build_splendor_direct()

@@ -6,13 +6,12 @@ execute unless score @s ct_joined matches 3..4 run return fail
 scoreboard players set #online ca_ctx 0
 scoreboard players set #blocked ca_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx run scoreboard players add #online ca_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.0 * unless items entity @s hotbar.0 minecraft:paper[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
-execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.0 * unless items entity @s hotbar.0 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.1 * unless items entity @s hotbar.1 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.2 * unless items entity @s hotbar.2 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.3 * unless items entity @s hotbar.3 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.4 * unless items entity @s hotbar.4 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.5 * unless items entity @s hotbar.5 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.6 * unless items entity @s hotbar.6 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1
@@ -42,6 +41,8 @@ execute as @a[tag=ca.audience] run function catan:input/give
 function catan:sound/start
 scoreboard players set @s ct_start 1
 tellraw @a[tag=ca.audience] {"text": "[卡坦岛] 先顺序、再逆序免费放村庄＋相邻道路；第二个村庄领取起始资源。", "color": "yellow"}
-tellraw @a[tag=ca.audience] {"text": "[卡坦岛] 第1格 Q 瞄准交点／边，第9格 Q 打开菜单；看屏幕下方提示，菜单内可随时查看「新手入门」。", "color": "aqua"}
+tellraw @a[tag=ca.audience] {text:"[卡坦岛] 建筑右键或Q两次确认；第8格投骰，第7格结束回合；资源、发展卡在物品栏按Q。",color:"aqua"}
 function catan:game/hud
 function cardtable:log {text:"卡坦岛开始"}
+# direct-v2
+execute if score @s ct_start matches 1 run function catan:direct/deck_spawn

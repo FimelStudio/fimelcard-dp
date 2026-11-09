@@ -18,3 +18,10 @@ tag @s remove ma.player
 tag @s remove ma.audience
 tag @s remove ma.actor
 tag @s remove ma.sound_audience
+# direct-v2
+function magical_athlete:hud/deactivate
+scoreboard players reset @s ma_depoch
+scoreboard players reset @s ma_iepoch
+scoreboard players set @s ma_dpage 0
+scoreboard players reset @s ma_expected
+scoreboard players reset @s ma_confirm

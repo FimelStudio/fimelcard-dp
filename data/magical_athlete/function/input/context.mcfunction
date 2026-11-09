@@ -14,3 +14,5 @@ execute as @e[type=minecraft:marker,tag=ct.controller,tag=ma.controller,distance
 execute unless entity @e[tag=ma.current,limit=1] run return 0
 tag @s add ma.actor
 execute as @e[tag=ma.current,limit=1] at @s run function magical_athlete:system/context
+# direct-v2
+execute if entity @s[nbt={Health:0.0f}] run tag @s remove ma.actor

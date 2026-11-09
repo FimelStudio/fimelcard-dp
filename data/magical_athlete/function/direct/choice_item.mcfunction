@@ -1,1 +1,2 @@
-$item replace entity @s hotbar.$(slot) with minecraft:paper[minecraft:item_model="minecraft:lime_dye",minecraft:custom_name={text:"$(label)（Q）",color:"green",italic:false},minecraft:custom_data={magical_athlete:{tool:1b,choice:1b,code:$(code),epoch:$(epoch),table:$(table)}}]
+$execute if items entity @s hotbar.$(slot) * unless items entity @s hotbar.$(slot) *[minecraft:custom_data~{magical_athlete:{tool:1b}}] run return run function magical_athlete:direct/space_notice
+$item replace entity @s hotbar.$(slot) with minecraft:paper[minecraft:item_model="minecraft:lime_dye",minecraft:custom_name={text:"$(label)〔Q〕",color:"green",italic:false},minecraft:custom_data={magical_athlete:{tool:1b,choice:1b,code:$(code),epoch:$(epoch),table:$(table)}}]

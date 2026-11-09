@@ -10,3 +10,6 @@ function magical_athlete:game/sync
 function magical_athlete:visual/refresh
 function magical_athlete:sound/reload
 execute as @a[tag=ma.audience] run function magical_athlete:input/give
+# direct-v2
+execute as @a[tag=ma.audience] run scoreboard players set @s ma_depoch -1
+execute as @a[tag=ma.audience] run function magical_athlete:direct/sync

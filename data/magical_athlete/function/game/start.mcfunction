@@ -5,6 +5,14 @@ execute unless score @s ct_joined matches 2..6 run return fail
 scoreboard players set #online ma_ctx 0
 scoreboard players set #blocked ma_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx run scoreboard players add #online ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.0 * unless items entity @s hotbar.0 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.1 * unless items entity @s hotbar.1 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.2 * unless items entity @s hotbar.2 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.3 * unless items entity @s hotbar.3 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.4 * unless items entity @s hotbar.4 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.5 * unless items entity @s hotbar.5 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.6 * unless items entity @s hotbar.6 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
+execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.7 * unless items entity @s hotbar.7 *[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{magical_athlete:{tool:1b}}] run scoreboard players set #blocked ma_ctx 1
@@ -22,6 +30,7 @@ execute as @a[tag=ma.player] if score @s ma_table = #table ma_ctx run function m
 execute as @a[tag=ct.player] if score @s ct_id = #table ma_ctx run function magical_athlete:player/init
 function magical_athlete:system/context
 scoreboard players operation #players ma_ctx = @s ct_joined
+data remove entity @s data.ma_inventory
 function magical_athlete:engine/init
 scoreboard players set @a[tag=ma.audience] ma_side 0
 function magical_athlete:game/assign
@@ -35,5 +44,5 @@ execute as @a[tag=ma.audience] run function magical_athlete:input/give
 function magical_athlete:sound/start
 function magical_athlete:sound/race_start
 scoreboard players set @s ct_start 1
-tellraw @a[tag=ma.audience] {text:"[胡闹运动会] 开始四场积分赛！快捷栏最后一格按Q打开比赛菜单。",color:"gold"}
+tellraw @a[tag=ma.audience] {text:"[胡闹运动会] 开始四场积分赛！右键桌面招募；手持角色或技能选项按Q。",color:"gold"}
 function magical_athlete:ui/refresh

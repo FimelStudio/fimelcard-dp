@@ -6,3 +6,5 @@ scoreboard players reset @a[tag=ma.audience] ma_nonce
 execute as @a[tag=ma.audience] run dialog clear @s
 function magical_athlete:visual/animate
 execute unless score @s ma_anim matches 1.. run function magical_athlete:game/after_animation
+# direct-v2
+execute unless score @s ma_anim matches 1.. run function magical_athlete:direct/board_refresh

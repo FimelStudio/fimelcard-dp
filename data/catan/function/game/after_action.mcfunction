@@ -34,3 +34,5 @@ data modify entity @s data.catan.last set from storage catan:runtime event
 execute if score @s ca_winner matches 1..4 run return run function catan:game/win
 execute as @a[tag=ca.audience] run function catan:input/give
 function catan:game/hud
+# direct-v2
+function catan:direct/deck_spawn

@@ -15,3 +15,6 @@ execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_game=21}] at @s
 scoreboard objectives add ca_dye minecraft.dropped:minecraft.purple_dye
 
 scoreboard objectives add ca_inv_epoch dummy
+# direct-v2
+function catan:direct/load
+function catan:hud/load

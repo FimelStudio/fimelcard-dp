@@ -28,4 +28,4 @@ execute if data storage magical_athlete:ui option{kind:"egg"} run function magic
 execute if data storage magical_athlete:ui option{kind:"twin"} run function magical_athlete:ui/character_label with storage magical_athlete:ui option
 execute if data storage magical_athlete:ui option{kind:"genius"} unless score #option ma_ctx matches 0 run function magical_athlete:ui/guess_label with storage magical_athlete:ui option
 execute if data storage magical_athlete:ui option{kind:"thirdwheel"} unless score #option ma_ctx matches -1 run function magical_athlete:ui/space_label with storage magical_athlete:ui option
-function magical_athlete:ui/choice_button with storage magical_athlete:ui option
+function magical_athlete:direct/option_finish with storage magical_athlete:ui option

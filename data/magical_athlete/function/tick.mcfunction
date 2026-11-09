@@ -11,6 +11,9 @@ execute in minecraft:the_nether as @e[type=minecraft:marker,tag=ct.controller,di
 execute in minecraft:the_end as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_game=23,ct_state=1}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function magical_athlete:game/tick
 execute as @a[tag=ma.player] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] unless entity @s[tag=ct.player] run function magical_athlete:player/clear_state
 
-execute as @a[tag=ma.player,scores={ma_dye=1..}] at @s run function magical_athlete:direct/dye_drop
+execute as @a[tag=ma.player,scores={ma_dye=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function magical_athlete:direct/dye_drop
 
 scoreboard players remove @a[scores={ma_notice=1..}] ma_notice 1
+# direct-v2
+execute as @a[tag=ma.player] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function magical_athlete:direct/player_tick
+execute as @e[type=minecraft:item] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] if items entity @s contents *[minecraft:custom_data~{magical_athlete:{tool:1b}}] run function magical_athlete:direct/recover_drop

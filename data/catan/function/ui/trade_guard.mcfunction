@@ -3,7 +3,7 @@ execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
 execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
-$execute unless score @s ca_side matches $(from) unless score @s ca_side matches $(to) run return run function catan:ui/open
+$execute unless score @s ca_side matches $(from) unless score @s ca_side matches $(to) run return run function catan:direct/trade_unrelated
 function catan:ui/begin
 scoreboard players set @s ca_panel 5
 data modify storage catan:ui trade set from entity @e[tag=ca.current,limit=1] data.catan.trade

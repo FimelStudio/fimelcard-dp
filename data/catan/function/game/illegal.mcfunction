@@ -1,10 +1,10 @@
-data modify storage catan:runtime error set value "当前操作不可用，请重新打开菜单查看下一步。"
+data modify storage catan:runtime error set value "当前操作不可用，请查看当前阶段和操作提示。"
 scoreboard players set #illegal_code ca_ctx 0
 execute store result score #illegal_code ca_ctx run data get storage catan:action input.code
 execute if score #error ca_ctx matches 1 run data modify storage catan:runtime error set value "对局状态不可用，请等待恢复或结束本局。"
 execute if score #error ca_ctx matches 2 run data modify storage catan:runtime error set value "你不在本局的参与名单中。"
-execute if score #error ca_ctx matches 3 run data modify storage catan:runtime error set value "这个窗口已经过期，请从第9格 Q 菜单重新操作。"
-execute if score #error ca_ctx matches 4 run data modify storage catan:runtime error set value "当前不是执行该操作的阶段或轮次，请看菜单顶部的个人提示。"
+execute if score #error ca_ctx matches 3 run data modify storage catan:runtime error set value "局面已经变化，请重新选择。"
+execute if score #error ca_ctx matches 4 run data modify storage catan:runtime error set value "当前不是执行该操作的阶段或轮次，请看当前阶段提示。"
 execute if score #error ca_ctx matches 5 run data modify storage catan:runtime error set value "目标位置不合法，请重新瞄准交点、边或另一块地块。"
 execute if score #error ca_ctx matches 6 run data modify storage catan:runtime error set value "本次支付或领取所需的资源不足。请检查自己的资源、银行库存或交易报价。"
 execute if score #error ca_ctx matches 7 run data modify storage catan:runtime error set value "所需棋子或开发牌不足。"

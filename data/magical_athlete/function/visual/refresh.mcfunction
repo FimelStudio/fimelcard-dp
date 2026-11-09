@@ -11,3 +11,5 @@ execute if data entity @s data.magical_athlete.racers[2] run function magical_at
 execute if data entity @s data.magical_athlete.racers[3] run function magical_athlete:visual/racer_spawn {index:3}
 execute if data entity @s data.magical_athlete.racers[4] run function magical_athlete:visual/racer_spawn {index:4}
 execute if data entity @s data.magical_athlete.racers[5] run function magical_athlete:visual/racer_spawn {index:5}
+# direct-v2
+function magical_athlete:direct/board_refresh

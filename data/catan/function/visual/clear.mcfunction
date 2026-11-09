@@ -5,3 +5,6 @@ scoreboard players set @s ca_vkind 0
 data remove entity @s data.catan.visual_events
 data remove entity @s data.catan.visual_active
 data remove entity @s data.catan.visual_motion
+# direct-v2
+scoreboard players operation #table ca_ctx = @s ct_id
+execute as @e[tag=ca.deck_direct] if score @s ct_id = #table ca_ctx run kill @s
