@@ -16,3 +16,5 @@ execute if score @s ma_pulse matches 0 as @a[tag=ma.audience] run function magic
 execute as @e[tag=ma.hit] if score @s ct_id = #table ma_ctx if data entity @s interaction run function magical_athlete:direct/click
 execute as @e[tag=ma.hit] if score @s ct_id = #table ma_ctx if data entity @s attack run function magical_athlete:direct/left
 function magical_athlete:direct/countdown
+# feedback-v1
+execute if score @s ma_pulse matches 0 run function magical_athlete:feedback/guide

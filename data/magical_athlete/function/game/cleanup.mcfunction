@@ -1,4 +1,5 @@
 function magical_athlete:system/context
+function magical_athlete:feedback/reset
 scoreboard players set @s ma_finish 0
 scoreboard players set @s ma_anim 0
 data remove entity @s data.magical_athlete.visual_queue

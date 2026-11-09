@@ -63,7 +63,7 @@ class Assets(unittest.TestCase):
             item=json.loads((CARD/'items/magical_athlete'/relative).read_text(encoding='utf-8'))
             if relative.as_posix().startswith('hand/') and relative.stem!='back':
                 self.assertEqual(item['model']['type'],'minecraft:select')
-                self.assertEqual(item['model']['cases'][1]['model']['model'],'card:item/magical_athlete/'+relative.with_suffix('').as_posix())
+                self.assertEqual(item['model']['cases'][0]['model']['model'],'card:item/magical_athlete/'+relative.with_suffix('').as_posix())
             else:
                 self.assertEqual(item['model']['model'],'card:item/magical_athlete/'+relative.with_suffix('').as_posix())
             source=SOURCE/'models'/relative.with_suffix('.bbmodel')
@@ -80,17 +80,26 @@ class Assets(unittest.TestCase):
                     self.assertGreaterEqual(a,-16)
                     self.assertLessEqual(b,32)
 
-    def test_hand_badges_use_poker_pose_and_keep_other_views_private(self):
-        poker=json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
+    def test_3d_figures_fit_hand_and_keep_other_views_private(self):
+        signatures=set()
         for entry in [*CHARS,{'slug':'back'}]:
             slug=entry['slug']
             body=json.loads((CARD/f'models/item/magical_athlete/hand/{slug}.json').read_text(encoding='utf-8'))
-            for context in ('firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand','ground'):
-                self.assertEqual(body['display'][context],poker['display'][context],(slug,context))
-            for axis,center in enumerate((7,9,8.5)):
+            geometry=[{'from':e['from'],'to':e['to']} for e in body['elements']]
+            if slug!='back':signatures.add(json.dumps(geometry,sort_keys=True))
+            self.assertGreaterEqual(len(geometry),7)
+            for axis in range(3):
                 low=min(e['from'][axis] for e in body['elements'])
                 high=max(e['to'][axis] for e in body['elements'])
-                self.assertAlmostEqual((low+high)/2,center,places=6)
+                self.assertGreater(high-low,3,(slug,axis))
+                if axis==1:
+                    self.assertEqual(low,8,(slug,'feet must not sink during display scaling'))
+                    self.assertLessEqual(high-low,18)
+                else:
+                    self.assertAlmostEqual((low+high)/2,8,places=6)
+                    self.assertLessEqual(high-low,14.000001)
+                for context in ('firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand'):
+                    self.assertLess((high-low)*body['display'][context]['scale'][axis],6)
             if slug=='back':continue
             item=json.loads((CARD/f'items/magical_athlete/hand/{slug}.json').read_text(encoding='utf-8'))['model']
             for context in ('gui','firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand','ground','head','fixed','none'):
@@ -98,13 +107,12 @@ class Assets(unittest.TestCase):
                 for case in item['cases']:
                     if context in case['when']:
                         selected=case['model'];break
-                if context=='gui':
-                    expected='card:item/magical_athlete/token/'+slug
-                elif context.startswith('firstperson_'):
+                if context=='gui' or context.startswith('firstperson_'):
                     expected='card:item/magical_athlete/hand/'+slug
                 else:
                     expected='card:item/magical_athlete/hand/back'
                 self.assertEqual(selected['model'],expected,(slug,context))
+        self.assertEqual(len(signatures),36,'Characters must have different geometry, not only different textures')
 
     def test_fonts_exact_mapping_and_small_glyphs(self):
         body=json.loads((RP/'assets/magical_athlete/font/icons.json').read_text(encoding='utf-8'))

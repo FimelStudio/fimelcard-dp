@@ -298,6 +298,8 @@ function magical_athlete:game/hud
     put('direct/space_notice','execute if score @s ma_htimer matches 1.. run return 0\n'+notice('请腾空快捷栏操作位置，并为队伍卡留出主物品栏空间；普通物品不会被覆盖。'))
     # 特殊界面只在本人主动操作特殊入口时显示；普通流程绝不弹窗。
     assets()
+    from build_table_feedback import magical_athlete as feedback
+    feedback()
     from build_direct_support import finish
     finish('magical_athlete')
 
@@ -336,9 +338,9 @@ data modify storage magical_athlete:direct slug set from storage magical_athlete
 data modify storage magical_athlete:direct name set from storage magical_athlete:direct card.name
 data modify storage magical_athlete:direct width set value 0.46
 execute if entity @e[tag=ma.current,scores={ma_orient=1},limit=1] run function magical_athlete:direct/rotate_pool
-$execute positioned ~$(x) ~1.12 ~$(z) summon minecraft:item_display run function magical_athlete:direct/pool_init with storage magical_athlete:direct
-$execute positioned ~$(x) ~1.10 ~$(z) summon minecraft:interaction run function magical_athlete:direct/hit_init with storage magical_athlete:direct
-$execute positioned ~$(x) ~1.32 ~$(z) summon minecraft:text_display run function magical_athlete:direct/pool_title with storage magical_athlete:direct
+$execute positioned ~$(x) ~1.055 ~$(z) summon minecraft:item_display run function magical_athlete:direct/pool_init with storage magical_athlete:direct
+$execute positioned ~$(x) ~1.055 ~$(z) summon minecraft:interaction run function magical_athlete:direct/hit_init with storage magical_athlete:direct
+$execute positioned ~$(x) ~1.42 ~$(z) summon minecraft:text_display run function magical_athlete:direct/pool_title with storage magical_athlete:direct
 ''')
     put('direct/pool_title','tag @s add ma.direct\n$scoreboard players set @s ct_id $(table)\n$data merge entity @s {billboard:"vertical",Rotation:[0f,0f],background:0,shadow:1b,text:{text:"$(name)",color:"aqua"},transformation:{translation:[0f,0f,0f],scale:[0.18f,0.18f,0.18f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}')
     put('direct/rotate_pool','data modify storage magical_athlete:direct old_x set from storage magical_athlete:direct x\nexecute store result score #pool_z ma_ctx run data get storage magical_athlete:direct z 1000000\nexecute store result storage magical_athlete:direct x double -0.000001 run scoreboard players get #pool_z ma_ctx\ndata modify storage magical_athlete:direct z set from storage magical_athlete:direct old_x')
@@ -347,7 +349,7 @@ tag @s add ma.direct
 tag @s add ma.pool
 $scoreboard players set @s ct_id $(table)
 $scoreboard players set @s ma_did $(id)
-$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/token/$(slug)"}},item_display:"none",brightness:{block:15,sky:15},transformation:{scale:[0.45f,0.45f,0.45f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}
+$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/racer/$(slug)"}},item_display:"none",brightness:{block:15,sky:15},transformation:{scale:[0.26f,0.26f,0.26f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}
 ''')
     put('direct/hit_init', '''
 tag @s add ma.direct
@@ -356,6 +358,8 @@ $scoreboard players set @s ct_id $(table)
 $scoreboard players set @s ma_dtype $(type)
 $scoreboard players set @s ma_did $(id)
 $data merge entity @s {width:$(width)f,height:0.18f,response:1b,data:{hit:{table:$(table),epoch:$(epoch),type:$(type),id:$(id)}}}
+execute if score @s ma_dtype matches 1 run data modify entity @s height set value 0.36f
+execute if score @s ma_dtype matches 2 run data modify entity @s height set value 0.30f
 ''')
     put('direct/racer_hits', [f'function magical_athlete:direct/racer_hit {{index:{i}}}' for i in range(6)] + [f'execute if data entity @s data.magical_athlete.pending{{kind:"thirdwheel"}} run function magical_athlete:direct/cell_hit {{pos:{i}}}' for i in range(31)])
     put('direct/racer_hit', '''
@@ -458,7 +462,7 @@ def assets():
     from build_magical_athlete_assets import build_hand_models
     build_hand_models()
     p=rp/'.source/magical_athlete/direct-interaction.json'
-    p.write_text(js({'secret_hand':'card:magical_athlete/hand/<slug>','front_contexts':['gui','firstperson_righthand','firstperson_lefthand'],'fallback':'card:item/magical_athlete/hand/back','hand_pose_source':'card:item/fake_card','source':'tools/build_magical_athlete_direct.py'})+'\n',encoding='utf-8')
+    p.write_text(js({'secret_hand':'card:magical_athlete/hand/<slug>','front_contexts':['gui','firstperson_righthand','firstperson_lefthand'],'fallback':'card:item/magical_athlete/hand/back','hand_pose_source':'tools/build_magical_athlete_figures.py','model_base_y':8,'draft_feet_y':1.055,'race_feet_y':1.052,'source':'tools/build_magical_athlete_direct.py'})+'\n',encoding='utf-8')
 
 
 def roster():

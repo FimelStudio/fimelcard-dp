@@ -1,4 +1,5 @@
 function catan:system/context
+function catan:feedback/reset
 function catan:sound/stop
 function catan:input/clear_surface
 data remove entity @s data.catan.preview

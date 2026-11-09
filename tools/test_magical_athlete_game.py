@@ -215,7 +215,7 @@ data modify entity @s data.name set value {text:"Fixture"}
 
 
 def fixture_line(line):
-    if any(part in line for part in ('dialog show ', 'dialog clear ', 'tellraw ', 'playsound ', 'stopsound ', 'title ')):
+    if any(part in line for part in ('dialog show ', 'dialog clear ', 'tellraw ', 'playsound ', 'stopsound ', 'particle ', 'run title ', 'title @')):
         return line
     return re.sub(r'@a\[', '@e[type=minecraft:marker,tag=mg.person,', line).replace('@a ', '@e[type=minecraft:marker,tag=mg.person] ')
 

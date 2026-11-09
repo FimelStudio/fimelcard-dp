@@ -35,9 +35,7 @@ class Suite(Base):
         who=self.racer(pawn,table)
         return self.number(who,'transformation.translation[0]',x,name+'_x')+self.number(who,'transformation.translation[2]',z,name+'_z')+[
             f'execute store result score #bottom ce run data get entity {who} transformation.translation[1] 1000000',
-            f'execute store result score #half_scale ce run data get entity {who} transformation.scale[1] 500000',
-            'scoreboard players operation #bottom ce -= #half_scale ce',
-        ]+self.score('#bottom','ce','34995..35005',name+'_feet_above_board')
+        ]+self.score('#bottom','ce','11995..12005',name+'_feet_above_board')
     def event(self,kind=1,pawn=0,start=0,end=1,die=0,amount=0,source=-2):
         return dict(kind=kind,pawn=pawn,**{'from':start},to=end,source=source,amount=amount,die=die)
     def timeline(self,name,body,ticks,checks):
@@ -80,10 +78,22 @@ class Suite(Base):
                 body=self.setup(cap,orient)+[f'data modify entity {TABLE} data.magical_athlete.racers[{i}].pos set value 15' for i in range(6)]+self.call('visual/refresh')
                 for pawn in range(6):
                     body+=self.pose_checks(cap,orient,pawn,15,key+'_pawn'+str(pawn),count=6)
-                    body+=self.number(self.racer(pawn),'transformation.scale[0]',path['footprints'][str(cap)]*.026,key+'_crowded_scale'+str(pawn))
+                    body+=self.number(self.racer(pawn),'transformation.scale[0]',path['footprints'][str(cap)]*.03,key+'_crowded_scale'+str(pawn))
                 body+=self.count('@e[tag=ma.racer,scores={ct_id=101}]',6,key+'_six_distinct_entities')
                 body+=self.count('@e[type=minecraft:interaction,tag=ma.hit,scores={ma_dtype=3}]',0,key+'_no_grid_interactions')
                 self.case(key,body)
+        # 招募使用独立实体生成路径：必须检查真实位置，而非仅检查比赛 pose。
+        for cap in (4,8):
+            for orient in (0,1):
+                label=f'draft_c{cap}o{orient}'
+                body=self.setup(cap,orient)+self.set('phase',1)+self.set('pool',list(range(12)))+self.call('game/sync')+self.call('visual/refresh')
+                pool='@e[tag=ma.pool,scores={ct_id=101,ma_did=0},limit=1]'
+                body+=self.count('@e[tag=ma.pool,scores={ct_id=101}]',12,label+'_twelve_sculptures')
+                body+=self.number(pool,'Pos[1]',65.055,label+'_feet_clear_of_board')
+                body+=self.number(pool,'transformation.scale[0]',.26,label+'_scale')
+                body+=self.check(f'data entity {pool} item.components.\"minecraft:item_model\"',label+'_native_3d_model')
+                body+=self.number('@e[tag=ma.hit,scores={ct_id=101,ma_dtype=1,ma_did=0},limit=1]','height',.36,label+'_upright_hitbox')
+                self.case(label,body)
         body=self.setup()+self.setup(8,1,202,False)+self.call('visual/clear')
         body+=self.count('@e[tag=ma.visual,scores={ct_id=101}]',0,'clear_own')+self.count('@e[tag=ma.visual,scores={ct_id=202}]',8,'clear_preserves_other')
         self.case('two_tables',body)

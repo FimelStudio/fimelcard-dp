@@ -46,3 +46,6 @@ function magical_athlete:sound/race_start
 scoreboard players set @s ct_start 1
 tellraw @a[tag=ma.audience] {text:"[胡闹运动会] 开始四场积分赛！右键桌面招募；手持角色或技能选项按Q。",color:"gold"}
 function magical_athlete:ui/refresh
+# feedback-v1
+function magical_athlete:feedback/reset
+function magical_athlete:feedback/check

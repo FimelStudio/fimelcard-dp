@@ -289,51 +289,12 @@ def pawn(slug, index):
     face=icon(slug,index)
     texture('racer/'+slug,face)
     edge=Image.new('RGB',(16,16),palette(index));texture('racer_edge/'+slug,edge)
-    base=disc('', 'card:item/magical_athlete/racer_edge/'+slug, height=1.7,segments=12)
-    base['textures']['top']='card:item/magical_athlete/racer_edge/'+slug
-    elements=base['elements']+[cube([6,1,7],[10,5,9],'edge','stem')]
-    # A round upright medallion, front/back use the same legible original portrait.
-    for i in range(12):
-        x0=1+i*14/12;x1=1+(i+1)*14/12
-        h=math.sqrt(7**2-((x0+x1)/2-8)**2)
-        part=cube([x0,12-h,7.1],[x1,12+h,8.9],'edge',f'portrait_{i:02}')
-        for side in ('north','south'):
-            part['faces'][side]={'texture':'#portrait','uv':[(x0-1)/14*16,(7-h)/14*16,(x1-1)/14*16,(7+h)/14*16]}
-        elements.append(part)
-    model('racer/'+slug,{'textures':{'top':base['textures']['top'],'edge':base['textures']['edge'],
-                                   'portrait':'card:item/magical_athlete/racer/'+slug,
-                                   'particle':'card:item/magical_athlete/racer_edge/'+slug},'elements':elements})
-    # Flat face-up badge supports a clear alternative when many racers share one square.
-    badge=disc('card:item/magical_athlete/racer/'+slug,'card:item/magical_athlete/racer_edge/'+slug,height=1.6,segments=12)
-    model('token/'+slug,badge,gui={'gui':{'rotation':[90,0,0],'scale':[.9,.9,.9]}})
+    # 头像只用于文字 HUD；桌面、物品栏和手持均由立体雕塑生成器负责。
 
 
 def build_hand_models():
-    """徽章在 GUI 中平放，在手里用独立竖立几何，并沿用 poker 的手持位置。"""
-    poker=json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
-    for entry in [*CHARACTERS,{'slug':'back','id':-1}]:
-        slug=entry['slug']
-        portrait='card:item/magical_athlete/'+('prop/menu' if slug=='back' else 'racer/'+slug)
-        edge='card:item/magical_athlete/'+('prop/menu' if slug=='back' else 'racer_edge/'+slug)
-        elements=[]
-        # 与 poker 相同的中心 (7,9,8.5)，圆形头像保持原比例；两面均有实体厚度。
-        for index in range(16):
-            x0=index*14/16;x1=(index+1)*14/16
-            height=math.sqrt(7**2-((x0+x1)/2-7)**2)
-            part=cube([x0,9-height,8.25],[x1,9+height,8.75],'edge',f'held_badge_{index:02}')
-            uv=[x0/14*16,(7-height)/14*16,x1/14*16,(7+height)/14*16]
-            part['faces']['north']={'texture':'#portrait','uv':uv}
-            part['faces']['south']={'texture':'#portrait','uv':[uv[2],uv[1],uv[0],uv[3]]}
-            elements.append(part)
-        model('hand/'+slug,{'textures':{'portrait':portrait,'edge':edge,'particle':portrait},
-                           'elements':elements,'display':poker['display']})
-    for entry in CHARACTERS:
-        slug=entry['slug']
-        json_file(CARD/f'items/magical_athlete/hand/{slug}.json',{'model':{
-            'type':'minecraft:select','property':'minecraft:display_context','cases':[
-                {'when':['gui'],'model':{'type':'minecraft:model','model':'card:item/magical_athlete/token/'+slug}},
-                {'when':['firstperson_righthand','firstperson_lefthand'],'model':{'type':'minecraft:model','model':'card:item/magical_athlete/hand/'+slug}},
-            ],'fallback':{'type':'minecraft:model','model':'card:item/magical_athlete/hand/back'}}})
+    from build_magical_athlete_figures import build as figures
+    figures()
 
 
 def board(kind):
@@ -500,31 +461,33 @@ def build():
     for entry in CHARACTERS:pawn(entry['slug'],entry['id'])
     dice();props();fonts();previews(mild,wild)
     build_hand_models()
-    json_file(SOURCE/'asset-map.json',{'id':23,'namespace':GAME,'texture_style':'Original sports-medallion illustration',
+    json_file(SOURCE/'asset-map.json',{'id':23,'namespace':GAME,'texture_style':'Original full-volume voxel miniatures; illustrated HUD portraits',
         'track_source':'fimel_cards/tools/magical_athlete_track.json', 'layout':TRACK['layout'],
         'models':{'board':['card:magical_athlete/board/'+k for k in ('mild','wild')],
                   'racers':['card:magical_athlete/racer/'+e['slug'] for e in CHARACTERS],
-                  'flat_tokens':['card:magical_athlete/token/'+e['slug'] for e in CHARACTERS],
+                  'tokens':['card:magical_athlete/token/'+e['slug'] for e in CHARACTERS],
                   'dice':'card:magical_athlete/dice','cup':'card:magical_athlete/prop/dice_cup'},
         'dice_faces':{'up':1,'down':6,'north':2,'south':5,'east':3,'west':4},
-        'footprint_4':2.7,'footprint_8':3.6,'pawn_recommended_scale':.18})
+        'footprint_4':2.7,'footprint_8':3.6,'pawn_base_y':8,'draft_scale':.26,'pawn_recommended_scale':.2295})
     text_file(SOURCE/'README.md','''# 胡闹运动会原创资源
 
-本目录保留 Fimel Cards 原创体育场、36 枚角色头像立牌、同款平放徽章、六面骰、骰盅、奖杯与道具模型的纹理、可编辑 Blockbench 工程及预览。角色用鲜明的物件／动物徽章区分，不使用 CMYK 的官方插画、商标图或角色牌面。
+本目录保留 Fimel Cards 原创体育场、36 个不同几何的立体角色、六面骰、骰盅、奖杯与道具模型的纹理、可编辑 Blockbench 工程及预览。角色依照身份分别设计成动物、人物或物件，不使用 CMYK 的官方插画、商标图或角色牌面。
 
 - `boards-preview.png`：温和／狂野两面；四人桌与八人桌共用纹理，分别缩放至 2.7／3.6 格。
 - `racers-preview.png`：36 位角色的中文名、资源名和头像对照。
+- `figures-preview.png`：从实际长方体几何绘制的 36 个立体棋子等距预览。
+- `figures.json`：各角色几何签名、脚底基准和手持姿态。
 - `props-preview.png`：骰子、积分、金银奖牌、旗帜、绊倒、传送、火箭、爱心、奖杯、菜单和香蕉。
 - `models/`：每个运行模型对应的 `.bbmodel`，内嵌纹理，可直接用 Blockbench 打开。
 - `asset-map.json`／`font-map.json`：运行资源 ID、格心、骰子面向与 Unicode 图片字体映射。
 
 赛道规则来自原作，体育场外观重新绘制。唯一格心数据为数据包 `tools/magical_athlete_track.json` 的 `layout.positions`（16×16 模型单位，0 起点、30 终点；第 15 格为第二转角），纹理与运行棋子从同一份格心定位。改棋盘尺寸必须一起重建，不得再独立手写坐标。
 
-`card:magical_athlete/racer/<英文名>` 为带圆形头像的立牌，`token/<英文名>` 为平放圆形徽章。骰子上 1 下 6、北 2 南 5、东 3 西 4，对面合计 7。默认手持缩小，桌面投骰动画使用 `none` 模式并按服务器已锁定点数旋转。
+`card:magical_athlete/racer/<英文名>`、`token/<英文名>`、`hand/<英文名>` 均为同一角色的完整立体模型。模型脚底统一为 Y=8，中心 X/Z=8；桌面 `none` 不受手持姿态影响，缩小时不会下沉。招募脚底为桌面控制器上方 1.055 格，比赛脚底为 1.052 格，同格多人横向错开并缩小。秘密阵容在物品栏和本人第一人称显示角色，第三人称和掉落视角显示通用问号模型。骰子上 1 下 6、北 2 南 5、东 3 西 4，对面合计 7。
 
 文本图片字体为 `magical_athlete:icons`：角色从 U+E200 至 U+E223，按 0～35 号对应；道具从 U+E100 至 U+E10B。头像字高 22、上升 19；道具字高 16、上升 13。每个单字图像只有 64×64，不依赖系统中文字体显示图案。
 
-在数据包根目录运行 `python tools/build_magical_athlete_assets.py` 重建，依赖 Pillow。音乐和音效原件、作曲源说明与许可见 `audio/`，独立重建器为 `build_magical_athlete_sound.py`。本项目原创图像／模型使用与仓库一致的许可；音频单独按其 CC0 声明。
+在数据包根目录运行 `python tools/build_magical_athlete_assets.py` 重建，依赖 Pillow；仅重建立体角色可运行 `python tools/build_magical_athlete_figures.py`。改动几何或桌面位置后还需运行 `python tools/build_direct_interactions.py --game magical_athlete`。音乐和音效原件、作曲源说明与许可见 `audio/`，独立重建器为 `build_magical_athlete_sound.py`。本项目原创图像／模型使用与仓库一致的许可；音频单独按其 CC0 声明。
 ''')
 
 

@@ -20,9 +20,9 @@ def main():
                 for x,z in path['positions']:
                     x,z=(x-8)*size/16,(z-8)*size/16
                     if orient:x,z=-z,x
-                    poses.append({'x':round(x,6),'y':.035,'z':round(z,6),'scale':round(size*.067,6)})
+                    poses.append({'x':round(x,6),'y':.012,'z':round(z,6),'scale':round(size*.085,6)})
                 rows.append(poses)
-            cells={1:(.067,[(0,0)]),2:(.045,[(-.023,0),(.023,0)]),3:(.032,[(-.031,0),(0,0),(.031,0)]),4:(.033,[(-.02,-.02),(.02,-.02),(-.02,.02),(.02,.02)]),5:(.026,[(-.027,-.018),(0,-.018),(.027,-.018),(-.014,.018),(.014,.018)]),6:(.026,[(-.027,-.018),(0,-.018),(.027,-.018),(-.027,.018),(0,.018),(.027,.018)])}
+            cells={1:(.085,[(0,0)]),2:(.055,[(-.023,0),(.023,0)]),3:(.037,[(-.031,0),(0,0),(.031,0)]),4:(.04,[(-.02,-.02),(.02,-.02),(-.02,.02),(.02,.02)]),5:(.03,[(-.027,-.018),(0,-.018),(.027,-.018),(-.014,.018),(.014,.018)]),6:(.03,[(-.027,-.018),(0,-.018),(.027,-.018),(-.027,.018),(0,.018),(.027,.018)])}
             groups=[[]]
             for count in range(1,7):
                 scale,offsets=cells[count];group=[]
@@ -84,13 +84,8 @@ $data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft
 function magical_athlete:visual/racer_pose with storage magical_athlete:visual pose
 ''')
     put('visual/racer_pose', [
-        # item_display 将模型 Y=8 作为原点；立牌底面为 Y=0，需补偿半个缩放高度。
-        # 在最后应用姿态时补偿，覆盖静止、同格缩小、行走和传送的每一帧。
+        # 所有雕塑的脚底统一为模型 Y=8；缩放不再改变脚底高度。
         '$data modify storage magical_athlete:visual draw_pose set value {x:$(x),y:$(y),z:$(z),scale:$(scale),duration:$(duration)}',
-        'execute store result score #racer_y ma_ctx run data get storage magical_athlete:visual draw_pose.y 1000000',
-        'execute store result score #racer_lift ma_ctx run data get storage magical_athlete:visual draw_pose.scale 500000',
-        'scoreboard players operation #racer_y ma_ctx += #racer_lift ma_ctx',
-        'execute store result storage magical_athlete:visual draw_pose.y double 0.000001 run scoreboard players get #racer_y ma_ctx',
         'function magical_athlete:visual/racer_pose_apply with storage magical_athlete:visual draw_pose',
     ])
     put('visual/racer_pose_apply','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}')

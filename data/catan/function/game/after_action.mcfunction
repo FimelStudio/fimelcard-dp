@@ -1,4 +1,5 @@
 function catan:game/sync
+function catan:feedback/action
 data modify storage catan:runtime event set from entity @s data.catan.last
 scoreboard players set #event ca_ctx -1
 execute store result score #event ca_ctx run data get entity @s data.catan.last.code
@@ -36,3 +37,5 @@ execute as @a[tag=ca.audience] run function catan:input/give
 function catan:game/hud
 # direct-v2
 function catan:direct/deck_spawn
+# feedback-v1
+function catan:feedback/check

@@ -48,6 +48,14 @@ def build():
     c+=s.player('direct/use {table:101,epoch:1,type:2,id:0}',2)+s.unchanged('other_player_can_read_racer_without_acting')+s.equal('storage magical_athlete:direct detail.name','大长腿','racer_read_shows_ability_owner')
     c+=s.player('direct/use {table:101,epoch:1,type:2,id:0}')*2+s.unchanged('numeric_skill_not_cast_by_clicking_racer')
     s.case('ma_public_racer_read',c)
+    c=s.setup()+s.set('phase',3)+s.set('racers[0]',{'owner':1,'char':4,'power':4,'pos':7,'trip':1,'status':0})+s.call('game/sync')
+    c+=s.call('feedback/event {kind:3,pawn:0,from:7,to:7,source:2,amount:0,die:0}')
+    c+=s.equal('storage magical_athlete:feedback event.name','半人马','feedback_identifies_affected_character')
+    c+=s.equal(f'entity {person()} data.feedback_subtitle',{'text':'半人马：被绊倒，下次行动需先起身','color':'red'},'feedback_affected_owner_gets_subtitle')
+    c+=s.check(f'entity {person(2)}', 'feedback_other_player_exists')
+    c+=['scoreboard players set #unexpected ce 0',f'execute if data entity {person(2)} data.feedback_subtitle run scoreboard players set #unexpected ce 1']+s.score('#unexpected','ce',0,'feedback_other_owner_not_interrupted')
+    c+=s.call('feedback/check')+s.call('feedback/check')+s.score('#state_changed','ma_ctx',0,'feedback_unchanged_state_not_reannounced')
+    s.case('ma_feedback',c)
     for kind,options in {'ready':[0],'reroll':[0,1],'alchemist':[0,1],'rocket':[0,1],'cheerleader':[0,1],'hypnotist':[-1,0,1],'flip':[-1,0,1],'duel':[-1,1],'mastermind':[0,1],'copycat':[0,1],'genius':list(range(7)),'legs':[0,1],'egg':[0,21,35],'twin':list(range(36)),'suckerfish':[0,1],'thirdwheel':[-1,0,13,29]}.items():
         c=s.setup()+s.set('phase',3)+s.set('pending',{'kind':kind,'owner':1,'pawn':0,'options':options})
         for i in range(2):c+=s.set(f'racers[{i}]',{'owner':i+1,'char':i,'power':i,'copy':-1,'pos':5,'trip':0,'status':0,'first':1,'prediction':-1,'done':0})
@@ -67,6 +75,14 @@ def build():
     def cp(name,side=1):return [f'execute as {person(side)} at @s run function catan:{name}']
     def cv(path,v):return [f'data modify entity {TABLE} data.catan.{path} set value '+json.dumps(v,separators=(',',':'))]
     def eq(path,v,label):return s.equal(f'entity {TABLE} data.catan.{path}',v,label)
+    c=ca_setup(5)+cv('p1.discard_due',4)+cv('p2.discard_due',0)+cv('p3.discard_due',0)
+    c+=[f'execute as {TABLE} at @s run function catan:feedback/check']
+    c+=s.equal(f'entity {person()} data.feedback_subtitle',{'text':'你需要弃掉 4 张资源','color':'red'},'catan_discard_personal_subtitle')
+    c+=['scoreboard players set #unexpected ce 0',f'execute if data entity {person(2)} data.feedback_subtitle run scoreboard players set #unexpected ce 1']+s.score('#unexpected','ce',0,'catan_no_discard_no_subtitle')
+    c+=[f'execute as {TABLE} at @s run function catan:feedback/check']+s.score('#state_changed','ca_ctx',0,'catan_same_state_not_reannounced')
+    c+=cv('phase',3)+[f'execute as {TABLE} at @s run function catan:game/sync',f'execute as {TABLE} at @s run function catan:feedback/check']
+    c+=s.equal(f'entity {person()} data.feedback_subtitle',{'text':'轮到你了 · 投骰或使用旧发展卡','color':'aqua'},'catan_turn_owner_subtitle')
+    s.case('ca_feedback',c)
     c=ca_setup()+cv('p1.resources',[1,0,1,1,1])+['scoreboard players set #code ca_ctx 23']+cp('direct/confirm')+eq('p1.resources',[1,0,1,1,1],'buy_preview_no_payment')
     c+=['scoreboard players set #code ca_ctx 23']+cp('direct/confirm')+eq('p1.resources',[1,0,0,0,0],'buy_confirm_pays_once')
     c+=s.score('#dialog','ce',0,'catan_buy_no_dialog')
@@ -109,11 +125,14 @@ def prepare(target):
     for path in (target/'data/catan/function').rglob('*.mcfunction'):
         lines=[]
         for line in path.read_text(encoding='utf-8').splitlines():
-            if not any(t in line for t in ('dialog show ','dialog clear ','tellraw ','playsound ','stopsound ','title ')):
+            if not any(t in line for t in ('dialog show ','dialog clear ','tellraw ','playsound ','stopsound ','particle ','run title ','title @')):
                 line=re.sub(r'@a\[','@e[type=minecraft:marker,tag=mg.person,',line).replace('@a ','@e[type=minecraft:marker,tag=mg.person] ')
             lines.append(line)
             if 'dialog show ' in line:lines.append('scoreboard players add #dialog ce 1')
         path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    # 标题只能发给真人：测试副本记录原始组件，验证实际被提醒的身份。
+    for ns in ('catan','magical_athlete'):
+        (target/f'data/{ns}/function/feedback/subtitle.mcfunction').write_text('$data modify entity @s data.feedback_subtitle set value $(text)\n',encoding='utf-8')
     (target/'data/minecraft/tags/function/load.json').write_text(json.dumps({'values':['magical_athlete:load','catan:load']}),encoding='utf-8')
 
 

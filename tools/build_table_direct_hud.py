@@ -64,8 +64,22 @@ tag @s remove {p}.hud
         if ns=='catan' and i==2:
             for field,label in [('longest',' · 最长道路'),('army',' · 最大骑士军')]:
                 rows += [f'$execute if data entity @e[tag=ca.current,limit=1] data.catan{{{field}:$(side)}} run data modify storage fimel_title:io text.extra append value '+js({'text':label,'color':'gold'})]
+        if ns=='magical_athlete' and i==2:
+            rows += ['$execute if entity @e[tag=ma.current,scores={ma_state=3..5},limit=1] run function magical_athlete:hud/racers {side:$(side)}']
         rows += [f'$function {ns}:hud/line {{x:$(x),y:$({y}),origin:"$(origin)",align:"$(align)"}}']
     put('row',rows)
+    if ns=='magical_athlete':
+        put('racers',['data modify storage fimel_title:io text set value {text:"",color:"gray",extra:[]}']+[
+            f'$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[{i}]{{owner:$(side)}} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[{i}]{{char:-1}} run function magical_athlete:hud/racer_read {{index:{i}}}' for i in range(6)])
+        put('racer_read',['$data modify storage magical_athlete:hud racer set from entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[$(index)]',
+            'data modify storage magical_athlete:hud racer.state set value ""',
+            'execute if data storage magical_athlete:hud racer{trip:1} run data modify storage magical_athlete:hud racer.state set value "（绊倒）"',
+            'execute if data storage magical_athlete:hud racer{status:1} run data modify storage magical_athlete:hud racer.state set value "（到达）"',
+            'execute if data storage magical_athlete:hud racer{status:2} run data modify storage magical_athlete:hud racer.state set value "（出局）"',
+            'function magical_athlete:hud/racer_name with storage magical_athlete:hud racer',
+            'function magical_athlete:hud/racer_text with storage magical_athlete:hud racer'])
+        put('racer_name','$data modify storage magical_athlete:hud racer.name set from storage magical_athlete:characters chars[$(char)].name')
+        put('racer_text','$data modify storage fimel_title:io text.extra append value {text:"$(name) $(pos)格$(state)  ",color:"aqua"}')
     put('line',[
         'data modify storage fimel_title:io font set value "minecraft:default_mod"',
         'data modify storage fimel_title:io neg_font set value "minecraft:default_neg"',
@@ -84,7 +98,7 @@ tag @s remove {p}.hud
     if ns=='magical_athlete':
         for side in range(1,7):
             status += [f'execute if entity @e[tag=ma.current,scores={{ma_pending={side}}},limit=1] run data modify storage fimel_title:io text.extra append value '+js({'text':' · 待回应：','color':'aqua','extra':[{'nbt':f'data.magical_athlete.p{side}.name','entity':'@e[tag=ma.current,limit=1]','interpret':True}]})]
-    status += [f'function {ns}:hud/center']
+    status += [f'function {ns}:feedback/status',f'function {ns}:hud/center']
     extra=[{'text':' · '},{'nbt':f'data.{ns}.p$(turn).name','entity':f'@e[tag={p}.current,limit=1]','interpret':True}]
     if ns=='magical_athlete':extra += [{'text':' · 第$(round)/4场','color':'gold'}]
     put('status_turn','$data modify storage fimel_title:io text.extra set value '+js(extra))

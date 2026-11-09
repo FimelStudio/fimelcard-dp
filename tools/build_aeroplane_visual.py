@@ -175,6 +175,8 @@ def resources():
         'textures':{f'f{i}':f'card:item/aeroplane_chess/dice/{i}' for i in range(1,7)},'elements':[die],
         'display':{context:{'scale':[.6,.6,.6]} for context in
                    ('firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand')}}
+    from build_tabletop_hand_poses import apply
+    apply(die_model,True)
     export_model('aeroplane_chess','dice',die_model)
     source=RP/'.source/aeroplane_chess/models/dice.bbmodel'
     source_model=json.loads(source.read_text(encoding='utf-8'))
