@@ -9,3 +9,6 @@ execute as @a[tag=dc.player] if score @s dc_id = #ctx dc_ctx run scoreboard play
 # 老版本只支持三/四人，用原模式补入开局人数，不改回合和角色。
 execute unless data entity @s data.decrypto.player_count store result entity @s data.decrypto.player_count int 1 run scoreboard players get @s dc_mode
 execute store result score #expected dc_ctx run data get entity @s data.decrypto.player_count
+
+function decrypto:marker/ensure
+function decrypto:hint/update

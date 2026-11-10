@@ -20,6 +20,7 @@ execute if score @s dc_team matches 1 run function decrypto:title/append_white_s
 execute if score @s dc_team matches 2 unless entity @s[tag=dc.interceptor] run function decrypto:title/append_black_status
 # 底部电报追加到同一个面板，不能单独 title actionbar 覆盖已有笔记。
 execute as @e[type=minecraft:marker,tag=dc.controller,tag=dc.title_controller,scores={dc_state=5..8}] if score @s dc_id = #ctx dc_ctx if data entity @s data.decrypto.active_clues run function decrypto:title/append_clues
+function decrypto:title/append_action
 scoreboard players operation panel_id fbt_io = @s dc_panel
 function fimel_title:replace_panel
 scoreboard players operation @s fbt_panel = @s dc_panel

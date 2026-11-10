@@ -36,7 +36,7 @@ execute if score #phase dc_ctx matches 6 unless score @s dc_round matches 1 if s
 execute if score #phase dc_ctx matches 8 if score #correct dc_ctx matches 1 run tellraw @a[tag=dc.audience] [{text:'黑队成功解码。',color:'green'}]
 execute if score #phase dc_ctx matches 8 unless score #correct dc_ctx matches 1 run tellraw @a[tag=dc.audience] [{text:'黑队错误传讯，获得1枚红色标记。',color:'red'}]
 execute if score #phase dc_ctx matches 8 unless score @s dc_round matches 1 if score @s dc_winter matches 1 run tellraw @a[tag=dc.audience] [{text:'白队成功拦截，获得1枚绿色标记。',color:'green'}]
-function decrypto:marker/update
+execute at @s run function decrypto:marker/update
 execute if score #phase dc_ctx matches 6 run function decrypto:notes/add_white
 execute if score #phase dc_ctx matches 8 run function decrypto:notes/add_black
 execute if score #phase dc_ctx matches 6 run function decrypto:title/update_all
