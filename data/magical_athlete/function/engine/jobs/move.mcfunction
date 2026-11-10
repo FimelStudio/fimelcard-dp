@@ -6,6 +6,9 @@ data modify storage magical_athlete:engine s.motion set value {pawn:0,from:0,to:
 data modify storage magical_athlete:engine s.motion.pawn set from storage magical_athlete:engine job.pawn
 execute store result storage magical_athlete:engine s.motion.from int 1 run scoreboard players get #position ma_ctx
 data modify storage magical_athlete:engine s.motion.source set from storage magical_athlete:engine job.source
+data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine job.pawn
+execute if data storage magical_athlete:engine job.author run data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine job.author
+execute if data storage magical_athlete:engine job.source_actor run data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine job.source_actor
 data modify storage magical_athlete:engine s.motion.author set from storage magical_athlete:engine job.pawn
 execute if data storage magical_athlete:engine job.author run data modify storage magical_athlete:engine s.motion.author set from storage magical_athlete:engine job.author
 scoreboard players operation #destination ma_ctx = #position ma_ctx

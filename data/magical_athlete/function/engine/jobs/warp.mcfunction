@@ -6,6 +6,9 @@ data modify storage magical_athlete:engine s.motion.author set from storage magi
 execute store result storage magical_athlete:engine s.motion.from int 1 run scoreboard players get #position ma_ctx
 data modify storage magical_athlete:engine s.motion.to set from storage magical_athlete:engine job.to
 data modify storage magical_athlete:engine s.motion.source set from storage magical_athlete:engine job.source
+data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine job.pawn
+execute if data storage magical_athlete:engine job.author run data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine job.author
+execute if data storage magical_athlete:engine job.source_actor run data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine job.source_actor
 $data modify storage magical_athlete:engine s.motion.group append value $(pawn)
 data modify storage magical_athlete:engine s.motion.before append from storage magical_athlete:engine s.racers[0].pos
 data modify storage magical_athlete:engine s.motion.before append from storage magical_athlete:engine s.racers[1].pos

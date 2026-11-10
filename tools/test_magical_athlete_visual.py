@@ -33,7 +33,8 @@ class Suite(Base):
     def pose_checks(self,cap,orient,pawn,pos,name,table=101,count=1):
         x,z=self.pose(cap,orient,pawn,pos,count)
         who=self.racer(pawn,table)
-        return self.number(who,'transformation.translation[0]',x,name+'_x')+self.number(who,'transformation.translation[2]',z,name+'_z')+[
+        label=who.replace('tag=ma.racer,','tag=ma.racer_name,')
+        return self.number(who,'transformation.translation[0]',x,name+'_x')+self.number(who,'transformation.translation[2]',z,name+'_z')+self.number(label,'transformation.translation[0]',x,name+'_name_x')+self.number(label,'transformation.translation[2]',z,name+'_name_z')+[
             f'execute store result score #bottom ce run data get entity {who} transformation.translation[1] 1000000',
         ]+self.score('#bottom','ce','11995..12005',name+'_feet_above_board')
     def event(self,kind=1,pawn=0,start=0,end=1,die=0,amount=0,source=-2):
@@ -56,7 +57,10 @@ class Suite(Base):
                 key=f'c{cap}o{orient}';size=path['footprints'][str(cap)]
                 x=(2-8)*size/16;z=(14-8)*size/16
                 if orient:x,z=-z,x
-                body=self.setup(cap,orient)+self.count('@e[tag=ma.visual,scores={ct_id=101}]',8,key+'_bounded_entities')
+                body=self.setup(cap,orient)+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,key+'_bounded_entities')
+                body+=self.count('@e[tag=ma.racer_name,scores={ct_id=101}]',6,key+'_six_player_names')
+                body+=self.check('entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},nbt={billboard:"vertical"}]',key+'_vertical_names')
+                body+=self.check('data entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},limit=1] text',key+'_player_name_component')
                 body+=self.count('@e[type=minecraft:interaction,tag=ma.hit,scores={ma_dtype=3}]',0,key+'_no_grid_interactions')
                 body+=self.number(self.racer(),'transformation.translation[0]',x,key+'_racer_x')+self.number(self.racer(),'transformation.translation[2]',z,key+'_racer_z')
                 # Independent quaternion expectation: positions use (x,z)->(-z,x), i.e. Y -90 degrees.
@@ -70,7 +74,7 @@ class Suite(Base):
                 for position in range(31):
                     body+=self.set('racers[0].pos',position)+self.call('visual/refresh')
                     body+=self.pose_checks(cap,orient,0,position,key+'_cell'+str(position))
-                body+=self.call('visual/refresh')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',8,key+'_refresh_idempotent')
+                body+=self.call('visual/refresh')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,key+'_refresh_idempotent')
                 self.case(key,body)
         for cap in (4,8):
             for orient in (0,1):
@@ -91,20 +95,32 @@ class Suite(Base):
                 body+=self.count('@e[tag=ma.pool,scores={ct_id=101}]',12,label+'_twelve_sculptures')
                 body+=self.number(pool,'Pos[1]',65.055,label+'_feet_clear_of_board')
                 body+=self.number(pool,'transformation.scale[0]',.26,label+'_scale')
+                body+=self.number(pool,'Pos[0]',8.5+(.65 if orient else -.84),label+'_oriented_x')+self.number(pool,'Pos[2]',8.5+(-.84 if orient else -.65),label+'_oriented_z')
+                body+=['tag @e[tag=ma.pool,scores={ct_id=101}] add keep.pool']+self.call('direct/board_refresh')+self.count('@e[tag=keep.pool,scores={ct_id=101}]',12,label+'_pool_entities_reused')
                 body+=self.check(f'data entity {pool} item.components.\"minecraft:item_model\"',label+'_native_3d_model')
                 body+=self.number('@e[tag=ma.hit,scores={ct_id=101,ma_dtype=1,ma_did=0},limit=1]','height',.36,label+'_upright_hitbox')
                 self.case(label,body)
         body=self.setup()+self.setup(8,1,202,False)+self.call('visual/clear')
-        body+=self.count('@e[tag=ma.visual,scores={ct_id=101}]',0,'clear_own')+self.count('@e[tag=ma.visual,scores={ct_id=202}]',8,'clear_preserves_other')
+        body+=self.count('@e[tag=ma.visual,scores={ct_id=101}]',0,'clear_own')+self.count('@e[tag=ma.visual,scores={ct_id=202}]',15,'clear_preserves_other')
         self.case('two_tables',body)
         body=self.setup()+self.setup(8,1,202,False)
+        # 模拟更新前残留的中央徽章：只清本桌，另一桌留待自己的事件处理。
+        for table,who in ((101,TABLE),(202,OTHER)):
+            body += [f'execute at {who} run summon minecraft:item_display ~ ~1.2 ~ {{Tags:["ma.visual","ma.event_prop","legacy.prop{table}"]}}',
+                     f'scoreboard players set @e[tag=legacy.prop{table}] ct_id {table}']
+        body+=self.call('visual/context')+self.call('visual/event_prop')+self.count('@e[tag=ma.event_prop,scores={ct_id=101}]',0,'legacy_own_prop_removed')
+        body+=self.count('@e[tag=ma.event_prop,scores={ct_id=202}]',1,'legacy_other_prop_preserved')
         body+=self.set('events',[self.event(7,amount=1)])+self.set('events',[self.event(2,pawn=0,start=0,end=12)],202)+self.set('racers[0].pos',12,202)
         body+=self.call('visual/animate')+self.call('visual/animate',202)+self.call('visual/tick')+self.call('visual/tick',202)
-        body+=self.count('@e[tag=ma.event_prop,scores={ct_id=101}]',1,'two_tables_own_prop')+self.count('@e[tag=ma.event_prop,scores={ct_id=202}]',1,'two_tables_other_prop')
+        body+=self.count('@e[tag=ma.event_prop,scores={ct_id=101}]',0,'two_tables_no_own_prop')+self.count('@e[tag=ma.event_prop,scores={ct_id=202}]',0,'two_tables_no_other_prop')
         body+=self.call('visual/clear')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',0,'active_clear_own_all')
-        body+=self.count('@e[tag=ma.event_prop,scores={ct_id=202}]',1,'active_clear_preserves_other_prop')+self.score(OTHER,'ma_vtimer',11,'active_clear_other_timer_unaffected')
+        body+=self.count('@e[tag=ma.racer,scores={ct_id=202}]',6,'active_clear_preserves_other_racers')+self.score(OTHER,'ma_vtimer',11,'active_clear_other_timer_unaffected')
         body+=self.call('visual/tick',202)*11+self.score(OTHER,'ma_anim',0,'other_table_queue_completes')+self.pose_checks(8,1,0,12,'other_table_final_position',202)
         self.case('two_table_events',body)
+        body=self.setup()+[f'execute at {TABLE} run summon minecraft:item_display ~ ~1.2 ~ {{Tags:["legacy.init"]}}',
+                           'execute as @e[tag=legacy.init] run function magical_athlete:visual/prop_init']
+        body+=self.count('@e[tag=legacy.init]',0,'legacy_initializer_leaves_no_display')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,'legacy_initializer_preserves_scene')
+        self.case('retired_prop_initializer',body)
         half=math.sqrt(.5)
         quats={1:[0,0,0,1],2:[half,0,0,half],3:[0,0,half,half],4:[0,0,-half,half],5:[-half,0,0,half],6:[1,0,0,0]}
         for die,q in quats.items():
@@ -121,7 +137,7 @@ class Suite(Base):
                 lines += [f'scoreboard players set {TABLE} ct_paused 1']+self.call('visual/tick')+self.score(TABLE,'ma_vframe',5,'pause_holds_animation_frame')+[f'scoreboard players set {TABLE} ct_paused 0']
             if tick==12:lines+=self.number('@e[tag=ma.die,scores={ct_id=101},limit=1]','transformation.left_rotation[0]',1,'animated_six_finishes_up')
             if tick==36:
-                lines+=self.score(TABLE,'ma_anim',0,'queue_unlocks_input')+self.count('@e[tag=ma.event_prop]',0,'transient_props_cleaned')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',8,'animation_no_entity_leak')
+                lines+=self.score(TABLE,'ma_anim',0,'queue_unlocks_input')+self.count('@e[tag=ma.event_prop]',0,'transient_props_cleaned')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,'animation_no_entity_leak')
                 lines+=self.number(TABLE,'data.magical_athlete.racers[0].pos',10,'animation_does_not_recommit_rules')
                 lines+=['function catan_engine_test:done/timeline']
             else:lines +=[f'schedule function catan_engine_test:timeline/{tick+1} 1t']
@@ -145,16 +161,12 @@ class Suite(Base):
             24:self.pose_checks(8,1,0,10,'move_final_cell10'),
             29:self.pose_checks(8,1,1,1,'warp_keeps_origin_before_half'),
             30:self.pose_checks(8,1,1,20,'warp_changes_at_half'),
-            37:self.check('entity @e[tag=ma.event_prop,nbt={item:{components:{"minecraft:item_model":"card:magical_athlete/prop/trip"}}}]','trip_uses_trip_prop'),
-            49:self.check('entity @e[tag=ma.event_prop,nbt={item:{components:{"minecraft:item_model":"card:magical_athlete/prop/flag"}}}]','recover_uses_flag_prop'),
-            61:self.check('entity @e[tag=ma.event_prop,nbt={item:{components:{"minecraft:item_model":"card:magical_athlete/prop/trip"}}}]','elimination_has_prop'),
-            73:self.check('entity @e[tag=ma.event_prop,nbt={item:{components:{"minecraft:item_model":"card:magical_athlete/prop/medal_gold"}}}]','finish_has_medal_prop'),
-            85:self.check('entity @e[tag=ma.event_prop,nbt={item:{components:{"minecraft:item_model":"card:magical_athlete/prop/coin"}}}]','points_has_coin_prop'),
-            97:self.check('entity @e[tag=ma.event_prop,nbt={item:{components:{"minecraft:item_model":"card:magical_athlete/prop/rocket"}}}]','skill_has_rocket_prop'),
-            108:self.score(TABLE,'ma_anim',0,'all_events_unlock')+self.count('@e[tag=ma.event_prop]',0,'all_events_remove_props')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',8,'all_events_entity_bound')+
+            108:self.score(TABLE,'ma_anim',0,'all_events_unlock')+self.count('@e[tag=ma.event_prop]',0,'all_events_remove_props')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,'all_events_entity_bound')+
                 self.pose_checks(8,1,0,10,'all_events_final_move')+self.pose_checks(8,1,1,20,'all_events_final_warp')+
                 self.number(self.racer(2),'transformation.scale[0]',.001,'eliminated_racer_hidden')+
                 self.unchanged('all_events_no_rule_replay')+self.unchanged('all_events_no_points_replay','p1')}
+        for index,event in enumerate(events):
+            checks.setdefault(index*12+1,[]).extend(self.count('@e[tag=ma.event_prop]',0,f'event_kind{event["kind"]}_no_central_prop'))
         self.timeline('all_events',body,108,checks)
         body=self.setup()+[f'scoreboard players set {TABLE} ma_speed 1']+self.set('events',[self.event(9,die=4),self.event(1,start=0,end=12,amount=12),self.event(2,pawn=1,start=1,end=25)])+self.set('dice',4)+self.set('racers[0].pos',12)+self.set('racers[1].pos',25)+self.call('visual/animate')
         checks={6:self.number('@e[tag=ma.die,scores={ct_id=101},limit=1]','transformation.left_rotation[2]',-math.sqrt(.5),'fast_dice_final_four'),
@@ -167,7 +179,8 @@ class Suite(Base):
         body=self.setup()+self.set('events',[self.event(1,start=0,end=14,amount=14)])+self.set('racers[0].pos',14)+self.set('p1.points',7)+self.call('visual/animate')+self.call('visual/tick')*4
         body+=self.snapshot('visual_queue')+self.snapshot('visual_event')
         body+=[f'scoreboard players set {TABLE} ct_paused 1']+self.call('visual/tick')*20
-        body+=self.score(TABLE,'ma_vframe',4,'pause_twenty_ticks_holds_frame')+self.score(TABLE,'ma_vtimer',8,'pause_holds_timer')+self.pose_checks(4,0,0,4,'pause_holds_transform')
+        x4,z4=self.pose(4,0,0,4);x5,z5=self.pose(4,0,0,5)
+        body+=self.score(TABLE,'ma_vframe',4,'pause_twenty_ticks_holds_frame')+self.score(TABLE,'ma_vtimer',8,'pause_holds_timer')+self.number(self.racer(),'transformation.translation[0]',x4+(x5-x4)*.666,'pause_holds_fractional_x')+self.number(self.racer(),'transformation.translation[2]',z4+(z5-z4)*.666,'pause_holds_fractional_z')
         body+=self.unchanged('pause_preserves_event_queue','visual_queue')+self.unchanged('pause_preserves_active_event','visual_event')
         body+=self.call('visual/clear')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',0,'paused_cleanup_allowed')
         self.case('pause_freeze',body)
@@ -177,8 +190,20 @@ class Suite(Base):
         body+=self.number(TABLE,'data.magical_athlete.racers[0].pos',14,'reload_final_position_committed')
         body+=['scoreboard players set #queued ce 0',f'execute if data entity {TABLE} data.magical_athlete.visual_queue[0] run scoreboard players set #queued ce 1']+self.score('#queued','ce',0,'reload_discards_old_event_queue')
         body+=self.pose_checks(4,0,0,14,'reload_draws_committed_position')+self.number('@e[tag=ma.die,scores={ct_id=101},limit=1]','transformation.left_rotation[0]',-math.sqrt(.5),'reload_restores_saved_die')
-        body+=self.call('game/tick')*8+self.unchanged('reload_does_not_replay_movement')+self.unchanged('reload_does_not_replay_points','p1')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',8,'reload_no_entity_leak')
+        body+=self.call('game/tick')*8+self.unchanged('reload_does_not_replay_movement')+self.unchanged('reload_does_not_replay_points','p1')+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,'reload_no_entity_leak')
         self.case('reload_committed',body)
+        self.case('refresh_keeps_entity_identity',self.setup()+[
+            'tag @e[tag=ma.board,scores={ct_id=101}] add keep.board',
+            'tag @e[tag=ma.die,scores={ct_id=101}] add keep.die',
+            'tag @e[tag=ma.racer,scores={ct_id=101}] add keep.racer',
+            'tag @e[tag=ma.racer_name,scores={ct_id=101}] add keep.name',
+            'tag @e[tag=ma.table_info,scores={ct_id=101}] add keep.info',
+        ]+self.call('visual/refresh')+self.count('@e[tag=keep.board]',1,'board_uuid_survives_refresh')+self.count('@e[tag=keep.die]',1,'die_uuid_survives_refresh')+self.count('@e[tag=keep.racer]',6,'racer_uuids_survive_refresh')+self.count('@e[tag=keep.name]',6,'name_uuids_survive_refresh')+self.count('@e[tag=keep.info]',1,'info_uuid_survives_refresh'))
+        # 一格移动的第一帧应落在两个格心之间，而非原地等整数格跳动。
+        body=self.setup()+self.set('events',[self.event(1,start=0,end=1)])+self.call('visual/animate')+self.call('visual/tick')
+        x0,z0=self.pose(4,0,0,0);x1,z1=self.pose(4,0,0,1)
+        body+=self.number(self.racer(),'transformation.translation[0]',x0+(x1-x0)*.083,'continuous_first_frame_x')+self.number(self.racer(),'transformation.translation[2]',z0+(z1-z0)*.083,'continuous_first_frame_z')
+        self.case('continuous_motion',body)
         self.finish();return self
 
 

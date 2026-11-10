@@ -18,6 +18,8 @@ execute if entity @e[tag=ca.current,scores={ca_state=2},limit=1] run scoreboard 
 execute if entity @e[tag=ca.current,scores={ca_state=6},limit=1] run scoreboard players set @s ca_mode 1
 execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] run scoreboard players set @s ca_mode 3
 execute unless score @s ca_mode matches 1..4 run return run function catan:direct/aim_note
+function catan:direct/build_check
+execute unless score #direct_ready ca_ctx matches 1 run return 0
 function catan:input/ray
 execute unless score #ray_ok ca_ctx matches 1 run return run function catan:input/miss_note
 scoreboard players operation @s ca_pick = #target ca_ctx

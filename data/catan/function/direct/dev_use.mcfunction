@@ -2,4 +2,6 @@ $execute if predicate {condition:"minecraft:value_check",value:$(id),range:4} ru
 $execute if predicate {condition:"minecraft:value_check",value:$(fresh),range:1} run return run function catan:direct/fresh_note
 $scoreboard players set #code ca_ctx $(id)
 scoreboard players add #code ca_ctx 600
-function catan:direct/confirm
+function catan:direct/dev_guard
+execute unless score #direct_ready ca_ctx matches 1 run return 0
+function catan:direct/submit

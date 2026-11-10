@@ -19,6 +19,7 @@ COLORS={
     'lightstone':'#b0adbe','paper':'#efdfb9','mint':'#a5d8ac','rust':'#af6545',
 }
 COLOR_INDEX={name:i for i,name in enumerate(COLORS)}
+SIDES={'west':(0,0),'east':(0,1),'down':(1,0),'up':(1,1),'north':(2,0),'south':(2,1)}
 DISPLAY={
     'gui':{'rotation':[25,225,0],'translation':[0,-4.8,0],'scale':[.62,.62,.62]},
     'firstperson_righthand':{'rotation':[0,160,0],'translation':[-2,3.5,1.5],'scale':[.30,.30,.30]},
@@ -29,6 +30,57 @@ DISPLAY={
     'fixed':{'rotation':[0,180,0],'translation':[0,-5,0],'scale':[.6,.6,.6]},
     'head':{'translation':[0,-5,0],'scale':[.6,.6,.6]},
 }
+
+
+def subtract_box(part,cut):
+    """AABB 布尔差：最多六个实心方块，保留原材质与部件名。"""
+    low=[max(part['from'][i],cut['from'][i]) for i in range(3)]
+    high=[min(part['to'][i],cut['to'][i]) for i in range(3)]
+    if any(high[i]<=low[i] for i in range(3)):return [part]
+    remaining_low=part['from'][:];remaining_high=part['to'][:];pieces=[]
+    for axis in range(3):
+        if remaining_low[axis]<low[axis]:
+            end=remaining_high[:];end[axis]=low[axis]
+            pieces.append({**part,'from':remaining_low[:],'to':end})
+        if high[axis]<remaining_high[axis]:
+            start=remaining_low[:];start[axis]=high[axis]
+            pieces.append({**part,'from':start,'to':remaining_high[:]})
+        remaining_low[axis]=low[axis];remaining_high[axis]=high[axis]
+    return pieces
+
+
+def solid_parts(parts):
+    """后画的装饰拥有交集；体积不重叠，外部同向面也不会重叠。"""
+    result=[]
+    for part in parts:
+        result=[piece for old in result for piece in subtract_box(old,part)]+[part]
+    return result
+
+
+def subtract_rect(rect,cut):
+    a,b,c,d=rect;u,v,w,z=cut
+    u=max(a,u);v=max(b,v);w=min(c,w);z=min(d,z)
+    if u>=w or v>=z:return [rect]
+    pieces=[(a,b,u,d),(w,b,c,d),(u,b,w,v),(u,z,w,d)]
+    return [r for r in pieces if r[0]<r[2] and r[1]<r[3]]
+
+
+def surface_faces(part,parts):
+    """裁去所有内部面；部分露出的面返回互不重叠的矩形。"""
+    visible={}
+    for side,(axis,upper) in SIDES.items():
+        other_axes=[i for i in range(3) if i!=axis]
+        u,v=other_axes;plane=part['to' if upper else 'from'][axis]
+        remaining=[(part['from'][u],part['from'][v],part['to'][u],part['to'][v])]
+        for other in parts:
+            if other is part:continue
+            outward=(other['from'][axis]<=plane<other['to'][axis]) if upper else (other['from'][axis]<plane<=other['to'][axis])
+            if not outward:continue
+            cut=(other['from'][u],other['from'][v],other['to'][u],other['to'][v])
+            remaining=[piece for rect in remaining for piece in subtract_rect(rect,cut)]
+            if not remaining:break
+        if remaining:visible[side]=remaining
+    return visible
 
 
 class Figure:
@@ -56,11 +108,24 @@ class Figure:
         factor=min(1,14/max(high[0]-low[0],high[2]-low[2]),18/(high[1]-low[1]))
         center=((low[0]+high[0])/2,low[1],(low[2]+high[2])/2)
         result=[]
-        for part in self.parts:
+        parts=solid_parts(self.parts)
+        for serial,part in enumerate(parts):
             index=COLOR_INDEX[part['color']];u=(index%8)*2;v=(index//8)*2
             points={key:[round(8+(part[key][axis]-center[axis])*factor,6) for axis in range(3)] for key in ('from','to')}
-            result.append({'name':part['name'],**points,'faces':{
-                side:{'texture':'#palette','uv':[u,v,u+2,v+2]} for side in ('up','down','north','south','east','west')}})
+            whole={};patches=[]
+            for side,rects in surface_faces(part,parts).items():
+                axis,upper=SIDES[side];a,b=[i for i in range(3) if i!=axis]
+                full=(part['from'][a],part['from'][b],part['to'][a],part['to'][b])
+                face={'texture':'#palette','uv':[u,v,u+2,v+2]}
+                if rects==[full]:whole[side]=face;continue
+                for patch_index,rect in enumerate(rects):
+                    bounds={'from':part['from'][:],'to':part['to'][:]}
+                    bounds['from'][axis]=bounds['to'][axis]=part['to' if upper else 'from'][axis]
+                    bounds['from'][a],bounds['from'][b],bounds['to'][a],bounds['to'][b]=rect
+                    patch_points={key:[round(8+(bounds[key][i]-center[i])*factor,6) for i in range(3)] for key in ('from','to')}
+                    patches.append({'name':part['name']+'_'+str(serial)+'_surface_'+side+'_'+str(patch_index),**patch_points,'faces':{side:face}})
+            result.append({'name':part['name']+'_'+str(serial),**points,'faces':whole})
+            result.extend(patches)
         return result
 
 
@@ -291,9 +356,9 @@ def build():
                           'model':{'type':'minecraft:model','model':'card:item/magical_athlete/hand/'+slug}}],
                 'fallback':{'type':'minecraft:model','model':'card:item/magical_athlete/hand/back'}}})
         mesh=[{'from':e['from'],'to':e['to']} for e in elements]
-        manifest.append({'id':entry['id'],'slug':slug,'name':entry['name'],'cubes':len(elements),'base_y':8,
+        manifest.append({'id':entry['id'],'slug':slug,'name':entry['name'],'design_parts':len(figure.parts),'cubes':len(elements),'base_y':8,
                          'geometry_sha256':hashlib.sha256(json.dumps(mesh,sort_keys=True).encode()).hexdigest()})
-    json_file(SOURCE/'figures.json',{'style':'Original full-volume voxel miniatures','base_y':8,
+    json_file(SOURCE/'figures.json',{'style':'Original full-volume voxel miniatures','base_y':8,'geometry_cleanup':'Disjoint solid cuboids; later decoration owns intersections; all internal face regions clipped',
         'reference':'https://www.cmyk.games/products/magical-athlete','figures':manifest,'display':DISPLAY})
     preview()
 
@@ -309,16 +374,19 @@ def preview():
         origin=(index%6*size+size/2,index//6*250+184)
         parts=sculpt(entry['slug']).mesh();faces=[]
         for part in parts:
+            if not part['faces']:continue
             x0,y0,z0=part['from'];x1,y1,z1=part['to']
-            color_index=round(part['faces']['up']['uv'][1]/2)*8+round(part['faces']['up']['uv'][0]/2)
+            uv=next(iter(part['faces'].values()))['uv']
+            color_index=round(uv[1]/2)*8+round(uv[0]/2)
             rgb=tuple(int(list(COLORS.values())[color_index][i:i+2],16) for i in (1,3,5))
-            for points,shade in (([(x0,y1,z0),(x1,y1,z0),(x1,y1,z1),(x0,y1,z1)],1.04),
-                                 ([(x1,y0,z0),(x1,y0,z1),(x1,y1,z1),(x1,y1,z0)],.72),
-                                 ([(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0)],.88)):
+            for side,points,shade in (('up',[(x0,y1,z0),(x1,y1,z0),(x1,y1,z1),(x0,y1,z1)],1.04),
+                                 ('east',[(x1,y0,z0),(x1,y0,z1),(x1,y1,z1),(x1,y1,z0)],.72),
+                                 ('north',[(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0)],.88)):
+                if side not in part['faces']:continue
                 depth=sum(p[0]-p[2]+p[1]*(.68/.9) for p in points)/4
                 polygon=[(origin[0]+project(p)[0]*7.3,origin[1]+project(p)[1]*7.3) for p in points]
                 faces.append((depth,polygon,tuple(min(255,round(v*shade)) for v in rgb)))
-        for _,polygon,color in sorted(faces,key=lambda item:item[0]):draw.polygon(polygon,fill=color,outline='#313746')
+        for _,polygon,color in sorted(faces,key=lambda item:item[0]):draw.polygon(polygon,fill=color)
         draw.text((origin[0],index//6*250+225),entry['name'],font=font,anchor='mm',fill='#273647')
     sheet.save(SOURCE/'figures-preview.png')
 

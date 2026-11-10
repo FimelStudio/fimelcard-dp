@@ -20,6 +20,9 @@ def prepare_target(target):
                 line=line.replace('@a[','@e[')
             lines.append(line)
         path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    # 记录真实 Dialog 宏是否执行；保留全部库存、视觉和选择阶段回调。
+    show=target/'data/love_letter/function/ui/show.mcfunction'
+    show.write_text(show.read_text(encoding='utf-8')+'scoreboard players add #ui_shown lt 1\nscoreboard players operation #ui_viewer lt = @s ll_seat\n',encoding='utf-8')
 
 
 def audit_public_visuals():
@@ -120,6 +123,40 @@ function love_letter_test:roles
         c+=self.play(actor=4)+self.score('#ok','ll_ctx',0,'draw_animation_rejects_action')+self.data(part(4),'data.discards',[],'draw_animation_no_discard')+self.ticks(7)+self.score(TABLE,'ll_anim',1,'draw_animation_seven_still_locked')+self.ticks(1)+self.score(TABLE,'ll_anim',0,'draw_animation_eight_unlocks')
         c+=[f'scoreboard players set {part(7)} ll_alive 0']+self.call('game/next_turn')+self.score(TABLE,'ll_turn',1,'next_turn_skips_dead_and_wraps')
         self.case('turn_animation',c)
+        for slot in (0,1):
+            key=f'guard_princess_dialog_slot{slot}'
+            c=self.playable(4,(1,3,4))+[
+                f'scoreboard players set {part()} ll_hand {1 if slot==0 else 9}',
+                f'scoreboard players set {part()} ll_extra {9 if slot==0 else 1}',
+                f'scoreboard players set {part(3)} ll_hand 2',
+                f'tp {person()} 8 64 5.5 0 0',f'tp {person(3)} 8 64 10.5 180 0',
+                f'tp {person(4)} 10.5 64 8 90 0',
+                'scoreboard players set #ui_shown lt 0',
+                f'data modify storage love_letter_test:q request set value {{table:101,owner:1,slot:{slot},epoch:0}}',
+                f'execute store result storage love_letter_test:q request.epoch int 1 run scoreboard players get {TABLE} ll_epoch']
+            if slot==0:
+                c+=[f'execute as {person()} at @s run function love_letter:direct/play with storage love_letter_test:q request']
+            else:
+                # 真实 Q 路径：带 Thrower 的掉落物进入 input/tick，完成回收后才弹窗。
+                drop='@e[type=minecraft:item,tag=lt.guard_drop,limit=1]'
+                c+=['summon minecraft:item 8 65 5.5 {Tags:["lt.fixture","lt.guard_drop"],PickupDelay:32767s,Item:{id:"minecraft:purple_dye",count:1,components:{"minecraft:custom_data":{love_letter:{tool:1b,hand:1b,card:1}}}}}',
+                    f'data modify entity {drop} Thrower set from entity {person()} UUID',
+                    f'data modify entity {drop} Item.components."minecraft:custom_data".love_letter merge from storage love_letter_test:q request',
+                    f'scoreboard players set {person()} ll_drop 1','function love_letter:input/tick']
+                c+=self.count('@e[tag=lt.guard_drop]',0,key+'_dropped_guard_reclaimed')+self.score(person(),'ll_drop',0,key+'_drop_counter_consumed')
+            c+=self.score(TABLE,'ll_phase',3,key+'_waits_for_guess')+self.score(TABLE,'ll_target',3,key+'_locks_target')
+            c+=self.score(part(),'ll_hand',9,key+'_princess_kept')+self.score(part(),'ll_extra',-1,key+'_guard_consumed')
+            c+=self.score('#ui_shown','lt',0,key+'_waits_until_drop_finished')
+            c+=self.check(f'entity {person()[:-1]},tag=ll.choice_pending]',key+'_choice_queued')
+            c+=['function love_letter:input/tick']
+            c+=self.score('#ui_shown','lt',1,key+'_dialog_opens_without_second_q')+self.score('#ui_viewer','lt',1,key+'_actor_only')
+            c+=['function love_letter:input/tick']+self.score('#ui_shown','lt',1,key+'_dialog_not_reopened_every_tick')
+            c+=[f'scoreboard players operation #choice lt = {TABLE} ll_epoch','scoreboard players set #factor lt 1000',
+                'scoreboard players operation #choice lt *= #factor lt','scoreboard players add #choice lt 202',
+                f'scoreboard players operation {person()} ll_action = #choice lt','function love_letter:input/tick']
+            c+=self.score(part(3),'ll_alive',0,key+'_guess_resolves_target')+self.score(part(),'ll_alive',1,key+'_princess_owner_survives')
+            c+=self.score(part(),'ll_hand',9,key+'_guess_does_not_discard_princess')
+            self.case(key,c)
         # 朝向已原子确定目标；末张侍卫仍须完成猜牌，才能进入轮末结算。
         c=self.playable(4,(1,3,4))+[f'scoreboard players set {part()} ll_hand 1',f'scoreboard players set {part()} ll_extra 8',f'scoreboard players set {part(3)} ll_hand 2',f'scoreboard players set {part(4)} ll_hand 3',f'data modify entity {TABLE} data.love_letter.deck set value []']+self.play()
         c+=self.score(TABLE,'ll_phase',3,'last_draw_guard_wait_guess')+self.score(TABLE,'ll_state',2,'last_draw_guard_still_playing')+['scoreboard players set #actor ll_ctx 1','scoreboard players set #guess ll_ctx 0']+self.call('engine/guess')+self.score(TABLE,'ll_state',3,'last_draw_guard_then_round_end')+self.score(TABLE,'ll_phase',6,'last_draw_guard_phase_six')

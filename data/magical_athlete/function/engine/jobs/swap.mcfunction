@@ -1,5 +1,6 @@
 function magical_athlete:engine/active_context
 data modify storage magical_athlete:engine s.motion set value {pawn:0,from:0,to:0,source:11,author:0,warp:1,group:[],before:[],targets:[]}
+data modify storage magical_athlete:engine s.motion.source_actor set from storage magical_athlete:engine s.active
 data modify storage magical_athlete:engine s.motion.pawn set from storage magical_athlete:engine s.active
 data modify storage magical_athlete:engine s.motion.author set from storage magical_athlete:engine s.active
 execute store result storage magical_athlete:engine s.motion.from int 1 run scoreboard players get #position ma_ctx

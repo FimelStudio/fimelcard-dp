@@ -2,6 +2,7 @@ scoreboard objectives add ma_depoch dummy
 scoreboard objectives add ma_iepoch dummy
 scoreboard objectives add ma_dpage dummy
 scoreboard objectives add ma_expected dummy
+scoreboard objectives add ma_dice_expected dummy
 scoreboard objectives add ma_confirm dummy
 scoreboard objectives add ma_cepoch dummy
 scoreboard objectives add ma_dcode dummy

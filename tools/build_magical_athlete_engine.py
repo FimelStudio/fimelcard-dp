@@ -69,7 +69,7 @@ def build():
     put('drain_loop',[f'execute if data {S} s.pending.options[0] run return 0',f'execute unless data {S} s.queue[0] run return 0','execute unless score #budget ma_ctx matches 1.. run return 0','scoreboard players remove #budget ma_ctx 1',f'data modify {S} job set from {S} s.queue[0]',f'data remove {S} s.queue[0]',fn('cache'),fn('powers'),fn('job_dispatch'),f'execute if data {S} s.pending.options[0] run return 0',f'execute if data {S} s.queue[0] run {fn("drain_loop")}'])
     types=['begin','pre','roll','roll_done','main','move','land','power','turn_end','advance','prerace','finish','warp','trip','points','duel','cheer','party','swap','follow','postmove','react']
     put('job_dispatch',[f'execute if data {S} job{{type:"{t}"}} run return run {fn("jobs/"+t)} with storage magical_athlete:engine job' for t in types])
-    build_draft();build_lineup();build_choices();build_turn();build_movement();build_reactions();build_race();build_refinements()
+    build_draft();build_lineup();build_choices();build_turn();build_movement();build_reactions();build_race();build_refinements();build_event_authors()
     print('Generated Magical Athlete engine',len(list(ROOT.rglob('*.mcfunction'))))
 
 def build_draft():
@@ -618,5 +618,35 @@ def build_batch_distance():
     for j in range(6):arrive +=[f'execute if score #s{j} ma_ctx matches 0 if score #p{j} ma_ctx matches 32 unless score #i ma_ctx matches {j} if score #destination ma_ctx matches 31.. run return run '+fn('stickler_block')+f' {{pawn:{j}}}']
     arrive +=['execute if score #destination ma_ctx matches 31.. run scoreboard players set #destination ma_ctx 30','execute if score #destination ma_ctx matches ..-1 run scoreboard players set #destination ma_ctx 0',f'$execute store result {S} s.motion.targets[$(pawn)] int 1 run scoreboard players get #destination ma_ctx',f'$data modify {S} s.motion.group append value $(pawn)',f'$execute if score #power ma_ctx matches 20 run '+fn('batch/leap_notify')+' {pawn:$(pawn)}'];put('batch/arrive',arrive)
     put('batch/leap_notify',['execute unless score #jumped ma_ctx matches 1.. run return 0',f'$'+queue('power',pawn='PAWN').replace('"PAWN"','$(pawn)'),'scoreboard players remove #jumped ma_ctx 1',f'$'+fn('batch/leap_notify')+' {pawn:$(pawn)}'])
+
+def build_event_authors():
+    """为展示事件保留发动棋子编号；不改变原 author 的规则语义。"""
+    def insert(name,marker,lines,before=False):
+        body=(ROOT/(name+'.mcfunction')).read_text(encoding='utf-8').splitlines()
+        at=next(i for i,line in enumerate(body) if marker in line)+(0 if before else 1)
+        body[at:at]=lines;put(name,body)
+    for name in ('jobs/move','jobs/warp'):
+        insert(name,'s.motion.source set',[
+            f'data modify {S} s.motion.source_actor set from {S} job.pawn',
+            f'execute if data {S} job.author run data modify {S} s.motion.source_actor set from {S} job.author',
+            f'execute if data {S} job.source_actor run data modify {S} s.motion.source_actor set from {S} job.source_actor'])
+    for name in ('jobs/cheer','jobs/party','jobs/swap'):
+        insert(name,'s.motion set value',[f'data modify {S} s.motion.source_actor set from {S} s.active'])
+    insert('choices/pull','s.queue prepend from',[f'$data modify {S} append.source_actor set value $(pawn)'],before=True)
+    insert('move/apply','s.events append from',[f'data modify {S} e.source_actor set from {S} s.motion.source_actor'],before=True)
+    insert('move/baby','s.events append from',[f'$data modify {S} e.source_actor set value $(baby)'],before=True)
+    insert('jobs/trip','s.events append value',[f'data modify {S} s.events[-1].source_actor set from {S} job.source_actor'])
+    insert('jobs/points','s.events append value',[f'data modify {S} s.events[-1].source_actor set from {S} job.source_actor'])
+    insert('react/mouth_target','s.events append value',[f'data modify {S} s.events[-1].source_actor set from {S} job.reactor'])
+    # 触发反应时就保存 reactor，后续队列执行不再靠能力种类猜发动者。
+    for name in ('react/banana','react/baba','react/baba_moving','move/baby'):
+        body=(ROOT/(name+'.mcfunction')).read_text(encoding='utf-8').splitlines()
+        origin='$(pawn)' if name=='move/baby' else '$(reactor)'
+        for i,line in enumerate(body):
+            if '"type":"trip"' not in line:continue
+            for power in (1,2):line=line.replace(f'"source":{power}}}',f'"source":{power},"source_actor":{origin}}}')
+            body[i]=line if line.startswith('$') else '$'+line
+        put(name,body)
+
 
 if __name__=='__main__':build()

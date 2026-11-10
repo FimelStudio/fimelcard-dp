@@ -1,3 +1,3 @@
-execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending run data modify storage fimel_title:io text.text set value "你的技能待回应：手持选项按Q两次，或右键目标"
+execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending run data modify storage fimel_title:io text.text set value "你的技能待回应：手持选项按Q一次，或右键目标"
 execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending if data entity @e[tag=ma.current,limit=1] data.magical_athlete.pending{kind:"ready"} run data modify storage fimel_title:io text.text set value "轮到你了：手持骰子按Q开始行动"
 execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending if data entity @e[tag=ma.current,limit=1] data.magical_athlete.pending{kind:"thirdwheel"} run data modify storage fimel_title:io text.text set value "选择传送格：右键金色提示点两次，或选跳过"

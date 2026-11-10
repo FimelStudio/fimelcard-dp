@@ -17,6 +17,67 @@ TRACK=json.loads((PACK/'tools/magical_athlete_track.json').read_text(encoding='u
 
 
 class Assets(unittest.TestCase):
+    def test_sculptures_have_no_intersecting_cubes_or_duplicate_outer_faces(self):
+        for entry in [*CHARS,{'slug':'back'}]:
+            slug=entry['slug']
+            reference=None
+            for kind in ('racer','token','hand'):
+                elements=json.loads((CARD/f'models/item/magical_athlete/{kind}/{slug}.json').read_text(encoding='utf-8'))['elements']
+                if reference is None:reference=elements
+                else:self.assertEqual(elements,reference,(slug,kind))
+                for i,a in enumerate(elements):
+                    self.assertTrue(all(end>=start for start,end in zip(a['from'],a['to'])),(slug,a['name']))
+                    flat=[axis for axis in range(3) if a['from'][axis]==a['to'][axis]]
+                    if flat:
+                        self.assertEqual(len(flat),1,(slug,a['name']))
+                        self.assertEqual(len(a['faces']),1,(slug,a['name']))
+                    for b in elements[i+1:]:
+                        spans=[min(a['to'][axis],b['to'][axis])-max(a['from'][axis],b['from'][axis]) for axis in range(3)]
+                        self.assertFalse(all(span>1e-7 for span in spans),(slug,a['name'],b['name'],'intersecting solids'))
+                        for low,up,axis in (('west','east',0),('down','up',1),('north','south',2)):
+                            for side1,limit1 in ((low,'from'),(up,'to')):
+                                for side2,limit2 in ((low,'from'),(up,'to')):
+                                    if side1 not in a['faces'] or side2 not in b['faces']:continue
+                                    if abs(a[limit1][axis]-b[limit2][axis])>1e-7:continue
+                                    self.assertFalse(all(spans[j]>1e-7 for j in range(3) if j!=axis),(slug,a['name'],b['name'],side1,side2,'overlapping coplanar faces'))
+
+    def test_sculpture_cleanup_preserves_volume_and_decoration_colors(self):
+        from build_magical_athlete_figures import sculpt,COLOR_INDEX
+        def union_volume(boxes):
+            # 独立的扫描线积分，检查布尔切割没有挖洞或增加体积。
+            xs=sorted({p[k][0] for p in boxes for k in ('from','to')});total=0
+            for x0,x1 in zip(xs,xs[1:]):
+                active=[p for p in boxes if p['from'][0]<(x0+x1)/2<p['to'][0]]
+                ys=sorted({p[k][1] for p in active for k in ('from','to')});area=0
+                for y0,y1 in zip(ys,ys[1:]):
+                    zs=sorted((p['from'][2],p['to'][2]) for p in active if p['from'][1]<(y0+y1)/2<p['to'][1])
+                    end=-math.inf;length=0
+                    for a,b in zs:
+                        length+=max(0,b-max(a,end));end=max(end,b)
+                    area+=(y1-y0)*length
+                total+=(x1-x0)*area
+            return total
+        for entry in [*CHARS,{'slug':'back'}]:
+            slug=entry['slug'];parts=sculpt(slug).parts
+            elements=json.loads((CARD/f'models/item/magical_athlete/racer/{slug}.json').read_text(encoding='utf-8'))['elements']
+            low=[min(p['from'][i] for p in parts) for i in range(3)]
+            high=[max(p['to'][i] for p in parts) for i in range(3)]
+            scale=(max(p['to'][0] for p in elements)-min(p['from'][0] for p in elements))/(high[0]-low[0])
+            expected=union_volume(parts)*scale**3
+            actual=sum(math.prod(b-a for a,b in zip(p['from'],p['to'])) for p in elements)
+            self.assertAlmostEqual(actual,expected,delta=expected*2e-6,msg=slug)
+            center=[(low[0]+high[0])/2,low[1],(low[2]+high[2])/2]
+            for part in elements:
+                if not part['faces']:continue
+                point=[((part['from'][i]+part['to'][i])/2-8)/scale+center[i] for i in range(3)]
+                for axis in range(3):
+                    if part['from'][axis]!=part['to'][axis]:continue
+                    side=next(iter(part['faces']))
+                    point[axis]+=1e-4 if side in ('west','down','north') else -1e-4
+                owner=next(p for p in reversed(parts) if all(a-1e-5<x<b+1e-5 for a,x,b in zip(p['from'],point,p['to'])))
+                uv=next(iter(part['faces'].values()))['uv'];index=round(uv[1]/2)*8+round(uv[0]/2)
+                self.assertEqual(index,COLOR_INDEX[owner['color']],(slug,part['name'],'decoration material'))
+
     def test_geometry_is_unique_and_fits_table(self):
         points=TRACK['layout']['positions']
         self.assertEqual(len(points),31)

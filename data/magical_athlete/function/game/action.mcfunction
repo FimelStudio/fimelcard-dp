@@ -1,5 +1,6 @@
 execute if score @s ct_paused matches 1 run return 0
 function magical_athlete:system/context
+data modify entity @s data.ma_feedback.choice set from entity @s data.magical_athlete.pending
 execute unless entity @a[tag=ma.actor,tag=ma.audience,limit=1] run return 0
 execute if score @s ma_anim matches 1.. run return 0
 scoreboard players operation @s ma_previous = @s ma_state

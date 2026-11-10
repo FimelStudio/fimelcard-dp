@@ -43,14 +43,20 @@ def build():
     c=setup('magical_athlete')+set('magical_athlete','phase',2)+set('magical_athlete','p1.hand',list(range(8)))+[f'execute as {TABLE} run function magical_athlete:game/sync']+call('magical_athlete','direct/sync')
     for i in range(6):c+=has(i,f'minecraft:paper[minecraft:custom_data~{{magical_athlete:{{code:{200+i},table:101,epoch:1}}}}]',f'ma_private_character_{i}')
     for i in range(8):c+=has(i,f'minecraft:paper[minecraft:custom_data~{{magical_athlete:{{roster:1b,char:{i},table:101}}}}]',f'ma_persistent_roster_{i}',True)
-    c+=s.score(A,'ma_expected',17,'ma_roster_and_controls_count')
-    c+=has(6,'minecraft:paper[minecraft:custom_data~{magical_athlete:{code:9999}}]','ma_page_tool')+has(7,'minecraft:paper[minecraft:custom_data~{magical_athlete:{dice:1b}}]','ma_die_present')+has(8,'minecraft:paper[minecraft:custom_data~{magical_athlete:{code:9998}}]','ma_cancel_present')
+    c+=s.score(A,'ma_expected',16,'ma_roster_and_controls_count')
+    c+=has(6,'minecraft:paper[minecraft:custom_data~{magical_athlete:{code:9999}}]','ma_page_tool')+has(8,'minecraft:paper[minecraft:custom_data~{magical_athlete:{code:9998}}]','ma_cancel_present')
+    c+=s.score(A,'ma_dice_expected',0,'ma_no_dice_during_secret_lineup')
     c+=call('magical_athlete','direct/use_choice {code:9999,epoch:1,table:101}')+has(0,'minecraft:paper[minecraft:custom_data~{magical_athlete:{code:206}}]','ma_second_page_first_character')
     c+=[f'item replace entity {A} container.0 with minecraft:stone 32',f'scoreboard players set {A} ma_depoch -1']+call('magical_athlete','direct/sync')+has(0,'minecraft:stone','ma_preserves_foreign_hotbar_item')
     c+=set('magical_athlete','phase',3)+set('magical_athlete','p1.hand',[6,7])+set('magical_athlete','p1.selected',[0,1])+[f'execute as {TABLE} run function magical_athlete:game/sync',f'scoreboard players set {A} ma_depoch -1']+call('magical_athlete','direct/sync')
     c+=has(0,'minecraft:paper[minecraft:custom_name={text:"〔本场已提交〕炼金术士：主要移动掷出1或2，可改走4格。",color:"aqua",italic:false}]','ma_current_lineup_label',True)
     c+=has(2,'minecraft:paper[minecraft:custom_name={text:"〔已使用〕香蕉：超越你的运动员完成移动后绊倒。",color:"aqua",italic:false}]','ma_used_role_kept_and_labeled',True)
     c+=has(7,'minecraft:paper[minecraft:custom_data~{magical_athlete:{roster:1b,char:7}}]','ma_unused_role_kept_during_race',True)
+    c+=set('magical_athlete','pending',{'kind':'ready','owner':1,'pawn':0,'options':[0]})+[f'execute as {TABLE} run function magical_athlete:game/sync']+call('magical_athlete','direct/sync')
+    c+=has(7,'minecraft:paper[minecraft:custom_data~{magical_athlete:{dice:1b}}]','ma_acting_player_has_die')+s.score(A,'ma_dice_expected',1,'ma_acting_die_counted')
+    c+=set('magical_athlete','pending',{'kind':'ready','owner':2,'pawn':1,'options':[0]})+[f'execute as {TABLE} run function magical_athlete:game/sync']+call('magical_athlete','direct/sync')
+    c+=s.score(A,'ma_dice_expected',0,'ma_waiting_player_die_removed')
+    c+=['scoreboard players set #leftover ce 0',f'execute if items entity {A} container.7 minecraft:paper[minecraft:custom_data~{{magical_athlete:{{dice:1b}}}}] run scoreboard players set #leftover ce 1']+s.score('#leftover','ce',0,'ma_waiting_inventory_has_no_die')
     s.case('ma_inventory',c)
     s.finish()
     s.files['bootstrap']='\n'.join(['forceload add 0 0 63 31','scoreboard objectives add ce dummy','scoreboard objectives add ce_id dummy','function direct_inventory_bridge:load',f'schedule function catan_engine_test:case/{next(iter(s.cases))} 5t'])+'\n'
@@ -72,7 +78,7 @@ def prepare(target):
         dest=target/f'data/{ns}/function'
         for path in dest.rglob('*.mcfunction'):
             body=path.read_text(encoding='utf-8')
-            body='\n'.join(line if any(t in line for t in ('dialog show ','dialog clear ','tellraw ','playsound ','stopsound ','title ')) else re.sub(r'@a\[','@e[type=minecraft:chest_minecart,tag=di.actor,',line).replace('@a ','@e[type=minecraft:chest_minecart,tag=di.actor] ') for line in body.splitlines())+'\n'
+            body='\n'.join(line if any(t in line for t in ('dialog show ','dialog clear ','tellraw ','playsound ','stopsound ','particle ','run title ','title @')) else re.sub(r'@a\[','@e[type=minecraft:chest_minecart,tag=di.actor,',line).replace('@a ','@e[type=minecraft:chest_minecart,tag=di.actor] ') for line in body.splitlines())+'\n'
             body=re.sub(r'clear @s (.+?)( 0)?$',lambda m:'function direct_inventory_bridge:clear {match:'+json.dumps(m[1],ensure_ascii=False)+',remove:'+('0' if m[2] else '1')+'}',body,flags=re.M)
             def bridge_give(match):
                 name='give_'+path.stem

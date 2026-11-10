@@ -108,7 +108,7 @@ def catan():
         'data modify storage catan:feedback state.turn set from entity @s data.catan.turn',
         'execute store success score #state_changed ca_ctx run data modify entity @s data.ca_feedback.state set from storage catan:feedback state',
         'execute if score #state_changed ca_ctx matches 1 run function catan:feedback/state with entity @s data.catan'])
-    phase={1:'放置初始村庄：手持村庄，瞄准交点后右键两次',2:'放置初始道路：手持道路，瞄准刚建村庄相邻的边',3:'开始回合：手持骰子按Q投骰，或使用旧发展卡',4:'自由行动：建造、交易或使用发展卡；结束回合按Q两次',5:'掷出7：资源超过7张的玩家必须弃掉一半（向下取整）',6:'移动强盗：瞄准另一个地块，右键两次确认',7:'偷取资源：瞄准亮起的相邻对手，右键两次',8:'免费修路：手持道路选择位置，最多两条',11:'本局结束'}
+    phase={1:'放置初始村庄：手持村庄，瞄准交点后右键两次',2:'放置初始道路：手持道路，瞄准刚建村庄相邻的边',3:'开始回合：手持骰子按Q投骰，或使用旧发展卡',4:'自由行动：建造、交易或使用发展卡；结束回合按Q两次',5:'掷出7：资源超过7张的玩家必须弃掉一半（向下取整）',6:'移动强盗：瞄准另一个地块，右键两次确认',7:'偷取资源：瞄准亮起的相邻对手，按Q或右键一次',8:'免费修路：手持道路选择位置，最多两条',11:'本局结束'}
     state=[]
     for code,label in phase.items():
         state += [f'$execute if score @s ca_state matches {code} run tellraw @a[tag=ca.audience] '+js([{'text':'[卡坦岛] ','color':'gold'},w.name('$(turn)'),{'text':' · '+label,'color':'yellow'}])]
@@ -145,15 +145,36 @@ def catan():
 def magical_athlete():
     w=Writer('magical_athlete','ma');w.common()
     w.put('feedback/status',[
-        'execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending run data modify storage fimel_title:io text.text set value "你的技能待回应：手持选项按Q两次，或右键目标"',
+        'execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending run data modify storage fimel_title:io text.text set value "你的技能待回应：手持选项按Q一次，或右键目标"',
         'execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending if data entity @e[tag=ma.current,limit=1] data.magical_athlete.pending{kind:"ready"} run data modify storage fimel_title:io text.text set value "轮到你了：手持骰子按Q开始行动"',
         'execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending if data entity @e[tag=ma.current,limit=1] data.magical_athlete.pending{kind:"thirdwheel"} run data modify storage fimel_title:io text.text set value "选择传送格：右键金色提示点两次，或选跳过"'])
     w.hook('game/after_animation','function magical_athlete:feedback/check',after='function magical_athlete:visual/refresh')
     w.hook('game/after_action','function magical_athlete:feedback/action',after='function magical_athlete:game/sync')
+    w.hook('game/action','data modify entity @s data.ma_feedback.choice set from entity @s data.magical_athlete.pending',after='function magical_athlete:system/context')
     # 此函数在成功事务之后执行；秘密阵容只报告已准备，不报告身份。
     w.put('feedback/action',[
+        'scoreboard players set #feedback_epoch ma_ctx -1',
+        'execute store result score #feedback_epoch ma_ctx run data get storage magical_athlete:engine request.epoch',
+        'scoreboard players set #feedback_logged ma_ctx -2',
+        'execute store result score #feedback_logged ma_ctx run data get entity @s data.ma_feedback.action_epoch',
+        'execute if score #feedback_epoch ma_ctx = #feedback_logged ma_ctx run return 0',
+        'execute store result entity @s data.ma_feedback.action_epoch int 1 run scoreboard players get #feedback_epoch ma_ctx',
+        'data modify entity @s data.ma_feedback.last_actor set from storage magical_athlete:engine request.actor',
         'execute if data storage magical_athlete:engine request{code:1} run function magical_athlete:feedback/draft with storage magical_athlete:engine request',
-        'execute if data storage magical_athlete:engine request{code:2} run function magical_athlete:feedback/lineup with storage magical_athlete:engine request'])
+        'execute if data storage magical_athlete:engine request{code:2} run function magical_athlete:feedback/lineup with storage magical_athlete:engine request',
+        'execute if data storage magical_athlete:engine request{code:4} run function magical_athlete:feedback/choice with storage magical_athlete:engine request'])
+    w.put('feedback/choice',[
+        '$execute unless predicate {condition:"minecraft:value_check",value:$(target),range:{min:0,max:5}} run return 0',
+        'scoreboard players set #choice_targets_pawn ma_ctx 0',
+        *[f'execute if data entity @s data.ma_feedback.choice{{kind:"{kind}"}} run scoreboard players set #choice_targets_pawn ma_ctx 1' for kind in ('hypnotist','flip','duel','mastermind','copycat')],
+        'execute unless score #choice_targets_pawn ma_ctx matches 1 run return 0',
+        '$data modify storage magical_athlete:feedback racer set from entity @s data.magical_athlete.racers[$(target)]',
+        'data modify storage magical_athlete:feedback event set value {source:-1,source_actor:-1,actor:0,name:""}',
+        'data modify storage magical_athlete:feedback event.source_actor set from entity @s data.ma_feedback.choice.pawn',
+        'function magical_athlete:feedback/choice_source with storage magical_athlete:feedback event',
+        'function magical_athlete:feedback/event_name with storage magical_athlete:feedback racer',
+        'function magical_athlete:feedback/source with storage magical_athlete:feedback event'])
+    w.put('feedback/choice_source','$data modify storage magical_athlete:feedback event.source set from entity @s data.magical_athlete.racers[$(source_actor)].power')
     w.put('feedback/lineup',w.chat([w.name(),{'text':' 已提交一名本场选手；全员完成后统一揭晓。','color':'aqua'}]))
     w.put('feedback/draft',[
         '$data modify storage magical_athlete:feedback character set from storage magical_athlete:characters chars[$(target)]',
@@ -163,7 +184,8 @@ def magical_athlete():
     # 动画按事件顺序播报，避免先公布最后结果再播放过程。
     w.put('visual/event_announce','function magical_athlete:feedback/event with storage magical_athlete:visual event')
     w.put('feedback/event',[
-        '$data modify storage magical_athlete:feedback event set value {kind:$(kind),pawn:$(pawn),from:$(from),to:$(to),source:$(source),amount:$(amount),die:$(die)}',
+        '$data modify storage magical_athlete:feedback event set value {kind:$(kind),pawn:$(pawn),from:$(from),to:$(to),source:$(source),amount:$(amount),die:$(die),source_actor:-1}',
+        'data modify storage magical_athlete:feedback event.source_actor set from entity @s data.magical_athlete.visual_event.source_actor',
         '$data modify storage magical_athlete:feedback racer set from entity @s data.magical_athlete.racers[$(pawn)]',
         'execute if data storage magical_athlete:feedback racer{char:-1} run return 0',
         'function magical_athlete:feedback/event_name with storage magical_athlete:feedback racer',
@@ -172,8 +194,18 @@ def magical_athlete():
         '$data modify storage magical_athlete:feedback event.name set from storage magical_athlete:characters chars[$(char)].name',
         '$data modify storage magical_athlete:feedback event.actor set value $(owner)',
         '$data modify storage magical_athlete:feedback event.ability set from storage magical_athlete:characters chars[$(power)].ability'])
-    labels={1:'前进／后退：$(from) → $(to) 格',2:'移动至 $(to) 格',3:'被绊倒，下次行动需先起身',4:'重新站起，本次行动结束',5:'被吞掉，本场出局',6:'抵达终点！名次：第 $(amount) 名',7:'积分变化：$(amount) 分',8:'触发能力：$(ability)',9:'掷出 $(die) 点'}
+    labels={2:'移动至 $(to) 格',3:'被绊倒，下次行动需先起身',4:'重新站起，本次行动结束',5:'被吞掉，本场出局',6:'抵达终点！名次：第 $(amount) 名',7:'积分变化：$(amount) 分',8:'触发能力：$(ability)',9:'掷出 $(die) 点'}
     lines=[]
+    lines += ['$execute if predicate {condition:"minecraft:value_check",value:$(kind),range:1} run function magical_athlete:feedback/move with storage magical_athlete:feedback event']
+    w.put('feedback/move',[
+        '$scoreboard players set #move_from ma_ctx $(from)','$scoreboard players set #move_to ma_ctx $(to)',
+        'scoreboard players operation #move_steps ma_ctx = #move_to ma_ctx',
+        'scoreboard players operation #move_steps ma_ctx -= #move_from ma_ctx',
+        'data modify storage magical_athlete:feedback event.direction set value "原地停留"',
+        'execute if score #move_steps ma_ctx matches 1.. run data modify storage magical_athlete:feedback event.direction set value "前进"',
+        'execute if score #move_steps ma_ctx matches ..-1 run data modify storage magical_athlete:feedback event.direction set value "后退"',
+        'function magical_athlete:feedback/move_message with storage magical_athlete:feedback event'])
+    w.put('feedback/move_message',w.chat([w.name(),{'text':' 的「$(name)」$(direction)：$(from) → $(to) 格','color':'white'}]))
     for kind,label in labels.items():
         color='green' if kind==6 else 'red' if kind in (3,5) else 'aqua' if kind in (7,8) else 'white'
         lines += [f'$execute if predicate {{condition:"minecraft:value_check",value:$(kind),range:{kind}}} run '+w.chat([w.name(),{'text':' 的 $(name)：'+label,'color':color}])[1:]]
@@ -182,9 +214,25 @@ def magical_athlete():
     lines += ['$execute if predicate {condition:"minecraft:value_check",value:$(source),range:{min:0,max:35}} if predicate {condition:"minecraft:value_check",value:$(kind),range:{min:1,max:5}} run function magical_athlete:feedback/source with storage magical_athlete:feedback event']
     w.put('feedback/event_text',lines)
     w.put('feedback/source',[
-        '$data modify storage magical_athlete:feedback source set from storage magical_athlete:characters chars[$(source)]',
+        '$data modify storage magical_athlete:feedback source set value {source_actor:$(source_actor),target_owner:$(actor),target_name:"$(name)",power:$(source)}',
+        '$data modify storage magical_athlete:feedback source.ability_name set from storage magical_athlete:characters chars[$(source)].name',
+        'scoreboard players set #source_count ma_ctx 0',
+        *[f'$execute if predicate {{condition:"minecraft:value_check",value:$(source_actor),range:-1}} run function magical_athlete:feedback/source_candidate {{index:{i},power:$(source)}}' for i in range(6)],
+        '$execute if predicate {condition:"minecraft:value_check",value:$(source_actor),range:-1} unless score #source_count ma_ctx matches 1 run return run function magical_athlete:feedback/source_unknown with storage magical_athlete:feedback source',
+        'function magical_athlete:feedback/source_actor with storage magical_athlete:feedback source'])
+    w.put('feedback/source_candidate',[
+        '$data modify storage magical_athlete:feedback source_racer set from entity @s data.magical_athlete.racers[$(index)]',
+        '$execute unless data storage magical_athlete:feedback source_racer{power:$(power)} run return 0',
+        'scoreboard players add #source_count ma_ctx 1','$data modify storage magical_athlete:feedback source.source_actor set value $(index)'])
+    w.put('feedback/source_actor',[
+        '$data modify storage magical_athlete:feedback source_racer set from entity @s data.magical_athlete.racers[$(source_actor)]',
+        'function magical_athlete:feedback/source_name with storage magical_athlete:feedback source_racer',
         'function magical_athlete:feedback/source_text with storage magical_athlete:feedback source'])
-    w.put('feedback/source_text','$tellraw @a[tag=ma.audience] {text:"  ↳ 来自「$(name)」的能力效果。",color:"gray"}')
+    w.put('feedback/source_name',[
+        '$data modify storage magical_athlete:feedback source.caster_owner set value $(owner)',
+        '$data modify storage magical_athlete:feedback source.caster_name set from storage magical_athlete:characters chars[$(char)].name'])
+    w.put('feedback/source_text',w.chat([w.name('$(caster_owner)'),{'text':' 的「$(caster_name)」对 ','color':'aqua'},w.name('$(target_owner)'),{'text':' 的「$(target_name)」发动了「$(ability_name)」能力。','color':'aqua'}]))
+    w.put('feedback/source_unknown','$tellraw @a[tag=ma.audience] {text:"  ↳ 来自「$(ability_name)」的能力效果。",color:"gray"}')
     w.put('feedback/check',[
         'data modify storage magical_athlete:feedback state set value {phase:0,turn:0,round:0,active:-1,pending:{}}',
         *[f'data modify storage magical_athlete:feedback state.{field} set from entity @s data.magical_athlete.{field}' for field in ('phase','turn','round','active','pending')],
@@ -202,13 +250,13 @@ def magical_athlete():
         'execute as @a[tag=ma.audience] run function magical_athlete:hud/build']
     w.put('feedback/state',state)
     w.put('feedback/pending',[
-        '$data modify storage magical_athlete:feedback pending set value {owner:$(owner),kind:"$(kind)",label:"选择技能选项：手持选项按Q两次确认"}',
+        '$data modify storage magical_athlete:feedback pending set value {owner:$(owner),kind:"$(kind)",label:"选择技能选项：手持选项按Q一次确认"}',
         *[f'execute if data storage magical_athlete:feedback pending{{kind:"{kind}"}} run data modify storage magical_athlete:feedback pending.label set value '+js(label) for kind,label in {
             'ready':'轮到你了：手持骰子按Q开始行动','genius':'请选择预测点数：0是不预测，1～6是预测骰子',
             'reroll':'选择接受当前点数，或重新投骰','hypnotist':'选择拉到身边的选手：右键亮起的棋子，或选择跳过',
             'flip':'选择交换位置的选手：右键亮起的棋子，或选择跳过','duel':'选择决斗目标：右键亮起的棋子，或选择跳过',
             'mastermind':'预测一名选手获胜：右键亮起的棋子','copycat':'选择要模仿的选手：右键亮起的棋子',
-            'thirdwheel':'选择传送到的格子：右键金色提示点，或选择跳过','egg':'选择本场继承的能力：手持角色选项按Q两次',
+            'thirdwheel':'选择传送到的格子：右键金色提示点，或选择跳过','egg':'选择本场继承的能力：手持角色选项按Q一次',
             'twin':'选择能力：手持选项按Q，或查看全部候选能力','legs':'选择投骰，或直接走5格','rocket':'选择正常前进，或翻倍前进并承担绊倒风险','alchemist':'选择保留骰子，或改为4步'}.items()],
         'function magical_athlete:feedback/pending_message with storage magical_athlete:feedback pending'])
     w.put('feedback/pending_message',[
