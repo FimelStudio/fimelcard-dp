@@ -44,6 +44,8 @@ MOBS = (
 _ART_RANKS = {}
 GUI = {'gui': {'rotation': [90, 0, 0], 'translation': [0, 0, 0], 'scale': [0.9, 0.9, 0.9]},
        'fixed': {'rotation': [90, 0, 0], 'translation': [0, 0, 0], 'scale': [0.9, 0.9, 0.9]}}
+FIRST_PERSON = ['firstperson_righthand', 'firstperson_lefthand']
+PUBLIC_HAND = ['thirdperson_righthand', 'thirdperson_lefthand', 'ground']
 
 
 def font(size, bold=False):
@@ -137,6 +139,37 @@ def plane_model(name, width=12, depth=16):
     element = cube([8-width/2, 7.98, 8-depth/2], [8+width/2, 8.06, 8+depth/2], 'face', 'printed_card')
     element['faces'] = {'up': {'texture': '#face', 'uv': [0, 0, 16, 16]}}
     model(name, {'textures': {'face': resource, 'particle': resource}, 'elements': [element]})
+    if name.startswith(('tier', 'noble/', 'back/')):
+        hand_model(name)
+        json_file(CARD/f'items/splendor/{name}.json', {
+            'model': {'type': 'minecraft:select', 'property': 'minecraft:display_context',
+                      'cases': [{'when': FIRST_PERSON+PUBLIC_HAND,
+                                 'model': {'type': 'minecraft:model', 'model': 'card:item/splendor/hand/'+name}}],
+                      'fallback': {'type': 'minecraft:model', 'model': 'card:item/splendor/'+name}}})
+
+
+def hand_model(name):
+    # 桌面使用横放薄片；手持单独使用与 poker/fake_card 相同的外轮廓、中心和姿态。
+    # 两种几何不能直接共用 display，否则同样的旋转会把横放牌旋到错误方向。
+    resource = 'card:item/splendor/'+name
+    poker = json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
+    element = cube([1, 0, 8], [13, 18, 9], 'face', 'held_card')
+    element['faces']['south']['uv'] = [16, 0, 0, 16]
+    for face in ('up', 'down', 'east', 'west'):
+        element['faces'][face]['uv'] = [0, 0, .25, 16]
+    model('hand/'+name, {'textures': {'face': resource, 'particle': resource},
+                         'elements': [element], 'display': poker['display']})
+
+
+def reserved_definition(card):
+    front = 'card:item/splendor/'+card['name']
+    back = f'card:item/splendor/back/tier{card["tier"]}'
+    return {'model': {'type': 'minecraft:select', 'property': 'minecraft:display_context',
+        'cases': [
+            {'when': ['gui'], 'model': {'type': 'minecraft:model', 'model': front}},
+            {'when': FIRST_PERSON, 'model': {'type': 'minecraft:model', 'model': 'card:item/splendor/hand/'+card['name']}},
+            {'when': PUBLIC_HAND, 'model': {'type': 'minecraft:model', 'model': f'card:item/splendor/hand/back/tier{card["tier"]}'}},
+        ], 'fallback': {'type': 'minecraft:model', 'model': back}}}
 
 
 def block(image, color, box, dark=False):
@@ -324,11 +357,7 @@ def build():
         plane_model(card['name'])
         # 本人 GUI/第一人称可看预定牌；其他展示上下文统一显示牌背。
         # fixed/head 等也走牌背，防止展示框和其他穿戴方式泄露盲预定。
-        json_file(CARD/f'items/splendor/reserved/{card["name"]}.json', {
-            'model': {'type': 'minecraft:select', 'property': 'minecraft:display_context',
-                      'cases': [{'when': ['gui', 'firstperson_righthand', 'firstperson_lefthand'],
-                                 'model': {'type': 'minecraft:model', 'model': 'card:item/splendor/'+identity['name']}}],
-                      'fallback': {'type': 'minecraft:model', 'model': f'card:item/splendor/back/tier{identity["tier"]}'}}})
+        json_file(CARD/f'items/splendor/reserved/{card["name"]}.json', reserved_definition(identity))
         glyphs.append((0xe900+card['id'], card['name'], image))
         if card['id'] in (0, 40, 70):
             previews.append(image)
@@ -489,11 +518,8 @@ def check():
         seen[key] = png
         reserved = json.loads((CARD/f'items/splendor/reserved/{card["name"]}.json').read_text(encoding='utf-8'))['model']
         assert reserved['type'] == 'minecraft:select' and reserved['property'] == 'minecraft:display_context'
-        assert len(reserved['cases']) == 1
-        assert set(reserved['cases'][0]['when']) == {'gui', 'firstperson_righthand', 'firstperson_lefthand'}
         canonical_card = data['cards'][entry['canonical_id']]
-        assert reserved['cases'][0]['model'] == {'type': 'minecraft:model', 'model': 'card:item/splendor/'+canonical_card['name']}
-        assert reserved['fallback'] == {'type': 'minecraft:model', 'model': f'card:item/splendor/back/tier{canonical_card["tier"]}'}
+        assert reserved == reserved_definition(canonical_card)['model']
         assert entry['reserved_model'] == 'card:splendor/reserved/'+canonical_card['name']
     assert len({hashlib.sha256(png).digest() for png in seen.values()}) == len(seen), 'different cards accidentally have identical faces'
     for entry in mapping['nobles']:
@@ -508,7 +534,16 @@ def check():
         body = json.loads(path.read_text(encoding='utf-8'))
         name = path.relative_to(CARD/'models/item/splendor')
         item = json.loads((CARD/'items/splendor'/name).read_text(encoding='utf-8'))
-        assert item['model']['model'] == 'card:item/splendor/'+name.with_suffix('').as_posix()
+        if name.as_posix().startswith(('tier', 'noble/', 'back/')):
+            assert item['model']['fallback']['model'] == 'card:item/splendor/'+name.with_suffix('').as_posix()
+            assert item['model']['cases'] == [{'when': FIRST_PERSON+PUBLIC_HAND, 'model': {'type': 'minecraft:model', 'model': 'card:item/splendor/hand/'+name.with_suffix('').as_posix()}}]
+        else:
+            assert item['model']['model'] == 'card:item/splendor/'+name.with_suffix('').as_posix()
+        if name.as_posix().startswith('hand/'):
+            poker = json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
+            assert body['display'] == poker['display'], (name, 'handheld pose differs from poker')
+            assert body['elements'][0]['from'] == [1, 0, 8] and body['elements'][0]['to'] == [13, 18, 9]
+            assert set(body['elements'][0]['faces']) == {'up', 'down', 'north', 'south', 'east', 'west'}
         editable = json.loads((SOURCE/'models'/name.with_suffix('.bbmodel')).read_text(encoding='utf-8'))
         assert len(editable['elements']) == len(body.get('elements', []))
         index = 0

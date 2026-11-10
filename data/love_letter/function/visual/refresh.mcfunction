@@ -6,6 +6,9 @@ scoreboard players operation #vis_turn ll_ctx = @s ll_turn
 scoreboard players set #box_found ll_ctx 0
 execute as @e[tag=ll.box] if score @s ct_id = #vis_table ll_ctx run scoreboard players set #box_found ll_ctx 1
 execute if score #box_found ll_ctx matches 0 positioned ~ ~1.04 ~ summon minecraft:item_display run function love_letter:visual/box
+execute unless score @s ct_state matches 1 run return 0
+execute unless score @s ll_state matches 1..4 run return 0
+function love_letter:visual/deck_tick
 execute as @e[type=minecraft:marker,tag=ll.board] run function love_letter:visual/participant
 function love_letter:visual/info
 # 牌库相关字段仅展示双人局公开移出的三张牌。

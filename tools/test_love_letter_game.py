@@ -28,6 +28,8 @@ def audit_public_visuals():
     for folder in ('visual','deal'):
         for path in (PACK/'data/love_letter/function'/folder).rglob('*.mcfunction'):
             body='\n'.join(line for line in path.read_text(encoding='utf-8').splitlines() if not line.lstrip().startswith('#'))
+            # 牌盒只公开剩余数量；精确允许读取列表长度，不允许读取牌值或复制牌库。
+            body='\n'.join(line for line in body.splitlines() if line!='execute store result storage love_letter:visual deck_count.count int 1 run data get entity @s data.love_letter.deck')
             assert not re.search(r'\bll_(?:hand|extra)\b|data\.ll_(?:private|buffer)|data\.love_letter\.(?:deck|reserve)',body),path
             checked+=1
     print(f'情书公开实体秘密访问静态检查：{checked} 个函数通过。',flush=True)

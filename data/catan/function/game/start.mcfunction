@@ -46,3 +46,6 @@ function catan:game/hud
 function cardtable:log {text:"卡坦岛开始"}
 # direct-v2
 execute if score @s ct_start matches 1 run function catan:direct/deck_spawn
+# feedback-v1
+function catan:feedback/reset
+function catan:feedback/check

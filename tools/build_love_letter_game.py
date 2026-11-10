@@ -422,6 +422,8 @@ execute unless entity @e[type=minecraft:marker,tag=ct.controller,tag=ll.controll
 execute as @e[type=minecraft:marker,tag=ct.controller,tag=ll.controller,scores={ct_game=17,ct_state=1},distance=..8,sort=nearest,limit=1] at @s run function love_letter:game/abort
 ''')
     put('log', '$tellraw @a[tag=ct.debug] [{text:"[情书] ",color:"gold"},{text:"$(text)",color:"gray"}]')
+    from build_love_letter_chat import build as build_chat
+    build_chat()
     print('Generated Love Letter lifecycle (game 17).')
 
 

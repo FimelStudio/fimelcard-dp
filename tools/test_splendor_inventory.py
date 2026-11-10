@@ -78,6 +78,13 @@ def build_suite():
     body += s.empty(0, 'paid_gem_removed') + s.empty(0, 'removed_authority_card_removed', True)
     s.case('recovery_and_payment', body)
 
+    body = s.setup() + s.set('p1.tokens', [0, 3, 0, 0, 0, 0]) + s.call('sync')
+    body += s.count(1, 3, 'before_purchase_three_sapphires')
+    body += s.set('p1.tokens', [0, 2, 0, 0, 0, 0]) + s.set('p1.cards', [0]) + s.call('sync')
+    body += s.count(1, 2, 'after_purchase_two_sapphires') + s.has(0, 'kind:1,card:0', 'purchase_card_delivered', True)
+    body += s.call('sync') + s.count(1, 2, 'repeat_sync_keeps_surplus_sapphires')
+    s.case('partial_sapphire_payment', body)
+
     body = s.setup() + s.set('p1.tokens', [1, 0, 0, 0, 0, 0]) + [f'item replace entity {ACTOR} container.0 with minecraft:stone 32'] + s.call('sync')
     body += s.count(0, 1, 'gem_uses_hotbar') + s.check(f'items entity {BAG} container.0 minecraft:stone', 'foreign_item_safely_relocated') + s.count(0, 32, 'foreign_stack_unchanged', True)
     body += [f'item replace entity {ACTOR} container.0 with minecraft:dirt 16'] + [f'item replace entity {BAG} container.{i} with minecraft:stone 64' for i in range(27)] + s.set('p1.cards', [89]) + s.call('sync')

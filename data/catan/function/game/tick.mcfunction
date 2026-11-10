@@ -27,3 +27,5 @@ execute if score @s ca_state matches 7 if data entity @s data.catan.eligible[0] 
 scoreboard players add @s ca_dclock 1
 execute if score @s ca_dclock matches 5.. run scoreboard players set @s ca_dclock 0
 execute if score @s ca_dclock matches 0 as @a[tag=ca.audience] at @s if score @s ca_side = @e[tag=ca.current,limit=1] ca_turn run function catan:direct/look_highlight
+# feedback-v1
+execute if score @s ca_pulse matches 0 run function catan:feedback/guide

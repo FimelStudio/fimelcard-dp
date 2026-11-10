@@ -20,9 +20,9 @@ def main():
                 for x,z in path['positions']:
                     x,z=(x-8)*size/16,(z-8)*size/16
                     if orient:x,z=-z,x
-                    poses.append({'x':round(x,6),'y':.035,'z':round(z,6),'scale':round(size*.067,6)})
+                    poses.append({'x':round(x,6),'y':.012,'z':round(z,6),'scale':round(size*.085,6)})
                 rows.append(poses)
-            cells={1:(.067,[(0,0)]),2:(.045,[(-.023,0),(.023,0)]),3:(.032,[(-.031,0),(0,0),(.031,0)]),4:(.033,[(-.02,-.02),(.02,-.02),(-.02,.02),(.02,.02)]),5:(.026,[(-.027,-.018),(0,-.018),(.027,-.018),(-.014,.018),(.014,.018)]),6:(.026,[(-.027,-.018),(0,-.018),(.027,-.018),(-.027,.018),(0,.018),(.027,.018)])}
+            cells={1:(.085,[(0,0)]),2:(.055,[(-.023,0),(.023,0)]),3:(.037,[(-.031,0),(0,0),(.031,0)]),4:(.04,[(-.02,-.02),(.02,-.02),(-.02,.02),(.02,.02)]),5:(.03,[(-.027,-.018),(0,-.018),(.027,-.018),(-.014,.018),(.014,.018)]),6:(.03,[(-.027,-.018),(0,-.018),(.027,-.018),(-.027,.018),(0,.018),(.027,.018)])}
             groups=[[]]
             for count in range(1,7):
                 scale,offsets=cells[count];group=[]
@@ -83,7 +83,12 @@ $scoreboard players set @s ma_vid $(index)
 $data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/racer/$(model)"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0.04f,view_range:0.5f}
 function magical_athlete:visual/racer_pose with storage magical_athlete:visual pose
 ''')
-    put('visual/racer_pose','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}')
+    put('visual/racer_pose', [
+        # 所有雕塑的脚底统一为模型 Y=8；缩放不再改变脚底高度。
+        '$data modify storage magical_athlete:visual draw_pose set value {x:$(x),y:$(y),z:$(z),scale:$(scale),duration:$(duration)}',
+        'function magical_athlete:visual/racer_pose_apply with storage magical_athlete:visual draw_pose',
+    ])
+    put('visual/racer_pose_apply','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}')
     put('visual/dice_spawn','execute positioned ~ ~1.04 ~ summon minecraft:item_display run function magical_athlete:visual/dice_init')
     put('visual/dice_init',['tag @s add ma.visual','tag @s add ma.die','scoreboard players operation @s ct_id = #vis_table ma_ctx','data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/dice"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0.05f,view_range:0.5f,transformation:{translation:[0f,0.12f,0f],scale:[0.23f,0.23f,0.23f],right_rotation:[0f,1f,0f,0f]}}'])
     put('visual/dice_restore',['scoreboard players set #saved_die ma_ctx 0','execute store result score #saved_die ma_ctx run data get entity @s data.magical_athlete.dice','execute unless score #saved_die ma_ctx matches 1..6 run return 0','execute store result storage magical_athlete:visual die int 1 run scoreboard players get #saved_die ma_ctx','data modify storage magical_athlete:visual frame set value 12','function magical_athlete:visual/die_get with storage magical_athlete:visual'])

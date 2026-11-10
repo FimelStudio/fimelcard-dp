@@ -11,4 +11,5 @@ execute if entity @e[tag=ma.current,scores={ma_pending=3},limit=1] run data modi
 execute if entity @e[tag=ma.current,scores={ma_pending=4},limit=1] run data modify storage fimel_title:io text.extra append value {"text":" · 待回应：","color":"aqua","extra":[{"nbt":"data.magical_athlete.p4.name","entity":"@e[tag=ma.current,limit=1]","interpret":true}]}
 execute if entity @e[tag=ma.current,scores={ma_pending=5},limit=1] run data modify storage fimel_title:io text.extra append value {"text":" · 待回应：","color":"aqua","extra":[{"nbt":"data.magical_athlete.p5.name","entity":"@e[tag=ma.current,limit=1]","interpret":true}]}
 execute if entity @e[tag=ma.current,scores={ma_pending=6},limit=1] run data modify storage fimel_title:io text.extra append value {"text":" · 待回应：","color":"aqua","extra":[{"nbt":"data.magical_athlete.p6.name","entity":"@e[tag=ma.current,limit=1]","interpret":true}]}
+function magical_athlete:feedback/status
 function magical_athlete:hud/center

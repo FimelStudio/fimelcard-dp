@@ -42,6 +42,9 @@ def png(name,image):
 
 
 def model(name,body):
+    if name.split('/')[0] in ('road','settlement','city','dice'):
+        from build_tabletop_hand_poses import apply
+        apply(body,name.startswith('dice/'))
     body.setdefault('credit','Fimel Cards; CC0 terrain by Kenney, original game-piece geometry')
     body.setdefault('gui_light','front')
     export_model('catan',name,body)

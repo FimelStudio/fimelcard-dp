@@ -1,4 +1,5 @@
 function magical_athlete:game/sync
+function magical_athlete:feedback/action
 execute if score @s ma_previous matches 2 if score @s ma_state matches 3 run function magical_athlete:visual/refresh
 execute if score @s ma_previous matches 2 if score @s ma_state matches 3 run function magical_athlete:sound/race_start
 execute if score @s ma_previous matches 4 if score @s ma_state matches 2 run function magical_athlete:visual/refresh

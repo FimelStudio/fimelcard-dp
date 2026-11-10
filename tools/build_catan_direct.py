@@ -231,6 +231,10 @@ function catan:ui/simple {code:10}
         body=path.read_text(encoding='utf-8')
         if 'function catan:ui/private with storage catan:ui' in body:
             put('direct/'+path.stem,body.replace('function catan:ui/private with storage catan:ui','function catan:direct/private'))
+    from build_table_feedback import catan as feedback
+    feedback()
+    from build_tabletop_hand_poses import build as hand_poses
+    hand_poses()
     from build_direct_support import finish
     finish('catan')
 

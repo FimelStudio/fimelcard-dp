@@ -140,6 +140,7 @@ def build():
     put('pose', '$data merge entity @s {transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,$(qy)f,0f,$(qw)f],right_rotation:[0f,1f,0f,0f]}}')
     build_labels()
     build_selection()
+    build_affordable()
     for obsolete in ('counts', 'counts_layout', 'counts_at'):
         put(obsolete, 'return 0')
     # 规则提交后保存事件快照，身份未公开的预约动作只用中性宝石袋表现。
@@ -199,6 +200,8 @@ def build():
             'data modify entity @s data.splendor.visual_active.motion append from storage splendor:visual frame']
     put('build_motion', motion)
     put('tick', ['execute if score @s ct_paused matches 1 run return 0',
+        'execute if score @s sp_pulse matches 0 run function splendor:visual/affordable/tick',
+        'execute if score @s sp_pulse matches 10 run function splendor:visual/affordable/tick',
         'execute unless score @s sp_vtimer matches 1.. run return 0',
         'function splendor:visual/context',
         'execute store result storage splendor:visual step int 1 run scoreboard players get @s sp_vstep',
@@ -267,6 +270,72 @@ def build_selection():
         f'execute if data entity @s data.splendor{{eligible:[{i}]}} run function splendor:visual/eligible_noble {{id:{i}}}' for i in range(5)])
     put('eligible_noble', ['$scoreboard players set #vis_id sp_ctx $(id)',
         'function splendor:visual/highlight'])
+
+
+def build_affordable():
+    # 从本桌权威数据计算；直接使用已随棋盘转向的交互实体位置。
+    put('affordable/tick', [
+        'execute if score @s ct_paused matches 1 run return 0',
+        'execute unless score @s ct_state matches 1 run return 0',
+        'execute unless score @s sp_state matches 1 run return 0',
+        'execute unless score @s sp_anim matches 0 run return 0',
+        'scoreboard players operation #aff_table sp_ctx = @s ct_id',
+        'scoreboard players operation #aff_turn sp_ctx = @s sp_turn',
+        'tag @a[tag=sp.affordable_viewer] remove sp.affordable_viewer',
+        'execute as @a[tag=sp.player,tag=ct.player] if score @s sp_table = #aff_table sp_ctx if score @s ct_id = #aff_table sp_ctx if score @s sp_side = #aff_turn sp_ctx run tag @s add sp.affordable_viewer',
+        'execute unless entity @a[tag=sp.affordable_viewer] run return 0',
+        'data modify storage splendor:affordable market set from entity @s data.splendor.market',
+        'function splendor:visual/affordable/player with entity @s data.splendor',
+        'execute as @e[type=minecraft:interaction,tag=sp.hit,scores={sp_vkind=2}] if score @s sp_table = #aff_table sp_ctx at @s run function splendor:visual/affordable/card',
+        'tag @a[tag=sp.affordable_viewer] remove sp.affordable_viewer',
+    ])
+    put('affordable/player', '$data modify storage splendor:affordable player set from entity @s data.splendor.p$(turn)')
+    put('affordable/card', [
+        'execute store result storage splendor:affordable slot int 1 run scoreboard players get @s sp_vid',
+        'function splendor:visual/affordable/resolve with storage splendor:affordable',
+        'function splendor:visual/affordable/check',
+        'execute if score #aff_ok sp_ctx matches 1 run function splendor:visual/affordable/emit',
+    ])
+    put('affordable/resolve', '$data modify storage splendor:affordable card_id set from storage splendor:affordable market[$(slot)]')
+    put('affordable/check', [
+        'scoreboard players set #aff_ok sp_ctx 0',
+        'scoreboard players set #aff_card sp_ctx -1',
+        'execute store result score #aff_card sp_ctx run data get storage splendor:affordable card_id',
+        'execute unless score #aff_card sp_ctx matches 0..89 run return 0',
+        'function splendor:visual/affordable/read_cost with storage splendor:affordable',
+        'scoreboard players set #aff_gold sp_ctx 0',
+    ] + [line for i in range(5) for line in (
+        f'execute store result score #aff_cost sp_ctx run data get storage splendor:affordable cost[{i}]',
+        f'execute store result score #aff_bonus sp_ctx run data get storage splendor:affordable player.bonus[{i}]',
+        f'execute store result score #aff_tokens sp_ctx run data get storage splendor:affordable player.tokens[{i}]',
+        'scoreboard players operation #aff_cost sp_ctx -= #aff_bonus sp_ctx',
+        'scoreboard players operation #aff_cost sp_ctx -= #aff_tokens sp_ctx',
+        'execute if score #aff_cost sp_ctx matches 1.. run scoreboard players operation #aff_gold sp_ctx += #aff_cost sp_ctx',
+    )] + [
+        'execute store result score #aff_owned_gold sp_ctx run data get storage splendor:affordable player.tokens[5]',
+        'execute if score #aff_gold sp_ctx <= #aff_owned_gold sp_ctx run scoreboard players set #aff_ok sp_ctx 1',
+    ])
+    put('affordable/read_cost', '$data modify storage splendor:affordable cost set from storage splendor:cards cards[$(card_id)].cost')
+    put('affordable/emit', [
+        'execute store result score #aff_width sp_ctx run data get entity @s width 100000',
+        'scoreboard players set #aff_three sp_ctx 3',
+        'scoreboard players set #aff_eight sp_ctx 8',
+        'scoreboard players set #aff_two sp_ctx 2',
+        'scoreboard players operation #aff_x sp_ctx = #aff_width sp_ctx',
+        'scoreboard players operation #aff_x sp_ctx *= #aff_three sp_ctx',
+        'scoreboard players operation #aff_x sp_ctx /= #aff_eight sp_ctx',
+        'scoreboard players add #aff_x sp_ctx 2500',
+        'scoreboard players operation #aff_z sp_ctx = #aff_width sp_ctx',
+        'scoreboard players operation #aff_z sp_ctx /= #aff_two sp_ctx',
+        'scoreboard players add #aff_z sp_ctx 2500',
+        'execute store result storage splendor:affordable corners.x double 0.00001 run scoreboard players get #aff_x sp_ctx',
+        'execute store result storage splendor:affordable corners.z double 0.00001 run scoreboard players get #aff_z sp_ctx',
+        'function splendor:visual/affordable/emit_at with storage splendor:affordable corners',
+    ])
+    put('affordable/emit_at', [
+        f'$execute rotated as @s run particle minecraft:dust{{color:[0.25f,1.0f,0.55f],scale:0.35f}} ^{x}$(x) ^0.035 ^{z}$(z) 0 0 0 0 1 force @a[tag=sp.affordable_viewer]'
+        for x,z in (('', ''), ('-', ''), ('', '-'), ('-', '-'))
+    ])
 
 
 if __name__ == '__main__':

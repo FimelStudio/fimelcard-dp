@@ -30,6 +30,7 @@ execute store result storage splendor:direct hit.epoch int 1 run scoreboard play
 execute store result storage splendor:direct hit.kind int 1 run scoreboard players get @s sp_vkind
 execute store result storage splendor:direct hit.id int 1 run scoreboard players get @s sp_vid
 data modify storage splendor:direct hit.width set from storage splendor:visual pose.scale
+data modify storage splendor:direct hit.yaw set from storage splendor:visual pose.yaw
 $execute positioned ~$(x) ~$(y) ~$(z) summon minecraft:interaction run function splendor:direct/hit_init with storage splendor:direct hit
 execute if score @s sp_vkind matches 4 run function splendor:direct/gem_model
 ''')
@@ -40,7 +41,7 @@ $scoreboard players set @s sp_table $(table)
 $scoreboard players set @s ct_id $(table)
 $scoreboard players set @s sp_vkind $(kind)
 $scoreboard players set @s sp_vid $(id)
-$data merge entity @s {width:$(width)f,height:0.14f,response:1b,data:{hit:{table:$(table),epoch:$(epoch),kind:$(kind),id:$(id)}}}
+$data merge entity @s {width:$(width)f,height:0.14f,response:1b,Rotation:[$(yaw)f,0f],data:{hit:{table:$(table),epoch:$(epoch),kind:$(kind),id:$(id)}}}
 ''')
     items = ['diamond','lapis_lazuli','emerald','redstone','coal','gold_ingot']
     put('direct/gem_model', [f'execute if score @s sp_vid matches {i} run data merge entity @s {{item:{{id:"minecraft:{item}",count:1,components:{{"minecraft:item_model":"minecraft:{item}"}}}}}}' for i,item in enumerate(items)]+[

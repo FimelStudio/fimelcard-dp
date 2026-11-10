@@ -9,4 +9,5 @@ execute if entity @e[tag=ca.current,scores={ca_state=7},limit=1] run data modify
 execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] run data modify storage fimel_title:io text set value {"text":"免费修路：选择道路位置，或按Q放弃","color":"yellow","bold":false}
 execute if entity @e[tag=ca.current,scores={ca_state=11},limit=1] run data modify storage fimel_title:io text set value {"text":"本局已结束","color":"yellow","bold":false}
 function catan:hud/status_turn with entity @e[tag=ca.current,limit=1] data.catan
+function catan:feedback/status
 function catan:hud/center
