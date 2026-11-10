@@ -1,14 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+<title id="title">卡坦岛 · CATAN</title>
+<desc id="desc">由六边形资源地块、数字标记、道路、村庄、城市、强盗和骰子组成的原创卡坦岛图标。</desc>
 <defs>
- <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#55783d"/><stop offset="1" stop-color="#111d31"/></linearGradient>
- <radialGradient id="spot"><stop stop-color="#ff913d" stop-opacity="0.55"/><stop offset="1" stop-color="#ff913d" stop-opacity="0"/></radialGradient>
- <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff7c8"/><stop offset="0.5" stop-color="#f6ca61"/><stop offset="1" stop-color="#bd7c20"/></linearGradient>
- <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fdffff"/><stop offset="1" stop-color="#b0d3e3"/></linearGradient>
- <clipPath id="clip"><rect width="1024" height="1024" rx="88"/></clipPath>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#193f53"/><stop offset=".55" stop-color="#1b6570"/><stop offset="1" stop-color="#12283e"/></linearGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3ba3ad"/><stop offset="1" stop-color="#236b83"/></linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a1"/><stop offset=".55" stop-color="#e8bd55"/><stop offset="1" stop-color="#a66e24"/></linearGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#081a27" flood-opacity=".48"/></filter>
+  <g id="hex"><path d="M0-104L90-52V52L0 104L-90 52V-52Z" stroke="#f4d89c" stroke-width="10" stroke-linejoin="round"/></g>
+  <g id="token"><circle r="29" fill="#f8efd3" stroke="#6d4934" stroke-width="5"/><circle r="21" fill="none" stroke="#d8c292" stroke-width="2"/></g>
+  <g id="cube"><path d="M0-21L36 0L0 21L-36 0Z" fill="var(--top)"/><path d="M-36 0L0 21V61L-36 40Z" fill="var(--left)"/><path d="M36 0L0 21V61L36 40Z" fill="var(--right)"/></g>
 </defs>
-<g clip-path="url(#clip)">
- <rect width="1024" height="1024" fill="url(#bg)"/>
- <circle cx="512" cy="400" r="530" fill="url(#spot)"/>
- <g opacity=".13" stroke="#ffffff" stroke-width="2" fill="none"><circle cx="512" cy="382" r="318"/><circle cx="512" cy="382" r="380"/><path d="M0 720L720 0M280 1024L1024 280"/></g>
+<g>
+  <rect width="1024" height="1024" rx="88" fill="url(#bg)"/>
+  <g opacity=".12" fill="none" stroke="#d4f2ee" stroke-width="4"><path d="M-50 245Q230 100 480 235T1075 220"/><path d="M-60 610Q210 470 500 615T1080 590"/><circle cx="512" cy="396" r="385"/></g>
+  <ellipse cx="512" cy="435" rx="426" ry="306" fill="url(#sea)" stroke="#8fd6cd" stroke-width="7" filter="url(#shadow)"/>
 
-<polygon points="460.0,280.0 400.0,383.9 280.0,383.9 220.0,280.0 280.0,176.1 400.0,176.1" fill="#749a49" stroke="#f8dd9b" stroke-width="10"/><polygon points="670.0,280.0 610.0,383.9 490.0,383.9 430.0,280.0 490.0,176.1 610.0,176.1" fill="#d4b257" stroke="#f8dd9b" stroke-width="10"/><polygon points="565.0,465.0 505.0,568.9 385.0,568.9 325.0,465.0 385.0,361.1 505.0,361.1" fill="#ad6749" stroke="#f8dd9b" stroke-width="10"/><polygon points="775.0,465.0 715.0,568.9 595.0,568.9 535.0,465.0 595.0,361.1 715.0,361.1" fill="#5e9349" stroke="#f8dd9b" stroke-width="10"/><path d="M365 405L445 340L525 405V500H365Z" fill="#b83735" stroke="#f4b88a" stroke-width="10"/><rect x="14" y="14" width="996" height="996" rx="75" fill="none" stroke="#fff" stroke-opacity=".48" stroke-width="10"/></g></svg>
+  <g transform="translate(512 378) scale(.82)" filter="url(#shadow)">
+    <g transform="translate(-180 -104)"><use href="#hex" fill="#4f8b53"/><path d="M-47 35V-30M0 42V-45M48 34V-26" stroke="#285a3e" stroke-width="16"/><path d="M-70-19L-47-63L-24-19M-29-12L0-73L29-12M24-15L48-58L72-15" fill="#74b85d" stroke="#2d6542" stroke-width="8"/></g>
+    <g transform="translate(0 -208)"><use href="#hex" fill="#d4a94e"/><g stroke="#795d2e" stroke-width="6"><path d="M-47 48V-45M-15 52V-52M18 52V-48M50 47V-38"/><path d="M-62-23L-47-8L-32-23M-30-33L-15-18L0-33M3-26L18-11L33-26M35-17L50-2L65-17"/></g></g>
+    <g transform="translate(180 -104)"><use href="#hex" fill="#7e9b50"/><g fill="#e8e1bb" stroke="#4f6844" stroke-width="6"><rect x="-58" y="-18" width="48" height="39" rx="15"/><rect x="10" y="-35" width="50" height="42" rx="16"/><circle cx="-45" cy="-27" r="14"/><circle cx="48" cy="-44" r="14"/></g><g fill="#2f3a36"><circle cx="-53" cy="-27" r="4"/><circle cx="40" cy="-44" r="4"/></g></g>
+    <g transform="translate(-180 104)"><use href="#hex" fill="#bc6548"/><path d="M-62 38L-35-25L-5 18L25-57L67 38Z" fill="#7e3f36" stroke="#e08a58" stroke-width="8"/><path d="M-33-18L-18 6M23-48L40-6" stroke="#f0b26c" stroke-width="7"/></g>
+    <g><use href="#hex" fill="#d4bd76"/><path d="M-62 37Q-30-25 0 16Q28-35 65 36" fill="none" stroke="#b49a5c" stroke-width="11"/><g transform="translate(18 -12)"><path d="M-16-42H16L23-13L13 35H-13L-23-13Z" fill="#24333b" stroke="#111c24" stroke-width="6"/><circle cy="-49" r="16" fill="#24333b"/><path d="M-22-52L-10-74L-2-53M22-52L10-74L2-53" fill="#24333b"/></g></g>
+    <g transform="translate(180 104)"><use href="#hex" fill="#71828e"/><path d="M-72 42L-29-30L-7-4L28-67L75 42Z" fill="#4c5e6d" stroke="#a7b7b6" stroke-width="8"/><path d="M-28-26L-13-8L0 5M27-61L43-32L57-20" stroke="#e9eee0" stroke-width="9"/></g>
+    <g transform="translate(0 208)"><use href="#hex" fill="#5c9952"/><g fill="#376f43" stroke="#245238" stroke-width="7"><path d="M-57 34L-30-17L-8 34Z"/><path d="M-14 37L17-34L49 37Z"/><path d="M26 38L55-9L77 38Z"/></g></g>
+
+    <g transform="translate(-180 -104)"><use href="#token"/><text y="13" text-anchor="middle" font-family="Arial" font-size="39" font-weight="700" fill="#b3342f">6</text></g>
+    <g transform="translate(0 -208)"><use href="#token"/><text y="13" text-anchor="middle" font-family="Arial" font-size="39" font-weight="700" fill="#2e3a40">9</text></g>
+    <g transform="translate(180 -104)"><use href="#token"/><text y="13" text-anchor="middle" font-family="Arial" font-size="39" font-weight="700" fill="#b3342f">8</text></g>
+    <g transform="translate(-180 104)"><use href="#token"/><text y="13" text-anchor="middle" font-family="Arial" font-size="39" font-weight="700" fill="#2e3a40">5</text></g>
+    <g transform="translate(180 104)"><use href="#token"/><text y="13" text-anchor="middle" font-family="Arial" font-size="39" font-weight="700" fill="#2e3a40">10</text></g>
+    <g transform="translate(0 208)"><use href="#token"/><text y="13" text-anchor="middle" font-family="Arial" font-size="39" font-weight="700" fill="#2e3a40">4</text></g>
+
+    <path d="M-92-156L-3-208M90-156L180-104M-90 156L0 208M90 156L180 104" fill="none" stroke="#263547" stroke-width="25" stroke-linecap="round"/>
+    <path d="M-92-156L-3-208" stroke="#d9473f" stroke-width="15" stroke-linecap="round"/>
+    <path d="M90-156L180-104" stroke="#e9a936" stroke-width="15" stroke-linecap="round"/>
+    <path d="M-90 156L0 208" stroke="#3c70bc" stroke-width="15" stroke-linecap="round"/>
+    <path d="M90 156L180 104" stroke="#d9473f" stroke-width="15" stroke-linecap="round"/>
+
+    <g transform="translate(-90 -156) scale(.72)" style="--top:#ff6b58;--left:#a72f35;--right:#d9433d"><use href="#cube"/><path d="M-47-16L0-56L47-16L0 13Z" fill="#f5d07d" stroke="#6e3435" stroke-width="7"/></g>
+    <g transform="translate(90 156) scale(.78)" style="--top:#5b91d5;--left:#28558f;--right:#3974b3"><use href="#cube"/><rect x="-28" y="-43" width="56" height="37" fill="#dbe8dd" stroke="#263b57" stroke-width="6"/><path d="M-36-43L0-75L36-43" fill="#f5d07d" stroke="#263b57" stroke-width="7"/></g>
+  </g>
+
+  <g transform="translate(815 175) rotate(11)" filter="url(#shadow)"><rect x="-64" y="-64" width="128" height="128" rx="24" fill="#fff3d5" stroke="#263547" stroke-width="8"/><g fill="#bd3f38"><circle cx="-31" cy="-31" r="11"/><circle cx="31" cy="31" r="11"/><circle r="11"/></g></g>
+  <g transform="translate(175 184) rotate(-12)" filter="url(#shadow)"><rect x="-55" y="-55" width="110" height="110" rx="20" fill="#fff3d5" stroke="#263547" stroke-width="8"/><g fill="#263547"><circle cx="-28" cy="-28" r="10"/><circle cx="28" cy="-28" r="10"/><circle cx="-28" cy="28" r="10"/><circle cx="28" cy="28" r="10"/></g></g>
+
+  <rect x="60" y="742" width="904" height="210" rx="46" fill="#111f32" stroke="#80c7c2" stroke-width="5"/>
+  <path d="M84 762H940" stroke="url(#gold)" stroke-width="9"/>
+  <text x="512" y="850" text-anchor="middle" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="88" font-weight="700" fill="#fff4dd">卡坦岛</text>
+  <text x="512" y="923" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="5" fill="#cbe9df">CATAN</text>
+  <rect x="14" y="14" width="996" height="996" rx="75" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="10"/>
+</g>
+</svg>

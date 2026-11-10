@@ -68,4 +68,7 @@ def build():
  preview=Image.new('RGBA',(256*4,256*6),'#151725')
  for id in range(1,22):preview.paste(Image.open(dest/f'{id}.png'),(((id-1)%4)*256,((id-1)//4)*256))
  preview.save(D/'preview.png')
+ # 21号已有独立高细节矢量源；公共旧模板生成后必须重新应用，避免资源地块图标回退。
+ from build_catan_icon import build as build_catan_icon
+ build_catan_icon(refresh_preview=True)
 if __name__=='__main__':build()
