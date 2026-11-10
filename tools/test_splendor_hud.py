@@ -36,10 +36,10 @@ def build_suite():
             c+=s.score('#different','ce',0,name+'_relative_player_order')
             c+=['execute store result score #lines ce run data get storage splendor_hud_test:trace lines']
             c+=s.score('#lines','ce',4*n+1,name+'_no_game_heading')
-            c+=s.check('data storage splendor_hud_test:trace {lines:[{x:8d,y:-8d,origin:"up-left",align:"left"}]}',name+'_self_top_left')
+            c+=s.check('data storage splendor_hud_test:trace {lines:[{x:8d,y:-20d,origin:"up-left",align:"left"}]}',name+'_self_top_left')
             for i in range(n):
                 origin='up-left' if i%2==0 else 'up-right'
-                y=-8 if i<2 else -64
+                y=-20 if i<2 else -76
                 c+=[f'data modify storage splendor_hud_test:trace cmp set from storage splendor_hud_test:trace lines[{i*4}]']
                 c+=s.check(f'data storage splendor_hud_test:trace cmp{{origin:"{origin}",y:{y}d}}',name+f'_row_{i}_anchor')
             turn_slot=((2-viewer)%n)*4

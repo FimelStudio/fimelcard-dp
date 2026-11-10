@@ -1,6 +1,7 @@
 """在独立临时世界中运行原版 26.2 展示、隐私边界与动画检查。"""
 import json
 import hashlib
+import re
 import subprocess
 import wave
 from pathlib import Path
@@ -171,7 +172,33 @@ $data merge entity @s {data:{ll_name:{text:"测试$(seat)"},discards:[1,3,4]}}
             self.files['case/'+name]+='schedule function aeroplane_test:'+('case/'+self.cases[i+1] if i+1<len(self.cases) else 'finish')+' 1t\n'
 
 
+def box_cover_orientation():
+    """计入 ItemDisplayRenderer 内置 Y=180°，检查实际朝上的盒盖而非猜测面名。"""
+    body=(PACK/'data/love_letter/function/visual/box.mcfunction').read_text(encoding='utf-8')
+    rotations={key:[float(v.removesuffix('f')) for v in re.search(key+r':\[([^]]+)\]',body).group(1).split(',')]
+               for key in ('left_rotation','right_rotation')}
+    def cross(a,b):return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]
+    def rotate(v,q):
+        t=[2*x for x in cross(q[:3],v)];c=cross(q[:3],t)
+        return [v[i]+q[3]*t[i]+c[i] for i in range(3)]
+    def world(v):
+        return rotate(rotate([-v[0],v[1],-v[2]],rotations['right_rotation']),rotations['left_rotation'])
+    model=json.loads((CARD/'models/item/love_letter/box.json').read_text(encoding='utf-8'))
+    # 原版方块面的 U 向右、V 向下；与外法线的叉积应反向，翻转单轴 UV 会使其同向。
+    for side,normal,right in (('north',[0,0,-1],[-1,0,0]),('south',[0,0,1],[1,0,0])):
+        normal=world(normal)
+        if normal[1]<.99:continue
+        face=model['elements'][0]['faces'][side]
+        assert face['texture']=='#front',(side,'Missing box cover artwork')
+        u0,v0,u1,v1=face['uv']
+        right=world([x*(u1-u0) for x in right]);down=world([0,-(v1-v0),0])
+        assert sum(a*b for a,b in zip(cross(right,down),normal))<0,('Box cover texture is mirrored',side)
+        return
+    raise AssertionError('No upward box cover face')
+
+
 def assets():
+    box_cover_orientation()
     roles=('spy','guard','priest','baron','handmaid','prince','chancellor','king','countess','princess')
     for role in roles:
         for suffix in ('','_selected'):

@@ -124,7 +124,10 @@ class Figure:
                     bounds['from'][a],bounds['from'][b],bounds['to'][a],bounds['to'][b]=rect
                     patch_points={key:[round(8+(bounds[key][i]-center[i])*factor,6) for i in range(3)] for key in ('from','to')}
                     patches.append({'name':part['name']+'_'+str(serial)+'_surface_'+side+'_'+str(patch_index),**patch_points,'faces':{side:face}})
-            result.append({'name':part['name']+'_'+str(serial),**points,'faces':whole})
+            # Minecraft 要求每个 element 至少有一个面。仅有局部外表面的方块
+            # 已由 patches 表示；全内藏的方块和空壳主体都不应写入模型。
+            if whole:
+                result.append({'name':part['name']+'_'+str(serial),**points,'faces':whole})
             result.extend(patches)
         return result
 

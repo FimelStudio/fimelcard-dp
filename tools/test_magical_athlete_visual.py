@@ -16,7 +16,9 @@ class Suite(Base):
         out +=['scoreboard players set #players ma_ctx 6']+self.call('engine/init',table)
         racers=[dict(owner=i+1,char=i,power=i,pos=i,trip=0,status=0,first=1,done=0) for i in range(6)]
         out +=self.set('racers',racers,table)+self.set('phase',3,table)+self.set('turn',1,table)+self.set('pending',dict(kind='',owner=0,pawn=-1,options=[]),table)
-        for p in range(1,7):out+=self.set(f'p{p}.name',{'text':f'Team{p}'},table)
+        for p in range(1,7):
+            out+=self.set(f'p{p}.name',{'text':f'Team{p}'},table)
+            out+=[f'data modify entity {who} data.magical_athlete.p{p}.uuid set value [I;0,0,{table},{p}]']
         return out+self.call('game/sync',table)+self.call('visual/refresh',table)
     def count(self,selector,n,name):return ['scoreboard players set #count ce 0',f'execute as {selector} run scoreboard players add #count ce 1']+self.score('#count','ce',n,name)
     def number(self,who,path,value,name):
@@ -34,7 +36,15 @@ class Suite(Base):
         x,z=self.pose(cap,orient,pawn,pos,count)
         who=self.racer(pawn,table)
         label=who.replace('tag=ma.racer,','tag=ma.racer_name,')
-        return self.number(who,'transformation.translation[0]',x,name+'_x')+self.number(who,'transformation.translation[2]',z,name+'_z')+self.number(label,'transformation.translation[0]',x,name+'_name_x')+self.number(label,'transformation.translation[2]',z,name+'_name_z')+[
+        checks=self.number(who,'transformation.translation[0]',x,name+'_x')+self.number(who,'transformation.translation[2]',z,name+'_z')
+        for axis,offset in ((0,x),(2,z)):
+            checks += [f'execute store result score #head ce run data get entity {label} Pos[{axis}] 100000',
+                       f'execute store result score #anchor ce run data get entity {who} Pos[{axis}] 100000',
+                       'scoreboard players operation #head ce -= #anchor ce']
+            expected=round(offset*100000)
+            checks+=self.score('#head','ce',f'{expected-8}..{expected+8}',name+'_head_position_'+str(axis))
+            checks+=self.number(label,f'transformation.translation[{axis}]',0,name+'_head_no_billboard_offset_'+str(axis))
+        return checks+[
             f'execute store result score #bottom ce run data get entity {who} transformation.translation[1] 1000000',
         ]+self.score('#bottom','ce','11995..12005',name+'_feet_above_board')
     def event(self,kind=1,pawn=0,start=0,end=1,die=0,amount=0,source=-2):
@@ -58,9 +68,13 @@ class Suite(Base):
                 x=(2-8)*size/16;z=(14-8)*size/16
                 if orient:x,z=-z,x
                 body=self.setup(cap,orient)+self.count('@e[tag=ma.visual,scores={ct_id=101}]',15,key+'_bounded_entities')
-                body+=self.count('@e[tag=ma.racer_name,scores={ct_id=101}]',6,key+'_six_player_names')
-                body+=self.check('entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},nbt={billboard:"vertical"}]',key+'_vertical_names')
-                body+=self.check('data entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},limit=1] text',key+'_player_name_component')
+                body+=self.count('@e[type=minecraft:text_display,tag=ma.racer_name,scores={ct_id=101}]',6,key+'_six_player_avatars')
+                body+=self.check('entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},nbt={billboard:"vertical"}]',key+'_vertical_avatars')
+                for pawn in range(6):
+                    head=f'@e[tag=ma.racer_name,scores={{ct_id=101,ma_vid={pawn}}},limit=1]'
+                    # 默认 object="player"、hat=true 会在持久化时省略，按实际保存的 profile 校验。
+                    body+=self.check(f'entity {head[:-1]},nbt={{text:{{player:{{id:[I;0,0,101,{pawn+1}]}}}}}}]',key+'_correct_owner_avatar_'+str(pawn))
+                    body+=self.number(head,'transformation.scale[0]',.5,key+'_avatar_visible_'+str(pawn))
                 body+=self.count('@e[type=minecraft:interaction,tag=ma.hit,scores={ma_dtype=3}]',0,key+'_no_grid_interactions')
                 body+=self.number(self.racer(),'transformation.translation[0]',x,key+'_racer_x')+self.number(self.racer(),'transformation.translation[2]',z,key+'_racer_z')
                 # Independent quaternion expectation: positions use (x,z)->(-z,x), i.e. Y -90 degrees.
@@ -83,6 +97,7 @@ class Suite(Base):
                 for pawn in range(6):
                     body+=self.pose_checks(cap,orient,pawn,15,key+'_pawn'+str(pawn),count=6)
                     body+=self.number(self.racer(pawn),'transformation.scale[0]',path['footprints'][str(cap)]*.03,key+'_crowded_scale'+str(pawn))
+                    body+=self.number(self.racer(pawn).replace('tag=ma.racer,','tag=ma.racer_name,'),'transformation.scale[0]',.3,key+'_crowded_avatar_visible_'+str(pawn))
                 body+=self.count('@e[tag=ma.racer,scores={ct_id=101}]',6,key+'_six_distinct_entities')
                 body+=self.count('@e[type=minecraft:interaction,tag=ma.hit,scores={ma_dtype=3}]',0,key+'_no_grid_interactions')
                 self.case(key,body)
@@ -199,6 +214,14 @@ class Suite(Base):
             'tag @e[tag=ma.racer_name,scores={ct_id=101}] add keep.name',
             'tag @e[tag=ma.table_info,scores={ct_id=101}] add keep.info',
         ]+self.call('visual/refresh')+self.count('@e[tag=keep.board]',1,'board_uuid_survives_refresh')+self.count('@e[tag=keep.die]',1,'die_uuid_survives_refresh')+self.count('@e[tag=keep.racer]',6,'racer_uuids_survive_refresh')+self.count('@e[tag=keep.name]',6,'name_uuids_survive_refresh')+self.count('@e[tag=keep.info]',1,'info_uuid_survives_refresh'))
+        head='@e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},limit=1]'
+        body=self.setup()+[f'data modify entity {head} text set value {{text:"旧玩家名字"}}']+self.call('visual/refresh')
+        body+=self.check('entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=0},nbt={text:{player:{id:[I;0,0,101,1]}}}]','old_name_migrates_to_avatar')
+        body+=self.set('racers[1].owner',1)+self.call('visual/refresh')
+        body+=self.check('entity @e[tag=ma.racer_name,scores={ct_id=101,ma_vid=1},nbt={text:{player:{id:[I;0,0,101,1]}}}]','two_racers_share_owner_avatar')
+        body+=self.set('racers[0].status',2)+self.call('visual/refresh')+self.number(head,'transformation.scale[0]',.001,'eliminated_avatar_hidden')
+        body+=self.set('phase',2)+self.call('game/sync')+self.call('visual/refresh')+self.count('@e[tag=ma.racer_name,scores={ct_id=101}]',0,'secret_lineup_has_no_avatars')
+        self.case('owner_avatars',body)
         # 一格移动的第一帧应落在两个格心之间，而非原地等整数格跳动。
         body=self.setup()+self.set('events',[self.event(1,start=0,end=1)])+self.call('visual/animate')+self.call('visual/tick')
         x0,z0=self.pose(4,0,0,0);x1,z1=self.pose(4,0,0,1)

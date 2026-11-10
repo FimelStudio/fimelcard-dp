@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add av_ctx dummy
 scoreboard objectives add av_id dummy
 scoreboard objectives add av_seat dummy

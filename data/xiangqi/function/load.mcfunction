@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add xq_ctx dummy
 execute unless score #version xq_ctx matches 2.. run function xiangqi:system/install
 execute as @e[tag=xq.controller] unless score @s xq_variant matches 0..1 run scoreboard players set @s xq_variant 0

@@ -241,9 +241,9 @@ class Suite(Base):
         body += self.check('data storage splendor:hud row{reserved:0}', 'hud_reserve_identity_not_copied_into_row')
         # 检查实际展开的BetterTitle panel：每位玩家四行，左右列独立锚定。
         for side in range(1, 5):
-            first = 9+(side-1)*36
+            first = (side-1)*36
             xx = 8 if side%2 else -8
-            yy = -24 if side<=2 else -80
+            yy = -20 if side<=2 else -76
             origin = '5' if side%2 else '6'
             for line in range(4):
                 offset = first+line*9

@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add gm_ctx dummy
 execute unless score #version gm_ctx matches 1.. run function gomoku:system/install
 # gm_first 已改为 0 随机黑白、1 按棋盘边自行选边；旧指定座位值不再有效。

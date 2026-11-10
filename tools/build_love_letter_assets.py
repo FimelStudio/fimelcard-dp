@@ -110,6 +110,17 @@ def card_model(role):
     return model
 
 
+def box_model():
+    box = cube([6,0,7],[16,16,11],'side','court_card_box')
+    # ItemDisplayRenderer 内置 Y=180°，再经桌面 X=90° 后，south 才是朝上的盒盖。
+    # 两个外表面均使用正常 UV；单独反转 U 会把文字镜像。
+    box['faces']['north']={'texture':'#front','uv':[0,0,16,16]}
+    box['faces']['south']={'texture':'#front','uv':[0,0,16,16]}
+    basebox=json.loads((CARD/'models/item/cardbox.json').read_text(encoding='utf-8'))
+    return {'textures':{'front':'card:item/love_letter/box','side':'card:item/love_letter/edge',
+            'particle':'card:item/love_letter/box'},'elements':[box],'display':basebox['display']}
+
+
 def build():
     SOURCE.mkdir(parents=True,exist_ok=True)
     atlas_path = SOURCE/'portraits_original.png'
@@ -132,12 +143,7 @@ def build():
     export_model('love_letter','back',card_model('back'))
     box_image = back().resize((256,384),Image.Resampling.NEAREST)
     export_texture('love_letter','box',box_image)
-    box = cube([6,0,7],[16,16,11],'side','court_card_box')
-    box['faces']['north']={'texture':'#front','uv':[0,0,16,16]}
-    box['faces']['south']={'texture':'#front','uv':[16,0,0,16]}
-    basebox=json.loads((CARD/'models/item/cardbox.json').read_text(encoding='utf-8'))
-    export_model('love_letter','box',{'textures':{'front':'card:item/love_letter/box','side':'card:item/love_letter/edge',
-                  'particle':'card:item/love_letter/box'},'elements':[box],'display':basebox['display']})
+    export_model('love_letter','box',box_model())
     favor=Image.new('RGB',(128,128),'#cba253');draw=ImageDraw.Draw(favor)
     for radius in range(60,0,-1):
         shade=round(148+70*(1-radius/60))

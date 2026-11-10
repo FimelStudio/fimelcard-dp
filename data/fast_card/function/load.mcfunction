@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 # 创建安装标记所用的基础记分项；重复加载时仅这一行可能提示已存在
 scoreboard objectives add fc_ctx dummy
 

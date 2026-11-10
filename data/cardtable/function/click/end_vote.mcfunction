@@ -1,3 +1,7 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 advancement revoke @s only cardtable:click/end_vote
 advancement revoke @s only cardtable:click/end_vote_attack
 execute unless entity @s[tag=ct.player] run return fail

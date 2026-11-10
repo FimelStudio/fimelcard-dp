@@ -47,7 +47,7 @@ def build():
         'execute if score #racer_exists ma_ctx matches 0 positioned ~ ~1.04 ~ summon minecraft:item_display run function magical_athlete:visual/racer_init with storage magical_athlete:visual'])
     append('visual/racer_init','tag @s remove ma.outdated')
     put('visual/name_spawn',[
-        '$data modify storage magical_athlete:visual owner_name set from entity @s data.magical_athlete.p$(owner).name',
+        'function magical_athlete:visual/name_profile with storage magical_athlete:visual racer',
         'function magical_athlete:visual/name_sync with storage magical_athlete:visual'])
     put('visual/name_sync',[
         'scoreboard players set #name_exists ma_ctx 0',

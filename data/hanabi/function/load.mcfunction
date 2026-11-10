@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 # 创建安装标记并按版本执行一次性安装或升级
 scoreboard objectives add hb_ctx dummy
 # 左侧牌面独立测试使用单独面板，并保存测试前的BetterTitle面板编号

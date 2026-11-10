@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add sk_ctx dummy
 execute unless score #version sk_ctx matches 1.. run function skull:system/install
 execute unless score #serial sk_ctx matches 0.. run scoreboard players set #serial sk_ctx 0

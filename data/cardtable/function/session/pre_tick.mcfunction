@@ -1,3 +1,7 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 # 必须早于游戏tick与通用调度库；本刻掉线立刻暂停，不让计时多走一刻。
 execute in minecraft:overworld as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_state=1}] at @s run function cardtable:session/detect_finish
 execute in minecraft:the_nether as @e[type=minecraft:marker,tag=ct.controller,distance=0..,scores={ct_state=1}] at @s run function cardtable:session/detect_finish

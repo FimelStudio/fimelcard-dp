@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add sp_ctx dummy
 execute unless score #version sp_ctx matches 1.. run function splendor:system/install
 execute if score #version sp_ctx matches 1 run function splendor:system/migrate2

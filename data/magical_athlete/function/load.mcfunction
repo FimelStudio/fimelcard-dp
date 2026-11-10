@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add ma_ctx dummy
 execute unless score #version ma_ctx matches 1.. run function magical_athlete:system/install
 function magical_athlete:engine/install

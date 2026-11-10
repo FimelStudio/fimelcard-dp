@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add ac_ctx dummy
 execute unless score #version ac_ctx matches 1.. run function aeroplane_chess:system/install
 execute if score #version ac_ctx matches 1 run function aeroplane_chess:system/upgrade_v2

@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add ch_ctx dummy
 execute unless score #version ch_ctx matches 1.. run function chess:system/install
 execute if score #version ch_ctx matches 1 run function chess:system/upgrade_v2

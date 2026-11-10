@@ -54,7 +54,7 @@ def build():
         'data modify storage fimel_title:io neg_text_buffer set value []',
         'execute store result score #hud_n sp_ctx run data get entity @e[tag=sp.current,limit=1] data.splendor.n',
         *[f'execute if score #hud_n sp_ctx matches {i+1}..4 run function splendor:hud/relative_row '
-          +js({'offset':i,'x':8 if i%2==0 else -8,'y':-8 if i<2 else -64,
+          +js({'offset':i,'x':8 if i%2==0 else -8,'y':-20 if i<2 else -76,
                'origin':'up-left' if i%2==0 else 'up-right','align':'left' if i%2==0 else 'right'}) for i in range(4)],
         'execute if score @s sp_htimer matches 1.. run function splendor:hud/show_notice',
         'execute unless score @s sp_htimer matches 1.. run function splendor:hud/status with entity @e[tag=sp.current,limit=1] data.splendor',

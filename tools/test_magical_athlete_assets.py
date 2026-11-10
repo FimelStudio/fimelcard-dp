@@ -26,6 +26,7 @@ class Assets(unittest.TestCase):
                 if reference is None:reference=elements
                 else:self.assertEqual(elements,reference,(slug,kind))
                 for i,a in enumerate(elements):
+                    self.assertTrue(1<=len(a['faces'])<=6,(slug,kind,a['name'],'Minecraft rejects elements without faces'))
                     self.assertTrue(all(end>=start for start,end in zip(a['from'],a['to'])),(slug,a['name']))
                     flat=[axis for axis in range(3) if a['from'][axis]==a['to'][axis]]
                     if flat:
@@ -64,7 +65,15 @@ class Assets(unittest.TestCase):
             high=[max(p['to'][i] for p in parts) for i in range(3)]
             scale=(max(p['to'][0] for p in elements)-min(p['from'][0] for p in elements))/(high[0]-low[0])
             expected=union_volume(parts)*scale**3
-            actual=sum(math.prod(b-a for a,b in zip(p['from'],p['to'])) for p in elements)
+            # 用闭合外表面的有向面积积分求体积，允许省略完全不可见的内部方块。
+            # 每个面贡献 outward_normal · position * area / 3。
+            actual=0
+            for part in elements:
+                for side in part['faces']:
+                    axis={'west':0,'east':0,'down':1,'up':1,'north':2,'south':2}[side]
+                    upper=side in ('east','up','south')
+                    area=math.prod(part['to'][i]-part['from'][i] for i in range(3) if i!=axis)
+                    actual+=(1 if upper else -1)*part['to' if upper else 'from'][axis]*area/3
             self.assertAlmostEqual(actual,expected,delta=expected*2e-6,msg=slug)
             center=[(low[0]+high[0])/2,low[1],(low[2]+high[2])/2]
             for part in elements:

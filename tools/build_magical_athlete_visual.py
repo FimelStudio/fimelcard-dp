@@ -61,26 +61,43 @@ execute positioned ~ ~1.04 ~ summon minecraft:item_display run function magical_
 execute if score @s ma_state matches 3..5 run function magical_athlete:visual/name_spawn with storage magical_athlete:visual racer
 ''')
     put('visual/name_spawn',[
-        '$data modify storage magical_athlete:visual owner_name set from entity @s data.magical_athlete.p$(owner).name',
+        'function magical_athlete:visual/name_profile with storage magical_athlete:visual racer',
         'execute positioned ~ ~1.04 ~ summon minecraft:text_display run function magical_athlete:visual/name_init with storage magical_athlete:visual'])
+    put('visual/name_profile',[
+        # 旧存档没有 uuid：从本桌在线玩家补齐，并缓存供离线暂停和重载使用。
+        'data modify storage magical_athlete:visual owner_profile set value {id:[I;0,0,0,0]}',
+        '$data modify storage magical_athlete:visual owner_profile.id set from entity @s data.magical_athlete.p$(owner).uuid',
+        '$execute as @a[tag=ma.player,scores={ma_side=$(owner)}] if score @s ma_table = #vis_table ma_ctx run data modify storage magical_athlete:visual owner_profile.id set from entity @s UUID',
+        '$data modify entity @s data.magical_athlete.p$(owner).uuid set from storage magical_athlete:visual owner_profile.id'])
     put('visual/name_init',[
         'tag @s add ma.visual','tag @s add ma.racer_name','scoreboard players operation @s ct_id = #vis_table ma_ctx',
         '$scoreboard players set @s ma_vid $(index)',
-        'data merge entity @s {billboard:"vertical",Rotation:[0f,0f],background:0,shadow:1b,line_width:160,view_range:0.5f,brightness:{block:15,sky:15}}',
-        'data modify entity @s text set from storage magical_athlete:visual owner_name',
+        # 原生玩家精灵图包含皮肤帽子层，不依赖资源包中的自定义字形。
+        'data modify storage magical_athlete:visual owner_icon set value {object:"player",player:{},hat:true}',
+        'data modify storage magical_athlete:visual owner_icon.player set from storage magical_athlete:visual owner_profile',
+        'data merge entity @s {billboard:"vertical",Rotation:[0f,0f],alignment:"center",background:0,default_background:0b,shadow:0b,see_through:0b,text_opacity:-1b,line_width:16,view_range:0.5f,brightness:{block:15,sky:15}}',
+        'data modify entity @s text set from storage magical_athlete:visual owner_icon',
         'function magical_athlete:visual/name_pose with storage magical_athlete:visual draw_pose'])
     put('visual/name_pose',[
-        '$data modify storage magical_athlete:visual name_pose set value {x:$(x),y:$(y),z:$(z),duration:$(duration),text_scale:0.14}',
-        '$execute if predicate {condition:"minecraft:value_check",value:$(scale),range:{max:0.0011}} run data modify storage magical_athlete:visual name_pose.text_scale set value 0.001',
+        '$data modify storage magical_athlete:visual name_pose set value {x:$(x),y:$(y),z:$(z),duration:$(duration),text_scale:0.5}',
+        'execute store result storage magical_athlete:visual name_pose.table int 1 run scoreboard players get @s ct_id',
+        'execute store result storage magical_athlete:visual name_pose.index int 1 run scoreboard players get @s ma_vid',
         'scoreboard players set #name_y ma_ctx 0',
         'execute store result score #name_y ma_ctx run data get storage magical_athlete:visual name_pose.y 1000000',
         '$data modify storage magical_athlete:visual name_scale set value $(scale)',
+        # value_check 的整数区间会把这些小于 1 的缩放一并判为 0，不能用来隐藏头像。
+        'execute store result score #name_size ma_ctx run data get storage magical_athlete:visual name_scale 1000000',
+        'execute if score #name_size ma_ctx matches ..160000 run data modify storage magical_athlete:visual name_pose.text_scale set value 0.3',
+        'execute if score #name_size ma_ctx matches ..1100 run data modify storage magical_athlete:visual name_pose.text_scale set value 0.001',
         'execute store result score #name_height ma_ctx run data get storage magical_athlete:visual name_scale 1125000',
         'scoreboard players operation #name_y ma_ctx += #name_height ma_ctx',
-        'scoreboard players add #name_y ma_ctx 45000',
+        'scoreboard players add #name_y ma_ctx 65000',
         'execute store result storage magical_athlete:visual name_pose.y double 0.000001 run scoreboard players get #name_y ma_ctx',
         'function magical_athlete:visual/name_pose_apply with storage magical_athlete:visual name_pose'])
-    put('visual/name_pose_apply','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(text_scale)f,$(text_scale)f,$(text_scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}')
+    put('visual/name_pose_apply',[
+        # Billboard 也会旋转 transformation.translation，因此把偏移放在世界坐标中。
+        '$data merge entity @s {teleport_duration:$(duration),start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[0f,0f,0f],scale:[$(text_scale)f,$(text_scale)f,$(text_scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}',
+        '$execute at @e[tag=ma.racer,scores={ct_id=$(table),ma_vid=$(index)},limit=1] positioned ~$(x) ~$(y) ~$(z) run tp @s ~ ~ ~'])
     put('visual/racer_data','''
 $data modify storage magical_athlete:visual model set from storage magical_athlete:characters chars[$(char)].slug
 $data modify storage magical_athlete:visual index set value $(index)

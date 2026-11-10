@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add cp_ctx dummy
 # 新版本不再使用桌面实体牌；重载时一次性清除旧版本残留。
 kill @e[type=minecraft:item_display,tag=cp.card]

@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add go_ctx dummy
 execute unless score #version go_ctx matches 2.. run function weiqi:system/install
 function weiqi:visual/load
