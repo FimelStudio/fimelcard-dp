@@ -1,5 +1,5 @@
-data modify storage fimel_title:io font set value "minecraft:default_mod"
-data modify storage fimel_title:io neg_font set value "minecraft:default_neg"
+data modify storage fimel_title:io font set value "card:catan/hud"
+data modify storage fimel_title:io neg_font set value "card:catan/hud_neg"
 $data modify storage fimel_title:io x set value $(x)d
 $data modify storage fimel_title:io y set value $(y)d
 $data modify storage fimel_title:io origin set value "$(origin)"

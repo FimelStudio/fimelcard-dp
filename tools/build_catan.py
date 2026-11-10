@@ -15,7 +15,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--audio',action='store_true',help='重新编码已保留的音频源文件')
     args=parser.parse_args()
-    steps=[('engine',[]),('visual',[]),('font',[]),('sound',['--assets'] if args.audio else []),('settings',[]),('ui',[]),('input',[]),('game',[])]
+    steps=[('engine',[]),('visual',[]),('font',[]),('sound',['--assets'] if args.audio else []),('settings',[]),('ui',[]),('input',[]),('game',[]),('icon',[])]
     for module,options in steps:
         subprocess.run([sys.executable,str(TOOLS/f'build_catan_{module}.py'),*options],cwd=TOOLS.parent,check=True)
     # 已有公共注册不重复生成，避免改变其他游戏的菜单顺序。

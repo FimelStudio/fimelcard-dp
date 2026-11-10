@@ -9,4 +9,5 @@ execute if score #code ma_ctx matches 100..135 unless score @s ma_side = @e[tag=
 execute if score #code ma_ctx matches 9997 run return run function magical_athlete:direct/special
 execute if score #code ma_ctx matches 9998 run return run function magical_athlete:direct/cancel
 execute if score #code ma_ctx matches 9999 run return run function magical_athlete:direct/next_page
+execute if score #code ma_ctx matches 2099..2135 run return run function magical_athlete:direct/q_submit
 function magical_athlete:direct/confirm

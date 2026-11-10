@@ -33,12 +33,14 @@ tag @s remove {p}.owns_hud
 tag @s remove {p}.hud
 ''')
     put('restore',f'scoreboard players operation panel_id fbt_io = @s {p}_hprev\nfunction fimel_title:use_panel')
-    buildlines=[f'function {ns}:hud/activate','data modify storage fimel_title:io panel_buffer set value []',
-        'data modify storage fimel_title:io text set value '+js({'text':title,'color':'gold','bold':False}),
-        'function '+ns+':hud/line {x:8,y:-8,origin:"left_top",align:"left"}']
+    buildlines=[f'function {ns}:hud/activate','data modify storage fimel_title:io panel_buffer set value []']
+    if ns!='catan':
+        buildlines += ['data modify storage fimel_title:io text set value '+js({'text':title,'color':'gold','bold':False}),
+            'function '+ns+':hud/line {x:8,y:-8,origin:"left_top",align:"left"}']
     for side in range(1,players+1):
-        x=8 if side%2 else -8;y=-24-((side-1)//2)*40
-        buildlines += [f'execute if data entity @e[tag={p}.current,limit=1] data.{ns}.p{side}.name run function {ns}:hud/row '+js({'side':side,'x':x,'y':y,'y2':y-12,'y3':y-24,'origin':'left_top' if side%2 else 'right_top','align':'left' if side%2 else 'right'})]
+        gap=48 if ns=='catan' else 40;line_gap=14 if ns=='catan' else 12
+        x=8 if side%2 else -8;y=(-8 if ns=='catan' else -24)-((side-1)//2)*gap
+        buildlines += [f'execute if data entity @e[tag={p}.current,limit=1] data.{ns}.p{side}.name run function {ns}:hud/row '+js({'side':side,'x':x,'y':y,'y2':y-line_gap,'y3':y-line_gap*2,'origin':'left_top' if side%2 else 'right_top','align':'left' if side%2 else 'right'})]
     buildlines += [f'execute if score @s {p}_htimer matches 1.. run function {ns}:hud/show_notice',f'execute unless score @s {p}_htimer matches 1.. run function {ns}:hud/status',f'scoreboard players operation panel_id fbt_io = @s {p}_hpanel','function fimel_title:replace_panel',
         'execute unless entity @s[tag=fimel.anim_text.replace.actionbar] run tag @s add '+p+'.owns_hud',
         'tag @s add fimel.anim_text.replace.actionbar','function fimel_title:use_panel']
@@ -60,18 +62,35 @@ tag @s remove {p}.hud
         encoded=js(t)
         rows+=[('$' if '$(' in encoded else '')+'data modify storage fimel_title:io text set value '+encoded]
         if i==0:
-            rows += [f'$execute if entity @e[tag={p}.current,scores={{{p}_turn=$(side)}},limit=1] run data modify storage fimel_title:io text.text set value "▶ "']
+            if ns=='catan':
+                rows += ['$execute if score @s ca_side matches $(side) run data modify storage fimel_title:io text.extra[2] set value '+js(val('vp','gold')),
+                    '$execute if score @s ca_side matches $(side) run data modify storage fimel_title:io text.extra[3].text set value "分（本人）"',
+                    '$execute if entity @e[tag=ca.current,scores={ca_turn=$(side),ca_state=1..8},limit=1] run data modify storage fimel_title:io text.extra insert 1 value {text:" ▶",color:"yellow"}']
+            else:
+                rows += [f'$execute if entity @e[tag={p}.current,scores={{{p}_turn=$(side)}},limit=1] run data modify storage fimel_title:io text.text set value "▶ "']
+        if ns=='catan' and i==1:
+            rows += ['$execute if score @s ca_side matches $(side) run function catan:hud/own_resources {side:$(side)}']
         if ns=='catan' and i==2:
+            rows += ['$execute if score @s ca_side matches $(side) run data modify storage fimel_title:io text.extra append value '+js({'text':' · 发展 ','extra':[val('dev_count')]})]
             for field,label in [('longest',' · 最长道路'),('army',' · 最大骑士军')]:
                 rows += [f'$execute if data entity @e[tag=ca.current,limit=1] data.catan{{{field}:$(side)}} run data modify storage fimel_title:io text.extra append value '+js({'text':label,'color':'gold'})]
         if ns=='magical_athlete' and i==2:
             rows += ['$execute if entity @e[tag=ma.current,scores={ma_state=3..5},limit=1] run function magical_athlete:hud/racers {side:$(side)}']
         rows += [f'$function {ns}:hud/line {{x:$(x),y:$({y}),origin:"$(origin)",align:"$(align)"}}']
     put('row',rows)
+    if ns=='catan':
+        from build_catan_font import FONT_ID,RESOURCE_GLYPHS
+        own=[]
+        for resource,glyph in enumerate(RESOURCE_GLYPHS):
+            own += [{'text':glyph,'color':'white'},val(f'resources[{resource}]'),{'text':'  '}]
+        put('own_resources','$data modify storage fimel_title:io text set value '+js({'text':'','bold':False,'extra':own}))
+        catan_fonts()
     if ns=='magical_athlete':
         put('racers',['data modify storage fimel_title:io text set value {text:"",color:"gray",extra:[]}']+[
-            f'$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[{i}]{{owner:$(side)}} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[{i}]{{char:-1}} run function magical_athlete:hud/racer_read {{index:{i}}}' for i in range(6)])
+            f'$function magical_athlete:hud/racer_read {{index:{i},side:$(side)}}' for i in range(6)])
         put('racer_read',['$data modify storage magical_athlete:hud racer set from entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[$(index)]',
+            '$execute unless data storage magical_athlete:hud racer{owner:$(side)} run return 0',
+            'execute if data storage magical_athlete:hud racer{char:-1} run return 0',
             'data modify storage magical_athlete:hud racer.state set value ""',
             'execute if data storage magical_athlete:hud racer{trip:1} run data modify storage magical_athlete:hud racer.state set value "（绊倒）"',
             'execute if data storage magical_athlete:hud racer{status:1} run data modify storage magical_athlete:hud racer.state set value "（到达）"',
@@ -81,8 +100,8 @@ tag @s remove {p}.hud
         put('racer_name','$data modify storage magical_athlete:hud racer.name set from storage magical_athlete:characters chars[$(char)].name')
         put('racer_text','$data modify storage fimel_title:io text.extra append value {text:"$(name) $(pos)格$(state)  ",color:"aqua"}')
     put('line',[
-        'data modify storage fimel_title:io font set value "minecraft:default_mod"',
-        'data modify storage fimel_title:io neg_font set value "minecraft:default_neg"',
+        'data modify storage fimel_title:io font set value "'+('card:catan/hud' if ns=='catan' else 'minecraft:default_mod')+'"',
+        'data modify storage fimel_title:io neg_font set value "'+('card:catan/hud_neg' if ns=='catan' else 'minecraft:default_neg')+'"',
         '$data modify storage fimel_title:io x set value $(x)d','$data modify storage fimel_title:io y set value $(y)d',
         '$data modify storage fimel_title:io origin set value "$(origin)"','$data modify storage fimel_title:io align set value "$(align)"',
         'data modify storage fimel_title:io dx set value 0.0d','data modify storage fimel_title:io dy set value 0.0d','function fimel_title:new_text'])
@@ -112,3 +131,23 @@ tag @s remove {p}.hud
     put('tick',[f'execute if score @s {p}_htimer matches 1.. run scoreboard players remove @s {p}_htimer 1'])
     game=PACK/f'data/{ns}/function/game/hud.mcfunction'
     game.write_text(f'scoreboard players set @s {p}_pulse 0\nfunction {ns}:system/context\nexecute as @a[tag={p}.audience] run function {ns}:hud/build\n',encoding='utf-8')
+
+
+def catan_fonts():
+    """HUD 图标使用独立的小字形和负半字距；不能在组件内覆盖 font。"""
+    from PIL import Image
+    from boardgame_assets import RP,json_file
+    from build_catan_font import RESOURCE_GLYPHS
+    source=json.loads((RP/'assets/card/font/catan.json').read_text(encoding='utf-8'))
+    providers=[];advances={}
+    for original in source['providers']:
+        if original.get('type')!='bitmap' or original['chars'][0] not in RESOURCE_GLYPHS:continue
+        provider={**original,'height':10,'ascent':8};providers.append(provider)
+        with Image.open(RP/'assets'/provider['file'].replace(':','/textures/')) as image:
+            bounds=image.convert('RGBA').getchannel('A').getbbox()
+            advance=int((bounds[2] if bounds else 0)*provider['height']/image.height+.5)+1
+        advances[provider['chars'][0]]=-advance/2
+    assert len(advances)==5
+    json_file(RP/'assets/card/font/catan/hud.json',{'providers':providers+[{'type':'reference','id':'minecraft:default_mod'}]})
+    json_file(RP/'assets/card/font/catan/hud_neg.json',{'providers':[{'type':'space','advances':advances},{'type':'reference','id':'minecraft:default_neg'}]})
+    json_file(RP/'.source/catan/hud-font.json',{'source':'tools/build_table_direct_hud.py','font':'card:catan/hud','negative_font':'card:catan/hud_neg','height':10,'ascent':8,'private_resources':True,'rewind':'Each of the two negative advances equals half the positive glyph width.'})

@@ -57,6 +57,7 @@ $execute unless items entity @s hotbar.$(slot) * run return run item replace ent
 $give @s minecraft:purple_dye[minecraft:item_name="$(name)",minecraft:item_model="$(model)",minecraft:custom_data={love_letter:{tool:1b,action:$(action),table:$(table)}},minecraft:max_stack_size=1]
 ''')
     put('input/tick', '''
+execute as @a[tag=ll.player,tag=ll.choice_pending] at @s run function love_letter:ui/pending
 execute as @a[tag=ll.player,scores={ll_drop=1..}] at @s run function love_letter:input/drop
 execute as @a[tag=ll.player,scores={ll_action=1..}] at @s run function love_letter:input/submit
 execute as @a[scores={ll_settings=1..}] at @s run function love_letter:settings/save
@@ -157,7 +158,7 @@ execute unless entity @e[tag=ll.me,scores={ll_alive=1},limit=1] run return run f
 dialog clear @s
 execute as @e[tag=ll.current,limit=1] at @s run function love_letter:game/resign
 ''')
-    put('input/clear', '\n'.join('scoreboard players reset @s '+name for name in OBJECTIVES)+'\nclear @s *[minecraft:custom_data~{love_letter:{tool:1b}}]\ntag @s remove ll.actor')
+    put('input/clear', '\n'.join('scoreboard players reset @s '+name for name in OBJECTIVES)+'\nclear @s *[minecraft:custom_data~{love_letter:{tool:1b}}]\ntag @s remove ll.actor\ntag @s remove ll.choice_pending')
     put('ui/begin', '''
 scoreboard players operation @s ll_seen = @e[tag=ll.current,limit=1] ll_epoch
 scoreboard players operation @s ll_ui_load = #ui_load ll_ctx
@@ -183,10 +184,26 @@ execute unless score @s ll_state matches 2 run return 0
 execute unless score @s ll_anim matches 0 run return 0
 scoreboard players operation #ui_decider ll_ctx = @s ll_actor
 execute if score @s ll_phase matches 1 run scoreboard players operation #ui_decider ll_ctx = @s ll_turn
-execute as @a[tag=ll.audience] if score @s ll_seat = #ui_decider ll_ctx run function love_letter:ui/open
+execute unless score @s ll_phase matches 1 as @a[tag=ll.audience] if score @s ll_seat = #ui_decider ll_ctx run function love_letter:ui/request
+''')
+    put('ui/request', '''
+# 必需选择在下一刻打开，等待本次丢牌回收或 Dialog after_action 关闭完成。
+scoreboard players operation @s ll_seen = @e[tag=ll.current,limit=1] ll_epoch
+tag @s add ll.choice_pending
+execute if entity @e[tag=ll.current,scores={ll_phase=3},limit=1] run title @s actionbar {text:"侍卫已打出，请在即将打开的窗口中猜测目标手牌。",color:"yellow"}
+''')
+    put('ui/pending', '''
+tag @s remove ll.choice_pending
+function love_letter:input/context
+execute unless entity @s[tag=ll.actor] run return 0
+execute unless entity @e[tag=ll.current,scores={ll_state=2,ll_phase=2..5,ll_anim=0},limit=1] run return 0
+execute unless score @s ll_seat = @e[tag=ll.current,limit=1] ll_actor run return 0
+execute unless score @s ll_seen = @e[tag=ll.current,limit=1] ll_epoch run return 0
+function love_letter:ui/open
 ''')
     put('ui/open', '''
 function love_letter:input/context
+tag @s remove ll.choice_pending
 execute unless entity @s[tag=ll.actor] run return 0
 function love_letter:ui/begin
 function love_letter:ui/players

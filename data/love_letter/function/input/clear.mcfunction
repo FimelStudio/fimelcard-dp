@@ -6,3 +6,4 @@ scoreboard players reset @s ll_action
 scoreboard players reset @s ll_drop
 clear @s *[minecraft:custom_data~{love_letter:{tool:1b}}]
 tag @s remove ll.actor
+tag @s remove ll.choice_pending

@@ -58,7 +58,29 @@ execute if data storage magical_athlete:visual racer{owner:0} run return 0
 $data modify storage magical_athlete:visual racer.index set value $(index)
 function magical_athlete:visual/racer_data with storage magical_athlete:visual racer
 execute positioned ~ ~1.04 ~ summon minecraft:item_display run function magical_athlete:visual/racer_init with storage magical_athlete:visual
+execute if score @s ma_state matches 3..5 run function magical_athlete:visual/name_spawn with storage magical_athlete:visual racer
 ''')
+    put('visual/name_spawn',[
+        '$data modify storage magical_athlete:visual owner_name set from entity @s data.magical_athlete.p$(owner).name',
+        'execute positioned ~ ~1.04 ~ summon minecraft:text_display run function magical_athlete:visual/name_init with storage magical_athlete:visual'])
+    put('visual/name_init',[
+        'tag @s add ma.visual','tag @s add ma.racer_name','scoreboard players operation @s ct_id = #vis_table ma_ctx',
+        '$scoreboard players set @s ma_vid $(index)',
+        'data merge entity @s {billboard:"vertical",Rotation:[0f,0f],background:0,shadow:1b,line_width:160,view_range:0.5f,brightness:{block:15,sky:15}}',
+        'data modify entity @s text set from storage magical_athlete:visual owner_name',
+        'function magical_athlete:visual/name_pose with storage magical_athlete:visual draw_pose'])
+    put('visual/name_pose',[
+        '$data modify storage magical_athlete:visual name_pose set value {x:$(x),y:$(y),z:$(z),duration:$(duration),text_scale:0.14}',
+        '$execute if predicate {condition:"minecraft:value_check",value:$(scale),range:{max:0.0011}} run data modify storage magical_athlete:visual name_pose.text_scale set value 0.001',
+        'scoreboard players set #name_y ma_ctx 0',
+        'execute store result score #name_y ma_ctx run data get storage magical_athlete:visual name_pose.y 1000000',
+        '$data modify storage magical_athlete:visual name_scale set value $(scale)',
+        'execute store result score #name_height ma_ctx run data get storage magical_athlete:visual name_scale 1125000',
+        'scoreboard players operation #name_y ma_ctx += #name_height ma_ctx',
+        'scoreboard players add #name_y ma_ctx 45000',
+        'execute store result storage magical_athlete:visual name_pose.y double 0.000001 run scoreboard players get #name_y ma_ctx',
+        'function magical_athlete:visual/name_pose_apply with storage magical_athlete:visual name_pose'])
+    put('visual/name_pose_apply','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(text_scale)f,$(text_scale)f,$(text_scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}')
     put('visual/racer_data','''
 $data modify storage magical_athlete:visual model set from storage magical_athlete:characters chars[$(char)].slug
 $data modify storage magical_athlete:visual index set value $(index)
@@ -87,6 +109,9 @@ function magical_athlete:visual/racer_pose with storage magical_athlete:visual p
         # 所有雕塑的脚底统一为模型 Y=8；缩放不再改变脚底高度。
         '$data modify storage magical_athlete:visual draw_pose set value {x:$(x),y:$(y),z:$(z),scale:$(scale),duration:$(duration)}',
         'function magical_athlete:visual/racer_pose_apply with storage magical_athlete:visual draw_pose',
+        'scoreboard players operation #name_table ma_ctx = @s ct_id',
+        'scoreboard players operation #name_index ma_ctx = @s ma_vid',
+        'execute as @e[tag=ma.racer_name] if score @s ct_id = #name_table ma_ctx if score @s ma_vid = #name_index ma_ctx run function magical_athlete:visual/name_pose with storage magical_athlete:visual draw_pose',
     ])
     put('visual/racer_pose_apply','$data merge entity @s {start_interpolation:0,interpolation_duration:$(duration),transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}')
     put('visual/dice_spawn','execute positioned ~ ~1.04 ~ summon minecraft:item_display run function magical_athlete:visual/dice_init')
@@ -162,9 +187,12 @@ function magical_athlete:visual/die_get with storage magical_athlete:visual
 ''')
     put('visual/die_get',['$data modify storage magical_athlete:visual die_pose set from storage magical_athlete:layout dice$(die)[$(frame)]','execute as @e[tag=ma.die] if score @s ct_id = #vis_table ma_ctx run function magical_athlete:visual/die_pose with storage magical_athlete:visual die_pose'])
     put('visual/die_pose','$data merge entity @s {start_interpolation:0,interpolation_duration:1,transformation:{translation:[$(x)f,$(y)f,$(z)f],scale:[$(scale)f,$(scale)f,$(scale)f],left_rotation:[$(qx)f,$(qy)f,$(qz)f,$(qw)f],right_rotation:[0f,1f,0f,0f]}}')
-    put('visual/event_prop',['data modify storage magical_athlete:visual prop set value "flag"']+[f'$execute if predicate {{condition:"minecraft:value_check",value:$(kind),range:{kind}}} run data modify storage magical_athlete:visual prop set value "{prop}"' for kind,prop in {2:'portal',3:'trip',4:'flag',5:'trip',6:'medal_gold',7:'coin',8:'rocket',9:'flag'}.items()]+['$execute if predicate {condition:"minecraft:value_check",value:$(kind),range:6} run function magical_athlete:visual/medal with storage magical_athlete:visual event','$execute if predicate {condition:"minecraft:value_check",value:$(kind),range:{min:2,max:8}} run execute positioned ~ ~1.2 ~ summon minecraft:item_display run function magical_athlete:visual/prop_init with storage magical_athlete:visual'])
+    # 中央临时徽章易与旧圆饼棋子混淆；事件只保留声音、粒子和文字反馈。
+    put('visual/event_prop',[
+        '# 清理旧版本中央道具；不再为比赛事件生成临时物品展示。',
+        'execute as @e[tag=ma.event_prop] if score @s ct_id = #vis_table ma_ctx run kill @s'])
     put('visual/medal',['scoreboard players set #silver ma_ctx -1','execute store result score #silver ma_ctx run data get entity @s data.magical_athlete.finishers[1]','$scoreboard players set #crossed ma_ctx $(pawn)','execute if score #silver ma_ctx = #crossed ma_ctx run data modify storage magical_athlete:visual prop set value "medal_silver"'])
-    put('visual/prop_init',['tag @s add ma.visual','tag @s add ma.event_prop','scoreboard players operation @s ct_id = #vis_table ma_ctx','$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/prop/$(prop)"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0f,view_range:0.5f,transformation:{translation:[0f,0.12f,0f],scale:[0.35f,0.35f,0.35f],right_rotation:[0f,1f,0f,0f]}}'])
+    put('visual/prop_init',['# 兼容旧调用：中央临时道具已停用，立即删除新生成的空展示实体。','kill @s'])
     put('visual/event_announce','''
 $execute unless predicate {condition:"minecraft:value_check",value:$(kind),range:{min:6,max:9}} run return 0
 $data modify storage magical_athlete:visual announcer set from entity @s data.magical_athlete.racers[$(pawn)]

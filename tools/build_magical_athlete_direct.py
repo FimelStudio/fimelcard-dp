@@ -31,7 +31,7 @@ def build():
     from build_table_direct_hud import build as hud
     hud('magical_athlete', 'ma', '胡闹运动会', 6)
     put('direct/load', [f'scoreboard objectives add ma_{n} dummy' for n in
-        ('depoch', 'iepoch', 'dpage', 'expected', 'confirm', 'cepoch', 'dcode', 'dtype', 'did', 'dround', 'next', 'dclock')])
+        ('depoch', 'iepoch', 'dpage', 'expected', 'dice_expected', 'confirm', 'cepoch', 'dcode', 'dtype', 'did', 'dround', 'next', 'dclock')])
     extend('load', 'function magical_athlete:direct/load\nfunction magical_athlete:hud/load')
     extend('system/reload', 'execute as @a[tag=ma.audience] run scoreboard players set @s ma_depoch -1\nexecute as @a[tag=ma.audience] run function magical_athlete:direct/sync')
     extend('player/clear_state', 'function magical_athlete:hud/deactivate\nscoreboard players reset @s ma_depoch\nscoreboard players reset @s ma_iepoch\nscoreboard players set @s ma_dpage 0\nscoreboard players reset @s ma_expected\nscoreboard players reset @s ma_confirm')
@@ -53,10 +53,12 @@ function magical_athlete:input/context
 execute unless entity @s[tag=ma.actor] run return 0
 execute if entity @s[nbt={Health:0.0f}] run return 0
 execute unless score @s ma_depoch = @e[tag=ma.current,limit=1] ma_epoch run function magical_athlete:direct/rebuild
+function magical_athlete:direct/dice_sync
 ''')
     put('direct/rebuild', '''
 clear @s *[minecraft:custom_data~{magical_athlete:{tool:1b}}]
 scoreboard players set @s ma_expected 1
+scoreboard players set @s ma_dice_expected 1
 scoreboard players operation @s ma_depoch = @e[tag=ma.current,limit=1] ma_epoch
 execute unless score @s ma_cepoch = @e[tag=ma.current,limit=1] ma_epoch run scoreboard players set @s ma_confirm -999
 execute unless score @s ma_iepoch = @e[tag=ma.current,limit=1] ma_epoch run scoreboard players set @s ma_dpage 0
@@ -65,11 +67,25 @@ execute store result storage magical_athlete:direct table int 1 run scoreboard p
 execute store result storage magical_athlete:direct epoch int 1 run scoreboard players get @s ma_depoch
 execute store result storage magical_athlete:ui side int 1 run scoreboard players get @s ma_side
 function magical_athlete:ui/private with storage magical_athlete:ui
-function magical_athlete:input/menu_tool with storage magical_athlete:direct
 execute if entity @e[tag=ma.current,scores={ma_state=1},limit=1] if score @s ma_side = @e[tag=ma.current,limit=1] ma_turn run function magical_athlete:direct/draft
 execute if entity @e[tag=ma.current,scores={ma_state=2},limit=1] run function magical_athlete:direct/lineup
 execute if entity @e[tag=ma.current,scores={ma_state=3,ma_anim=0},limit=1] if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending run function magical_athlete:direct/choices
 function magical_athlete:direct/roster
+''')
+    put('direct/dice_eligible','''
+scoreboard players set #can_roll ma_ctx 0
+execute unless entity @e[tag=ma.current,scores={ma_state=3,ma_anim=0},limit=1] run return 0
+execute if entity @e[tag=ma.current,scores={ma_pending=0},limit=1] if score @s ma_side = @e[tag=ma.current,limit=1] ma_turn run scoreboard players set #can_roll ma_ctx 1
+execute if score @s ma_side = @e[tag=ma.current,limit=1] ma_pending if data entity @e[tag=ma.current,limit=1] data.magical_athlete.pending{kind:"ready"} run scoreboard players set #can_roll ma_ctx 1
+''')
+    put('direct/dice_sync','''
+function magical_athlete:direct/dice_eligible
+scoreboard players operation @s ma_expected -= @s ma_dice_expected
+scoreboard players operation @s ma_expected += #can_roll ma_ctx
+scoreboard players operation @s ma_dice_expected = #can_roll ma_ctx
+execute if score #can_roll ma_ctx matches 0 run return run clear @s *[minecraft:custom_data~{magical_athlete:{tool:1b,dice:1b}}]
+execute store result storage magical_athlete:direct table int 1 run scoreboard players get @s ma_table
+execute unless items entity @s hotbar.7 *[minecraft:custom_data~{magical_athlete:{dice:1b}}] run function magical_athlete:input/menu_tool with storage magical_athlete:direct
 ''')
     put('direct/draft', 'data modify storage magical_athlete:direct options set from entity @e[tag=ma.current,limit=1] data.magical_athlete.pool\ndata modify storage magical_athlete:direct kind set value "draft"\nfunction magical_athlete:direct/page')
     put('direct/lineup', '''
@@ -154,8 +170,10 @@ execute if score #code ma_ctx matches 100..135 unless score @s ma_side = @e[tag=
 execute if score #code ma_ctx matches 9997 run return run function magical_athlete:direct/special
 execute if score #code ma_ctx matches 9998 run return run function magical_athlete:direct/cancel
 execute if score #code ma_ctx matches 9999 run return run function magical_athlete:direct/next_page
+execute if score #code ma_ctx matches 2099..2135 run return run function magical_athlete:direct/q_submit
 function magical_athlete:direct/confirm
 ''')
+    put('direct/q_submit','execute if entity @e[tag=ma.current,scores={ma_anim=1..},limit=1] run return run function magical_athlete:direct/busy\nfunction magical_athlete:direct/submit')
     put('direct/next_page', '''
 scoreboard players add @s ma_dpage 6
 execute store result storage magical_athlete:ui side int 1 run scoreboard players get @s ma_side
@@ -260,7 +278,7 @@ execute unless entity @s[tag=ma.actor] run return 0
 function magical_athlete:hud/tick
 execute store result score #mirrored ma_ctx run clear @s *[minecraft:custom_data~{magical_athlete:{tool:1b}}] 0
 execute unless score #mirrored ma_ctx = @s ma_expected run scoreboard players set @s ma_depoch -1
-execute unless items entity @s hotbar.7 *[minecraft:custom_data~{magical_athlete:{dice:1b}}] run scoreboard players set @s ma_depoch -1
+execute if score @s ma_dice_expected matches 1 unless items entity @s hotbar.7 *[minecraft:custom_data~{magical_athlete:{dice:1b}}] run scoreboard players set @s ma_depoch -1
 ''')
     put('ui/open', '''
 function magical_athlete:input/context
@@ -300,6 +318,8 @@ function magical_athlete:game/hud
     assets()
     from build_table_feedback import magical_athlete as feedback
     feedback()
+    from build_magical_athlete_scene import build as scene_updates
+    scene_updates()
     from build_direct_support import finish
     finish('magical_athlete')
 
@@ -337,7 +357,7 @@ $data modify storage magical_athlete:direct card set from storage magical_athlet
 data modify storage magical_athlete:direct slug set from storage magical_athlete:direct card.slug
 data modify storage magical_athlete:direct name set from storage magical_athlete:direct card.name
 data modify storage magical_athlete:direct width set value 0.46
-execute if entity @e[tag=ma.current,scores={ma_orient=1},limit=1] run function magical_athlete:direct/rotate_pool
+execute if score @s ma_orient matches 1 run function magical_athlete:direct/rotate_pool
 $execute positioned ~$(x) ~1.055 ~$(z) summon minecraft:item_display run function magical_athlete:direct/pool_init with storage magical_athlete:direct
 $execute positioned ~$(x) ~1.055 ~$(z) summon minecraft:interaction run function magical_athlete:direct/hit_init with storage magical_athlete:direct
 $execute positioned ~$(x) ~1.42 ~$(z) summon minecraft:text_display run function magical_athlete:direct/pool_title with storage magical_athlete:direct

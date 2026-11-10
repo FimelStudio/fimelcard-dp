@@ -5,4 +5,5 @@ $data modify storage magical_athlete:engine e.from set from storage magical_athl
 $data modify storage magical_athlete:engine e.to set from storage magical_athlete:engine s.racers[$(pawn)].pos
 data modify storage magical_athlete:engine e.source set from storage magical_athlete:engine s.motion.source
 execute if data storage magical_athlete:engine s.motion{warp:1} run data modify storage magical_athlete:engine e.kind set value 2
+data modify storage magical_athlete:engine e.source_actor set from storage magical_athlete:engine s.motion.source_actor
 data modify storage magical_athlete:engine s.events append from storage magical_athlete:engine e

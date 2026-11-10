@@ -1,7 +1,7 @@
 data modify storage fimel_title:io text set value {text:"",color:"gray",extra:[]}
-$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[0]{owner:$(side)} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[0]{char:-1} run function magical_athlete:hud/racer_read {index:0}
-$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[1]{owner:$(side)} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[1]{char:-1} run function magical_athlete:hud/racer_read {index:1}
-$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[2]{owner:$(side)} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[2]{char:-1} run function magical_athlete:hud/racer_read {index:2}
-$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[3]{owner:$(side)} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[3]{char:-1} run function magical_athlete:hud/racer_read {index:3}
-$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[4]{owner:$(side)} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[4]{char:-1} run function magical_athlete:hud/racer_read {index:4}
-$execute if data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[5]{owner:$(side)} unless data entity @e[tag=ma.current,limit=1] data.magical_athlete.racers[5]{char:-1} run function magical_athlete:hud/racer_read {index:5}
+$function magical_athlete:hud/racer_read {index:0,side:$(side)}
+$function magical_athlete:hud/racer_read {index:1,side:$(side)}
+$function magical_athlete:hud/racer_read {index:2,side:$(side)}
+$function magical_athlete:hud/racer_read {index:3,side:$(side)}
+$function magical_athlete:hud/racer_read {index:4,side:$(side)}
+$function magical_athlete:hud/racer_read {index:5,side:$(side)}

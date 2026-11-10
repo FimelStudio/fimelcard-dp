@@ -24,7 +24,8 @@ class Suite(UISuite):
         ]
 
     def q(self, epoch=12345):
-        return [f'execute as {person()} at @s run function love_letter:direct/play {{table:101,owner:1,epoch:{epoch},slot:0}}']
+        return [f'execute as {person()} at @s run function love_letter:direct/play {{table:101,owner:1,epoch:{epoch},slot:0}}',
+                'function love_letter:input/tick']
 
     def choice(self, code):
         return [f'scoreboard players operation #choice lt = {TABLE} ll_epoch',
@@ -104,11 +105,31 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         c += self.score(part(3), 'll_alive', 1, 'guard_other_player_untouched')
         self.case('guard_dialog', c)
 
+        c=self.aimed((1,9,4),extra=9)+[
+            f'execute as {person()} at @s run function love_letter:direct/play {{table:101,owner:1,epoch:12345,slot:0}}',
+            f'scoreboard players add {TABLE} ll_epoch 1',
+            'function love_letter:input/tick']
+        c+=self.score('#ui_compiled','lt',0,'stale_pending_choice_does_not_open')
+        c+=self.count('@e[tag=ll.choice_pending]',0,'stale_pending_choice_cleared')
+        c+=self.score(part(),'ll_hand',9,'stale_pending_choice_does_not_play_princess')
+        self.case('stale_pending_dialog',c)
+
+        c=self.aimed((1,9,4),extra=9)+[
+            f'execute as {person()} at @s run function love_letter:direct/play {{table:101,owner:1,epoch:12345,slot:0}}',
+            f'scoreboard players set {person()} ct_paused 1','function love_letter:input/tick']
+        c+=self.score('#ui_compiled','lt',0,'paused_pending_choice_waits')
+        c+=[f'scoreboard players set {person()} ct_paused 0','function love_letter:input/tick']
+        c+=self.score('#ui_compiled','lt',1,'pending_choice_opens_after_resume')
+        c+=self.count('@e[tag=ll.choice_pending]',0,'opened_pending_choice_cleared')
+        self.case('paused_pending_dialog',c)
+
         c = self.aimed((6, 2, 4), extra=8, deck=(5, 7, 0)) + self.q()
         c += self.score(TABLE, 'll_phase', 4, 'chancellor_q_opens_keep_phase') + self.score('#ui_compiled', 'lt', 1, 'chancellor_q_dialog_macro_executed')
         c += ['execute store result score #cards lt run data get storage love_letter:ui cards.extra'] + self.score('#cards', 'lt', 3, 'chancellor_three_clickable_cards')
         c += self.choice(301) + self.score(part(), 'll_hand', 5, 'chancellor_keeps_clicked_card')
         c += self.score(TABLE, 'll_phase', 5, 'chancellor_orders_remaining')
+        c += ['scoreboard players set #ui_compiled lt 0','function love_letter:input/tick']
+        c += self.score('#ui_compiled','lt',1,'chancellor_next_dialog_opens_after_click_completes')
         c += self.choice(400) + self.data(TABLE, 'data.love_letter.deck', [0, 8, 7], 'chancellor_bottom_order_committed')
         self.case('chancellor_dialog', c)
 
@@ -121,7 +142,7 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         c += self.q(epoch=1) + self.data(part(), 'data.discards', [], 'old_hand_epoch_rejected')
         self.case('isolation_and_stale', c)
         self.finish()
-        self.files['bootstrap'] = self.files['bootstrap'].replace('function love_letter_test:reset', 'scoreboard objectives add ct_seat dummy\nscoreboard players set #ui_load ll_ctx 1\nfunction love_letter_test:reset')
+        self.files['bootstrap'] = self.files['bootstrap'].replace('function love_letter_test:reset', 'scoreboard objectives add ct_seat dummy\nscoreboard objectives add ct_paused dummy\nscoreboard players set #ui_load ll_ctx 1\nfunction love_letter_test:reset')
 
 
 def prepare_target(target):

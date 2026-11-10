@@ -72,6 +72,10 @@ def register_font(image):
     write(path,(json.dumps(body,ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
 
 
+# 现行图标改用独立SVG模板，避免旧版圆形立牌插画在生成时复活。
+SVG=Path(__file__).with_name('magical_athlete_icon.svg').read_text(encoding='utf-8')
+
+
 def preview(folder):
     image=Image.new('RGBA',(1024,1536),'#151725')
     for game in range(1,24):
@@ -102,7 +106,7 @@ def build(publish_dir=None,force_render=False):
     register_font(image)
     write(meta_path,(json.dumps({'id':23,'name':'胡闹运动会','svg_sha256':digest,
         'png_sha256':hashlib.sha256(content).hexdigest(),
-        'source':'Fimel Cards original vector art, no official illustrations or logo'},ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
+        'source':'Fimel Cards original voxel athlete vector art, no official illustrations or logo'},ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
     preview(DOCS)
     if publish_dir is not None:
         folder=Path(publish_dir);write(folder/'23.svg',encoded);write(folder/'23.png',content);preview(folder)

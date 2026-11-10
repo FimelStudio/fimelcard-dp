@@ -53,6 +53,14 @@ def build_suite():
     b+=s.race([4,21,22],[2,4,5])+s.job('move',pawn=0,amount=5,source=-2)+s.flush()+s.data('racers[1].pos',2,'centaur_first')+s.data('racers[2].pos',3,'centaur_second')
     b+=s.race([2,21,22],[0,0,0])+s.job('move',pawn=1,amount=1,source=-2)+s.flush()+s.data('racers[1].trip',0,'banana_equal_not_pass')
     s.case('passing',b)
+    b=s.race([0,2,2],[2,4,12])+s.job('move',pawn=0,amount=5,source=-2)
+    b+=s.check(f'data entity {TABLE} data.magical_athlete{{events:[{{kind:3,pawn:0,source:2,source_actor:1}}]}}','banana_event_keeps_actual_source')
+    b+=s.race([4,21,22],[2,4,5])+s.job('move',pawn=0,amount=5,source=-2)
+    b+=['scoreboard players set #source_found ce 0']
+    for _ in range(3):
+        b+=[f'execute if data entity {TABLE} data.magical_athlete{{events:[{{kind:1,pawn:1,source:4,source_actor:0}}]}} run scoreboard players set #source_found ce 1']+s.call('pump')
+    b+=s.score('#source_found','ce',1,'centaur_event_keeps_actual_source')
+    s.case('ability_source_metadata',b)
     b=s.race([21,22,23],[5,2,8])+s.set('track',1)+s.job('move',pawn=0,amount=2,source=-2)+s.flush()+s.data('racers[0].pos',10,'wild_arrow')
     b+=s.race([21,22,23],[0,2,8])+s.set('track',1)+s.job('move',pawn=0,amount=1,source=-2)+s.flush()+s.data('p1.points',1,'wild_star')
     b+=s.race([21,22,23],[4,2,8])+s.set('track',1)+s.job('move',pawn=0,amount=1,source=-2)+s.flush()+s.data('racers[0].trip',1,'wild_trip')
