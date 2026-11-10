@@ -1,3 +1,5 @@
+scoreboard players set @s dc_sync 0
+data remove entity @s data.decrypto.sync_history
 execute unless score @s ct_joined matches 3..8 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[谍报风云] ',color:'aqua'},{text:'需要3至8名玩家入座。',color:'yellow'}]
 execute unless score @s ct_joined matches 3..8 run return fail
 # 兼容升级后尚未重新选择过游戏、也未打开设置的旧牌桌。

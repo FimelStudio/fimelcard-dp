@@ -41,6 +41,7 @@ execute if score #phase dc_ctx matches 6 run function decrypto:notes/add_white
 execute if score #phase dc_ctx matches 8 run function decrypto:notes/add_black
 execute if score #phase dc_ctx matches 6 run function decrypto:title/update_all
 execute if score #phase dc_ctx matches 8 run function decrypto:title/update_all
+execute if score @s dc_sync matches 1 run return 0
 # 每支队伍完成解密结算后立即检查胜负；结束后不能继续进入另一队阶段。
 execute if score #phase dc_ctx matches 6 run function decrypto:game/check_win
 execute if score #phase dc_ctx matches 8 run function decrypto:game/check_win

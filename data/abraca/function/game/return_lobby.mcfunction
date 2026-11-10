@@ -1,6 +1,5 @@
 # 结算展示结束后，清除本桌静态血量面板并恢复通用游戏选择界面。
 scoreboard players operation #ctx ab_ctx = @s ab_id
-execute as @a[tag=ab.player] if score @s ab_id = #ctx ab_ctx run function abraca:player/clear_state
 execute as @e[type=minecraft:text_display,tag=ab.final_info] if score @s ab_id = #ctx ab_ctx run kill @s
 tag @s remove ab.controller
 scoreboard players set @s ab_state 0

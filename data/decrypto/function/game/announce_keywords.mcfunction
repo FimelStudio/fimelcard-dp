@@ -1,3 +1,4 @@
+execute if score @s dc_mode matches 4 run return run function decrypto:sync/end_records
 # 在清理玩家状态和左上角面板前，向本桌玩家公开本局密码词语。
 scoreboard players operation #ctx dc_ctx = @s dc_id
 tag @a[tag=dc.end_audience] remove dc.end_audience

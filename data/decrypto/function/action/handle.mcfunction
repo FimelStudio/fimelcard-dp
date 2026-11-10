@@ -1,3 +1,5 @@
+function decrypto:sync/bind
+execute if score #sync_ok dc_ctx matches 1 run return run function decrypto:sync/trigger
 # table-pause: begin (tools/build_table_pause_guards.py)
 execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0

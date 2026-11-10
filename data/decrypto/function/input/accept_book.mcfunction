@@ -20,6 +20,7 @@ execute if data storage decrypto:input pages[2].raw run data modify storage decr
 execute if data storage decrypto:input clues[{text:""}] run return run function decrypto:input/reject_book
 kill @e[type=minecraft:item,tag=dc.submitted_book,limit=1]
 tellraw @a[tag=dc.submitter,limit=1] [{text:"[谍报风云] ",color:"aqua"},{text:"三条提示已提交。",color:"green"}]
+execute if score @s dc_sync matches 1 run return run function decrypto:sync/save_clues
 scoreboard players set @s dc_clue 0
 data modify storage decrypto:input name set from storage decrypto:input clues[0]
 function decrypto:input/save_prompt

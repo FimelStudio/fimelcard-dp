@@ -1,3 +1,6 @@
+scoreboard objectives add dc_sform dummy
+scoreboard objectives add dc_sync dummy
+scoreboard objectives add dc_sd dummy
 scoreboard objectives add dc_ctx dummy
 execute unless score #version dc_ctx matches 1.. run function decrypto:system/install
 execute if score #version dc_ctx matches 1 run function decrypto:system/upgrade_v2
