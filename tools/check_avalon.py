@@ -34,7 +34,11 @@ assert 'scoreboard players set @s av_state 0' in read('game/abort')
 assert 'execute at @s run function cardtable:game/return_lobby' in read('game/abort')
 assert read('game/finish').startswith('execute unless score @s av_state matches 1..4')
 # 从实际人数配置命令提取任务表，再枚举全部任务投票组合。
-config={(int(n),int(r)):int(k) for n,r,k in re.findall(r'av_players matches (\d+) if score @s av_round matches (\d+) run scoreboard players set @s av_need (\d+)',read('game/team'))}
+requirements={int(n):[int(k) for k in counts.split(',')][1:]
+              for n,counts in re.findall(r'av_players matches (\d+) run data modify storage avalon:map needs set value \[([0-9,]+)\]',read('map/requirements'))}
+config={(n,r):k for n,counts in requirements.items() for r,k in enumerate(counts,1)}
+assert 'function avalon:map/current_need' in read('game/team')
+assert 'needs[$(round)]' in read('map/current_need')
 expected={5:[2,3,2,3,3],6:[2,3,4,3,4],7:[2,3,3,4,4],8:[3,4,4,5,5]}
 cases=0
 for n,rows in expected.items():

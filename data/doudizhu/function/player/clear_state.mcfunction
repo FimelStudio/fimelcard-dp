@@ -2,6 +2,7 @@ function doudizhu:music/stop
 dialog clear @s
 function doudizhu:hud/deactivate
 function doudizhu:input/clear
+function doudizhu:predict/clear
 tag @s remove dd.player
 tag @s remove dd.actor
 tag @s remove dd.actors
@@ -10,6 +11,8 @@ scoreboard players reset @s dd_id
 scoreboard players reset @s dd_seat
 scoreboard players reset @s dd_plays
 scoreboard players reset @s dd_count
+scoreboard players reset @s dd_team
+scoreboard players reset @s dd_prediction
 scoreboard players reset @s dd_points
 scoreboard players reset @s dd_total
 scoreboard players reset @s dd_action

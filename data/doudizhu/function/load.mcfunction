@@ -1,6 +1,22 @@
 # uninstall-guard: begin (tools/build_uninstall.py)
 execute if data storage cardtable:uninstall active run return 0
 # uninstall-guard: end
+scoreboard objectives add dd_classic_bid dummy
+scoreboard objectives add dd_scoring dummy
+scoreboard objectives add dd_hide_score dummy
+scoreboard objectives add dd_void dummy
+scoreboard objectives add dd_pred_phase dummy
+scoreboard objectives add dd_pred_round dummy
+scoreboard objectives add dd_pred_token dummy
+scoreboard objectives add dd_prediction dummy
+scoreboard objectives add dd_lane dummy
+scoreboard objectives add dd_team_one dummy
+scoreboard objectives add dd_team_two dummy
+scoreboard objectives add dd_side_score dummy
+scoreboard objectives add dd_pair_scored dummy
+scoreboard objectives add dd_team dummy
+scoreboard objectives add dd_bidbye dummy
+scoreboard objectives add dd_out dummy
 scoreboard objectives add dd_noshuffle dummy
 scoreboard objectives add dd_deckpos dummy
 function doudizhu:visual/load
@@ -32,3 +48,5 @@ execute as @e[type=minecraft:marker,tag=dd.controller] run function doudizhu:inp
 
 function doudizhu:music/load
 execute as @a[tag=dd.player] run function doudizhu:input/refresh_model
+execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_lane=1..2}] run function doudizhu:visual/clear
+execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_lane=1,dd_pred_phase=1}] run function doudizhu:predict/restore

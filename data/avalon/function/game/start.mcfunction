@@ -28,4 +28,6 @@ scoreboard players operation @s av_leader = @a[tag=av.audience,sort=random,limit
 execute as @a[tag=av.audience] run function avalon:player/tools
 scoreboard players set @s ct_start 1
 data modify entity @s data.avalon.results set value []
+data modify entity @s data.avalon.mission_teams set value {}
+execute at @s run function avalon:map/render
 function avalon:game/team

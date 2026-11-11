@@ -7,9 +7,12 @@ execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
 execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
+execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_lane=1}] run function doudizhu:duplicate/pause_sync
 execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=2,dd_bidmode=2}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function doudizhu:bid/speed_tick
 execute as @a[scores={dd_settings=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] run function doudizhu:settings/save
-execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=4}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function doudizhu:game/intermission
+execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=4,dd_lane=1}] unless score @s ct_paused matches 1 at @s run function doudizhu:duplicate/tick
+execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=4}] unless score @s dd_lane matches 1..2 unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function doudizhu:game/intermission
+execute as @e[type=minecraft:item,tag=!ct.paused_return] if items entity @s contents *[minecraft:custom_data~{doudizhu:{prediction_tool:1b}}] run function doudizhu:predict/drop
 execute as @a[tag=dd.player,scores={dd_drop_dye=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function doudizhu:input/drop
 execute as @a[tag=dd.player,scores={dd_action=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] run function doudizhu:action/handle
 execute as @e[type=minecraft:marker,tag=dd.controller,scores={dd_state=1}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function doudizhu:deal/tick

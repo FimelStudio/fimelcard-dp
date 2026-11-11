@@ -13,4 +13,4 @@ execute as @a[tag=av.audience] run function avalon:player/identity
 execute as @a[tag=av.audience] run function avalon:player/private_info
 
 function avalon:player/heads
-execute if score @s av_state matches 1 as @a[tag=av.audience,scores={av_selected=1}] run effect give @s minecraft:glowing 2 0 true
+execute if score @s av_state matches 1..3 run effect give @a[tag=av.audience,scores={av_selected=1}] minecraft:glowing infinite 0 true

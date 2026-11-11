@@ -4,9 +4,13 @@ execute unless score @s dd_max matches 1..32 run scoreboard players set @s dd_ma
 execute unless score @s dd_audio matches 0..1 run scoreboard players set @s dd_audio 1
 
 execute unless score @s dd_bidmode matches 0..2 run scoreboard players set @s dd_bidmode 0
+# 从旧牌桌迁移原叫地主设置。开局时再将设置复制到本场的叫地主模式。
+execute unless score @s dd_classic_bid matches 0..2 run scoreboard players operation @s dd_classic_bid = @s dd_bidmode
+execute unless score @s dd_scoring matches 0..1 run scoreboard players set @s dd_scoring 0
 
 execute unless score @s dd_counts matches 0..1 run scoreboard players set @s dd_counts 1
 
 execute unless score @s dd_counter matches 0..1 run scoreboard players set @s dd_counter 0
 
 execute unless score @s dd_noshuffle matches 0..1 run scoreboard players set @s dd_noshuffle 0
+execute unless score @s dd_hide_score matches 0..1 run scoreboard players set @s dd_hide_score 0

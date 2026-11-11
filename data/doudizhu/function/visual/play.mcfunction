@@ -1,3 +1,5 @@
+# 双桌共用实体桌面。出牌仅在分桌的 HUD 和聊天中展示。
+execute if score @e[tag=dd.current,limit=1] dd_lane matches 1..2 run return 0
 execute unless data storage doudizhu:table_cards models run function doudizhu:visual/load
 execute if score @e[tag=dd.current,limit=1] dd_type matches 0 as @e[tag=dd.current,limit=1] run function doudizhu:visual/clear
 function doudizhu:visual/clear_seat

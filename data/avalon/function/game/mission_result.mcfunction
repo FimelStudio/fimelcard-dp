@@ -1,3 +1,5 @@
+function avalon:map/record_team
+effect clear @a[tag=av.audience,scores={av_selected=1}] minecraft:glowing
 scoreboard players set #fail av_ctx 0
 execute as @a[tag=av.audience,scores={av_selected=1,av_mission=2}] run scoreboard players add #fail av_ctx 1
 scoreboard players operation #success av_ctx = @s av_need

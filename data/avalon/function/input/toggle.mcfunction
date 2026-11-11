@@ -9,7 +9,7 @@ execute unless entity @a[tag=av.target,limit=1] run return 0
 scoreboard players set #toggle av_ctx 1
 scoreboard players operation #toggle av_ctx -= @a[tag=av.target,limit=1] av_selected
 scoreboard players operation @a[tag=av.target,limit=1] av_selected = #toggle av_ctx
-execute as @a[tag=av.target,scores={av_selected=1}] run effect give @s minecraft:glowing 2 0 true
+execute as @a[tag=av.target,scores={av_selected=1}] run effect give @s minecraft:glowing infinite 0 true
 execute as @a[tag=av.target,scores={av_selected=0}] run effect clear @s minecraft:glowing
 function avalon:hud/update
 tag @a[tag=av.target] remove av.target

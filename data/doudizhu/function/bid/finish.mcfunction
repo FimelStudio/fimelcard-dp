@@ -1,5 +1,7 @@
+execute if score @s dd_bid matches 0 if score @s dd_humans matches 4 run return run function doudizhu:game/washout
 execute if score @s dd_bid matches 0 run return run function doudizhu:deal/start
 function doudizhu:player/audience
+execute if score @s dd_humans matches 4 run function doudizhu:team/replace
 tag @e[tag=dd.bottom] remove dd.bottom
 execute as @e[tag=dd.card,scores={dd_owner=0}] if score @s dd_id = #ctx dd_ctx run tag @s add dd.bottom
 execute as @e[tag=dd.card,scores={dd_owner=0}] if score @s dd_id = #ctx dd_ctx run scoreboard players operation @s dd_owner = @e[tag=dd.current,limit=1] dd_lord

@@ -19,9 +19,9 @@ scoreboard players set #setting_fieldbase ct_ctx 2000
 scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
 function cardtable:settings/choice {"field":2,"value":0,"label":"关闭"}
 function cardtable:settings/choice {"field":2,"value":1,"label":"开启"}
-execute unless score @s dd_bidmode matches 0..2 run scoreboard players set @s dd_bidmode 0
-scoreboard players operation #setting_current ct_ctx = @s dd_bidmode
-data modify storage cardtable:settings field3 set value {"text":"叫地主模式：","color":"gray","extra":[]}
+execute unless score @s dd_classic_bid matches 0..2 run scoreboard players set @s dd_classic_bid 0
+scoreboard players operation #setting_current ct_ctx = @s dd_classic_bid
+data modify storage cardtable:settings field3 set value {"text":"经典局叫地主模式：","color":"gray","extra":[]}
 scoreboard players set #setting_fieldbase ct_ctx 3000
 scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
 function cardtable:settings/choice {"field":3,"value":0,"label":"叫分制"}
@@ -48,4 +48,18 @@ scoreboard players set #setting_fieldbase ct_ctx 6000
 scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
 function cardtable:settings/choice {"field":6,"value":0,"label":"正常洗牌"}
 function cardtable:settings/choice {"field":6,"value":1,"label":"不洗牌（多炸弹）"}
+execute unless score @s dd_scoring matches 0..1 run scoreboard players set @s dd_scoring 0
+scoreboard players operation #setting_current ct_ctx = @s dd_scoring
+data modify storage cardtable:settings field7 set value {"text":"计分方式：","color":"gray","extra":[]}
+scoreboard players set #setting_fieldbase ct_ctx 7000
+scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
+function cardtable:settings/choice {"field":7,"value":0,"label":"分数制"}
+function cardtable:settings/choice {"field":7,"value":1,"label":"赢副制"}
+execute unless score @s dd_hide_score matches 0..1 run scoreboard players set @s dd_hide_score 0
+scoreboard players operation #setting_current ct_ctx = @s dd_hide_score
+data modify storage cardtable:settings field8 set value {"text":"8人4v4比分：","color":"gray","extra":[]}
+scoreboard players set #setting_fieldbase ct_ctx 8000
+scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
+function cardtable:settings/choice {"field":8,"value":0,"label":"公开比分"}
+function cardtable:settings/choice {"field":8,"value":1,"label":"隐藏比分并预测"}
 function cardtable:settings/show_10 with storage cardtable:settings

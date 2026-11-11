@@ -1,5 +1,6 @@
 function doudizhu:player/audience
 tellraw @a[tag=dd.audience] {text:"════ 斗地主整场总分 ════",color:"gold",bold:true}
+execute if score @s dd_humans matches 4 run return run function doudizhu:team/finish_match
 scoreboard players set #best_total dd_ctx -2147483648
 execute as @e[tag=dd.actors] run scoreboard players operation #best_total dd_ctx > @s dd_total
 execute as @e[tag=dd.actors] run tellraw @a[tag=dd.audience] [{selector:"@s",color:"yellow"},{text:"：",color:"gray"},{score:{name:"@s",objective:"dd_total"},color:"aqua"}]

@@ -1,1 +1,1 @@
-$data modify storage avalon:hud text set value {text:"阿瓦隆 · 第$(round)轮\n好人 $(good) : $(evil) 坏人\n出征 $(need) 人 · 连续否决 $(reject) 次\n队长：",color:"gold",extra:[]}
+$data modify storage avalon:hud text set value {text:"",color:"white",extra:[{text:"阿瓦隆 · 第$(round)轮",color:"gold"},{text:"\n好人 $(good)",color:"aqua"},{text:" : ",color:"gray"},{text:"$(evil) 坏人",color:"red"},{text:"\n出征 $(need) 人",color:"green"},{text:" · 连续否决 $(reject) 次",color:"yellow"},{text:"\n队长：",color:"gray"}]}

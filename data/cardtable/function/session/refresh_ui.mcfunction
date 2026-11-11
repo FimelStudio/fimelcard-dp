@@ -4,8 +4,7 @@ execute if score @s ct_game matches 5 run function bullshit:game/resume
 execute if score @s ct_game matches 6 run function decrypto:game/resume
 execute if score @s ct_game matches 7 run function critical_point:game/resume
 execute if score @s ct_game matches 9 run function skull:game/resume
-execute if score @s ct_game matches 10 as @a[tag=dd.player,tag=ct.player] if score @s ct_id = #session_table ct_ctx run function doudizhu:input/give
-execute if score @s ct_game matches 10 run function doudizhu:system/refresh
+execute if score @s ct_game matches 10 run function doudizhu:system/resume
 execute if score @s ct_game matches 11 run function uno:system/context
 execute if score @s ct_game matches 11 run function uno:ui/refresh
 execute if score @s ct_game matches 11 run function uno:hud/refresh

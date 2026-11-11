@@ -1,10 +1,10 @@
 function decrypto:player/audience
-tellraw @a[tag=dc.audience] {text:"—— 密电记录·白队（本局公开）——",color:"gold"}
+tellraw @a[tag=dc.audience] {text:"—— 密电记录·红队（本局公开）——",color:"red"}
 tellraw @a[tag=dc.audience] [{"text": "1：", "color": "gold"}, {"nbt": "data.decrypto.keywords.white.extra[1]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.white.k1[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]
 tellraw @a[tag=dc.audience] [{"text": "2：", "color": "gold"}, {"nbt": "data.decrypto.keywords.white.extra[3]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.white.k2[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]
 tellraw @a[tag=dc.audience] [{"text": "3：", "color": "gold"}, {"nbt": "data.decrypto.keywords.white.extra[5]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.white.k3[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]
 tellraw @a[tag=dc.audience] [{"text": "4：", "color": "gold"}, {"nbt": "data.decrypto.keywords.white.extra[7]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.white.k4[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]
-tellraw @a[tag=dc.audience] {text:"—— 密电记录·黑队（本局公开）——",color:"gold"}
+tellraw @a[tag=dc.audience] {text:"—— 密电记录·蓝队（本局公开）——",color:"blue"}
 tellraw @a[tag=dc.audience] [{"text": "1：", "color": "gold"}, {"nbt": "data.decrypto.keywords.black.extra[1]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.black.k1[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]
 tellraw @a[tag=dc.audience] [{"text": "2：", "color": "gold"}, {"nbt": "data.decrypto.keywords.black.extra[3]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.black.k2[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]
 tellraw @a[tag=dc.audience] [{"text": "3：", "color": "gold"}, {"nbt": "data.decrypto.keywords.black.extra[5]", "entity": "@s", "interpret": true}, {"text": " → ", "color": "gray"}, {"nbt": "data.decrypto.sync_history.black.k3[]", "entity": "@s", "interpret": true, "separator": {"text": "、", "color": "gray"}}]

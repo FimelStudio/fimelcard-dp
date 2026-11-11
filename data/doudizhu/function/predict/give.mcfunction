@@ -1,0 +1,8 @@
+$give @s minecraft:lime_dye[minecraft:item_name={text:"己方领先 0～6 · Q提交",color:"green"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:1,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:green_dye[minecraft:item_name={text:"己方领先 7～12 · Q提交",color:"dark_green"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:2,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:cyan_dye[minecraft:item_name={text:"己方领先 13～17 · Q提交",color:"dark_aqua"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:3,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:light_blue_dye[minecraft:item_name={text:"己方领先 18+ · Q提交",color:"aqua"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:4,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:yellow_dye[minecraft:item_name={text:"己方落后 0～6 · Q提交",color:"yellow"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:5,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:orange_dye[minecraft:item_name={text:"己方落后 7～12 · Q提交",color:"gold"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:6,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:red_dye[minecraft:item_name={text:"己方落后 13～17 · Q提交",color:"red"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:7,table:$(table),token:$(token)}},minecraft:max_stack_size=1]
+$give @s minecraft:magenta_dye[minecraft:item_name={text:"己方落后 18+ · Q提交",color:"light_purple"},minecraft:custom_data={doudizhu:{prediction_tool:1b,prediction:8,table:$(table),token:$(token)}},minecraft:max_stack_size=1]

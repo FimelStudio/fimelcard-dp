@@ -1057,6 +1057,8 @@ tag @s remove dd.music_exciting
 tag @s remove dd.owns_actionbar
 tag @s remove dd.player
 tag @s remove dd.pool
+tag @s remove dd.other_lane
+tag @s remove dd.pred_controller
 tag @s remove dd.public_card
 tag @s remove dd.speed_pool
 tag @s remove dd.transition

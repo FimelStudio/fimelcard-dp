@@ -3,6 +3,8 @@ execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
 execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
+execute if score @s dd_action matches 300 run return run function doudizhu:predict/reopen
+execute if score @s dd_action matches 301..308 run return run function doudizhu:predict/from_dialog
 scoreboard players set #submitted dd_ctx 0
 scoreboard players operation #action dd_ctx = @s dd_action
 scoreboard players set @s dd_action 0

@@ -1,8 +1,8 @@
 scoreboard players set @s dc_state 5
 function decrypto:player/audience
 function decrypto:sync/load_clues
-tellraw @a[tag=dc.audience] [{text:"白队提示：",color:"white"},{nbt:"data.decrypto.sync.white.clues[]",entity:"@s",interpret:true,separator:{text:" / "}}]
-tellraw @a[tag=dc.audience] [{text:"黑队提示：",color:"gray"},{nbt:"data.decrypto.sync.black.clues[]",entity:"@s",interpret:true,separator:{text:" / "}}]
+tellraw @a[tag=dc.audience] [{text:"红队提示：",color:"red"},{nbt:"data.decrypto.sync.white.clues[]",entity:"@s",interpret:true,separator:{text:" / "}}]
+tellraw @a[tag=dc.audience] [{text:"蓝队提示：",color:"blue"},{nbt:"data.decrypto.sync.black.clues[]",entity:"@s",interpret:true,separator:{text:" / "}}]
 tag @e[tag=dc.sync_controller] remove dc.sync_controller
 tag @s add dc.sync_controller
 execute as @a[tag=dc.audience] run function decrypto:sync/give_guess

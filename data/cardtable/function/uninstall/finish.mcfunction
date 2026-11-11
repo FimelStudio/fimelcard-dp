@@ -394,6 +394,7 @@ scoreboard objectives remove dd_autopass
 scoreboard objectives remove dd_bid
 scoreboard objectives remove dd_bidcount
 scoreboard objectives remove dd_bidleft
+scoreboard objectives remove dd_bidbye
 scoreboard objectives remove dd_bidmode
 scoreboard objectives remove dd_bidphase
 scoreboard objectives remove dd_bot_timer
@@ -401,6 +402,7 @@ scoreboard objectives remove dd_card
 scoreboard objectives remove dd_count
 scoreboard objectives remove dd_counter
 scoreboard objectives remove dd_counts
+scoreboard objectives remove dd_classic_bid
 scoreboard objectives remove dd_ctx
 scoreboard objectives remove dd_deckpos
 scoreboard objectives remove dd_drop
@@ -419,6 +421,7 @@ scoreboard objectives remove dd_mtime
 scoreboard objectives remove dd_mult
 scoreboard objectives remove dd_music
 scoreboard objectives remove dd_noshuffle
+scoreboard objectives remove dd_out
 scoreboard objectives remove dd_owner
 scoreboard objectives remove dd_panel
 scoreboard objectives remove dd_passes
@@ -433,6 +436,20 @@ scoreboard objectives remove dd_set_table
 scoreboard objectives remove dd_settings
 scoreboard objectives remove dd_speed_time
 scoreboard objectives remove dd_state
+scoreboard objectives remove dd_team
+scoreboard objectives remove dd_team_mode
+scoreboard objectives remove dd_scoring
+scoreboard objectives remove dd_hide_score
+scoreboard objectives remove dd_void
+scoreboard objectives remove dd_pred_phase
+scoreboard objectives remove dd_pred_round
+scoreboard objectives remove dd_pred_token
+scoreboard objectives remove dd_prediction
+scoreboard objectives remove dd_lane
+scoreboard objectives remove dd_team_one
+scoreboard objectives remove dd_team_two
+scoreboard objectives remove dd_side_score
+scoreboard objectives remove dd_pair_scored
 scoreboard objectives remove dd_timer
 scoreboard objectives remove dd_total
 scoreboard objectives remove dd_turn
