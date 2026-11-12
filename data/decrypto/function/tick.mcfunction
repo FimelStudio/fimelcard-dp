@@ -22,6 +22,9 @@ execute as @a[tag=dc.player,scores={dc_drop_book=1..}] unless score @s ct_paused
 execute as @a[tag=dc.player,scores={dc_drop_guess=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function decrypto:input/find_drop
 execute as @e[type=minecraft:marker,tag=dc.controller] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] unless score @s dc_state matches 5..8 run function decrypto:input/clear_guess
 execute as @a[tag=dc.player,scores={dc_action=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] run function decrypto:action/handle
+# 先处理本 tick 已收到的提交，再推进各桌的共用计时器。
+execute as @e[type=minecraft:marker,tag=dc.controller,scores={dc_timer=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function decrypto:timer/tick
+execute as @e[type=minecraft:item,tag=!ct.paused_return] if items entity @s contents minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'timeout'}}] run function decrypto:timer/drop_notice
 
 # 只有内容超过两行时计时，每5秒刷新显示页。
 execute as @e[type=minecraft:marker,tag=dc.controller,scores={dc_state=1..8,dc_pages=2..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function decrypto:title/page_tick

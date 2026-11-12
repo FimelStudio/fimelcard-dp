@@ -1,3 +1,4 @@
+execute if score @s dc_mode matches 3 run return run function decrypto:game/check_win
 scoreboard players set #white_win dc_ctx 0
 scoreboard players set #black_win dc_ctx 0
 execute if score @s dc_wi matches 2.. run scoreboard players set #white_win dc_ctx 1

@@ -7,4 +7,6 @@ function decrypto:player/audience
 tag @a[tag=dc.sync_submitter] remove dc.sync_submitter
 execute as @a[tag=dc.audience,scores={dc_encoder=1}] if score @s dc_team = #sync_team dc_ctx run tag @s add dc.sync_submitter
 tellraw @a[tag=dc.audience] [{text:"[谍报风云] ",color:"aqua"},{selector:"@a[tag=dc.sync_submitter]",color:"gold"},{text:" 已提交加密提示。",color:"green"}]
-execute if data entity @s data.decrypto.sync.white.clues if data entity @s data.decrypto.sync.black.clues run function decrypto:sync/open_guesses
+execute if score @s dc_mode matches 3 if data entity @s data.decrypto.sync.white.clues run return run function decrypto:sync/open_guesses
+execute if data entity @s data.decrypto.sync.white.clues if data entity @s data.decrypto.sync.black.clues run return run function decrypto:sync/open_guesses
+function decrypto:hint/update
