@@ -1,0 +1,2251 @@
+{
+  "version": 1,
+  "generator": "tools/build_release_rules.py",
+  "note": "Native resource images; no Minecraft screenshot claims.",
+  "catalog_counts": {
+    "games": 23,
+    "splendor_development_cards": 90,
+    "splendor_nobles": 10,
+    "magical_athlete_characters": 36
+  },
+  "images": [
+    {
+      "image": "images/components/poker/c_2.png",
+      "source": "card:item/poker/c_2",
+      "kind": "texture-first-frame",
+      "sha256": "d140f269afbd9a555b913f5c06defaafd090db3b3c2db94ab518ae921e93a3d1"
+    },
+    {
+      "image": "images/components/poker/c_3.png",
+      "source": "card:item/poker/c_3",
+      "kind": "texture-first-frame",
+      "sha256": "c81159b85d77838bd0435e0a21a9e421fe39768da6a3b8980cf234cc35e07326"
+    },
+    {
+      "image": "images/components/poker/c_4.png",
+      "source": "card:item/poker/c_4",
+      "kind": "texture-first-frame",
+      "sha256": "2ee45967bd41641f41e463c597cc03e9e7c4dd75981f95f57a59e971f63d46d4"
+    },
+    {
+      "image": "images/components/poker/c_5.png",
+      "source": "card:item/poker/c_5",
+      "kind": "texture-first-frame",
+      "sha256": "1b4fd450fab765658f4d8c725cc510ac43481b45ac9b9d0223764d308b7f35cc"
+    },
+    {
+      "image": "images/components/poker/c_6.png",
+      "source": "card:item/poker/c_6",
+      "kind": "texture-first-frame",
+      "sha256": "7ec6834c550db430088627a7f7b4c694ac8ea4c82751e672dbf2c2b8622285ed"
+    },
+    {
+      "image": "images/components/poker/c_7.png",
+      "source": "card:item/poker/c_7",
+      "kind": "texture-first-frame",
+      "sha256": "c0de8163195f136eefc5fb776e3b0a60289d9f82be8a8cbe1432da0c20605717"
+    },
+    {
+      "image": "images/components/poker/c_8.png",
+      "source": "card:item/poker/c_8",
+      "kind": "texture-first-frame",
+      "sha256": "22b84ddd8eb60587c78c8330ad6b6e16816bf578813b4495ed92d0e13f0224d2"
+    },
+    {
+      "image": "images/components/poker/c_9.png",
+      "source": "card:item/poker/c_9",
+      "kind": "texture-first-frame",
+      "sha256": "88957bafdfb03984d56a1425a54f303b7330f200d6b748b52c375baa1cc5e91e"
+    },
+    {
+      "image": "images/components/poker/c_10.png",
+      "source": "card:item/poker/c_10",
+      "kind": "texture-first-frame",
+      "sha256": "8f939a9527ec0a82a1ae5537160a15a89edaa27695eee77d51c6097a0b189de3"
+    },
+    {
+      "image": "images/components/poker/c_j.png",
+      "source": "card:item/poker/c_j",
+      "kind": "texture-first-frame",
+      "sha256": "4b9a3de6e38004b6b7ad96d4655e22b82e946c3daadfd910a9e6c03f84832fc5"
+    },
+    {
+      "image": "images/components/poker/c_q.png",
+      "source": "card:item/poker/c_q",
+      "kind": "texture-first-frame",
+      "sha256": "0398ca49227b80dcb347f346d513b5e35d602234300b389ee8aaa79a5d535bfd"
+    },
+    {
+      "image": "images/components/poker/c_k.png",
+      "source": "card:item/poker/c_k",
+      "kind": "texture-first-frame",
+      "sha256": "471cf5bc0915fa8f5b78a6d61001a48831fca28404dd88d7884804ddb6d2a4fe"
+    },
+    {
+      "image": "images/components/poker/c_a.png",
+      "source": "card:item/poker/c_a",
+      "kind": "texture-first-frame",
+      "sha256": "556d339319bf0e6e0148f736ce84b448bece8304d3e81a4b735cdd67b6f87aee"
+    },
+    {
+      "image": "images/components/poker/h_10.png",
+      "source": "card:item/poker/h_10",
+      "kind": "texture-first-frame",
+      "sha256": "001e59c1a41a31bb570f9d17fb34948ef0120b52f040bce404db238ffb296008"
+    },
+    {
+      "image": "images/components/poker/h_j.png",
+      "source": "card:item/poker/h_j",
+      "kind": "texture-first-frame",
+      "sha256": "c369f50df0f115428517502e16cb5e8be027193e2eb50dca9fa187b689c49bd0"
+    },
+    {
+      "image": "images/components/poker/h_q.png",
+      "source": "card:item/poker/h_q",
+      "kind": "texture-first-frame",
+      "sha256": "a9f9e8362c249ff8747ec39e515fbcb723cb2aea4621c0e4cb45a902ce48b208"
+    },
+    {
+      "image": "images/components/poker/h_k.png",
+      "source": "card:item/poker/h_k",
+      "kind": "texture-first-frame",
+      "sha256": "c051209afe41f894ac980cada3d5c51cd2471269a09d53c471e82d16d05d5c91"
+    },
+    {
+      "image": "images/components/poker/h_a.png",
+      "source": "card:item/poker/h_a",
+      "kind": "texture-first-frame",
+      "sha256": "1944448f3bf7d77cbe40235f7c0e0a34f10321b58903444f271ff252d1d33cc3"
+    },
+    {
+      "image": "images/components/poker/s_10.png",
+      "source": "card:item/poker/s_10",
+      "kind": "texture-first-frame",
+      "sha256": "a9d09fb8e489d3f89160b0046973bb3085ba6b5a18db89596b07242936e24432"
+    },
+    {
+      "image": "images/components/poker/s_j.png",
+      "source": "card:item/poker/s_j",
+      "kind": "texture-first-frame",
+      "sha256": "93bc6f307779917834a83c290943792f687478d79e3ab25eeaf581747a726f2c"
+    },
+    {
+      "image": "images/components/poker/s_q.png",
+      "source": "card:item/poker/s_q",
+      "kind": "texture-first-frame",
+      "sha256": "bceff84acdd02e18a852dfad9e310096c3c48f3211ff868d2a8b87cb1e43c422"
+    },
+    {
+      "image": "images/components/poker/s_k.png",
+      "source": "card:item/poker/s_k",
+      "kind": "texture-first-frame",
+      "sha256": "20b7015f20f30ef89e1048ee86f0adc80fc5e0bfc7cb6e4bad4734601438e73a"
+    },
+    {
+      "image": "images/components/poker/s_a.png",
+      "source": "card:item/poker/s_a",
+      "kind": "texture-first-frame",
+      "sha256": "bb470fe0d0afbc78e66ef39281dcc657b45d38a594d17e322a805bdb78880c42"
+    },
+    {
+      "image": "images/components/poker/d_10.png",
+      "source": "card:item/poker/d_10",
+      "kind": "texture-first-frame",
+      "sha256": "5e335a9e9eb42d506b047fc02393dc847a5929d3a8ef8b85ba74268314d0375b"
+    },
+    {
+      "image": "images/components/poker/d_j.png",
+      "source": "card:item/poker/d_j",
+      "kind": "texture-first-frame",
+      "sha256": "d6b43338bb48e925781e78569a35554f7d3984065ab5e3dca7dff1bc8239dea2"
+    },
+    {
+      "image": "images/components/poker/d_q.png",
+      "source": "card:item/poker/d_q",
+      "kind": "texture-first-frame",
+      "sha256": "99cf8b2527f45b7d7727f81f391a79a810d4c42227f0da503d0aca825775e247"
+    },
+    {
+      "image": "images/components/poker/d_k.png",
+      "source": "card:item/poker/d_k",
+      "kind": "texture-first-frame",
+      "sha256": "9c8b7155b10286bfe31d0273a5cc2d4c1338f3d6d089013d5e715e6abc6a7769"
+    },
+    {
+      "image": "images/components/poker/d_a.png",
+      "source": "card:item/poker/d_a",
+      "kind": "texture-first-frame",
+      "sha256": "614aa9e545376f0ebba8de53d090f0424619ae213c0e18a03d3e7b79d541cda3"
+    },
+    {
+      "image": "images/components/poker/j_2.png",
+      "source": "card:item/poker/j_2",
+      "kind": "texture-first-frame",
+      "sha256": "bd2b2d580b77cf7b71ddff8bf000936ec8976aa57a99654533e3ebcc63281f6c"
+    },
+    {
+      "image": "images/components/poker/j_1.png",
+      "source": "card:item/poker/j_1",
+      "kind": "texture-first-frame",
+      "sha256": "da9156b1f0d8ef7f868cbffc175c66cea7fe31e4f710874981410dc8e5192e2b"
+    },
+    {
+      "image": "images/components/poker/joker.png",
+      "source": "card:item/poker/joker",
+      "kind": "texture-first-frame",
+      "sha256": "a3e2ca89465f46dbd9be87b336e57b4a37c917ce66f48e7258ef16931f3afcc2"
+    },
+    {
+      "image": "images/components/poker/box.png",
+      "source": "card:item/cardbox",
+      "kind": "native-model",
+      "sha256": "5f7536c6eb8dd547aaa7f8a2790a3cd0c5a10ca9101c071a57f17024a3787e67"
+    },
+    {
+      "image": "images/components/hanabi/w_1.png",
+      "source": "card:item/hanabi/w_1",
+      "kind": "texture-first-frame",
+      "sha256": "5b30e470ddb54b689981fa111c265386305c14fba29a2da4f0d5156327e2f3b4"
+    },
+    {
+      "image": "images/components/hanabi/r_1.png",
+      "source": "card:item/hanabi/r_1",
+      "kind": "texture-first-frame",
+      "sha256": "53ec3e5085c55fa6198cba2164ce1f774342f1be5cafdfef44b5b6df5460b0b6"
+    },
+    {
+      "image": "images/components/hanabi/r_2.png",
+      "source": "card:item/hanabi/r_2",
+      "kind": "texture-first-frame",
+      "sha256": "31174ecdb6d8763d7b1d9dc56fcba94dce0890e227f34b9f085d6be488f3e76b"
+    },
+    {
+      "image": "images/components/hanabi/r_3.png",
+      "source": "card:item/hanabi/r_3",
+      "kind": "texture-first-frame",
+      "sha256": "ca1436af17dced79fb8d832ce4b0006e54cb1f40a2ffe61084d7970ed7f74be0"
+    },
+    {
+      "image": "images/components/hanabi/r_4.png",
+      "source": "card:item/hanabi/r_4",
+      "kind": "texture-first-frame",
+      "sha256": "20186b46320d282666b07cc1f2187ef9408312bf4f2f336f44873c87ce306ca4"
+    },
+    {
+      "image": "images/components/hanabi/r_5.png",
+      "source": "card:item/hanabi/r_5",
+      "kind": "texture-first-frame",
+      "sha256": "2baaa279a71487284eef2985de662eadd8a8bcf7d1722e2da25c4c925255ab56"
+    },
+    {
+      "image": "images/components/hanabi/b_1.png",
+      "source": "card:item/hanabi/b_1",
+      "kind": "texture-first-frame",
+      "sha256": "75befe2a013c44f53c2b196d6065430dd27189d0b754386cbb9b8168faa7c6b7"
+    },
+    {
+      "image": "images/components/hanabi/y_1.png",
+      "source": "card:item/hanabi/y_1",
+      "kind": "texture-first-frame",
+      "sha256": "776599868a9baf02d2518ab91ca6397333337f95ed19cc2a5bd2f271d679ff4b"
+    },
+    {
+      "image": "images/components/hanabi/g_1.png",
+      "source": "card:item/hanabi/g_1",
+      "kind": "texture-first-frame",
+      "sha256": "698ba68a658310355de544af15edd57f8f93e4556e1be90ebfa4ecf9ff752c6a"
+    },
+    {
+      "image": "images/components/hanabi/m_1.png",
+      "source": "card:item/hanabi/m_1",
+      "kind": "texture-first-frame",
+      "sha256": "a3a11d4638c81d7f1554e166b773e45fdd927c681ba78d2477a3f5c2b7425cc3"
+    },
+    {
+      "image": "images/components/hanabi/back.png",
+      "source": "card:item/hanabi/back",
+      "kind": "texture-first-frame",
+      "sha256": "9f055d27800f1edad06f14357806b8f17fc5e1a9fbdcacfb03fbaa1b9b92534b"
+    },
+    {
+      "image": "images/components/hanabi/w_color.png",
+      "source": "card:item/hanabi/w_color",
+      "kind": "texture-first-frame",
+      "sha256": "eac2e55f333722d1b610a7180ec73930e72e4f452368faeff1a8bf9c18a66e63"
+    },
+    {
+      "image": "images/components/hanabi/r_color.png",
+      "source": "card:item/hanabi/r_color",
+      "kind": "texture-first-frame",
+      "sha256": "e9a9118d8512bdb22229679df0ce8b84d430442a6792924f6f973f82361f24cc"
+    },
+    {
+      "image": "images/components/hanabi/b_color.png",
+      "source": "card:item/hanabi/b_color",
+      "kind": "texture-first-frame",
+      "sha256": "9399ddc35ab1b0ce527993ee11cab464f8603bb718795362b1832bf24877002a"
+    },
+    {
+      "image": "images/components/hanabi/y_color.png",
+      "source": "card:item/hanabi/y_color",
+      "kind": "texture-first-frame",
+      "sha256": "eede86e87c9b38dec4189a5cc8d4474307a1924da985aaea760051f9f24b535f"
+    },
+    {
+      "image": "images/components/hanabi/g_color.png",
+      "source": "card:item/hanabi/g_color",
+      "kind": "texture-first-frame",
+      "sha256": "cf129667682230ef6a0622610cc04222dbd4fcd7aa27ec5e4b79df7a2d4b7e64"
+    },
+    {
+      "image": "images/components/hanabi/m_color.png",
+      "source": "card:item/hanabi/m_color",
+      "kind": "texture-first-frame",
+      "sha256": "cdde2a17117ea99679a9a13fc74a7b616abeec2c0dfd9d812cd15e51028fed62"
+    },
+    {
+      "image": "images/components/hanabi/n_1.png",
+      "source": "card:item/hanabi/n_1",
+      "kind": "texture-first-frame",
+      "sha256": "f5e55c235749c912e24f9f449a05c7928eceb9e91be823768aad2538a90ff7d3"
+    },
+    {
+      "image": "images/components/hanabi/n_2.png",
+      "source": "card:item/hanabi/n_2",
+      "kind": "texture-first-frame",
+      "sha256": "891d856dd3497331303e667f1bf50a80421631ba431d90ec9b36c76c1c90cd12"
+    },
+    {
+      "image": "images/components/hanabi/n_3.png",
+      "source": "card:item/hanabi/n_3",
+      "kind": "texture-first-frame",
+      "sha256": "2d5bd15ac0d08c9d156c84f9982145e0cbb4bd73bd740314864637faba37d6cd"
+    },
+    {
+      "image": "images/components/hanabi/n_4.png",
+      "source": "card:item/hanabi/n_4",
+      "kind": "texture-first-frame",
+      "sha256": "c08d2253bbedf3fd148f0cb5d2317af6b523810f34d3c648d4198be807beb230"
+    },
+    {
+      "image": "images/components/hanabi/n_5.png",
+      "source": "card:item/hanabi/n_5",
+      "kind": "texture-first-frame",
+      "sha256": "9b980b221dee0a3d8d0a685e29b8a8658ed93239ef38530011549a9ac92083c0"
+    },
+    {
+      "image": "images/components/abraca/1.png",
+      "source": "card:item/abraca/spell_1",
+      "kind": "texture-first-frame",
+      "sha256": "7b9428ef46e2e4f5e7148c60913b4e248f79fa4c8cb5749e6d236ca92811fece"
+    },
+    {
+      "image": "images/components/abraca/2.png",
+      "source": "card:item/abraca/spell_2",
+      "kind": "texture-first-frame",
+      "sha256": "4f4e5a2316a2de49473808a57a62570ee2512cc7007790612bec4e22f3be1097"
+    },
+    {
+      "image": "images/components/abraca/3.png",
+      "source": "card:item/abraca/spell_3",
+      "kind": "texture-first-frame",
+      "sha256": "6fca1dab1a82de428b2ae53fe975bca471e89a3e15472650396a908e397b93ef"
+    },
+    {
+      "image": "images/components/abraca/4.png",
+      "source": "card:item/abraca/spell_4",
+      "kind": "texture-first-frame",
+      "sha256": "0bcb430157caa15e1d10cf7c287c4a39d6ffc3943b6db0cd893fd32f68ce807f"
+    },
+    {
+      "image": "images/components/abraca/5.png",
+      "source": "card:item/abraca/spell_5",
+      "kind": "texture-first-frame",
+      "sha256": "90d16f9d31fcb04ad22d0f518ea19a490a70abb00de65c7eafbf24e889140c6a"
+    },
+    {
+      "image": "images/components/abraca/6.png",
+      "source": "card:item/abraca/spell_6",
+      "kind": "texture-first-frame",
+      "sha256": "250be2fa559445e71c1f01c129985557180e8e7be70f96144836b7f29f26dc66"
+    },
+    {
+      "image": "images/components/abraca/7.png",
+      "source": "card:item/abraca/spell_7",
+      "kind": "texture-first-frame",
+      "sha256": "33b542a735b660da28f331455fd51f38dbdfba487795e998467866c11b6931ed"
+    },
+    {
+      "image": "images/components/abraca/8.png",
+      "source": "card:item/abraca/spell_8",
+      "kind": "texture-first-frame",
+      "sha256": "e2704ab77c68feb464f26a12a3b23003c7de6018331f646d23e0a552b6d12e52"
+    },
+    {
+      "image": "images/components/abraca/back.png",
+      "source": "card:item/abraca/back",
+      "kind": "texture-first-frame",
+      "sha256": "afebc14575cb3536eafb70e29d45899e82eae1906e51028a70489d7f217dd601"
+    },
+    {
+      "image": "images/components/abraca/secret.png",
+      "source": "card:item/abraca/secret",
+      "kind": "texture-first-frame",
+      "sha256": "afebc14575cb3536eafb70e29d45899e82eae1906e51028a70489d7f217dd601"
+    },
+    {
+      "image": "images/components/abraca/box.png",
+      "source": "card:item/abraca/box",
+      "kind": "native-model",
+      "sha256": "1645037b36676049de338d87a671c8404e57d81cb7066e276a398f4cb56b5c00"
+    },
+    {
+      "image": "images/components/bullshit/call.png",
+      "source": "card:item/bullshit/call",
+      "kind": "texture-first-frame",
+      "sha256": "9a7b65b829a10ed77d98b15a354577ead31841aadc48ba00e8e60692f93688ef"
+    },
+    {
+      "image": "images/components/critical/2.png",
+      "source": "card:item/poker/c_2",
+      "kind": "texture-first-frame",
+      "sha256": "d140f269afbd9a555b913f5c06defaafd090db3b3c2db94ab518ae921e93a3d1"
+    },
+    {
+      "image": "images/components/critical/3.png",
+      "source": "card:item/poker/c_3",
+      "kind": "texture-first-frame",
+      "sha256": "c81159b85d77838bd0435e0a21a9e421fe39768da6a3b8980cf234cc35e07326"
+    },
+    {
+      "image": "images/components/critical/4.png",
+      "source": "card:item/poker/c_4",
+      "kind": "texture-first-frame",
+      "sha256": "2ee45967bd41641f41e463c597cc03e9e7c4dd75981f95f57a59e971f63d46d4"
+    },
+    {
+      "image": "images/components/critical/5.png",
+      "source": "card:item/poker/c_5",
+      "kind": "texture-first-frame",
+      "sha256": "1b4fd450fab765658f4d8c725cc510ac43481b45ac9b9d0223764d308b7f35cc"
+    },
+    {
+      "image": "images/components/critical/1.png",
+      "source": "card:item/poker/c_a",
+      "kind": "texture-first-frame",
+      "sha256": "556d339319bf0e6e0148f736ce84b448bece8304d3e81a4b735cdd67b6f87aee"
+    },
+    {
+      "image": "images/components/skull/1/flower.png",
+      "source": "card:item/skull/set1/flower",
+      "kind": "texture-first-frame",
+      "sha256": "bf6fb43f0c5c977f8b17b52559ec2d114f690755c1ac651fbbe56b17732e691f"
+    },
+    {
+      "image": "images/components/skull/1/skull.png",
+      "source": "card:item/skull/set1/skull",
+      "kind": "texture-first-frame",
+      "sha256": "b97d7e57a479b648473d4720e27734d84be8b5a68a1217d782dd25491dc1bfea"
+    },
+    {
+      "image": "images/components/skull/1/back.png",
+      "source": "card:item/skull/set1/back",
+      "kind": "texture-first-frame",
+      "sha256": "023aaa6b3f2db3d51cd6ba338a1aa81bea7ed99825a7840c915c7942c0cc7c0b"
+    },
+    {
+      "image": "images/components/skull/2/flower.png",
+      "source": "card:item/skull/set2/flower",
+      "kind": "texture-first-frame",
+      "sha256": "b64f5472c8d5ad31e0d266910232178c3760f0c7c6a107dda4852901cbf74baf"
+    },
+    {
+      "image": "images/components/skull/2/skull.png",
+      "source": "card:item/skull/set2/skull",
+      "kind": "texture-first-frame",
+      "sha256": "3ba6028b30a5015fde803c654dbb8cd374aef54738365f65b0c370e3dc15c440"
+    },
+    {
+      "image": "images/components/skull/2/back.png",
+      "source": "card:item/skull/set2/back",
+      "kind": "texture-first-frame",
+      "sha256": "8ee81165f23b4d94fd26c57ad4e275a2485afe393b59632eaae7db5a57243388"
+    },
+    {
+      "image": "images/components/skull/3/flower.png",
+      "source": "card:item/skull/set3/flower",
+      "kind": "texture-first-frame",
+      "sha256": "a37011a552e4c56ba6afb3d5b6dddbb894064538c82035c5f50b2687d77b1d26"
+    },
+    {
+      "image": "images/components/skull/3/skull.png",
+      "source": "card:item/skull/set3/skull",
+      "kind": "texture-first-frame",
+      "sha256": "550d5b52d624c50f758da2605581a64069bafd0826f71eeb76c51eaea6e4a4dc"
+    },
+    {
+      "image": "images/components/skull/3/back.png",
+      "source": "card:item/skull/set3/back",
+      "kind": "texture-first-frame",
+      "sha256": "fdf32cc286b2387c505615223a11d026f7c8e7fc44ce5f796bb49d87865fbd4f"
+    },
+    {
+      "image": "images/components/skull/4/flower.png",
+      "source": "card:item/skull/set4/flower",
+      "kind": "texture-first-frame",
+      "sha256": "00a7d1d047f74f20c0e328502f8dea5b7164f3e381e410356a683c05b702d409"
+    },
+    {
+      "image": "images/components/skull/4/skull.png",
+      "source": "card:item/skull/set4/skull",
+      "kind": "texture-first-frame",
+      "sha256": "0e7b34c3a40f1cbb30aaa4778900dbbe9baead786d7e58807425a9f21eafe985"
+    },
+    {
+      "image": "images/components/skull/4/back.png",
+      "source": "card:item/skull/set4/back",
+      "kind": "texture-first-frame",
+      "sha256": "07c6c63ee09d029ca7ca0dff06fb017d956eddbc740939baef183d7d9f514008"
+    },
+    {
+      "image": "images/components/skull/5/flower.png",
+      "source": "card:item/skull/set5/flower",
+      "kind": "texture-first-frame",
+      "sha256": "198d5c7e71e8c2adb071faa0b863018c5a384ee0f0331f5380a310bda876bb1a"
+    },
+    {
+      "image": "images/components/skull/5/skull.png",
+      "source": "card:item/skull/set5/skull",
+      "kind": "texture-first-frame",
+      "sha256": "c04ac7265bffd66dca6ec01cb9435c2b198dd2c28f286fe4ba4ed7b6cebd4094"
+    },
+    {
+      "image": "images/components/skull/5/back.png",
+      "source": "card:item/skull/set5/back",
+      "kind": "texture-first-frame",
+      "sha256": "b183752df4799b92bebb93f7222fc327e83834a629e27d2cfd5f27fb834f7a82"
+    },
+    {
+      "image": "images/components/skull/6/flower.png",
+      "source": "card:item/skull/set6/flower",
+      "kind": "texture-first-frame",
+      "sha256": "861b25cbb6622f80191d69a682d8dd883185764bc98ac265a1fef93eb02fd835"
+    },
+    {
+      "image": "images/components/skull/6/skull.png",
+      "source": "card:item/skull/set6/skull",
+      "kind": "texture-first-frame",
+      "sha256": "64737edc17e44fd4c23e4b79b5a691acebcc4a74ffccd3d281e935f953078f1e"
+    },
+    {
+      "image": "images/components/skull/6/back.png",
+      "source": "card:item/skull/set6/back",
+      "kind": "texture-first-frame",
+      "sha256": "a34ff264a407d670b0f375bb51c6cc214cee693b10c1e3b4354e604b26bcdf35"
+    },
+    {
+      "image": "images/components/skull/7/flower.png",
+      "source": "card:item/skull/set7/flower",
+      "kind": "texture-first-frame",
+      "sha256": "e2a9b2cc4d8f87276a922f90deda0a504dedc77d79ff291553053d8a8b415023"
+    },
+    {
+      "image": "images/components/skull/7/skull.png",
+      "source": "card:item/skull/set7/skull",
+      "kind": "texture-first-frame",
+      "sha256": "21a16b367f6de9cbe38aafce11e0f0048c46d68b1eb32e90690f54c566a82b2e"
+    },
+    {
+      "image": "images/components/skull/7/back.png",
+      "source": "card:item/skull/set7/back",
+      "kind": "texture-first-frame",
+      "sha256": "5e3483bd5fba7d1feb09987846966f6200c528709448c5be313e16c44943de05"
+    },
+    {
+      "image": "images/components/skull/8/flower.png",
+      "source": "card:item/skull/set8/flower",
+      "kind": "texture-first-frame",
+      "sha256": "e8a90864efc2e028e2b1dd9db241be11f26dff406db8da9f2eadd3ef1b1f48aa"
+    },
+    {
+      "image": "images/components/skull/8/skull.png",
+      "source": "card:item/skull/set8/skull",
+      "kind": "texture-first-frame",
+      "sha256": "0c5f05c48e536c1f41663184639f14065d76d651aacd33322ff8c825fe59a27d"
+    },
+    {
+      "image": "images/components/skull/8/back.png",
+      "source": "card:item/skull/set8/back",
+      "kind": "texture-first-frame",
+      "sha256": "8bab000c26cea6fee4423e2fbc005e706f081cfb6b5e7e1716390c0f4fd3ac03"
+    },
+    {
+      "image": "images/components/uno/r0.png",
+      "source": "card:item/uno/r0",
+      "kind": "texture-first-frame",
+      "sha256": "31a7caa0541b986d1d6fa6cb24247350a1eca5c72ffe495e36abb8148ad68457"
+    },
+    {
+      "image": "images/components/uno/r1.png",
+      "source": "card:item/uno/r1",
+      "kind": "texture-first-frame",
+      "sha256": "fb41cf04142df886b3ab92dbaff6424f083f73333ec417726cf09c07296fc6e3"
+    },
+    {
+      "image": "images/components/uno/r2.png",
+      "source": "card:item/uno/r2",
+      "kind": "texture-first-frame",
+      "sha256": "b7243c6b00de33abc9b6724361e06bb5a3dbe8701d004b3126c30e53e16e9cfb"
+    },
+    {
+      "image": "images/components/uno/r3.png",
+      "source": "card:item/uno/r3",
+      "kind": "texture-first-frame",
+      "sha256": "0fd6c48fef7453dfef0eb16a2ada01b024835c7c78028a93e2d4fd099b11671e"
+    },
+    {
+      "image": "images/components/uno/r4.png",
+      "source": "card:item/uno/r4",
+      "kind": "texture-first-frame",
+      "sha256": "990e0d017e26352a06468ec788167167f817a881a766d27c308d2496c82abc94"
+    },
+    {
+      "image": "images/components/uno/r5.png",
+      "source": "card:item/uno/r5",
+      "kind": "texture-first-frame",
+      "sha256": "e891b9eddb4ca16671f0c1d672f24f7e1de487d52a530353cc383b1379e20154"
+    },
+    {
+      "image": "images/components/uno/r6.png",
+      "source": "card:item/uno/r6",
+      "kind": "texture-first-frame",
+      "sha256": "b37542ad0dfeb2d00f90fe37f4bebfab28128ce74b0864df2a2dde4dc27455de"
+    },
+    {
+      "image": "images/components/uno/r7.png",
+      "source": "card:item/uno/r7",
+      "kind": "texture-first-frame",
+      "sha256": "d89c8934853c8e3126269ad10047e7f69cf061ae72f2a4c41dd15a51d1031172"
+    },
+    {
+      "image": "images/components/uno/r8.png",
+      "source": "card:item/uno/r8",
+      "kind": "texture-first-frame",
+      "sha256": "e438c18e36bdbe3715f5baad09091d97b0e87ca810b9ebc36dfb7c3d03ea01a3"
+    },
+    {
+      "image": "images/components/uno/r9.png",
+      "source": "card:item/uno/r9",
+      "kind": "texture-first-frame",
+      "sha256": "47590b16fae69461e2f4c84a21f5c642de415e620a1887303c996daa8ccfc8fb"
+    },
+    {
+      "image": "images/components/uno/rskip.png",
+      "source": "card:item/uno/rskip",
+      "kind": "texture-first-frame",
+      "sha256": "f4c82d60d79e24c0876233748a3adb652b932fa6c075a0e47dc9fc462480bae9"
+    },
+    {
+      "image": "images/components/uno/rreverse.png",
+      "source": "card:item/uno/rreverse",
+      "kind": "texture-first-frame",
+      "sha256": "4cc70f4a8760a23dd7a246a1feabd303cef7d72d7449553f3f4e396276912c40"
+    },
+    {
+      "image": "images/components/uno/rplus2.png",
+      "source": "card:item/uno/rplus2",
+      "kind": "texture-first-frame",
+      "sha256": "b8252664148b52c7cddaf0839a1c672652c7f2188ac61b8f6845d9373fdb42fe"
+    },
+    {
+      "image": "images/components/uno/y0.png",
+      "source": "card:item/uno/y0",
+      "kind": "texture-first-frame",
+      "sha256": "c10a1a516b75b33e26695bc3574e0f9223225277b59846bb18af767529938dc8"
+    },
+    {
+      "image": "images/components/uno/g0.png",
+      "source": "card:item/uno/g0",
+      "kind": "texture-first-frame",
+      "sha256": "b73e9e0517536641076c2a1079600cbe354fce9621207cfa7cf458daa9842b18"
+    },
+    {
+      "image": "images/components/uno/b0.png",
+      "source": "card:item/uno/b0",
+      "kind": "texture-first-frame",
+      "sha256": "5a8497e0f5cb7b8f3545681e1e1ac3b1d97a1672ae49e610f996bcfc5d1e47ba"
+    },
+    {
+      "image": "images/components/uno/wild.png",
+      "source": "card:item/uno/wild",
+      "kind": "texture-first-frame",
+      "sha256": "e923a8b4d0882c28c5248ab01e2f3508aa6818919226d897e4a38232366356fd"
+    },
+    {
+      "image": "images/components/uno/wild_plus4.png",
+      "source": "card:item/uno/wild_plus4",
+      "kind": "texture-first-frame",
+      "sha256": "788a7cf03b089e8ad9d2596ec37f7e084d438c2b1ed2939d4eb8a198e6273bbe"
+    },
+    {
+      "image": "images/components/chess/scene.png",
+      "source": "card:item/chess/board_classic",
+      "kind": "native-model-scene",
+      "sha256": "decf31782ce83090b7b2b26dce551d2908f74ca7b17afa4da5bc2d5efac469b9"
+    },
+    {
+      "image": "images/components/xiangqi/scene.png",
+      "source": "card:item/xiangqi/board_classic",
+      "kind": "native-model-scene",
+      "sha256": "2a558d030f600d767fae65f86f0ceaafcfa6a8f72d6ce5a80d6af6b111edb28a"
+    },
+    {
+      "image": "images/components/gomoku/scene.png",
+      "source": "card:item/gomoku/board/classic_15_coords",
+      "kind": "native-model-scene",
+      "sha256": "f50280b1eb2318c5fbef96346f9d5a573f0f536c102d3bd2490a6675b894e8f8"
+    },
+    {
+      "image": "images/components/aeroplane_chess/scene.png",
+      "source": "card:item/aeroplane_chess/board/classic",
+      "kind": "native-model-scene",
+      "sha256": "fcf72bd97a0b3ecc22e83526d1ae066f36b99853358bb20ae21829479568fdda"
+    },
+    {
+      "image": "images/components/weiqi/scene.png",
+      "source": "card:item/weiqi/board/classic_19_coords",
+      "kind": "native-model-scene",
+      "sha256": "9306f996a42ce8be3e72f4c89e082bfc980b7e3b781bda4a979d65d806d026f0"
+    },
+    {
+      "image": "images/components/chess/white_king.png",
+      "source": "card:item/chess/ebony/white_king",
+      "kind": "native-model",
+      "sha256": "89d5d2b105f2e627dd4961de7891b249c3a79eae2cef564afca56e0a714489a2"
+    },
+    {
+      "image": "images/components/chess/white_queen.png",
+      "source": "card:item/chess/ebony/white_queen",
+      "kind": "native-model",
+      "sha256": "a886cac04019d041b8871b24be5ceb79aa06e487c846a0fdf7567feceb702260"
+    },
+    {
+      "image": "images/components/chess/white_rook.png",
+      "source": "card:item/chess/ebony/white_rook",
+      "kind": "native-model",
+      "sha256": "f860a030c0057ef85513080c8c351ac32caf2642dff367803acacdaaa30dce11"
+    },
+    {
+      "image": "images/components/chess/white_bishop.png",
+      "source": "card:item/chess/ebony/white_bishop",
+      "kind": "native-model",
+      "sha256": "8719bd7bb2cc138b3f09aec3e84bad653bd93c85b8ea4ce70038e9ec382827f6"
+    },
+    {
+      "image": "images/components/chess/white_knight.png",
+      "source": "card:item/chess/ebony/white_knight",
+      "kind": "native-model",
+      "sha256": "ebd6bde0771baf6c5df1e7d408869f97bed252fa7e7790db1cc60816956fd993"
+    },
+    {
+      "image": "images/components/chess/white_pawn.png",
+      "source": "card:item/chess/ebony/white_pawn",
+      "kind": "native-model",
+      "sha256": "dd398ba9fddb58d7cbadb90043026e34a38ec8342742cd157f95603e0b3d8fae"
+    },
+    {
+      "image": "images/components/chess/black_king.png",
+      "source": "card:item/chess/ebony/black_king",
+      "kind": "native-model",
+      "sha256": "46abdbeaaa16f11b7e202976b04071296c9a738871eb6a28e9c4a8c6c2bad30c"
+    },
+    {
+      "image": "images/components/chess/black_queen.png",
+      "source": "card:item/chess/ebony/black_queen",
+      "kind": "native-model",
+      "sha256": "9e3e5bd71a9756f5b4cf59095c2f1071bedae981d56d30d71cb00db43d993b34"
+    },
+    {
+      "image": "images/components/chess/black_rook.png",
+      "source": "card:item/chess/ebony/black_rook",
+      "kind": "native-model",
+      "sha256": "457f4a3f1f42667465cb2484837c2e2fd16861d55cb01266b79d644091b754a9"
+    },
+    {
+      "image": "images/components/chess/black_bishop.png",
+      "source": "card:item/chess/ebony/black_bishop",
+      "kind": "native-model",
+      "sha256": "1e52fd003475748f0abb34ecaa2d5202910219a578924f1a0e37bd4e519c8152"
+    },
+    {
+      "image": "images/components/chess/black_knight.png",
+      "source": "card:item/chess/ebony/black_knight",
+      "kind": "native-model",
+      "sha256": "d32b6019f78d4618b39efe46f71ad7687f0d0fe7d56d780a7478dd7e7e201d9b"
+    },
+    {
+      "image": "images/components/chess/black_pawn.png",
+      "source": "card:item/chess/ebony/black_pawn",
+      "kind": "native-model",
+      "sha256": "97babc956d0bf78c02ae44ff7549da921054a336ac1a85f2bc70509f3029d1ac"
+    },
+    {
+      "image": "images/components/xiangqi/red_general.png",
+      "source": "card:item/xiangqi/ebony/red_general",
+      "kind": "native-model",
+      "sha256": "c1140c71b2c19a2935a8737ef27b75d6813b082249630c028c57b5775cf16572"
+    },
+    {
+      "image": "images/components/xiangqi/red_advisor.png",
+      "source": "card:item/xiangqi/ebony/red_advisor",
+      "kind": "native-model",
+      "sha256": "fdc40e6fb1956bb7e8d1022008ed5893d790d1f41605237e60a767aded131116"
+    },
+    {
+      "image": "images/components/xiangqi/red_elephant.png",
+      "source": "card:item/xiangqi/ebony/red_elephant",
+      "kind": "native-model",
+      "sha256": "db0b59cef1f0841b8c62f1ad7d36b39f49127984eb235b7a432fb63ebfb6ff7d"
+    },
+    {
+      "image": "images/components/xiangqi/red_horse.png",
+      "source": "card:item/xiangqi/ebony/red_horse",
+      "kind": "native-model",
+      "sha256": "d8ed5262797246cf96fbcac71d9a37225ff0446743fc8c69baeecd2af63b0fc9"
+    },
+    {
+      "image": "images/components/xiangqi/red_rook.png",
+      "source": "card:item/xiangqi/ebony/red_rook",
+      "kind": "native-model",
+      "sha256": "fba4f8d49ba47c07d1de5fbaf9e0e07e638b522a2daf7c6951342956dfae8418"
+    },
+    {
+      "image": "images/components/xiangqi/red_cannon.png",
+      "source": "card:item/xiangqi/ebony/red_cannon",
+      "kind": "native-model",
+      "sha256": "b255abb844ca7d5bc25ce2329669ca0e6be0d1a9b52c79fffd1253df71f0e082"
+    },
+    {
+      "image": "images/components/xiangqi/red_pawn.png",
+      "source": "card:item/xiangqi/ebony/red_pawn",
+      "kind": "native-model",
+      "sha256": "400a77190b5c3683569eb19a350c988fe2bf165f806a4c54786cbd567aa2631b"
+    },
+    {
+      "image": "images/components/xiangqi/red_covered.png",
+      "source": "card:item/xiangqi/ebony/red_covered",
+      "kind": "native-model",
+      "sha256": "b4b57e9c7b8714578585e9171a8e1ac4c9e29a3c9879fa3b31e6b0ba16e7d198"
+    },
+    {
+      "image": "images/components/xiangqi/black_general.png",
+      "source": "card:item/xiangqi/ebony/black_general",
+      "kind": "native-model",
+      "sha256": "275787ea4409883849ed60a94733f01d66847d1b8e145cc21e8e1d5536cffc0f"
+    },
+    {
+      "image": "images/components/xiangqi/black_advisor.png",
+      "source": "card:item/xiangqi/ebony/black_advisor",
+      "kind": "native-model",
+      "sha256": "f288b425aebf98c83e8e809fba4a8daad601d6952bfbe987193ed58e9d2ae800"
+    },
+    {
+      "image": "images/components/xiangqi/black_elephant.png",
+      "source": "card:item/xiangqi/ebony/black_elephant",
+      "kind": "native-model",
+      "sha256": "cf00cb94bcb201bdc4c61139807c37fbe8cece8abe57b9a307bfaae88d3bda60"
+    },
+    {
+      "image": "images/components/xiangqi/black_horse.png",
+      "source": "card:item/xiangqi/ebony/black_horse",
+      "kind": "native-model",
+      "sha256": "dbe77f99e0116fdb234db360c9959fc9079066efa2460c7710bc1bc230386941"
+    },
+    {
+      "image": "images/components/xiangqi/black_rook.png",
+      "source": "card:item/xiangqi/ebony/black_rook",
+      "kind": "native-model",
+      "sha256": "a6062b2a660b36f48f6f951c4d90d608c907c639e84ba7bde9c1bc4f774a4fae"
+    },
+    {
+      "image": "images/components/xiangqi/black_cannon.png",
+      "source": "card:item/xiangqi/ebony/black_cannon",
+      "kind": "native-model",
+      "sha256": "e82cadd1e5c24c86205d53d0e9eb47841b56c930ec47a3763bf810bf99f22f29"
+    },
+    {
+      "image": "images/components/xiangqi/black_pawn.png",
+      "source": "card:item/xiangqi/ebony/black_pawn",
+      "kind": "native-model",
+      "sha256": "9bea0cf15a2d6af4f712186e4964cf714684e07d31ec08a4b9673e9432048822"
+    },
+    {
+      "image": "images/components/xiangqi/black_covered.png",
+      "source": "card:item/xiangqi/ebony/black_covered",
+      "kind": "native-model",
+      "sha256": "53a268a7b507e7b6cd6be24241231e8ebfc4a76fab71775931d4a3619deba5e4"
+    },
+    {
+      "image": "images/components/gomoku/black.png",
+      "source": "card:item/gomoku/stone/ebony_black",
+      "kind": "native-model",
+      "sha256": "13fcc44f998af093cb4d900c0e208c3f26b118d2d6499c39b91b11f6ddc79869"
+    },
+    {
+      "image": "images/components/gomoku/white.png",
+      "source": "card:item/gomoku/stone/ebony_white",
+      "kind": "native-model",
+      "sha256": "ce0ce6ac7f90716b147d40459deda92ef1424e271c746476aa00b783cfe57c51"
+    },
+    {
+      "image": "images/components/aeroplane/red.png",
+      "source": "card:item/aeroplane_chess/plane/classic_red",
+      "kind": "native-model",
+      "sha256": "10c2968ef50ecae15a10ba6956eeab5981a90fd70dd83a1085f525726eca92ee"
+    },
+    {
+      "image": "images/components/aeroplane/blue.png",
+      "source": "card:item/aeroplane_chess/plane/classic_blue",
+      "kind": "native-model",
+      "sha256": "a943ca9b97140162d2ba42d657e8add27bf1c205b5603545dcbf3c93b9f2abdd"
+    },
+    {
+      "image": "images/components/aeroplane/green.png",
+      "source": "card:item/aeroplane_chess/plane/classic_green",
+      "kind": "native-model",
+      "sha256": "f9b794a5957beb67ac2955d4bf0945a4061906bb9a33a3b95e787f93a98da3a9"
+    },
+    {
+      "image": "images/components/aeroplane/yellow.png",
+      "source": "card:item/aeroplane_chess/plane/classic_yellow",
+      "kind": "native-model",
+      "sha256": "fe335d631b97cc16d581dace5ebb237a224945d9f553ece3296484d7cb3f228d"
+    },
+    {
+      "image": "images/components/aeroplane/dice.png",
+      "source": "card:item/aeroplane_chess/dice",
+      "kind": "native-model",
+      "sha256": "1ad39f1bb2e3bec00f663ac85a8ba0767b9cdc01c617bb697ec4e6dd8019f140"
+    },
+    {
+      "image": "images/components/avalon/merlin.png",
+      "source": "card:avalon/merlin",
+      "kind": "texture-first-frame",
+      "sha256": "277bee078f708b7bbe3ea71bcbaae61ca429267ce7bbaf21b737fdd64b0ee0f9"
+    },
+    {
+      "image": "images/components/avalon/percival.png",
+      "source": "card:avalon/percival",
+      "kind": "texture-first-frame",
+      "sha256": "9a32be31fe391685d23a01938c62047f81c6297a84f1ff3dfbf99045b09b6d62"
+    },
+    {
+      "image": "images/components/avalon/loyalist.png",
+      "source": "card:avalon/loyalist",
+      "kind": "texture-first-frame",
+      "sha256": "0696b93dadc484fa41be8a4962d01ddd13e28bc2a2461e902999feabcff5187f"
+    },
+    {
+      "image": "images/components/avalon/morgana.png",
+      "source": "card:avalon/morgana",
+      "kind": "texture-first-frame",
+      "sha256": "b0698d3c15b1939c9725378aa7017ac3233b54d5cd1727b63ac12baddd75bd08"
+    },
+    {
+      "image": "images/components/avalon/assassin.png",
+      "source": "card:avalon/assassin",
+      "kind": "texture-first-frame",
+      "sha256": "c709ffed6835f594732cf31f3e3260a2764c00fb729bd45882b1c0feba7bf0fb"
+    },
+    {
+      "image": "images/components/avalon/oberon.png",
+      "source": "card:avalon/oberon",
+      "kind": "texture-first-frame",
+      "sha256": "b3c07d8d099f2120e240b3ec5fe31e01b4f9dd2d7e69fae9b8152ffa1248bd76"
+    },
+    {
+      "image": "images/components/avalon/minion.png",
+      "source": "card:avalon/minion",
+      "kind": "texture-first-frame",
+      "sha256": "42d48522c7c550e0fe8b3679df55557b6435d260a5c3c73e82c8f8106618589b"
+    },
+    {
+      "image": "images/components/avalon/route.png",
+      "source": "card:avalon/map/route",
+      "kind": "texture-first-frame",
+      "sha256": "49d02e0448848d1e94847bed78e4d9b3eb5f05ec33882fe901cc172436c44bc9"
+    },
+    {
+      "image": "images/components/love_letter/spy.png",
+      "source": "card:item/love_letter/spy",
+      "kind": "texture-first-frame",
+      "sha256": "a99bf6b3c9893bdef40c7f419bc4383baba43b15d2dcb969e131a88e8b984d55"
+    },
+    {
+      "image": "images/components/love_letter/guard.png",
+      "source": "card:item/love_letter/guard",
+      "kind": "texture-first-frame",
+      "sha256": "147dc0c882ae48b26000ce4f834fdb9c8a8b397cee757d1c5663ec81d9d4c1fa"
+    },
+    {
+      "image": "images/components/love_letter/priest.png",
+      "source": "card:item/love_letter/priest",
+      "kind": "texture-first-frame",
+      "sha256": "680176fbf6dee6a53e323ee711a085f8f8098deb7a129ea87218990ba2cbc38b"
+    },
+    {
+      "image": "images/components/love_letter/baron.png",
+      "source": "card:item/love_letter/baron",
+      "kind": "texture-first-frame",
+      "sha256": "974d9529702336afdc05e04e471735216bc07c60cb70b7b484eb3e81ccab7816"
+    },
+    {
+      "image": "images/components/love_letter/handmaid.png",
+      "source": "card:item/love_letter/handmaid",
+      "kind": "texture-first-frame",
+      "sha256": "0fb41cc1fdc87bbaef7e82c526aa80bffb99334fa4cf6903e4f6d3aaf5451d90"
+    },
+    {
+      "image": "images/components/love_letter/prince.png",
+      "source": "card:item/love_letter/prince",
+      "kind": "texture-first-frame",
+      "sha256": "3c9f0b15b05852f39076e2bdb9292dfd4d1a63e94acddecad51f0213b70d6a6f"
+    },
+    {
+      "image": "images/components/love_letter/chancellor.png",
+      "source": "card:item/love_letter/chancellor",
+      "kind": "texture-first-frame",
+      "sha256": "cd40c77c169735d94b414016e4d0fc047430b6873978e67afae04e07493b4f4e"
+    },
+    {
+      "image": "images/components/love_letter/king.png",
+      "source": "card:item/love_letter/king",
+      "kind": "texture-first-frame",
+      "sha256": "1bcfd7780d9a5b6a81896dee4cf983e46267a3938e9e47f36296769cc587701f"
+    },
+    {
+      "image": "images/components/love_letter/countess.png",
+      "source": "card:item/love_letter/countess",
+      "kind": "texture-first-frame",
+      "sha256": "2ad3cec8c8e58ae39282257385a01d43f5237ee25cdc2d0e5d139c26bb1195b9"
+    },
+    {
+      "image": "images/components/love_letter/princess.png",
+      "source": "card:item/love_letter/princess",
+      "kind": "texture-first-frame",
+      "sha256": "4f51a3cf5b818399cf9cc65f7b4da173b5e330f2a41107c9ab3160f8e7dbf52a"
+    },
+    {
+      "image": "images/components/love_letter/box.png",
+      "source": "card:item/love_letter/box",
+      "kind": "native-model",
+      "sha256": "b4fd02bb4ae6f593848d0da5237a34a043c4624494ae922f11e532bd95c6f2d2"
+    },
+    {
+      "image": "images/components/love_letter/back.png",
+      "source": "card:item/love_letter/back",
+      "kind": "texture-first-frame",
+      "sha256": "d8c2d3897bb425ae8ca7089a5582c4a521735e8c40f235d25e4de7f2a7ef810c"
+    },
+    {
+      "image": "images/components/love_letter/favor.png",
+      "source": "card:item/love_letter/favor",
+      "kind": "texture-first-frame",
+      "sha256": "2cbed5e947f726dd6e73483364910eb6ceb26eed51de1c0bc146b4fe4528cff5"
+    },
+    {
+      "image": "images/components/love_letter/protection.png",
+      "source": "card:item/love_letter/protection",
+      "kind": "texture-first-frame",
+      "sha256": "1b05d211ac213814d6fd23d1ecf4c202babe98cc4465242c942b3cebfe1fcac1"
+    },
+    {
+      "image": "images/components/ito/1.png",
+      "source": "card:item/ito/1",
+      "kind": "texture-first-frame",
+      "sha256": "c9f838e87162b75611dad2ce463425484ce882a549cc01bcbf2df07d6e3ff2c4"
+    },
+    {
+      "image": "images/components/ito/25.png",
+      "source": "card:item/ito/25",
+      "kind": "texture-first-frame",
+      "sha256": "7052f6970ccbec6a22013254266902dc188626ae304664d9fd4636d19cc905a9"
+    },
+    {
+      "image": "images/components/ito/50.png",
+      "source": "card:item/ito/50",
+      "kind": "texture-first-frame",
+      "sha256": "196ab204aa4389638c8fad60f22495335ee25729ff6df792b29b24c0be3f7405"
+    },
+    {
+      "image": "images/components/ito/75.png",
+      "source": "card:item/ito/75",
+      "kind": "texture-first-frame",
+      "sha256": "d6f9bf9286ee5d3588640ead8f07a460265f224b1aec2bd09233d9c5d2c91bfa"
+    },
+    {
+      "image": "images/components/ito/100.png",
+      "source": "card:item/ito/100",
+      "kind": "texture-first-frame",
+      "sha256": "181070d51bb812f07b0ab9e6dcfbcecf7b72fb853ab1e8f341cf3e9fe1660efe"
+    },
+    {
+      "image": "images/components/catan/tile/forest.png",
+      "source": "card:item/catan/tile/forest",
+      "kind": "native-model",
+      "sha256": "eb2f5696c74b45f71493004649b290ec50e290ed981d86ac08787402d606d6bb"
+    },
+    {
+      "image": "images/components/catan/tile/hills.png",
+      "source": "card:item/catan/tile/hills",
+      "kind": "native-model",
+      "sha256": "8398f85ccaff4e241b8059f4f6d1fca943eba548f53e9e615584bf2debf56cdc"
+    },
+    {
+      "image": "images/components/catan/tile/pasture.png",
+      "source": "card:item/catan/tile/pasture",
+      "kind": "native-model",
+      "sha256": "554b73e43a415e36f9831030105e9250b082b71196e5c0c571fb052c12ebb780"
+    },
+    {
+      "image": "images/components/catan/tile/fields.png",
+      "source": "card:item/catan/tile/fields",
+      "kind": "native-model",
+      "sha256": "52b74de9654a224b2cf5e290eac83ede39a8ced88fb22524dde8d24388079453"
+    },
+    {
+      "image": "images/components/catan/tile/mountains.png",
+      "source": "card:item/catan/tile/mountains",
+      "kind": "native-model",
+      "sha256": "2773513191fcbb7dad8ab0f121f3d60752dcd2a02ec2bc493d0c0e0a445591b6"
+    },
+    {
+      "image": "images/components/catan/tile/desert.png",
+      "source": "card:item/catan/tile/desert",
+      "kind": "native-model",
+      "sha256": "64bfb5ba73e9e1ed409a805955b89e9f8084a9f0008523361867e699220d05f2"
+    },
+    {
+      "image": "images/components/catan/resource/wood.png",
+      "source": "card:item/catan/resource/wood",
+      "kind": "texture-first-frame",
+      "sha256": "be054892882a37ff68c44a75c79cba3b222fd4e1aff0cd1b6c833a0355fe4497"
+    },
+    {
+      "image": "images/components/catan/resource/brick.png",
+      "source": "card:item/catan/resource/brick",
+      "kind": "texture-first-frame",
+      "sha256": "f241ea642a00c27db85611d3ba615c3c415730701f7a1167382f8b0c8236be29"
+    },
+    {
+      "image": "images/components/catan/resource/wool.png",
+      "source": "card:item/catan/resource/wool",
+      "kind": "texture-first-frame",
+      "sha256": "9b8a0cac32f49fa25a41a4016e90ad6de4bbe4ff5f351d8bde68ef4ff346a661"
+    },
+    {
+      "image": "images/components/catan/resource/grain.png",
+      "source": "card:item/catan/resource/grain",
+      "kind": "texture-first-frame",
+      "sha256": "11826247ed6ef2656467da5618568c9036995ad1d66e5a36af1dce3d22cf9ea3"
+    },
+    {
+      "image": "images/components/catan/resource/ore.png",
+      "source": "card:item/catan/resource/ore",
+      "kind": "texture-first-frame",
+      "sha256": "fe99db86059315ff738ffc9421725c0979868eae77b6822a74ea3461558fe47a"
+    },
+    {
+      "image": "images/components/catan/road/red.png",
+      "source": "card:item/catan/road/red",
+      "kind": "native-model",
+      "sha256": "085b204157c859f720047bcb0efc81315d50b0728ec17941c3cf892829a90f17"
+    },
+    {
+      "image": "images/components/catan/settlement/red.png",
+      "source": "card:item/catan/settlement/red",
+      "kind": "native-model",
+      "sha256": "68d4561a5d4c20e26443b1759ada5aea4a5bb755a080dd5ec443d322c0deebe2"
+    },
+    {
+      "image": "images/components/catan/city/red.png",
+      "source": "card:item/catan/city/red",
+      "kind": "native-model",
+      "sha256": "29b2e0dba30fd14c3401f60514eb573ee8abb024d72afcd3ff48b699a03c90f2"
+    },
+    {
+      "image": "images/components/catan/road/blue.png",
+      "source": "card:item/catan/road/blue",
+      "kind": "native-model",
+      "sha256": "d295d342428627cc2a3d2e94eda37c1a58800f588f7d55671af212c066c46b3c"
+    },
+    {
+      "image": "images/components/catan/settlement/blue.png",
+      "source": "card:item/catan/settlement/blue",
+      "kind": "native-model",
+      "sha256": "cdc28518de0a144d4f3f667184ae9dcf24e90794b0754def9ec08a4429c9d08d"
+    },
+    {
+      "image": "images/components/catan/city/blue.png",
+      "source": "card:item/catan/city/blue",
+      "kind": "native-model",
+      "sha256": "28589e28ec82791842e4061b18ce84064865c1d931b8005cad33e901834fcbcf"
+    },
+    {
+      "image": "images/components/catan/road/white.png",
+      "source": "card:item/catan/road/white",
+      "kind": "native-model",
+      "sha256": "673f425ebb900cb81f6751f7588ccb8d03f9542f72a717f24b5b31897d47db90"
+    },
+    {
+      "image": "images/components/catan/settlement/white.png",
+      "source": "card:item/catan/settlement/white",
+      "kind": "native-model",
+      "sha256": "3345a7d72d68b6123bd2f53c1a8d009a763e4a1f1b8d17c585486b13daa08ca8"
+    },
+    {
+      "image": "images/components/catan/city/white.png",
+      "source": "card:item/catan/city/white",
+      "kind": "native-model",
+      "sha256": "aede7f9fcc3280e181e9866fdb41ead45e7a626cfedea4a2453760d2135c8cb0"
+    },
+    {
+      "image": "images/components/catan/road/orange.png",
+      "source": "card:item/catan/road/orange",
+      "kind": "native-model",
+      "sha256": "2d0c5cb83cec69be9392bc5e18262bebb776a45d98059f64b450dd397bac4773"
+    },
+    {
+      "image": "images/components/catan/settlement/orange.png",
+      "source": "card:item/catan/settlement/orange",
+      "kind": "native-model",
+      "sha256": "ecf4ac2bfba211ded2d2898e26bed1f3cae2472dd55a0911651989fd41a2a12f"
+    },
+    {
+      "image": "images/components/catan/city/orange.png",
+      "source": "card:item/catan/city/orange",
+      "kind": "native-model",
+      "sha256": "fa1d73e4f3bbec4b8d660aad248962ccce2fd5bed6b05834005aed133bd92ec8"
+    },
+    {
+      "image": "images/components/catan/robber.png",
+      "source": "card:item/catan/robber",
+      "kind": "native-model",
+      "sha256": "3370badd3db388754fbad326ffcb6e9907fb55322bfca343196793ef75cf5107"
+    },
+    {
+      "image": "images/components/catan/deck.png",
+      "source": "card:item/catan/development_deck",
+      "kind": "native-model",
+      "sha256": "bdfc91d960338b5221b52bb8e60c289824ac54df4ed3049e684b6b10c09eac8c"
+    },
+    {
+      "image": "images/components/catan/port/generic.png",
+      "source": "card:item/catan/port/generic",
+      "kind": "native-model",
+      "sha256": "d9973be61e71c8cea3e68eb917710c9c85c28c0f8f487064c3428571b697f7d7"
+    },
+    {
+      "image": "images/components/catan/port/wood.png",
+      "source": "card:item/catan/port/wood",
+      "kind": "native-model",
+      "sha256": "f572ba65e6fd5b71ab3ec36a3c122863037e8ffc69f6125f8cef501d35cecda4"
+    },
+    {
+      "image": "images/components/catan/port/brick.png",
+      "source": "card:item/catan/port/brick",
+      "kind": "native-model",
+      "sha256": "5a32d4031ea58e7b03905e98d88e97cd153f78e2d43e5adc2421e2ef28d510fe"
+    },
+    {
+      "image": "images/components/catan/port/wool.png",
+      "source": "card:item/catan/port/wool",
+      "kind": "native-model",
+      "sha256": "b8742a9e3512ffff7d5077394c27485763d5126593f266f0ff9a460980cba25d"
+    },
+    {
+      "image": "images/components/catan/port/grain.png",
+      "source": "card:item/catan/port/grain",
+      "kind": "native-model",
+      "sha256": "1da035db1951b3c51f4708f0948835713340051f74b6e9bc88663eaf137c4e03"
+    },
+    {
+      "image": "images/components/catan/port/ore.png",
+      "source": "card:item/catan/port/ore",
+      "kind": "native-model",
+      "sha256": "1a5909cfaa0ebf7c30bf537f953cf6a2593ccee955aa1a7edcf84e9a981ceccf"
+    },
+    {
+      "image": "images/components/catan/dock.png",
+      "source": "card:item/catan/port/dock",
+      "kind": "native-model",
+      "sha256": "5067924e494585da71957498926a8143f5848ed9c948c5729fbef7aeac2721b7"
+    },
+    {
+      "image": "images/components/catan/number/2.png",
+      "source": "card:item/catan/number/2",
+      "kind": "native-model",
+      "sha256": "551738c9e353c61012e26e4c7442a87b15a00f0bc06a4a201960deb8b51b7ce8"
+    },
+    {
+      "image": "images/components/catan/number/6.png",
+      "source": "card:item/catan/number/6",
+      "kind": "native-model",
+      "sha256": "0ac7dae3eccae3ae2785a8be1c1bc7e827fc589a7cfa16ba1ceb6c5c4ed889af"
+    },
+    {
+      "image": "images/components/catan/number/8.png",
+      "source": "card:item/catan/number/8",
+      "kind": "native-model",
+      "sha256": "f7b13c14ff2f9b0203803c671c827ba1508e5d0c7e574e98e82d365da0110951"
+    },
+    {
+      "image": "images/components/catan/dice/ivory.png",
+      "source": "card:item/catan/dice/ivory",
+      "kind": "native-model",
+      "sha256": "5d95300b8338f5f303cdd32d622d6f980fa494f8f548c77d7f2a6ff555f2cd63"
+    },
+    {
+      "image": "images/components/catan/dice/red.png",
+      "source": "card:item/catan/dice/red",
+      "kind": "native-model",
+      "sha256": "b9a6b8d03f1459b79e92b7469881719248966483684d7a7c930d48e32aafa565"
+    },
+    {
+      "image": "images/components/catan/dev/knight.png",
+      "source": "minecraft:item/iron_sword",
+      "kind": "texture-first-frame",
+      "sha256": "d7804ac3778ee59995714641130f092383c23418203ee94e57ac88f2a4678fc5"
+    },
+    {
+      "image": "images/components/catan/dev/road_building.png",
+      "source": "minecraft:block/rail",
+      "kind": "texture-first-frame",
+      "sha256": "024be3a96db04292132172642e8355c02b2184b61295b920f0df37fcd570ebf5"
+    },
+    {
+      "image": "images/components/catan/dev/monopoly.png",
+      "source": "minecraft:item/emerald",
+      "kind": "texture-first-frame",
+      "sha256": "c62312a27b4985e5d390c4da00fa51598c9a2e27676096738c0d7477e99c261d"
+    },
+    {
+      "image": "images/components/catan/dev/plenty.png",
+      "source": "minecraft:item/bread",
+      "kind": "texture-first-frame",
+      "sha256": "9356e2d88794cd0ef19b2d5ff467a825ca6bbb8d8f45bb6d9a91c18c46d944bf"
+    },
+    {
+      "image": "images/components/catan/dev/victory_point.png",
+      "source": "minecraft:item/nether_star",
+      "kind": "texture-first-frame",
+      "sha256": "f5a9a709932865aa756e66f49bfa2d18148ab5ef5d4937fafe7dbd0e67e10079"
+    },
+    {
+      "image": "images/components/splendor/token/diamond.png",
+      "source": "minecraft:item/diamond",
+      "kind": "texture-first-frame",
+      "sha256": "14821c59ed40d603d99104c9823989d19ad5ffc5a0d17a6be7c9f3f72a9dc7c4"
+    },
+    {
+      "image": "images/components/splendor/token/sapphire.png",
+      "source": "minecraft:item/lapis_lazuli",
+      "kind": "texture-first-frame",
+      "sha256": "651e04e3a54e478502a1efe35f6acd0fff1416dd18a1ae1a826c5eb5bf464698"
+    },
+    {
+      "image": "images/components/splendor/token/emerald.png",
+      "source": "minecraft:item/emerald",
+      "kind": "texture-first-frame",
+      "sha256": "c62312a27b4985e5d390c4da00fa51598c9a2e27676096738c0d7477e99c261d"
+    },
+    {
+      "image": "images/components/splendor/token/ruby.png",
+      "source": "minecraft:item/redstone",
+      "kind": "texture-first-frame",
+      "sha256": "6f7dff40f4635eb2c7b7f0fdb86e86162a5f699555db836a95dc495122ec9fe6"
+    },
+    {
+      "image": "images/components/splendor/token/onyx.png",
+      "source": "minecraft:item/coal",
+      "kind": "texture-first-frame",
+      "sha256": "faf6b96aa2cea4e8491536600f8f480a6e3f04037272e1f925f266dc0a500703"
+    },
+    {
+      "image": "images/components/splendor/token/gold.png",
+      "source": "minecraft:item/gold_ingot",
+      "kind": "texture-first-frame",
+      "sha256": "ef9cc0074894f7780ac420b6502a3feecd04d6791535dec69e698df12e7e80f3"
+    },
+    {
+      "image": "images/components/splendor/mat.png",
+      "source": "card:item/splendor/mat",
+      "kind": "texture-first-frame",
+      "sha256": "ad8908299cda2024427d9f7fc27ce4316b67f3a8f3ed8b2ea2b35751ae9e9cb4"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_01.png",
+      "source": "card:item/splendor/tier1/diamond_01",
+      "kind": "texture-first-frame",
+      "sha256": "19b5d3daae176b48aadd5e97c401e7510622fd43905687e4351d2cc0dae10a31"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_02.png",
+      "source": "card:item/splendor/tier1/diamond_02",
+      "kind": "texture-first-frame",
+      "sha256": "ad0d59823f0af9bccc9d1f5bb7da4c17f5abac46eec2a963c1a2fac002b6ef9b"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_03.png",
+      "source": "card:item/splendor/tier1/diamond_03",
+      "kind": "texture-first-frame",
+      "sha256": "d108c70f3275df68c62b48383d6c3534c72c59ec54cbd7a9c8f0abf05ade1f9d"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_04.png",
+      "source": "card:item/splendor/tier1/diamond_04",
+      "kind": "texture-first-frame",
+      "sha256": "3cfd35814f85a5d747c4ce52e7de475a0d8566dad2e2c2d2921a1f61c3cca501"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_05.png",
+      "source": "card:item/splendor/tier1/diamond_05",
+      "kind": "texture-first-frame",
+      "sha256": "661bd0ebf7c3c32429f924fd26c37c5a62d5044874a8f7c1b956947c13f9096b"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_06.png",
+      "source": "card:item/splendor/tier1/diamond_06",
+      "kind": "texture-first-frame",
+      "sha256": "932eb90ecce33ea5e6cf007aa2957f23a8a92e2f4c4600e25981b065534fdda4"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_07.png",
+      "source": "card:item/splendor/tier1/diamond_07",
+      "kind": "texture-first-frame",
+      "sha256": "b9213b68dc7ad944baa23c904cfa691417d3cf9c3e0bcff5018a58cecdc187e2"
+    },
+    {
+      "image": "images/components/splendor/tier1/diamond_08.png",
+      "source": "card:item/splendor/tier1/diamond_08",
+      "kind": "texture-first-frame",
+      "sha256": "f527268579e5683dbd47579ec05b67483cd703fddf06d9dd53c52d9ff6b76431"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_01.png",
+      "source": "card:item/splendor/tier1/sapphire_01",
+      "kind": "texture-first-frame",
+      "sha256": "6418303de0578080e64d58fcaea372d1a9f46d7acbf0aa74ac1f409a720867d4"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_02.png",
+      "source": "card:item/splendor/tier1/sapphire_02",
+      "kind": "texture-first-frame",
+      "sha256": "2f3b71dd416d96a9435ac0d37e58d35639d2eee6b66337481b68ef69eb48cbf6"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_03.png",
+      "source": "card:item/splendor/tier1/sapphire_03",
+      "kind": "texture-first-frame",
+      "sha256": "d1a2e45dd08f1036489caeed1019b9d29462e9dc9f98e0ce17806cb5270b638f"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_04.png",
+      "source": "card:item/splendor/tier1/sapphire_04",
+      "kind": "texture-first-frame",
+      "sha256": "821e7bbe6939a3f1b3be2e8a6a91ad72cd1dadd3de6a6f6782790e803cc28851"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_05.png",
+      "source": "card:item/splendor/tier1/sapphire_05",
+      "kind": "texture-first-frame",
+      "sha256": "9cbbf01e0997ab5f8a2d0c87d587416500d408c6819d5fe85ed4f7d437f9f962"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_06.png",
+      "source": "card:item/splendor/tier1/sapphire_06",
+      "kind": "texture-first-frame",
+      "sha256": "5b8ebdcd51f2317bd79b674df571f491f2eafd7261716525d5f6d6390209bb27"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_07.png",
+      "source": "card:item/splendor/tier1/sapphire_07",
+      "kind": "texture-first-frame",
+      "sha256": "c004526e88cb6f6d56d499f5dbcf9924692537771f19d215f26725dbb0764f85"
+    },
+    {
+      "image": "images/components/splendor/tier1/sapphire_08.png",
+      "source": "card:item/splendor/tier1/sapphire_08",
+      "kind": "texture-first-frame",
+      "sha256": "378e48f14f554e60dc3863d675402a2c061a1e60437497795ea66655cb768d0c"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_01.png",
+      "source": "card:item/splendor/tier1/emerald_01",
+      "kind": "texture-first-frame",
+      "sha256": "966fb435c1ec5cf9d6a1e19a21278c37e7f23f2d18910bbeaed67f018d6ef9c3"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_02.png",
+      "source": "card:item/splendor/tier1/emerald_02",
+      "kind": "texture-first-frame",
+      "sha256": "d59d8fca220b35b50a3d3cd49f72efb4093b0229a3e63873abe1980b5a81468f"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_03.png",
+      "source": "card:item/splendor/tier1/emerald_03",
+      "kind": "texture-first-frame",
+      "sha256": "9cca5fbef3c100f933eb2098d2958523468d1cf34881ab23f2e9266025b9c50a"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_04.png",
+      "source": "card:item/splendor/tier1/emerald_04",
+      "kind": "texture-first-frame",
+      "sha256": "b8a14842980c0e39d90f0b571bbaa5fd99a9b4defa86d3220ba1e4a5517e7cc1"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_05.png",
+      "source": "card:item/splendor/tier1/emerald_05",
+      "kind": "texture-first-frame",
+      "sha256": "c8e6dc154cf9ecea1b61adfb796698b254c0be69673e727c92080e171749c25d"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_06.png",
+      "source": "card:item/splendor/tier1/emerald_06",
+      "kind": "texture-first-frame",
+      "sha256": "e5e7f767b0f16ac64cc3df67fbe14544c30e768c35cfdb1c3358f8b03f135a4a"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_07.png",
+      "source": "card:item/splendor/tier1/emerald_07",
+      "kind": "texture-first-frame",
+      "sha256": "ca63717f8973df448a435cae8752914291bb623472243dac1ea2616800217aec"
+    },
+    {
+      "image": "images/components/splendor/tier1/emerald_08.png",
+      "source": "card:item/splendor/tier1/emerald_08",
+      "kind": "texture-first-frame",
+      "sha256": "f60181f74b89804cfb7952ca120e468087e967e5ca0c1c0503b64887ee314139"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_01.png",
+      "source": "card:item/splendor/tier1/ruby_01",
+      "kind": "texture-first-frame",
+      "sha256": "37976eda947cb1ca5241a3ed4b5fcee41af68943160866938638d1533fac34a6"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_02.png",
+      "source": "card:item/splendor/tier1/ruby_02",
+      "kind": "texture-first-frame",
+      "sha256": "ab70a072ccd55b3c0e2d9065ec714572ab0ad61f4ba3fbd82fd0c3cbb877612b"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_03.png",
+      "source": "card:item/splendor/tier1/ruby_03",
+      "kind": "texture-first-frame",
+      "sha256": "28f496a39e9f130f8793b4b052d9b2aae43a311b35b73436ab7836bd57a6cb0e"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_04.png",
+      "source": "card:item/splendor/tier1/ruby_04",
+      "kind": "texture-first-frame",
+      "sha256": "ce0058607373c6cd4b6554a189b30ed6b1d1789d9595bb88ba189a4d8050becc"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_05.png",
+      "source": "card:item/splendor/tier1/ruby_05",
+      "kind": "texture-first-frame",
+      "sha256": "9737f22b3504a4e93107fdda19b9789f6c471d7b0c192fe765ff2af572cc0006"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_06.png",
+      "source": "card:item/splendor/tier1/ruby_06",
+      "kind": "texture-first-frame",
+      "sha256": "e6df74586db5745933cc2e76cc362f89849541cb8530141e0d8114e0d3be0626"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_07.png",
+      "source": "card:item/splendor/tier1/ruby_07",
+      "kind": "texture-first-frame",
+      "sha256": "6d0b5c9142e0f28e31485d365bc221816b9803fb796ad1cab56bfda5de586509"
+    },
+    {
+      "image": "images/components/splendor/tier1/ruby_08.png",
+      "source": "card:item/splendor/tier1/ruby_08",
+      "kind": "texture-first-frame",
+      "sha256": "04f3f483d1172716f18d582c062cf7a1ca967d5650bf986742ed6736317cba8c"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_01.png",
+      "source": "card:item/splendor/tier1/onyx_01",
+      "kind": "texture-first-frame",
+      "sha256": "c879067fd0bab45841a536f8abf552bbc0ce9ef1b07afcea0f669951e4539114"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_02.png",
+      "source": "card:item/splendor/tier1/onyx_02",
+      "kind": "texture-first-frame",
+      "sha256": "891c8e41924469b0d5390ddfa18e0af3eb72590ca617ef889819fb4c4790df56"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_03.png",
+      "source": "card:item/splendor/tier1/onyx_03",
+      "kind": "texture-first-frame",
+      "sha256": "9856d70d58e7688e2a0ad274613084a7397940e5520178d7dfbc7893ec38cf1e"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_04.png",
+      "source": "card:item/splendor/tier1/onyx_04",
+      "kind": "texture-first-frame",
+      "sha256": "9b8bd9fc5dbb9b3e2fb9bd9ce96654cfbe8b83dec26bbd98c984b097b68fa2ba"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_05.png",
+      "source": "card:item/splendor/tier1/onyx_05",
+      "kind": "texture-first-frame",
+      "sha256": "29ea06eb66635b7a211f2cba227b0a429deb4de16c6c95d6280a6f5d1703cab9"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_06.png",
+      "source": "card:item/splendor/tier1/onyx_06",
+      "kind": "texture-first-frame",
+      "sha256": "39d54f0b099fc07be57ed5e83028b30c28e764b5e345d1443e224181164e8691"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_07.png",
+      "source": "card:item/splendor/tier1/onyx_07",
+      "kind": "texture-first-frame",
+      "sha256": "2fe4b5197a4db725219b15b11bce13ca4c277f4688e274c59319599f897067d4"
+    },
+    {
+      "image": "images/components/splendor/tier1/onyx_08.png",
+      "source": "card:item/splendor/tier1/onyx_08",
+      "kind": "texture-first-frame",
+      "sha256": "a28c5522277b6e7f8aec0af0da5c2d53ce8da3a78cf146c09fa1f677899a7775"
+    },
+    {
+      "image": "images/components/splendor/tier2/diamond_01.png",
+      "source": "card:item/splendor/tier2/diamond_01",
+      "kind": "texture-first-frame",
+      "sha256": "91551ef6fe7eb578d3f0519fa05f77b111ff06e5542489199dd3fe4afc5887d8"
+    },
+    {
+      "image": "images/components/splendor/tier2/diamond_02.png",
+      "source": "card:item/splendor/tier2/diamond_02",
+      "kind": "texture-first-frame",
+      "sha256": "5ecce01607766a16e0cf535e37546d8eb2c2eadf21dae996903bc93002212266"
+    },
+    {
+      "image": "images/components/splendor/tier2/diamond_03.png",
+      "source": "card:item/splendor/tier2/diamond_03",
+      "kind": "texture-first-frame",
+      "sha256": "cd651e43c8c0d62ef90b112a8f2a70893bd953abb75648c830540c4062ce9081"
+    },
+    {
+      "image": "images/components/splendor/tier2/diamond_04.png",
+      "source": "card:item/splendor/tier2/diamond_04",
+      "kind": "texture-first-frame",
+      "sha256": "68bf3b03bdfa63017ce660b48cbe00b12be5227385154646a8c96e0dc527d590"
+    },
+    {
+      "image": "images/components/splendor/tier2/diamond_05.png",
+      "source": "card:item/splendor/tier2/diamond_05",
+      "kind": "texture-first-frame",
+      "sha256": "0f9008f3767e256d033b9f96ab32462e1b8768bf6f9cf53e63dc654886c6d491"
+    },
+    {
+      "image": "images/components/splendor/tier2/diamond_06.png",
+      "source": "card:item/splendor/tier2/diamond_06",
+      "kind": "texture-first-frame",
+      "sha256": "c44123e31b3ee0997263bac366909dec140a420968cd526cc04218baf8109664"
+    },
+    {
+      "image": "images/components/splendor/tier2/sapphire_01.png",
+      "source": "card:item/splendor/tier2/sapphire_01",
+      "kind": "texture-first-frame",
+      "sha256": "89fa16601a2ff9d4648cdea37522a20048e185fec4fadd403613322647f30f45"
+    },
+    {
+      "image": "images/components/splendor/tier2/sapphire_02.png",
+      "source": "card:item/splendor/tier2/sapphire_02",
+      "kind": "texture-first-frame",
+      "sha256": "b33381e8b2f67799fc8cfe01a803cabf958c61865c50d80864fd529c4520205d"
+    },
+    {
+      "image": "images/components/splendor/tier2/sapphire_03.png",
+      "source": "card:item/splendor/tier2/sapphire_03",
+      "kind": "texture-first-frame",
+      "sha256": "afc23c5a759c6d7598b8894c2f51bb71be2a71c1f1e04c60f7caf7f1ec6a637a"
+    },
+    {
+      "image": "images/components/splendor/tier2/sapphire_04.png",
+      "source": "card:item/splendor/tier2/sapphire_04",
+      "kind": "texture-first-frame",
+      "sha256": "9212bf5253f819fdaa635b0f52e97b0d64540e71683a4b081a328b9930d69a56"
+    },
+    {
+      "image": "images/components/splendor/tier2/sapphire_05.png",
+      "source": "card:item/splendor/tier2/sapphire_05",
+      "kind": "texture-first-frame",
+      "sha256": "ba4eae6357367ca45e3cc17c16a8e8846e4eded51dc20c65dc2776d2e99210cb"
+    },
+    {
+      "image": "images/components/splendor/tier2/sapphire_06.png",
+      "source": "card:item/splendor/tier2/sapphire_06",
+      "kind": "texture-first-frame",
+      "sha256": "4a662c647a8dbc921bff08b9e3389db8e2d92d5db0b9aa8d82b599ad441bcfe6"
+    },
+    {
+      "image": "images/components/splendor/tier2/emerald_01.png",
+      "source": "card:item/splendor/tier2/emerald_01",
+      "kind": "texture-first-frame",
+      "sha256": "5e299a2ed9e3f18a8305e2421dc6af5044693fe62c657daa8493224949e77b47"
+    },
+    {
+      "image": "images/components/splendor/tier2/emerald_02.png",
+      "source": "card:item/splendor/tier2/emerald_02",
+      "kind": "texture-first-frame",
+      "sha256": "de87134e1ebe1a87032f2061c0ad85f97327c9c7921a51be51e9d564bec410d2"
+    },
+    {
+      "image": "images/components/splendor/tier2/emerald_03.png",
+      "source": "card:item/splendor/tier2/emerald_03",
+      "kind": "texture-first-frame",
+      "sha256": "90b035c7fe66845939bf8086efe51b1fdccac0b3539f72fcdfde39cbe8044ab2"
+    },
+    {
+      "image": "images/components/splendor/tier2/emerald_04.png",
+      "source": "card:item/splendor/tier2/emerald_04",
+      "kind": "texture-first-frame",
+      "sha256": "b20580f10246786840c9b09daaa06bfade3eadf6e5c0ad2fa48ff6d626f3524e"
+    },
+    {
+      "image": "images/components/splendor/tier2/emerald_05.png",
+      "source": "card:item/splendor/tier2/emerald_05",
+      "kind": "texture-first-frame",
+      "sha256": "4170a1ed4c36a153360e9ac76e469e9b08138584f850b739ec7aecb100d4ec75"
+    },
+    {
+      "image": "images/components/splendor/tier2/emerald_06.png",
+      "source": "card:item/splendor/tier2/emerald_06",
+      "kind": "texture-first-frame",
+      "sha256": "435b9229f47456f33d998a7f2ed3b95e9c466828f3a6329c6799e7db77f3d59b"
+    },
+    {
+      "image": "images/components/splendor/tier2/ruby_01.png",
+      "source": "card:item/splendor/tier2/ruby_01",
+      "kind": "texture-first-frame",
+      "sha256": "494e2171a978dff23ba55a0e94c3bc190013fe77fc92092560aabc73d3caceae"
+    },
+    {
+      "image": "images/components/splendor/tier2/ruby_02.png",
+      "source": "card:item/splendor/tier2/ruby_02",
+      "kind": "texture-first-frame",
+      "sha256": "e93ea38a5f10f9905843f7f77caccb8ce6bb247b9ade481eb13a3792562fd44c"
+    },
+    {
+      "image": "images/components/splendor/tier2/ruby_03.png",
+      "source": "card:item/splendor/tier2/ruby_03",
+      "kind": "texture-first-frame",
+      "sha256": "28cdf2f8987771bf9766798d7e34d365cf28dd0a40ae9cf2b7e327b79771cfe9"
+    },
+    {
+      "image": "images/components/splendor/tier2/ruby_04.png",
+      "source": "card:item/splendor/tier2/ruby_04",
+      "kind": "texture-first-frame",
+      "sha256": "d2813e703fe90a06019060b62ead1982b8f359a180264167eb543e8298b76c98"
+    },
+    {
+      "image": "images/components/splendor/tier2/ruby_05.png",
+      "source": "card:item/splendor/tier2/ruby_05",
+      "kind": "texture-first-frame",
+      "sha256": "659244b89a9860cc52c2288ac132b4beb316641738e02f223f62fbfd91fb645f"
+    },
+    {
+      "image": "images/components/splendor/tier2/ruby_06.png",
+      "source": "card:item/splendor/tier2/ruby_06",
+      "kind": "texture-first-frame",
+      "sha256": "82ee9d76f5bbc1a358bdc41c5af9f8e28ec055e9053a458f24dc4a1879a7cffb"
+    },
+    {
+      "image": "images/components/splendor/tier2/onyx_01.png",
+      "source": "card:item/splendor/tier2/onyx_01",
+      "kind": "texture-first-frame",
+      "sha256": "b36117ac2200e89c949ad640045169ade135242584922c864ee0fb196d2207e6"
+    },
+    {
+      "image": "images/components/splendor/tier2/onyx_02.png",
+      "source": "card:item/splendor/tier2/onyx_02",
+      "kind": "texture-first-frame",
+      "sha256": "47cd2e061db92f1cf85a6a55cc6b80c505317845e0d49b6f318cbed4442ba309"
+    },
+    {
+      "image": "images/components/splendor/tier2/onyx_03.png",
+      "source": "card:item/splendor/tier2/onyx_03",
+      "kind": "texture-first-frame",
+      "sha256": "0d24bdaf43a8cf28dfad763e9982f274ef129473925bcc75e55a657eaeb8a01a"
+    },
+    {
+      "image": "images/components/splendor/tier2/onyx_04.png",
+      "source": "card:item/splendor/tier2/onyx_04",
+      "kind": "texture-first-frame",
+      "sha256": "c68b8bf55709e3c526f92206b878bb23469add4a1a0046361f059e7410e640a2"
+    },
+    {
+      "image": "images/components/splendor/tier2/onyx_05.png",
+      "source": "card:item/splendor/tier2/onyx_05",
+      "kind": "texture-first-frame",
+      "sha256": "53e2076db6224ee4af2af6fd5d4790665e6d57e911041ff58ebf8f8bb2ae54c2"
+    },
+    {
+      "image": "images/components/splendor/tier2/onyx_06.png",
+      "source": "card:item/splendor/tier2/onyx_06",
+      "kind": "texture-first-frame",
+      "sha256": "48c9a3dd1815221c835b1e9aa0c7d5cdee94d3145d3a2223780a9226b8b956df"
+    },
+    {
+      "image": "images/components/splendor/tier3/diamond_01.png",
+      "source": "card:item/splendor/tier3/diamond_01",
+      "kind": "texture-first-frame",
+      "sha256": "1bb26315d1041f3b6699545fcce5f2cfde378ac11ea9a22c6e3a9a0a4e67ddef"
+    },
+    {
+      "image": "images/components/splendor/tier3/diamond_02.png",
+      "source": "card:item/splendor/tier3/diamond_02",
+      "kind": "texture-first-frame",
+      "sha256": "ab55096407f51915f328471ef4fafadb60a406bab34b4c6755ff95095206c20b"
+    },
+    {
+      "image": "images/components/splendor/tier3/diamond_03.png",
+      "source": "card:item/splendor/tier3/diamond_03",
+      "kind": "texture-first-frame",
+      "sha256": "e7f8c5db9ab503705b18fa76ad97f903b1363cb5aef173554bcb1091cfe5a3af"
+    },
+    {
+      "image": "images/components/splendor/tier3/diamond_04.png",
+      "source": "card:item/splendor/tier3/diamond_04",
+      "kind": "texture-first-frame",
+      "sha256": "85c5128c746e11b79f00b9bbb82300561739fb7535dedab6f07d73adbb2c6b61"
+    },
+    {
+      "image": "images/components/splendor/tier3/sapphire_01.png",
+      "source": "card:item/splendor/tier3/sapphire_01",
+      "kind": "texture-first-frame",
+      "sha256": "621c0a4863f5c313b544ac2e5d6a967a57c1945dde3fca7e1fd51151441279cb"
+    },
+    {
+      "image": "images/components/splendor/tier3/sapphire_02.png",
+      "source": "card:item/splendor/tier3/sapphire_02",
+      "kind": "texture-first-frame",
+      "sha256": "5fa79764aebabb6608afb820862aa15c76b57548895e06f9b3bae9b5a0ed09f9"
+    },
+    {
+      "image": "images/components/splendor/tier3/sapphire_03.png",
+      "source": "card:item/splendor/tier3/sapphire_03",
+      "kind": "texture-first-frame",
+      "sha256": "86e3cb59c6313a577d48a92339bf7b1032e8cb26ab561b817d0f1651a29789a5"
+    },
+    {
+      "image": "images/components/splendor/tier3/sapphire_04.png",
+      "source": "card:item/splendor/tier3/sapphire_04",
+      "kind": "texture-first-frame",
+      "sha256": "a5b011d2d7c73548124f2d095032134f7aad35be6b75adb71c129d3f46b360d4"
+    },
+    {
+      "image": "images/components/splendor/tier3/emerald_01.png",
+      "source": "card:item/splendor/tier3/emerald_01",
+      "kind": "texture-first-frame",
+      "sha256": "281455bdf3f046ac01059bb0dd4e7256a3e10f3b73251164dc16bbd07106263a"
+    },
+    {
+      "image": "images/components/splendor/tier3/emerald_02.png",
+      "source": "card:item/splendor/tier3/emerald_02",
+      "kind": "texture-first-frame",
+      "sha256": "4710ef940237decee3b67f1ad2c0d4bdbab69ff2db77514dbcbff23f74616dab"
+    },
+    {
+      "image": "images/components/splendor/tier3/emerald_03.png",
+      "source": "card:item/splendor/tier3/emerald_03",
+      "kind": "texture-first-frame",
+      "sha256": "70b69a7b09f0180f4e28ecc674a50e14022481ce76a87ae1ab382fc4e495d311"
+    },
+    {
+      "image": "images/components/splendor/tier3/emerald_04.png",
+      "source": "card:item/splendor/tier3/emerald_04",
+      "kind": "texture-first-frame",
+      "sha256": "dfc9291bafa5fe2e4e1036b4688e4c69041f416808730c02b12823aaa91f7827"
+    },
+    {
+      "image": "images/components/splendor/tier3/ruby_01.png",
+      "source": "card:item/splendor/tier3/ruby_01",
+      "kind": "texture-first-frame",
+      "sha256": "e20087766394576958aaaf073a9188a44d49ecbce9569025a6e2a8ab73d017d0"
+    },
+    {
+      "image": "images/components/splendor/tier3/ruby_02.png",
+      "source": "card:item/splendor/tier3/ruby_02",
+      "kind": "texture-first-frame",
+      "sha256": "76148b742a7a08e63f644e28fc2ac2199ec3280069750194b621ad948682d815"
+    },
+    {
+      "image": "images/components/splendor/tier3/ruby_03.png",
+      "source": "card:item/splendor/tier3/ruby_03",
+      "kind": "texture-first-frame",
+      "sha256": "2ca2a51c990630a4846d71e6a3fe40a62c527df7cc2440049ec863bca8d292b5"
+    },
+    {
+      "image": "images/components/splendor/tier3/ruby_04.png",
+      "source": "card:item/splendor/tier3/ruby_04",
+      "kind": "texture-first-frame",
+      "sha256": "a2a7c9854f5dbb23b9d0461838d87d778721f0cbb5cd8592d6fa2a1bd9cae669"
+    },
+    {
+      "image": "images/components/splendor/tier3/onyx_01.png",
+      "source": "card:item/splendor/tier3/onyx_01",
+      "kind": "texture-first-frame",
+      "sha256": "e610fb9e0f0b4b348d521ca082efa9732870b1edf154e23f063932b47da23ec7"
+    },
+    {
+      "image": "images/components/splendor/tier3/onyx_02.png",
+      "source": "card:item/splendor/tier3/onyx_02",
+      "kind": "texture-first-frame",
+      "sha256": "5f0b50a958be75b4376acfa062521a3db8b62a6a4fc2d41dff9f93946134c451"
+    },
+    {
+      "image": "images/components/splendor/tier3/onyx_03.png",
+      "source": "card:item/splendor/tier3/onyx_03",
+      "kind": "texture-first-frame",
+      "sha256": "c7d9f60578507fbcb8649f2848cfddc732b4093c0d85de102f94578e0ddfb93a"
+    },
+    {
+      "image": "images/components/splendor/tier3/onyx_04.png",
+      "source": "card:item/splendor/tier3/onyx_04",
+      "kind": "texture-first-frame",
+      "sha256": "b6c1f3998f82cb595888f6d91acdc4daf3080dc142b2336e7d31af7223399d23"
+    },
+    {
+      "image": "images/components/splendor/noble/diamond_sapphire.png",
+      "source": "card:item/splendor/noble/diamond_sapphire",
+      "kind": "texture-first-frame",
+      "sha256": "db11c15ae82fb32e5afa0035728f2dbaf2305aa2be5f4b4ad6a0aa8a0c0b1e23"
+    },
+    {
+      "image": "images/components/splendor/noble/sapphire_emerald.png",
+      "source": "card:item/splendor/noble/sapphire_emerald",
+      "kind": "texture-first-frame",
+      "sha256": "e7fd136b8949f2148b80c821573be54785c7b977d2b565ad45f41b87d93a2b6a"
+    },
+    {
+      "image": "images/components/splendor/noble/emerald_ruby.png",
+      "source": "card:item/splendor/noble/emerald_ruby",
+      "kind": "texture-first-frame",
+      "sha256": "15d76cb2d8cbad6cda54882af60a035e30f5a70e6a1b55f37b6c88afe631b0a9"
+    },
+    {
+      "image": "images/components/splendor/noble/ruby_onyx.png",
+      "source": "card:item/splendor/noble/ruby_onyx",
+      "kind": "texture-first-frame",
+      "sha256": "b6805f2f5f42f1169b94ba247022ab4d6905d7fd63a4835e2b50967a50b420df"
+    },
+    {
+      "image": "images/components/splendor/noble/diamond_onyx.png",
+      "source": "card:item/splendor/noble/diamond_onyx",
+      "kind": "texture-first-frame",
+      "sha256": "d23fe9992041b18b45d176f24aca1bf7738a9ec093589327bc84913b66d451e9"
+    },
+    {
+      "image": "images/components/splendor/noble/diamond_sapphire_emerald.png",
+      "source": "card:item/splendor/noble/diamond_sapphire_emerald",
+      "kind": "texture-first-frame",
+      "sha256": "c4c5b58a8cfc9fc44db8d489bc2a5c8d3982590bf679e717146dedc2f6913cfb"
+    },
+    {
+      "image": "images/components/splendor/noble/sapphire_emerald_ruby.png",
+      "source": "card:item/splendor/noble/sapphire_emerald_ruby",
+      "kind": "texture-first-frame",
+      "sha256": "b6b2ff2ca7a10b7eb13891db6fb1372acaf48a482abd6fe7ef07b62548a54f87"
+    },
+    {
+      "image": "images/components/splendor/noble/emerald_ruby_onyx.png",
+      "source": "card:item/splendor/noble/emerald_ruby_onyx",
+      "kind": "texture-first-frame",
+      "sha256": "3b263f55e83f34413e757a294a5335bc03e146024579a2486a7e3c5decbe1fc4"
+    },
+    {
+      "image": "images/components/splendor/noble/diamond_ruby_onyx.png",
+      "source": "card:item/splendor/noble/diamond_ruby_onyx",
+      "kind": "texture-first-frame",
+      "sha256": "5632fd13221841751b676b5e42523f5c8fd8ba9a5e8b935047b5fd2537ed23ee"
+    },
+    {
+      "image": "images/components/splendor/noble/diamond_sapphire_onyx.png",
+      "source": "card:item/splendor/noble/diamond_sapphire_onyx",
+      "kind": "texture-first-frame",
+      "sha256": "dbf4070ebfe360aacdfc27970bad1d397ce717497ca4a0921ec02d5fe19d822c"
+    },
+    {
+      "image": "images/components/magical/figure/alchemist.png",
+      "source": "card:item/magical_athlete/token/alchemist",
+      "kind": "native-model",
+      "sha256": "593590368d5c12625845ec60579bac9743f70f56fa8d44d539590479eafea521"
+    },
+    {
+      "image": "images/components/magical/figure/baba-yaga.png",
+      "source": "card:item/magical_athlete/token/baba-yaga",
+      "kind": "native-model",
+      "sha256": "b4a81303e52ecdcf59d54596440be569814a8dfae06baba3d58d9d08d05e01bd"
+    },
+    {
+      "image": "images/components/magical/figure/banana.png",
+      "source": "card:item/magical_athlete/token/banana",
+      "kind": "native-model",
+      "sha256": "80dd976ab1580c3abaacf17c3fbf8c774c9ac1641f1c7f7f57cc8e7682f3e3d4"
+    },
+    {
+      "image": "images/components/magical/figure/blimp.png",
+      "source": "card:item/magical_athlete/token/blimp",
+      "kind": "native-model",
+      "sha256": "fb870e16338a5dff093aba72c5411d603cd4891a926acb10e75e853f5f33eb27"
+    },
+    {
+      "image": "images/components/magical/figure/centaur.png",
+      "source": "card:item/magical_athlete/token/centaur",
+      "kind": "native-model",
+      "sha256": "04a417033f1d596695d3deb49a4c7510ef113e6950fc6be1aeb4306e60b4d8a9"
+    },
+    {
+      "image": "images/components/magical/figure/cheerleader.png",
+      "source": "card:item/magical_athlete/token/cheerleader",
+      "kind": "native-model",
+      "sha256": "760e887ad005a08831de8cb196ac8c89b8b689a2fe289082c427ee43cf378b76"
+    },
+    {
+      "image": "images/components/magical/figure/coach.png",
+      "source": "card:item/magical_athlete/token/coach",
+      "kind": "native-model",
+      "sha256": "a4dd5b09c2c39a13f6edd83d41cd1fc81e358d57d6e6c232c80e9747a6d30710"
+    },
+    {
+      "image": "images/components/magical/figure/copycat.png",
+      "source": "card:item/magical_athlete/token/copycat",
+      "kind": "native-model",
+      "sha256": "8bec85de7841105f250ea15e4f7ce421ff53bb4842d4d271b0db130234763671"
+    },
+    {
+      "image": "images/components/magical/figure/dicemonger.png",
+      "source": "card:item/magical_athlete/token/dicemonger",
+      "kind": "native-model",
+      "sha256": "d2c055db0f6588e0dad8a27938939f9588acb343ef61d0c61083ec546a36e0b1"
+    },
+    {
+      "image": "images/components/magical/figure/duelist.png",
+      "source": "card:item/magical_athlete/token/duelist",
+      "kind": "native-model",
+      "sha256": "41b499151c76106b6ac8921a07da42b90fb2be75f627d78e371d414c98517214"
+    },
+    {
+      "image": "images/components/magical/figure/egg.png",
+      "source": "card:item/magical_athlete/token/egg",
+      "kind": "native-model",
+      "sha256": "9e5e093ef29d25f62843b6dbdd9ca5cda20e4e3ed95d165b0dcff67cabfab93c"
+    },
+    {
+      "image": "images/components/magical/figure/flip-flop.png",
+      "source": "card:item/magical_athlete/token/flip-flop",
+      "kind": "native-model",
+      "sha256": "2eac8c7c9eea8e5fdcb42265a1783a543beaf05e7fd1041bafe07acffe6975da"
+    },
+    {
+      "image": "images/components/magical/figure/genius.png",
+      "source": "card:item/magical_athlete/token/genius",
+      "kind": "native-model",
+      "sha256": "018ec94bd624963e45433c3ff84a538887efed1dfcf70e002806b3409e46652d"
+    },
+    {
+      "image": "images/components/magical/figure/gunk.png",
+      "source": "card:item/magical_athlete/token/gunk",
+      "kind": "native-model",
+      "sha256": "ec467764411e571009c552581b33200d38eff83b3fc6add56ef159147f262fa7"
+    },
+    {
+      "image": "images/components/magical/figure/hare.png",
+      "source": "card:item/magical_athlete/token/hare",
+      "kind": "native-model",
+      "sha256": "14441a654550a2d40167226acb494a60e555ca14ba638d53a3a240f87755d3d6"
+    },
+    {
+      "image": "images/components/magical/figure/heckler.png",
+      "source": "card:item/magical_athlete/token/heckler",
+      "kind": "native-model",
+      "sha256": "1655c105b464b4e62b18df8ce81a7c5170f6c87891746e5443d39672086624ba"
+    },
+    {
+      "image": "images/components/magical/figure/huge-baby.png",
+      "source": "card:item/magical_athlete/token/huge-baby",
+      "kind": "native-model",
+      "sha256": "1afed1774ea2265cf057f09db17ec1e403d0dcd6dd88f652f15db35282c92f09"
+    },
+    {
+      "image": "images/components/magical/figure/hypnotist.png",
+      "source": "card:item/magical_athlete/token/hypnotist",
+      "kind": "native-model",
+      "sha256": "86300c79d70aaf8fe6838af33b254f715e35efa45fc51a2879843368291c15ab"
+    },
+    {
+      "image": "images/components/magical/figure/inchworm.png",
+      "source": "card:item/magical_athlete/token/inchworm",
+      "kind": "native-model",
+      "sha256": "f802c0d4bcbccc0a4e9e56dc3eddd30e8e4c34404fb7e732d0b25a1fb837b9fa"
+    },
+    {
+      "image": "images/components/magical/figure/lackey.png",
+      "source": "card:item/magical_athlete/token/lackey",
+      "kind": "native-model",
+      "sha256": "6acbb2d0dab27186b2d60bee77dacfb4ccb5ee995c4c23c667c8a293338241a8"
+    },
+    {
+      "image": "images/components/magical/figure/leaptoad.png",
+      "source": "card:item/magical_athlete/token/leaptoad",
+      "kind": "native-model",
+      "sha256": "577b88564242ce3ff9fad567af09142951b4357db2811d8bd71b279c8e6d1c10"
+    },
+    {
+      "image": "images/components/magical/figure/legs.png",
+      "source": "card:item/magical_athlete/token/legs",
+      "kind": "native-model",
+      "sha256": "35011ed95bab4d3e722f76c94ce372066441c0477184fa00656b306163e9cefa"
+    },
+    {
+      "image": "images/components/magical/figure/lovable-loser.png",
+      "source": "card:item/magical_athlete/token/lovable-loser",
+      "kind": "native-model",
+      "sha256": "8f181830c953e7a51056ee44840c794205b14832c670a8eb7bcef8cdedbf6847"
+    },
+    {
+      "image": "images/components/magical/figure/magician.png",
+      "source": "card:item/magical_athlete/token/magician",
+      "kind": "native-model",
+      "sha256": "3ec0be12bf66bb47f28a3f7267d81699bd0405523381c6003a15d5b8dd007f89"
+    },
+    {
+      "image": "images/components/magical/figure/mastermind.png",
+      "source": "card:item/magical_athlete/token/mastermind",
+      "kind": "native-model",
+      "sha256": "e737adb9d8d4873b450fc1a4ccd79679d088d66fe8fbc6a6923553a683c3aaef"
+    },
+    {
+      "image": "images/components/magical/figure/mouth.png",
+      "source": "card:item/magical_athlete/token/mouth",
+      "kind": "native-model",
+      "sha256": "361353d7824fd58d6114daef2414e3741a3e3d3595d3a84ddf4f981c58641cdd"
+    },
+    {
+      "image": "images/components/magical/figure/party-animal.png",
+      "source": "card:item/magical_athlete/token/party-animal",
+      "kind": "native-model",
+      "sha256": "933c7139769e5f6a90031e9354d34a37a13df95818eb4e57ba2e5433d874b4d0"
+    },
+    {
+      "image": "images/components/magical/figure/rocket-scientist.png",
+      "source": "card:item/magical_athlete/token/rocket-scientist",
+      "kind": "native-model",
+      "sha256": "7eb1677e1d20557403d0078e7aab3996c2a9347d0f9415aa75b0798d3436f031"
+    },
+    {
+      "image": "images/components/magical/figure/romantic.png",
+      "source": "card:item/magical_athlete/token/romantic",
+      "kind": "native-model",
+      "sha256": "c5af57dbedbecde68c3d86efdf80c36a50f3b714ba462d41186a8536c9b65d2f"
+    },
+    {
+      "image": "images/components/magical/figure/scoocher.png",
+      "source": "card:item/magical_athlete/token/scoocher",
+      "kind": "native-model",
+      "sha256": "a423d3f90f08975ea02badfa93da6a61714964271a4e6ca051e5fcf0bc51a548"
+    },
+    {
+      "image": "images/components/magical/figure/sisyphus.png",
+      "source": "card:item/magical_athlete/token/sisyphus",
+      "kind": "native-model",
+      "sha256": "bc963aaf7553e2c3371341f40b3b46c813e2486440a4f11571e8c18308fb3627"
+    },
+    {
+      "image": "images/components/magical/figure/skipper.png",
+      "source": "card:item/magical_athlete/token/skipper",
+      "kind": "native-model",
+      "sha256": "372270609ec1b3941d5962c0e08893c66a2f822bcc9b3197ef582fbb1adc92d5"
+    },
+    {
+      "image": "images/components/magical/figure/stickler.png",
+      "source": "card:item/magical_athlete/token/stickler",
+      "kind": "native-model",
+      "sha256": "c645e167b43748eaa27fa684c256cb21a28a65451d6aaab8ef8ecb01727daccf"
+    },
+    {
+      "image": "images/components/magical/figure/suckerfish.png",
+      "source": "card:item/magical_athlete/token/suckerfish",
+      "kind": "native-model",
+      "sha256": "cd7d50e9b335d4c88836d7c4883de1418daad3d2583027f2548efd269f174ed6"
+    },
+    {
+      "image": "images/components/magical/figure/third-wheel.png",
+      "source": "card:item/magical_athlete/token/third-wheel",
+      "kind": "native-model",
+      "sha256": "d3ab82dfa8147b9512f530d3f05087dcb6d274f2af68f79e4569bdead7d8cfef"
+    },
+    {
+      "image": "images/components/magical/figure/twin.png",
+      "source": "card:item/magical_athlete/token/twin",
+      "kind": "native-model",
+      "sha256": "afbb3e4977bdae1360475a83a881718a315a70880e18aa9dd841dd7ed9c4a357"
+    },
+    {
+      "image": "images/components/magical/stadium_mild.png",
+      "source": "card:item/magical_athlete/board/mild",
+      "kind": "native-model-scene",
+      "sha256": "365699c4ddbdd468052dee2b12d316a366924acc6e4db9b36de802b88376f933"
+    },
+    {
+      "image": "images/components/magical/stadium_wild.png",
+      "source": "card:item/magical_athlete/board/wild",
+      "kind": "native-model-scene",
+      "sha256": "0fe0c4dbd05d92760ea052a72515571474046e3a04f9449a8912e1e5c301c462"
+    },
+    {
+      "image": "images/components/magical/guess/1.png",
+      "source": "card:item/magical_athlete/guess/1",
+      "kind": "texture-first-frame",
+      "sha256": "72178bc8db7fbe1b64ef00d6f02408a7b3a5136d3e5a8043590206ee32a3e837"
+    },
+    {
+      "image": "images/components/magical/guess/2.png",
+      "source": "card:item/magical_athlete/guess/2",
+      "kind": "texture-first-frame",
+      "sha256": "115037a0c8cf9643a4f4512cd9f8e6280dc8bd5e9280d8267793b2efc47e847c"
+    },
+    {
+      "image": "images/components/magical/guess/3.png",
+      "source": "card:item/magical_athlete/guess/3",
+      "kind": "texture-first-frame",
+      "sha256": "8612a4648de75bfe265339281107ca2901e6fac9db90bc06227c9c9492319b29"
+    },
+    {
+      "image": "images/components/magical/guess/4.png",
+      "source": "card:item/magical_athlete/guess/4",
+      "kind": "texture-first-frame",
+      "sha256": "98977fa341eb7d47d2d77a57aab9be9bce44329306564d629873926b9a9a7ceb"
+    },
+    {
+      "image": "images/components/magical/guess/5.png",
+      "source": "card:item/magical_athlete/guess/5",
+      "kind": "texture-first-frame",
+      "sha256": "b828067038f13d89b7508ea45f10008b62730729b8ff6d3f2ef94c35c3bde52b"
+    },
+    {
+      "image": "images/components/magical/guess/6.png",
+      "source": "card:item/magical_athlete/guess/6",
+      "kind": "texture-first-frame",
+      "sha256": "5492d927d81773da4f935fd2de870b437d412691e27934292bc475740d751c57"
+    }
+  ]
+}

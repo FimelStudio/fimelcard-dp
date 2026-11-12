@@ -313,13 +313,15 @@ function magical_athlete:game/hud
         path=ROOT/(name+'.mcfunction');body=path.read_text(encoding='utf-8')
         line=f'execute if items entity @s hotbar.{slot} * unless items entity @s hotbar.{slot} *[minecraft:custom_data~{{magical_athlete:{{tool:1b}}}}] run return run function magical_athlete:direct/space_notice'
         put(name,('$' if '$(' in line else '')+line+'\n'+body)
-    put('direct/space_notice','execute if score @s ma_htimer matches 1.. run return 0\n'+notice('请腾空快捷栏操作位置，并为队伍卡留出主物品栏空间；普通物品不会被覆盖。'))
+    put('direct/space_notice','execute if score @s ma_htimer matches 1.. run return 0\n'+notice('请腾空快捷栏操作位置，并为队伍棋子留出主物品栏空间；普通物品不会被覆盖。'))
     # 特殊界面只在本人主动操作特殊入口时显示；普通流程绝不弹窗。
     assets()
     from build_table_feedback import magical_athlete as feedback
     feedback()
     from build_magical_athlete_scene import build as scene_updates
     scene_updates()
+    from build_magical_athlete_choices import build as choice_models
+    choice_models()
     from build_direct_support import finish
     finish('magical_athlete')
 
@@ -369,7 +371,7 @@ tag @s add ma.direct
 tag @s add ma.pool
 $scoreboard players set @s ct_id $(table)
 $scoreboard players set @s ma_did $(id)
-$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/racer/$(slug)"}},item_display:"none",brightness:{block:15,sky:15},transformation:{scale:[0.26f,0.26f,0.26f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}
+$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:magical_athlete/token/$(slug)"}},item_display:"none",brightness:{block:15,sky:15},transformation:{scale:[0.26f,0.26f,0.26f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}
 ''')
     put('direct/hit_init', '''
 tag @s add ma.direct

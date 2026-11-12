@@ -1,6 +1,6 @@
 $data modify storage magical_athlete:feedback pending set value {owner:$(owner),kind:"$(kind)",label:"选择技能选项：手持选项按Q一次确认"}
 execute if data storage magical_athlete:feedback pending{kind:"ready"} run data modify storage magical_athlete:feedback pending.label set value "轮到你了：手持骰子按Q开始行动"
-execute if data storage magical_athlete:feedback pending{kind:"genius"} run data modify storage magical_athlete:feedback pending.label set value "请选择预测点数：0是不预测，1～6是预测骰子"
+execute if data storage magical_athlete:feedback pending{kind:"genius"} run data modify storage magical_athlete:feedback pending.label set value "预测骰子：前六格1～6，按Q一次；第七格不预测"
 execute if data storage magical_athlete:feedback pending{kind:"reroll"} run data modify storage magical_athlete:feedback pending.label set value "选择接受当前点数，或重新投骰"
 execute if data storage magical_athlete:feedback pending{kind:"hypnotist"} run data modify storage magical_athlete:feedback pending.label set value "选择拉到身边的选手：右键亮起的棋子，或选择跳过"
 execute if data storage magical_athlete:feedback pending{kind:"flip"} run data modify storage magical_athlete:feedback pending.label set value "选择交换位置的选手：右键亮起的棋子，或选择跳过"

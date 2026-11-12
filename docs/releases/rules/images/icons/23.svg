@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+<title id="title">胡闹运动会 · MAGICAL ATHLETE</title>
+<desc id="desc">三名各不相同的立体方块选手在跑道上竞速，配有终点线、骰子与奖杯。</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#274f67"/><stop offset=".52" stop-color="#345c6b"/><stop offset="1" stop-color="#1d263e"/></linearGradient>
+  <linearGradient id="track" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e89672"/><stop offset="1" stop-color="#bd5f63"/></linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a0"/><stop offset=".58" stop-color="#f1c44f"/><stop offset="1" stop-color="#b7772f"/></linearGradient>
+  <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#0b1725" flood-opacity=".5"/></filter>
+  <g id="box"><path d="M0-28L45-5L0 18L-45-5Z" fill="var(--top)"/><path d="M-45-5L0 18V72L-45 49Z" fill="var(--left)"/><path d="M45-5L0 18V72L45 49Z" fill="var(--right)"/></g>
+  <g id="spark"><path d="M0-20L6-6L20 0L6 6L0 20L-6 6L-20 0L-6-6Z" fill="#fff0b8"/></g>
+</defs>
+<g>
+  <rect width="1024" height="1024" rx="88" fill="url(#bg)"/>
+  <g opacity=".12" fill="none" stroke="#e3f3e8" stroke-width="4"><circle cx="512" cy="382" r="365"/><path d="M-80 670L690-40M315 1050L1100 335"/></g>
+
+  <g filter="url(#shadow)">
+    <rect x="97" y="250" width="830" height="390" rx="190" fill="url(#track)" stroke="#ffe8b7" stroke-width="11"/>
+    <rect x="138" y="286" width="748" height="318" rx="155" fill="none" stroke="#f6d4bb" stroke-width="5"/>
+    <rect x="180" y="323" width="664" height="244" rx="120" fill="none" stroke="#f6d4bb" stroke-width="5"/>
+    <rect x="223" y="361" width="578" height="168" rx="82" fill="#9dc49e" stroke="#ffe8b7" stroke-width="8"/>
+  </g>
+  <path d="M746 251V639" stroke="#f4e4bf" stroke-width="39"/>
+  <g fill="#26384b"><path d="M727 259H746V286H727ZM746 286H765V313H746ZM727 313H746V340H727ZM746 340H765V367H746ZM727 367H746V394H727ZM746 394H765V421H746ZM727 421H746V448H727ZM746 448H765V475H746ZM727 475H746V502H727ZM746 502H765V529H746ZM727 529H746V556H727ZM746 556H765V583H746ZM727 583H746V610H727Z"/></g>
+
+  <g transform="translate(289 430) scale(1.06)" filter="url(#shadow)">
+    <g style="--top:#35475f;--left:#1e293c;--right:#29374c" transform="translate(0 -92)"><use href="#box"/></g>
+    <path d="M-58-136L-31-185L-12-143L15-202L41-140L65-169L57-112H-55Z" fill="#273143" stroke="#151d2c" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M-65-116H67V-91H-65Z" fill="#253146" stroke="#151d2c" stroke-width="7"/>
+    <rect x="-33" y="-96" width="66" height="60" fill="#d59b73" stroke="#593b38" stroke-width="6"/>
+    <rect x="-23" y="-73" width="13" height="11" fill="#182534"/><rect x="13" y="-73" width="13" height="11" fill="#182534"/>
+    <g style="--top:#416482;--left:#243d5b;--right:#315271" transform="translate(0 -30)"><use href="#box"/></g>
+    <rect x="-58" y="-35" width="25" height="82" fill="#c94c55" stroke="#6f2a3c" stroke-width="5"/><rect x="33" y="-35" width="25" height="82" fill="#c94c55" stroke="#6f2a3c" stroke-width="5"/>
+    <rect x="-34" y="37" width="27" height="56" fill="#27354c"/><rect x="9" y="37" width="27" height="56" fill="#27354c"/>
+  </g>
+
+  <g transform="translate(511 453) scale(.98)" filter="url(#shadow)">
+    <rect x="-82" y="-33" width="168" height="75" rx="9" fill="#a96342" stroke="#57372f" stroke-width="7"/>
+    <rect x="-76" y="35" width="32" height="58" fill="#75442f"/><rect x="-17" y="35" width="32" height="58" fill="#75442f"/><rect x="49" y="35" width="32" height="58" fill="#75442f"/>
+    <path d="M74-17L126-57V30L83 43" fill="#a96342" stroke="#57372f" stroke-width="7"/>
+    <g style="--top:#86b56e;--left:#3f7652;--right:#5b9563" transform="translate(-16 -107)"><use href="#box"/></g>
+    <rect x="-48" y="-162" width="66" height="62" fill="#d39a70" stroke="#593b38" stroke-width="6"/>
+    <rect x="-37" y="-140" width="12" height="11" fill="#172938"/><rect x="-6" y="-140" width="12" height="11" fill="#172938"/>
+    <path d="M-56-166L-15-204L26-166L7-152L-15-171L-37-151Z" fill="#e8b23e" stroke="#78502f" stroke-width="7"/>
+    <rect x="-70" y="-93" width="28" height="65" fill="#61955f"/><rect x="12" y="-93" width="28" height="65" fill="#61955f"/>
+  </g>
+
+  <g transform="translate(682 447) scale(.92)" filter="url(#shadow)">
+    <g style="--top:#e9efe0;--left:#b7c9c0;--right:#d2ded3" transform="translate(0 -88)"><use href="#box"/></g>
+    <rect x="-37" y="-160" width="74" height="68" rx="5" fill="#f5e9d0" stroke="#4b5660" stroke-width="7"/>
+    <rect x="-27" y="-136" width="12" height="13" fill="#1b2a39"/><rect x="15" y="-136" width="12" height="13" fill="#1b2a39"/>
+    <path d="M-32-163L-43-221L-9-172M31-163L43-221L10-172" fill="#f5e9d0" stroke="#4b5660" stroke-width="8" stroke-linejoin="round"/>
+    <rect x="-73" y="-110" width="30" height="92" fill="#d94f55" stroke="#79303c" stroke-width="6"/><rect x="43" y="-110" width="30" height="92" fill="#d94f55" stroke="#79303c" stroke-width="6"/>
+    <rect x="-58" y="-55" width="22" height="76" fill="#466b83"/><rect x="36" y="-55" width="22" height="76" fill="#466b83"/>
+    <path d="M-39 20L-22 75L0 38L22 75L39 20" fill="#e7a436" stroke="#87472f" stroke-width="6"/>
+    <path d="M-22 74L0 132L22 74L0 93Z" fill="#f2d455"/><path d="M-11 88L0 122L11 88L0 101Z" fill="#ef6d48"/>
+  </g>
+
+  <g transform="translate(827 178) rotate(13)" filter="url(#shadow)"><rect x="-59" y="-59" width="118" height="118" rx="22" fill="#fff3d7" stroke="#26384b" stroke-width="8"/><g fill="#c94c55"><circle cx="-29" cy="-29" r="10"/><circle cx="29" cy="-29" r="10"/><circle r="10"/><circle cx="-29" cy="29" r="10"/><circle cx="29" cy="29" r="10"/></g></g>
+  <g transform="translate(185 168) scale(.72)" filter="url(#shadow)"><path d="M-80-60H80L63 34L35 76L0 93L-35 76L-63 34Z" fill="url(#gold)" stroke="#26384b" stroke-width="10"/><path d="M-80-43Q-145-36-116 32Q-101 59-61 53M80-43Q145-36 116 32Q101 59 61 53" fill="none" stroke="#e4b74c" stroke-width="22"/><rect x="-20" y="86" width="40" height="62" fill="#d49b36"/><rect x="-69" y="139" width="138" height="35" rx="8" fill="url(#gold)" stroke="#26384b" stroke-width="8"/><path d="M0-30L14-2L45 2L22 23L28 55L0 40L-28 55L-22 23L-45 2L-14-2Z" fill="#fff1a0"/></g>
+  <use href="#spark" transform="translate(105 335) scale(.8)"/><use href="#spark" transform="translate(908 355) scale(1.1)"/><use href="#spark" transform="translate(608 194) scale(.65)"/>
+
+  <rect x="60" y="742" width="904" height="210" rx="46" fill="#142237" stroke="#86b5bf" stroke-width="5"/>
+  <path d="M84 762H940" stroke="url(#gold)" stroke-width="9"/>
+  <text x="512" y="850" text-anchor="middle" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="84" font-weight="700" fill="#fff4dd">胡闹运动会</text>
+  <text x="512" y="923" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="700" letter-spacing="2" fill="#cfe5de">MAGICAL ATHLETE</text>
+  <rect x="14" y="14" width="996" height="996" rx="75" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="10"/>
+</g>
+</svg>

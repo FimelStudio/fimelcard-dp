@@ -1,0 +1,10 @@
+execute if data storage magical_athlete:ui choice{target:-1} run data modify storage magical_athlete:ui choice.model set value "minecraft:barrier"
+execute if data storage magical_athlete:ui choice{kind:"genius",target:0} run data modify storage magical_athlete:ui choice.model set value "minecraft:barrier"
+$execute if data storage magical_athlete:ui choice{kind:"genius"} if predicate {condition:"minecraft:value_check",value:$(target),range:{min:1,max:6}} run data modify storage magical_athlete:ui choice.model set value "card:magical_athlete/guess/$(target)"
+execute if data storage magical_athlete:ui choice{kind:"hypnotist"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_racer_model with storage magical_athlete:ui choice
+execute if data storage magical_athlete:ui choice{kind:"flip"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_racer_model with storage magical_athlete:ui choice
+execute if data storage magical_athlete:ui choice{kind:"duel"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_racer_model with storage magical_athlete:ui choice
+execute if data storage magical_athlete:ui choice{kind:"mastermind"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_racer_model with storage magical_athlete:ui choice
+execute if data storage magical_athlete:ui choice{kind:"copycat"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_racer_model with storage magical_athlete:ui choice
+execute if data storage magical_athlete:ui choice{kind:"egg"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_skill_model with storage magical_athlete:ui choice
+execute if data storage magical_athlete:ui choice{kind:"twin"} unless data storage magical_athlete:ui choice{target:-1} run function magical_athlete:direct/choice_skill_model with storage magical_athlete:ui choice

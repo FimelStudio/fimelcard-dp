@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""胡闹运动会原创体育场、36枚角色立牌、骰子道具和文本图片字体。"""
+"""胡闹运动会立体体育场、36 枚棋子、骰面选择物和图片字体。"""
 from __future__ import annotations
 
 import colorsys
 import json
 import math
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 from boardgame_assets import PACK, RP, CARD, cube, disc, export_model, export_texture, flat_board, json_file, text_file
 
 GAME = 'magical_athlete'
@@ -286,10 +286,14 @@ def icon(slug, index=0, framed=True):
 
 
 def pawn(slug, index):
-    face=icon(slug,index)
-    texture('racer/'+slug,face)
-    edge=Image.new('RGB',(16,16),palette(index));texture('racer_edge/'+slug,edge)
-    # 头像只用于文字 HUD；桌面、物品栏和手持均由立体雕塑生成器负责。
+    # HUD thumbnails also use actual sculptures, with no illustrated role cards.
+    with Image.open(SOURCE/'figures-preview.png') as sheet:
+        face=sheet.convert('RGB').crop((index%6*210,index//6*250,index%6*210+210,index//6*250+210))
+    alpha=ImageChops.difference(face,Image.new('RGB',face.size,'#e8e2d3')).convert('L').point(lambda x:255 if x else 0)
+    face=face.convert('RGBA');face.putalpha(alpha)
+    face=face.crop(face.getbbox());face.thumbnail((116,116),Image.Resampling.LANCZOS)
+    image=Image.new('RGBA',(128,128));image.alpha_composite(face,((128-face.width)//2,(128-face.height)//2))
+    texture('portrait/'+slug,image)
 
 
 def build_hand_models():
@@ -298,63 +302,13 @@ def build_hand_models():
 
 
 def board(kind):
-    size=1536;s=size/16
-    image=Image.new('RGB',(size,size),'#194c59' if kind=='mild' else '#41365e')
-    draw=ImageDraw.Draw(image)
-    draw.rounded_rectangle((15,15,size-16,size-16),radius=64,fill='#ffefd0',outline=INK,width=9)
-    draw.rounded_rectangle((38,38,size-39,size-39),radius=48,fill='#cde0b4',outline='#bdad88',width=3)
-    # Soft striped pitch surrounded by one numbered, unmistakable racing lane.
-    for i in range(10):
-        x0=round(3.2*s+i*.96*s);x1=round(3.2*s+(i+1)*.96*s)
-        draw.rectangle((x0,3.2*s,x1,12.8*s),fill=('#c7ddb0','#c1d6a7')[i%2])
-    draw.rounded_rectangle((3.4*s,3.4*s,12.6*s,12.6*s),radius=40,outline='#e6edcf',width=4)
-    draw.line((3.4*s,8*s,12.6*s,8*s),fill='#e6edcf',width=4)
-    draw.ellipse((6.4*s,6.4*s,9.6*s,9.6*s),outline='#e6edcf',width=4)
-    positions=TRACK['layout']['positions']
-    points=[(x*s,z*s) for x,z in positions]
-    draw.line(points,fill='#314957',width=round(1.38*s),joint='curve')
-    wild=TRACK['wild'] if kind=='wild' else {}
-    for number,(x,z) in enumerate(positions):
-        cx,cy=x*s,z*s;r=.65*s
-        effect=wild.get(str(number),{})
-        color='#fff8e2'
-        if 'points' in effect:color='#fae29a'
-        if 'trip' in effect:color='#efb19e'
-        if 'move' in effect:color='#b3dfe0' if effect['move']>0 else '#d0c0e1'
-        if number==0:color='#9dcda6'
-        if number==30:color='#fff5c7'
-        draw.rounded_rectangle((cx-r,cy-r,cx+r,cy+r),radius=round(.16*s),fill=color,outline=INK,width=3)
-        draw.rounded_rectangle((cx-r+7,cy-r+7,cx+r-7,cy+r-7),radius=round(.10*s),outline='#ffffff',width=2)
-        if number in (0,30):
-            text='起点' if number==0 else '终点'
-            draw.text((cx,cy+.24*s),text,font=font(round(.23*s),True),fill=INK,anchor='mm')
-            if number==30:
-                for row in range(2):
-                    for column in range(6):
-                        if (row+column)%2==0:
-                            draw.rectangle((cx+(.15*column-.45)*s,cy+(.15*row-.42)*s,cx+(.15*column-.3)*s,cy+(.15*row-.27)*s),fill=INK)
-            else:
-                draw.polygon([(cx-.24*s,cy-.4*s),(cx+.29*s,cy-.12*s),(cx-.24*s,cy+.08*s)],fill=INK)
-        else:
-            draw.text((cx,cy-.29*s if effect else cy),str(number),font=font(round(.35*s)),fill=INK,anchor='mm')
-            if 'points' in effect:
-                star(draw,(cx,cy+.2*s),.22*s,GOLD,width=2)
-            elif 'trip' in effect:
-                draw.line((cx-.25*s,cy+.05*s,cx+.25*s,cy+.45*s),fill='#c55245',width=7)
-                draw.line((cx+.25*s,cy+.05*s,cx-.25*s,cy+.45*s),fill='#c55245',width=7)
-            elif 'move' in effect:
-                value=effect['move'];draw.text((cx,cy+.2*s),f'{value:+d}',font=font(round(.34*s)),fill='#276b76' if value>0 else '#76538e',anchor='mm')
-    # The pitch is intentionally low contrast so dice and moving characters stand out.
-    draw.rounded_rectangle((4.2*s,4.35*s,11.8*s,6.25*s),radius=22,fill='#fff3d4',outline=INK,width=4)
-    draw.text((8*s,5.13*s),'胡闹运动会',font=font(round(.65*s),True),fill=INK,anchor='mm')
-    draw.text((8*s,5.83*s),'MAGICAL ATHLETE',font=font(round(.27*s)),fill='#628080',anchor='mm')
-    draw.text((8*s,10.65*s),'温和赛道' if kind=='mild' else '狂野赛道',font=font(round(.39*s),True),fill='#3f7069' if kind=='mild' else '#775d87',anchor='mm')
-    draw.text((8*s,11.23*s),'ROLL  ·  RUN  ·  MAKE CHAOS',font=font(round(.19*s)),fill='#77957b',anchor='mm')
-    for i,color in enumerate(TEAMS):
-        x=(5.75+i*.9)*s
-        draw.polygon([(x,7.05*s),(x+.44*s,7.05*s),(x+.34*s,7.48*s),(x+.11*s,7.48*s)],fill=color,outline=INK,width=2)
+    from magical_athlete_stadium import artwork,geometry
+    image=artwork(kind,TRACK)
+    body,materials=geometry(kind)
+    for name,color in materials.items():
+        texture(f'stadium/{kind}_{name}',Image.new('RGB',(16,16),color))
     texture('board/'+kind,image)
-    model('board/'+kind,flat_board('card:item/magical_athlete/board/'+kind),
+    model('board/'+kind,body,
           gui={'gui':{'rotation':[90,0,0],'scale':[1,1,1]}})
     return image
 
@@ -379,6 +333,18 @@ def dice():
     # Six top-face variants are useful for dialog previews; table animations use dice itself.
     for value in range(1,7):
         model('dice/'+str(value),{'parent':'minecraft:item/generated','textures':{'layer0':'card:item/magical_athlete/dice/'+str(value)}},gui={'gui':{'scale':[1,1,1]}})
+        # Separate face-only option: no cube perspective can obscure the guess.
+        image=Image.new('RGBA',(96,96));draw=ImageDraw.Draw(image)
+        draw.rounded_rectangle((2,2,93,93),radius=20,fill=PAPER,outline=INK,width=4)
+        draw.rounded_rectangle((8,8,87,87),radius=14,outline=GOLD,width=2)
+        for x,y in patterns[value]:
+            px,py=26+x*22,26+y*22
+            draw.ellipse((px-7,py-7,px+7,py+7),fill='#cf554b' if value==1 else INK)
+        texture('guess/'+str(value),image)
+        model('guess/'+str(value),{'parent':'minecraft:item/generated','textures':{'layer0':'card:item/magical_athlete/guess/'+str(value)}},gui={
+            'gui':{'scale':[.9,.9,.9]},
+            'firstperson_righthand':{'rotation':[0,0,0],'translation':[0,1,1],'scale':[.45,.45,.45]},
+            'firstperson_lefthand':{'rotation':[0,0,0],'translation':[0,1,1],'scale':[.45,.45,.45]}})
 
 
 def props():
@@ -418,7 +384,8 @@ def fonts():
     root=RP/'assets/magical_athlete/textures/font';root.mkdir(parents=True,exist_ok=True)
     avatars=Image.new('RGBA',(384,384))
     for entry in CHARACTERS:
-        i=entry['id'];avatars.paste(icon(entry['slug'],i).resize((64,64),Image.Resampling.LANCZOS),((i%6)*64,(i//6)*64))
+        i=entry['id'];face=Image.open(SOURCE/f'textures/portrait/{entry["slug"]}.png').convert('RGBA')
+        avatars.paste(face.resize((64,64),Image.Resampling.LANCZOS),((i%6)*64,(i//6)*64))
     avatars.save(root/'racers.png')
     atlas=Image.new('RGBA',(384,128))
     for i,slug in enumerate(PROPS):
@@ -443,11 +410,15 @@ def previews(mild,wild):
     sheet=Image.new('RGB',(1152,1344),PAPER);draw=ImageDraw.Draw(sheet)
     for entry in CHARACTERS:
         i=entry['id'];x=(i%6)*192;y=(i//6)*224
-        face=icon(entry['slug'],i).resize((144,144),Image.Resampling.LANCZOS)
+        face=Image.open(SOURCE/f'textures/portrait/{entry["slug"]}.png').convert('RGBA').resize((144,144),Image.Resampling.LANCZOS)
         sheet.paste(face,(x+24,y+8),face)
         draw.text((x+96,y+171),entry['name'],font=font(20,True),fill=INK,anchor='mm')
         draw.text((x+96,y+204),entry['slug'],font=font(13),fill='#69828b',anchor='mm')
     sheet.save(SOURCE/'racers-preview.png')
+    guesses=Image.new('RGBA',(576,96))
+    for value in range(1,7):
+        guesses.alpha_composite(Image.open(SOURCE/f'textures/guess/{value}.png').convert('RGBA'),((value-1)*96,0))
+    guesses.save(SOURCE/'guess-preview.png')
     atlas=Image.new('RGB',(768,256),PAPER)
     for i,slug in enumerate(PROPS):
         face=icon(slug,i);atlas.paste(face,((i%6)*128,(i//6)*128),face)
@@ -458,23 +429,34 @@ def build():
     assert [entry['id'] for entry in CHARACTERS]==list(range(36))
     assert len(TRACK['layout']['positions'])==31 and TRACK['finish']==30
     mild,wild=board('mild'),board('wild')
+    build_hand_models()
     for entry in CHARACTERS:pawn(entry['slug'],entry['id'])
     dice();props();fonts();previews(mild,wild)
-    build_hand_models()
-    json_file(SOURCE/'asset-map.json',{'id':23,'namespace':GAME,'texture_style':'Original full-volume voxel miniatures; illustrated HUD portraits',
+    # Removed illustrated card faces have no runtime users. Only prune these
+    # exact, generator-owned outputs; the sculpture model aliases remain valid.
+    for folder in (CARD/'textures/item/magical_athlete',SOURCE/'textures'):
+        for kind in ('racer','racer_edge'):
+            owned=(folder/kind).resolve()
+            for entry in CHARACTERS:
+                path=owned/(entry['slug']+'.png')
+                if path.exists():
+                    assert path.resolve().parent==owned
+                    path.unlink()
+    json_file(SOURCE/'asset-map.json',{'id':23,'namespace':GAME,'texture_style':'Raised day/night stadium; full-volume voxel miniatures and sculpture HUD thumbnails',
         'track_source':'fimel_cards/tools/magical_athlete_track.json', 'layout':TRACK['layout'],
         'models':{'board':['card:magical_athlete/board/'+k for k in ('mild','wild')],
                   'racers':['card:magical_athlete/racer/'+e['slug'] for e in CHARACTERS],
                   'tokens':['card:magical_athlete/token/'+e['slug'] for e in CHARACTERS],
-                  'dice':'card:magical_athlete/dice','cup':'card:magical_athlete/prop/dice_cup'},
+                  'dice':'card:magical_athlete/dice','guess':['card:magical_athlete/guess/'+str(n) for n in range(1,7)],'cup':'card:magical_athlete/prop/dice_cup'},
         'dice_faces':{'up':1,'down':6,'north':2,'south':5,'east':3,'west':4},
         'footprint_4':2.7,'footprint_8':3.6,'pawn_base_y':8,'draft_scale':.26,'pawn_recommended_scale':.2295})
     text_file(SOURCE/'README.md','''# 胡闹运动会原创资源
 
 本目录保留 Fimel Cards 原创体育场、36 个不同几何的立体角色、六面骰、骰盅、奖杯与道具模型的纹理、可编辑 Blockbench 工程及预览。角色依照身份分别设计成动物、人物或物件，不使用 CMYK 的官方插画、商标图或角色牌面。
 
-- `boards-preview.png`：温和／狂野两面；四人桌与八人桌共用纹理，分别缩放至 2.7／3.6 格。
-- `racers-preview.png`：36 位角色的中文名、资源名和头像对照。
+- `boards-preview.png`：日间橙红／夜间紫蓝两面体育场，带立体看台、护栏和灯塔；四人桌与八人桌共用模型，分别缩放至 2.7／3.6 格。
+- `racers-preview.png`：36 位角色的中文名、资源名和实际立体棋子缩略图；游戏中不再使用角色牌。
+- `guess-preview.png`：天才预测使用的六张独立骰面，快捷栏同时显示 1～6，第七格不预测，不需要翻页。
 - `figures-preview.png`：从实际长方体几何绘制的 36 个立体棋子等距预览。
 - `figures.json`：各角色几何签名、脚底基准和手持姿态。
 

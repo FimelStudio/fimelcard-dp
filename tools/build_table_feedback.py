@@ -108,7 +108,7 @@ def catan():
         'data modify storage catan:feedback state.turn set from entity @s data.catan.turn',
         'execute store success score #state_changed ca_ctx run data modify entity @s data.ca_feedback.state set from storage catan:feedback state',
         'execute if score #state_changed ca_ctx matches 1 run function catan:feedback/state with entity @s data.catan'])
-    phase={1:'放置初始村庄：手持村庄，瞄准交点后右键两次',2:'放置初始道路：手持道路，瞄准刚建村庄相邻的边',3:'开始回合：手持骰子按Q投骰，或使用旧发展卡',4:'自由行动：建造、交易或使用发展卡；结束回合按Q两次',5:'掷出7：资源超过7张的玩家必须弃掉一半（向下取整）',6:'移动强盗：瞄准另一个地块，右键两次确认',7:'偷取资源：瞄准亮起的相邻对手，按Q或右键一次',8:'免费修路：手持道路选择位置，最多两条',11:'本局结束'}
+    phase={1:'放置初始村庄：手持村庄，瞄准交点后右键两次',2:'放置初始道路：手持道路，瞄准刚建村庄相邻的边',3:'开始回合：手持骰子按Q投骰，或使用旧发展卡',4:'自由行动：建造、交易或使用发展卡；第4格Q一次购牌，第7格Q一次结束回合',5:'掷出7：资源超过7张的玩家必须弃掉一半（向下取整）',6:'移动强盗：瞄准另一个地块，右键两次确认',7:'偷取资源：瞄准亮起的相邻对手，按Q或右键一次',8:'免费修路：手持道路选择位置，最多两条',11:'本局结束'}
     state=[]
     for code,label in phase.items():
         state += [f'$execute if score @s ca_state matches {code} run tellraw @a[tag=ca.audience] '+js([{'text':'[卡坦岛] ','color':'gold'},w.name('$(turn)'),{'text':' · '+label,'color':'yellow'}])]
@@ -252,7 +252,7 @@ def magical_athlete():
     w.put('feedback/pending',[
         '$data modify storage magical_athlete:feedback pending set value {owner:$(owner),kind:"$(kind)",label:"选择技能选项：手持选项按Q一次确认"}',
         *[f'execute if data storage magical_athlete:feedback pending{{kind:"{kind}"}} run data modify storage magical_athlete:feedback pending.label set value '+js(label) for kind,label in {
-            'ready':'轮到你了：手持骰子按Q开始行动','genius':'请选择预测点数：0是不预测，1～6是预测骰子',
+            'ready':'轮到你了：手持骰子按Q开始行动','genius':'预测骰子：前六格1～6，按Q一次；第七格不预测',
             'reroll':'选择接受当前点数，或重新投骰','hypnotist':'选择拉到身边的选手：右键亮起的棋子，或选择跳过',
             'flip':'选择交换位置的选手：右键亮起的棋子，或选择跳过','duel':'选择决斗目标：右键亮起的棋子，或选择跳过',
             'mastermind':'预测一名选手获胜：右键亮起的棋子','copycat':'选择要模仿的选手：右键亮起的棋子',

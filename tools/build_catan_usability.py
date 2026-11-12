@@ -52,6 +52,8 @@ def build():
     put('direct/dev_limit','scoreboard players set #direct_ready ca_ctx 0\n'+notice('本回合已经使用过一张发展卡，不能再使用。','red'))
     replace('direct/confirm','execute if score @s ca_confirm = #code ca_ctx',
         'execute if score #code ca_ctx matches 352..354 run return run function catan:direct/submit\nexecute if score #code ca_ctx matches 401..404 run return run function catan:direct/submit\nexecute if score #code ca_ctx matches 23 run function catan:direct/buy_check\nexecute if score #code ca_ctx matches 29 run function catan:direct/main_guard\nexecute if score #code ca_ctx matches 23 unless score #direct_ready ca_ctx matches 1 run return 0\nexecute if score #code ca_ctx matches 29 unless score #direct_ready ca_ctx matches 1 run return 0\nexecute if score @s ca_confirm = #code ca_ctx')
+    replace('direct/confirm','execute if score @s ca_confirm = #code ca_ctx',
+        'execute if score #code ca_ctx matches 23 run return run function catan:direct/submit\nexecute if score #code ca_ctx matches 29 run return run function catan:direct/submit\nexecute if score @s ca_confirm = #code ca_ctx')
     for name in ('direct/controls','direct/resource_controls','direct/selected_resource','direct/plenty_select','direct/bank_begin','direct/bank_note'):
         path=ROOT/(name+'.mcfunction');body=path.read_text(encoding='utf-8')
         body=body.replace('确认兑换〔Q两次〕','确认兑换〔Q〕').replace('确认垄断〔Q两次〕','确认垄断〔Q〕').replace('确认丰收〔Q两次〕','确认丰收〔Q〕')

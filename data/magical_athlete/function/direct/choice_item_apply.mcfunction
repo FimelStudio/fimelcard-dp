@@ -1,0 +1,1 @@
+$item replace entity @s hotbar.$(slot) with minecraft:paper[minecraft:item_model="$(model)",minecraft:custom_name={text:"$(label)〔Q〕",color:"green",italic:false},minecraft:lore=[{text:"按Q一次确认此选项",color:"gray",italic:false}],minecraft:custom_data={magical_athlete:{tool:1b,choice:1b,code:$(code),epoch:$(epoch),table:$(table)}}]

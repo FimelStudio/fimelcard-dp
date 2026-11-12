@@ -110,7 +110,7 @@ class Assets(unittest.TestCase):
         self.assertEqual([entry['id'] for entry in CHARS],list(range(36)))
         signatures=set()
         for entry in CHARS:
-            path=CARD/f"textures/item/magical_athlete/racer/{entry['slug']}.png"
+            path=CARD/f"textures/item/magical_athlete/portrait/{entry['slug']}.png"
             with Image.open(path) as image:
                 self.assertEqual(image.size,(128,128))
                 self.assertEqual(image.mode,'RGBA')
@@ -119,6 +119,9 @@ class Assets(unittest.TestCase):
             for kind in ('racer','token'):
                 self.assertTrue((CARD/f"items/magical_athlete/{kind}/{entry['slug']}.json").exists())
         self.assertEqual(len(signatures),36)
+        for folder in (CARD/'textures/item/magical_athlete',SOURCE/'textures'):
+            for entry in CHARS:
+                self.assertFalse((folder/'racer'/(entry['slug']+'.png')).exists())
 
     def test_runtime_model_and_editable_source_closure(self):
         paths=list((CARD/'models/item/magical_athlete').rglob('*.json'))
@@ -221,6 +224,34 @@ class Assets(unittest.TestCase):
                 # Offset inside the tile but outside the digits/symbol, exact same path centers.
                 point=(round((x+.48)*96),round((z+.40)*96))
                 self.assertNotEqual(mild.getpixel(point),wild.getpixel(point),index)
+
+    def test_raised_stadium_keeps_all_racing_cells_clear(self):
+        for kind in ('mild','wild'):
+            body=json.loads((CARD/f'models/item/magical_athlete/board/{kind}.json').read_text(encoding='utf-8'))
+            base=next(e for e in body['elements'] if e['name']=='board')
+            self.assertEqual(base['from'],[0,8,0])
+            self.assertEqual(base['to'],[16,8.06,16])
+            props=[e for e in body['elements'] if e['to'][1]>8.14]
+            self.assertGreater(len(props),50)
+            self.assertTrue(any(e['name'].startswith('light_mast') for e in props))
+            for element in props:
+                for x,z in TRACK['layout']['positions']:
+                    overlap=min(element['to'][0],x+.67)>max(element['from'][0],x-.67) and min(element['to'][2],z+.67)>max(element['from'][2],z-.67)
+                    self.assertFalse(overlap,(kind,element['name'],x,z,'decoration blocks a racing cell'))
+
+    def test_six_distinct_face_only_guess_models(self):
+        signatures=set()
+        for value in range(1,7):
+            path=CARD/f'textures/item/magical_athlete/guess/{value}.png'
+            with Image.open(path) as image:
+                self.assertEqual(image.mode,'RGBA')
+                self.assertEqual(image.size,(96,96))
+                self.assertEqual(image.getpixel((0,0))[3],0)
+            signatures.add(hashlib.sha256(path.read_bytes()).hexdigest())
+            model=json.loads((CARD/f'models/item/magical_athlete/guess/{value}.json').read_text(encoding='utf-8'))
+            self.assertEqual(model['parent'],'minecraft:item/generated')
+            self.assertEqual(model['textures']['layer0'],f'card:item/magical_athlete/guess/{value}')
+        self.assertEqual(len(signatures),6)
 
     def test_sound_license_hashes_codec_and_loop(self):
         manifest=json.loads((SOURCE/'audio/manifest.json').read_text(encoding='utf-8'))
