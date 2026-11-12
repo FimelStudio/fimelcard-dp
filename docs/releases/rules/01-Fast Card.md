@@ -71,7 +71,7 @@
 
 ### 牌盒
 
-![牌盒，第 1 页](images/catalogs/01-box-01.png)
+![牌盒，第 1 页](images/catalogs/shared-poker-box-01.png)
 
 | 实图 | 名称 | 数量／所属 | 用途与区别 |
 | --- | --- | --- | --- |

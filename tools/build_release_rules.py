@@ -27,6 +27,8 @@ IMAGES = ROOT / 'images'
 FONT = 'C:/Windows/Fonts/msyh.ttc'
 BEGIN, END = '<!-- BEGIN COMPONENTS -->', '<!-- END COMPONENTS -->'
 RECORDS = []
+COMPONENT_IMAGES = {}
+GALLERY_IMAGES = {}
 GAMES = [
     ('01-Fast Card.md','Fast Card'),('02-赌命德州扑克.md','赌命德州扑克'),
     ('03-花火.md','花火'),('04-出包魔法师.md','出包魔法师'),
@@ -193,12 +195,39 @@ def render(faces,size=(560,500),camera=(3,3.4,5)):
 
 
 def save_image(image,key,source,kind):
+    image=tight_image(image)
+    identity=(image.mode,image.size,hashlib.sha256(image.tobytes()).hexdigest())
+    if identity in COMPONENT_IMAGES:
+        return COMPONENT_IMAGES[identity]
     path=IMAGES/'components'/(key+'.png')
     path.parent.mkdir(parents=True,exist_ok=True)
     image.save(path,optimize=True)
     RECORDS.append(dict(image=path.relative_to(ROOT).as_posix(),source=source,kind=kind,
         sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
-    return path.relative_to(ROOT).as_posix()
+    relative=path.relative_to(ROOT).as_posix()
+    COMPONENT_IMAGES[identity]=relative
+    return relative
+
+
+def tight_image(image,padding=8):
+    """Trim transparent canvas only; preserve the actual card/model artwork."""
+    if image.mode!='RGBA':
+        return image
+    box=image.getchannel('A').getbbox()
+    if box is None:
+        raise ValueError('组件图片为空')
+    x0,y0,x1,y1=box
+    return image.crop((max(0,x0-padding),max(0,y0-padding),min(image.width,x1+padding),min(image.height,y1+padding)))
+
+
+def wrapped_lines(draw,text,font,width):
+    lines=[];current=''
+    for char in text:
+        if current and draw.textlength(current+char,font=font)>width:
+            lines.append(current);current=''
+        current+=char
+    if current:lines.append(current)
+    return lines
 
 
 def sprite(key,name,texture,effect='',count='—'):
@@ -224,18 +253,37 @@ def gallery(key,title,entries,cols=4,cell=(300,390)):
     pages=[]
     for start in range(0,len(entries),cols*4):
         subset=entries[start:start+cols*4]
-        sheet=Image.new('RGB',(cols*cell[0],85+math.ceil(len(subset)/cols)*cell[1]),'#eee9df')
-        draw=ImageDraw.Draw(sheet)
-        draw.text((26,18),title,font=ImageFont.truetype(FONT,27),fill='#292f39')
-        for i,e in enumerate(subset):
-            x=i%cols*cell[0];y=85+i//cols*cell[1]
-            art=Image.open(ROOT/e['path']).convert('RGBA')
-            art.thumbnail((cell[0]-28,cell[1]-68),Image.Resampling.LANCZOS)
-            sheet.paste(art,(x+(cell[0]-art.width)//2,y),art)
-            name=e['name']
-            draw.text((x+cell[0]//2,y+cell[1]-48),name,font=ImageFont.truetype(FONT,19),anchor='mt',fill='#303848')
+        columns=min(cols,len(subset));width=columns*cell[0]
+        measure=ImageDraw.Draw(Image.new('RGB',(1,1)))
+        title_font=ImageFont.truetype(FONT,27);label_font=ImageFont.truetype(FONT,19)
+        heading=wrapped_lines(measure,title,title_font,width-52)
+        y=24+len(heading)*36+12
+        rows=[]
+        for offset in range(0,len(subset),columns):
+            row=[]
+            for e in subset[offset:offset+columns]:
+                art=tight_image(Image.open(ROOT/e['path']).convert('RGBA'))
+                art.thumbnail((cell[0]-28,cell[1]-68),Image.Resampling.LANCZOS)
+                row.append((art,wrapped_lines(measure,e['name'],label_font,cell[0]-28)))
+            height=max(art.height for art,_ in row)
+            rows.append((y,height,row))
+            y+=height+14+max(len(lines) for _,lines in row)*26+24
+        sheet=Image.new('RGB',(width,y),'#eee9df');draw=ImageDraw.Draw(sheet)
+        for i,line in enumerate(heading):
+            draw.text((26,18+i*36),line,font=title_font,fill='#292f39')
+        for y,height,row in rows:
+            for i,(art,lines) in enumerate(row):
+                x=i*cell[0]
+                sheet.paste(art,(x+(cell[0]-art.width)//2,y+(height-art.height)//2),art)
+                for line_no,line in enumerate(lines):
+                    draw.text((x+cell[0]//2,y+height+14+line_no*26),line,font=label_font,anchor='mt',fill='#303848')
+        identity=(sheet.size,hashlib.sha256(sheet.tobytes()).hexdigest())
+        if identity in GALLERY_IMAGES:
+            pages.append(f'![{title}，第 {len(pages)+1} 页]({GALLERY_IMAGES[identity]})')
+            continue
         page=IMAGES/'catalogs'/f'{key}-{start//(cols*4)+1:02}.png'
         page.parent.mkdir(parents=True,exist_ok=True);sheet.save(page,optimize=True)
+        GALLERY_IMAGES[identity]=page.relative_to(ROOT).as_posix()
         pages.append(f'![{title}，第 {len(pages)+1} 页]({page.relative_to(ROOT).as_posix()})')
     return '\n\n'.join(pages)
 
@@ -316,17 +364,19 @@ def all_components():
     components[1].append(section('01-cards','17 张传牌牌库',fast))
     poker_sample=poker[:13]+[poker[25],poker[38],poker[51]]
     for game,kings,multiplicity in [(2,False,1),(10,True,1),(18,True,2)]:
-        sample=poker_sample+(poker[52:54] if kings else [])
-        cards=section(f'{game:02}-cards','扑克牌面示例与完整牌库清单',sample)
+        sample=[{**e,'count':str(multiplicity)} for e in poker_sample]
+        cards=section('shared-poker-cards','扑克牌面示例与完整牌库清单',sample)
+        if kings:
+            cards+='\n'+section('shared-poker-jokers','大小王',[{**e,'count':str(multiplicity)} for e in poker[52:54]],2)
         cards+='\n花色与点数只改变牌角和花色图案，省略重复的大图。下表列出实际全部牌面：\n\n| 花色 | 全部点数 | 各牌面张数 |\n| --- | --- | --- |\n'
         for suit in ('黑桃','红桃','梅花','方块'):
             cards+=f'| {suit} | 2、3、4、5、6、7、8、9、10、J、Q、K、A | {multiplicity} |\n'
         if kings:
             cards+=f'| 王 | 小王、大王 | {multiplicity} |\n'
         components[game].append(cards)
+    box=model('poker/box','公共扑克牌盒','card:item/cardbox','仅用于发牌、收牌展示，不是可带走的手牌。',1)
     for n in (1,2,10,18):
-        box=model('poker/box','公共扑克牌盒','card:item/cardbox','仅用于发牌、收牌展示，不是可带走的手牌。',1)
-        components[n].append(section(f'{n:02}-box','牌盒',[box]))
+        components[n].append(section('shared-poker-box','牌盒',[box]))
     hb=[]
     for color,name in [('w','白色'),('r','红色'),('b','蓝色'),('y','黄色'),('g','绿色'),('m','彩色')]:
         for digit in range(1,6):
