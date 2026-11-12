@@ -14,7 +14,7 @@ execute if score @s ct_game matches 12 run scoreboard players set #chair_min ct_
 execute if score @s ct_game matches 13 run scoreboard players set #chair_min ct_ctx 1
 execute if score @s ct_game matches 14 run scoreboard players set #chair_min ct_ctx 1
 execute if score @s ct_game matches 15 run scoreboard players set #chair_min ct_ctx 1
-execute if score @s ct_game matches 16 run scoreboard players set #chair_min ct_ctx 5
+execute if score @s ct_game matches 16 if score @s ct_capacity matches 8 run scoreboard players set #chair_min ct_ctx 5
 execute if score @s ct_game matches 17 run scoreboard players set #chair_min ct_ctx 2
 execute if score @s ct_game matches 18 run scoreboard players set #chair_min ct_ctx 1
 execute if score @s ct_game matches 19 run scoreboard players set #chair_min ct_ctx 2

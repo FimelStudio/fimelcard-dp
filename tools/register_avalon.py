@@ -30,12 +30,14 @@ for n,endpoint in [('game/init_selected','game/init_table'),('game/start','game/
 insert('table/remove','execute if score @s ct_state matches 1 if score @s ct_game matches 16 run function avalon:game/abort','execute if score @s ct_skin matches 1..6 unless')
 insert('game/remove_offline_player','execute if entity @s[tag=av.player] run function avalon:player/clear','function cardtable:seat/remove_player')
 insert('menu/render','execute if score @s ct_game matches 16 run function cardtable:menu/game_name_avalon','execute unless score @s ct_capacity matches 4')
-s=read('menu/select_game').replace('#pick_choice ct_ctx matches 14 unless score @s ct_capacity matches 8','#pick_choice ct_ctx matches 16 unless score @s ct_capacity matches 8');write('menu/select_game',s)
-line='execute if score #pick_choice ct_ctx matches 16 unless score @s ct_capacity matches 8 run return 0'
-if line not in read('menu/select_game'):write('menu/select_game',line+'\n'+read('menu/select_game'))
+s=read('menu/select_game')
+for number in (14,16):
+ s=s.replace(f'execute if score #pick_choice ct_ctx matches {number} unless score @s ct_capacity matches 8 run return 0\n','')
+write('menu/select_game',s)
 for capacity in [4,8]:
  dialog=load_picker(P,capacity);dialog['actions']=[a for a in dialog['actions'] if '阿瓦隆' not in a['label'].get('text','')]
- if capacity==8:dialog['actions'].append({'label':{'text':'阿瓦隆（5–8人）'},'width':150,'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p16)'}})
+ label='阿瓦隆（5–8人）' if capacity==8 else '阿瓦隆（需八座桌，5～8人）'
+ dialog['actions'].append({'label':{'text':label},'width':150,'action':{'type':'minecraft:run_command','command':'trigger ct_game_pick set $(p16)'}})
  write_picker(P,capacity,dialog)
 # 只补本游戏，不能把已有21款或未来编号降回16。
 base.picker_button(16)

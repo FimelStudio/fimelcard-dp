@@ -1,5 +1,5 @@
-execute if score #pick_choice ct_ctx matches 16 unless score @s ct_capacity matches 8 run return 0
 # 玩家提交已由picker/handle验证；再次选择当前游戏不重置原设置。
+execute if score #pick_choice ct_ctx matches 16 unless score @s ct_capacity matches 8 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：阿瓦隆。四座桌无法开局，请使用八座桌（5～8 人）。",color:"yellow"}
 execute if score @s ct_game = #pick_choice ct_ctx run return 0
 # 即使随后切回同一游戏，旧椅子窗口也不能再次生效。
 scoreboard players add @s ct_ch_epoch 1
@@ -48,7 +48,7 @@ execute if score @s ct_game matches 14 run tellraw @a[tag=ct.switch_actor,limit=
 execute if score @s ct_game matches 14 run function cardtable:log {text:"切换游戏：五子棋"}
 execute if score @s ct_game matches 15 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：飞行棋",color:"gold"}
 execute if score @s ct_game matches 15 run function cardtable:log {text:"切换游戏：飞行棋"}
-execute if score @s ct_game matches 16 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：阿瓦隆",color:"gold"}
+execute if score @s ct_game matches 16 if score @s ct_capacity matches 8 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：阿瓦隆",color:"gold"}
 execute if score @s ct_game matches 17 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：情书",color:"gold"}
 execute if score @s ct_game matches 17 run function cardtable:log {text:"切换游戏：情书"}
 execute if score @s ct_game matches 18 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：掼蛋",color:"gold"}
