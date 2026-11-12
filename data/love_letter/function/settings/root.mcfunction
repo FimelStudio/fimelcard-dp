@@ -22,4 +22,7 @@ function love_letter:settings/choice {"key":"time","value":30,"code":4030,"label
 function love_letter:settings/choice {"key":"time","value":60,"code":4060,"label":"60秒"}
 function love_letter:settings/choice {"key":"time","value":90,"code":4090,"label":"90秒"}
 function love_letter:settings/choice {"key":"time","value":120,"code":4120,"label":"120秒"}
+data modify storage love_letter:settings targeting_row set value {"text":"指定玩家方式\n","color":"white","extra":[]}
+function love_letter:settings/choice {"key":"targeting","value":0,"code":5000,"label":"朝向选择（保留3秒）"}
+function love_letter:settings/choice {"key":"targeting","value":1,"code":5001,"label":"头颅精准选择"}
 function love_letter:settings/show with storage love_letter:settings

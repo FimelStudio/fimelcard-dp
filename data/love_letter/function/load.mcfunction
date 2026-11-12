@@ -3,6 +3,9 @@ execute if data storage cardtable:uninstall active run return 0
 # uninstall-guard: end
 scoreboard objectives add ll_action trigger
 scoreboard objectives add ll_actor dummy
+scoreboard objectives add ll_aim dummy
+scoreboard objectives add ll_aimepoch dummy
+scoreboard objectives add ll_aimttl dummy
 scoreboard objectives add ll_alive dummy
 scoreboard objectives add ll_alive_n dummy
 scoreboard objectives add ll_anim dummy
@@ -14,6 +17,7 @@ scoreboard objectives add ll_dealstage dummy
 scoreboard objectives add ll_discards_setting dummy
 scoreboard objectives add ll_drop minecraft.dropped:minecraft.purple_dye
 scoreboard objectives add ll_epoch dummy
+scoreboard objectives add ll_exact dummy
 scoreboard objectives add ll_extra dummy
 scoreboard objectives add ll_first dummy
 scoreboard objectives add ll_first_setting dummy
@@ -21,7 +25,11 @@ scoreboard objectives add ll_goal dummy
 scoreboard objectives add ll_goal_setting dummy
 scoreboard objectives add ll_guess dummy
 scoreboard objectives add ll_hand dummy
+scoreboard objectives add ll_head_drop minecraft.dropped:minecraft.player_head
 scoreboard objectives add ll_high dummy
+scoreboard objectives add ll_hint dummy
+scoreboard objectives add ll_hint_target dummy
+scoreboard objectives add ll_hintwait dummy
 scoreboard objectives add ll_matchwin dummy
 scoreboard objectives add ll_panel dummy
 scoreboard objectives add ll_phase dummy
@@ -34,6 +42,9 @@ scoreboard objectives add ll_round dummy
 scoreboard objectives add ll_scored dummy
 scoreboard objectives add ll_seat dummy
 scoreboard objectives add ll_seen dummy
+scoreboard objectives add ll_select_actor dummy
+scoreboard objectives add ll_select_epoch dummy
+scoreboard objectives add ll_select_slot dummy
 scoreboard objectives add ll_setepoch dummy
 scoreboard objectives add ll_setinput dummy
 scoreboard objectives add ll_setload dummy
@@ -44,6 +55,7 @@ scoreboard objectives add ll_spy dummy
 scoreboard objectives add ll_state dummy
 scoreboard objectives add ll_table dummy
 scoreboard objectives add ll_target dummy
+scoreboard objectives add ll_target_mode dummy
 scoreboard objectives add ll_tick dummy
 scoreboard objectives add ll_time_setting dummy
 scoreboard objectives add ll_timeout dummy

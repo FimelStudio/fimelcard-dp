@@ -8,11 +8,12 @@ execute unless score @s ll_state matches 2 run return run function love_letter:t
 execute unless score @s ll_phase matches 1 run return run function love_letter:targeting/clear
 execute unless score @s ll_anim matches 0 run return run function love_letter:targeting/clear
 scoreboard players operation #actor ll_ctx = @s ll_turn
-function love_letter:targeting/scan
-scoreboard players set #preview ll_ctx 0
-execute as @e[tag=ll.board,scores={ll_alive=1,ll_protect=0}] if score @s ll_seat = #aim ll_ctx run scoreboard players set #preview ll_ctx 1
-execute unless score #preview ll_ctx matches 1 run scoreboard players set #aim ll_ctx 0
-execute as @a[tag=ll.audience,tag=ll.aim_preview] unless score @s ll_seat = #aim ll_ctx run effect clear @s minecraft:glowing
-execute as @a[tag=ll.audience,tag=ll.aim_preview] unless score @s ll_seat = #aim ll_ctx run tag @s remove ll.aim_preview
-execute if score #aim ll_ctx matches 1..8 as @a[tag=ll.audience] if score @s ll_seat = #aim ll_ctx run tag @s add ll.aim_preview
-execute as @a[tag=ll.audience,tag=ll.aim_preview] run effect give @s minecraft:glowing 1 0 true
+scoreboard players set #unavailable ll_ctx 0
+execute as @a[tag=ll.audience,scores={ll_hintwait=1..}] if score @s ll_seat = #actor ll_ctx run scoreboard players remove @s ll_hintwait 1
+execute if score @s ll_aimttl matches 1.. run scoreboard players remove @s ll_aimttl 1
+execute unless score @s ll_target_mode matches 1 run function love_letter:targeting/resolve
+execute if score @s ll_target_mode matches 1 run scoreboard players set #aim ll_ctx 0
+execute if score @s ll_target_mode matches 1 if score @s ll_select_epoch = @s ll_epoch as @a[tag=ll.audience] if score @s ll_seat = #actor ll_ctx run function love_letter:targeting/head_preview
+execute if score @s ll_target_mode matches 1 unless score @s ll_select_epoch = @s ll_epoch as @a[tag=ll.audience] if score @s ll_seat = #actor ll_ctx run function love_letter:targeting/held
+execute unless score @e[tag=ll.current,limit=1] ll_target_mode matches 1 as @a[tag=ll.audience] if score @s ll_seat = #actor ll_ctx run function love_letter:targeting/held
+function love_letter:targeting/highlight

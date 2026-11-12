@@ -13,6 +13,8 @@ Minecraft Java 26.2 多人卡牌桌游数据包。作者：歪浪Ylong、水晶C
 
 胡闹运动会需腾空快捷栏九格，并为队伍角色卡留出背包空间；桌面右键招募，角色物品选择出场，轮到自己时按 Q 投骰，按提示直接选择技能目标。棋子上方以竖直朝向的玩家皮肤头像标明归属。
 
+情书默认朝向选人，目标保留 3 秒，actionbar 显示姓名；也可在开局前设置为头颅精准选择，此时需腾空九格，Q 出牌后再 Q 玩家头颅确认，最后一格可取消。
+
 部分游戏使用到了前置 [文本动画库](https://space.bilibili.com/648638421)、[BetterTitle](https://github.com/Huoyuyuyu/BetterTitle)、[SK Firework](https://space.bilibili.com/1546917549)，无需另装前置数据包。
 
 牌桌皮肤使用到了16bit制作组的[NyaaWork喵工坊家具](https://space.bilibili.com/2907002)。本包仅将使用到的家具模型加至资源包中，资源归原作者所有。

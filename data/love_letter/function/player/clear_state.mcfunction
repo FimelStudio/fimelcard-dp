@@ -14,3 +14,4 @@ scoreboard players reset @s ll_action
 scoreboard players reset @s ll_seen
 scoreboard players reset @s ll_pick
 scoreboard players set @s ll_drop 0
+scoreboard players set @s ll_head_drop 0

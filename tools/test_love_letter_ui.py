@@ -90,7 +90,7 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
         c+=['execute store success score #resign_present lt if data storage love_letter:ui buttons[{action:{command:"trigger ll_action set 12345005"}}]']+self.score('#resign_present','lt',0,'eliminated_player_no_resign_button')
         self.case('eliminated_menu',c)
         for phase in (1,2,3,4,5):
-            c=self.setup((7,9,6),extra=3)+[f'scoreboard players set {TABLE} ll_phase {phase}',f'scoreboard players set {TABLE} ll_actor 2',f'data modify entity {TABLE} data.ll_buffer set value [8,7,5]','scoreboard players set #last_viewer lt 0']+self.call('ui/refresh')
+            c=self.setup((7,9,6),extra=3)+[f'scoreboard players set {TABLE} ll_phase {phase}',f'scoreboard players set {TABLE} ll_actor 2',f'data modify entity {TABLE} data.ll_buffer set value [8,7,5]','scoreboard players set #last_viewer lt 0']+self.call('ui/refresh')+['function love_letter:input/tick']
             c+=self.score('#last_viewer','lt',0 if phase==1 else 2,f'refresh_{phase}_only_decider')
             self.case('refresh_'+str(phase),c)
         for change,commands in [('epoch',[f'scoreboard players add {TABLE} ll_epoch 1']),('reload',['scoreboard players add #ui_load ll_ctx 1']),('game',[f'scoreboard players set {TABLE} ct_game 16']),('table',[f'scoreboard players set {person()} ct_id 202']),('inactive',[f'scoreboard players set {TABLE} ct_state 0'])]:
@@ -116,17 +116,21 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
             self.case('stale_settings_'+change,c)
         c=self.setup()+self.setup(table=202,reset=False)+[f'scoreboard players set {TABLE} ct_state 0',f'scoreboard players set {OTHER} ct_state 0',f'tag {person()} add ct.settings_actor']+self.call('settings/open')+self.settings(2,10)+self.score(TABLE,'ll_goal_setting',10,'settings_own_table_changes')+self.score(OTHER,'ll_goal_setting',0,'settings_other_table_unchanged')
         self.case('two_tables',c)
+        for value in (0,1):
+            c=self.setup()+[f'scoreboard players set {TABLE} ct_state 0',f'tag {person()} add ct.settings_actor']+self.call('settings/open')+self.settings(5,value)
+            c+=self.score(TABLE,'ll_target_mode',value,f'target_mode_{value}_saved')
+            self.case('target_mode_'+str(value),c)
         c=self.setup()+self.setup(table=202,reset=False)+[f'data modify entity {TABLE} data.ll_private set value {{kind:"priest",seat:1,target:2,actor_card:8,target_card:9}}']+self.call('ui/private')
         c+=self.score(person(),'ll_secret',1,'private_own_table_authorized')
         for seat in (1,2,3):c+=self.score(person(seat,202),'ll_secret',0,f'private_other_table_p{seat}_isolated')
         self.case('private_two_tables',c)
-        for field,value in [(0,1),(1,2),(2,11),(3,2),(4,45),(5,0)]:
+        for field,value in [(0,1),(1,2),(2,11),(3,2),(4,45),(5,2),(6,0)]:
             key=f'invalid_setting_{field}_{value}'
             c=self.setup()+[f'scoreboard players set {TABLE} ct_state 0',f'tag {person()} add ct.settings_actor']+self.call('settings/open')+self.settings(field,value)
             for obj,original in [('first',0),('goal',0),('discards',1),('time',0)]:c+=self.score(TABLE,'ll_'+obj+'_setting',original,key+'_'+obj+'_unchanged')
             self.case(key,c)
         self.finish()
-        self.files['bootstrap']=self.files['bootstrap'].replace('function love_letter_test:reset','scoreboard objectives add ct_seat dummy\nscoreboard objectives add ll_secret dummy\nscoreboard players set #ui_load ll_ctx 1\nscoreboard players set #setting_serial ll_ctx 0\nfunction love_letter_test:reset')
+        self.files['bootstrap']=self.files['bootstrap'].replace('function love_letter_test:reset','scoreboard objectives add ct_seat dummy\nscoreboard objectives add ct_paused dummy\nscoreboard objectives add ll_secret dummy\nscoreboard players set #ui_load ll_ctx 1\nscoreboard players set #setting_serial ll_ctx 0\nfunction love_letter_test:reset')
 
 
 def prepare_target(target):

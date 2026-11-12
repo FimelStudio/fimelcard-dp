@@ -1,0 +1,3 @@
+$execute if items entity @s hotbar.$(head_slot) *[minecraft:custom_data~{love_letter:{head:1b,table:$(table),owner:$(owner),epoch:$(epoch),target:$(target)}}] run return 0
+$execute if items entity @s hotbar.$(head_slot) * unless items entity @s hotbar.$(head_slot) *[minecraft:custom_data~{love_letter:{tool:1b}}] run return 0
+$item replace entity @s hotbar.$(head_slot) with minecraft:player_head[minecraft:profile={id:$(uuid)},minecraft:item_name=[$(head_name),{text:" · Q 指定目标",color:"yellow",italic:false}],minecraft:max_stack_size=1,minecraft:custom_data={love_letter:{tool:1b,head:1b,table:$(table),owner:$(owner),epoch:$(epoch),target:$(target)}}]

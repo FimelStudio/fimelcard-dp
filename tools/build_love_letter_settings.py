@@ -43,12 +43,14 @@ execute store result storage love_letter:settings first int 1 run scoreboard pla
 execute store result storage love_letter:settings goal int 1 run scoreboard players get @s ll_goal_setting
 execute store result storage love_letter:settings discards int 1 run scoreboard players get @s ll_discards_setting
 execute store result storage love_letter:settings time int 1 run scoreboard players get @s ll_time_setting
+execute store result storage love_letter:settings targeting int 1 run scoreboard players get @s ll_target_mode
 function love_letter:settings/root
 ''')
     fields = [(1, 'first', '首轮先手', [(0, '随机'), (1, '最小座号')]),
               (2, 'goal', '获胜好感标记', [(0, '自动')] + [(v, str(v)) for v in range(1, 11)]),
               (3, 'discards', '公开弃牌文字提示', [(1, '开启'), (0, '关闭')]),
-              (4, 'time', '每步操作时限', [(0, '无限制')] + [(v, str(v)+'秒') for v in (30, 60, 90, 120)])]
+              (4, 'time', '每步操作时限', [(0, '无限制')] + [(v, str(v)+'秒') for v in (30, 60, 90, 120)]),
+              (5, 'targeting', '指定玩家方式', [(0, '朝向选择（保留3秒）'), (1, '头颅精准选择')])]
     lines = []
     for field, key, label, choices in fields:
         lines.append('data modify storage love_letter:settings '+key+'_row set value '+js({'text':label+'\n','color':'white','extra':[]}))
@@ -96,7 +98,8 @@ scoreboard players operation #setting_field ll_ctx = #setting_input ll_ctx
 scoreboard players operation #setting_field ll_ctx /= #setting_factor ll_ctx
 scoreboard players operation #setting_value ll_ctx = #setting_input ll_ctx
 scoreboard players operation #setting_value ll_ctx %= #setting_factor ll_ctx
-execute unless score #setting_field ll_ctx matches 0..4 run return run function love_letter:settings/invalid
+execute unless score #setting_field ll_ctx matches 0..5 run return run function love_letter:settings/invalid
+execute if score #setting_field ll_ctx matches 5 unless score #setting_value ll_ctx matches 0..1 run return run function love_letter:settings/invalid
 execute if score #setting_field ll_ctx matches 0 unless score #setting_value ll_ctx matches 0 run return run function love_letter:settings/invalid
 execute if score #setting_field ll_ctx matches 1 unless score #setting_value ll_ctx matches 0..1 run return run function love_letter:settings/invalid
 execute if score #setting_field ll_ctx matches 2 unless score #setting_value ll_ctx matches 0..10 run return run function love_letter:settings/invalid
@@ -111,6 +114,7 @@ execute if score #setting_field ll_ctx matches 1 run scoreboard players operatio
 execute if score #setting_field ll_ctx matches 2 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_goal_setting = #setting_value ll_ctx
 execute if score #setting_field ll_ctx matches 3 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_discards_setting = #setting_value ll_ctx
 execute if score #setting_field ll_ctx matches 4 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_time_setting = #setting_value ll_ctx
+execute if score #setting_field ll_ctx matches 5 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_target_mode = #setting_value ll_ctx
 tag @a[tag=ct.settings_actor] remove ct.settings_actor
 tag @s add ct.settings_actor
 execute as @e[tag=ll.setting_table,limit=1] at @s run function love_letter:settings/open

@@ -11,7 +11,8 @@ ll_goal ll_goal_setting ll_time_setting ll_first_setting ll_discards_setting ll_
 ll_target ll_guess ll_scored ll_winners ll_alive_n ll_high ll_seat ll_alive ll_hand ll_extra
 ll_protect ll_spy ll_points ll_won ll_bonus ll_players ll_dealseat ll_dealstage ll_timeout
 ll_matchwin ll_tick ll_action ll_settings ll_seen ll_pick ll_ui_tmp ll_ui_load ll_table
-ll_setnonce ll_settable ll_setepoch ll_panel ll_prev_panel'''.split()
+ll_setnonce ll_settable ll_setepoch ll_panel ll_prev_panel ll_target_mode ll_aim ll_aimttl
+ll_aimepoch ll_select_slot ll_select_epoch ll_select_actor ll_exact ll_hint ll_hintwait ll_hint_target'''.split()
 
 
 def put(name, body):
@@ -36,6 +37,7 @@ def build():
     objectives={x:'dummy' for x in OBJECTIVES}
     objectives.update({'ll_action':'trigger','ll_settings':'trigger','ll_drop':'minecraft.dropped:minecraft.purple_dye'})
     objectives.update(extra)
+    objectives['ll_head_drop'] = 'minecraft.dropped:minecraft.player_head'
     put('load', [f'scoreboard objectives add {name} {kind}' for name,kind in sorted(objectives.items())]+[
         'scoreboard objectives add ll_ctx dummy',
         'execute unless score #version ll_ctx matches 1.. run scoreboard players set #version ll_ctx 1',
@@ -83,6 +85,7 @@ execute unless score @s ll_first_setting matches 0..1 run scoreboard players set
 execute unless score @s ll_goal_setting matches 0..10 run scoreboard players set @s ll_goal_setting 0
 execute unless score @s ll_discards_setting matches 0..1 run scoreboard players set @s ll_discards_setting 1
 execute unless score @s ll_time_setting matches 0..120 run scoreboard players set @s ll_time_setting 0
+execute unless score @s ll_target_mode matches 0..1 run scoreboard players set @s ll_target_mode 0
 execute if score @s ct_state matches 1 run return 0
 scoreboard players set @s ll_state 0
 function love_letter:visual/setup
@@ -414,6 +417,7 @@ scoreboard players reset @s ll_action
 scoreboard players reset @s ll_seen
 scoreboard players reset @s ll_pick
 scoreboard players set @s ll_drop 0
+scoreboard players set @s ll_head_drop 0
 ''')
     put('admin/abort', '''
 execute unless entity @s[type=minecraft:player] run return fail

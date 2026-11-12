@@ -15,7 +15,8 @@ scoreboard players operation #setting_field ll_ctx = #setting_input ll_ctx
 scoreboard players operation #setting_field ll_ctx /= #setting_factor ll_ctx
 scoreboard players operation #setting_value ll_ctx = #setting_input ll_ctx
 scoreboard players operation #setting_value ll_ctx %= #setting_factor ll_ctx
-execute unless score #setting_field ll_ctx matches 0..4 run return run function love_letter:settings/invalid
+execute unless score #setting_field ll_ctx matches 0..5 run return run function love_letter:settings/invalid
+execute if score #setting_field ll_ctx matches 5 unless score #setting_value ll_ctx matches 0..1 run return run function love_letter:settings/invalid
 execute if score #setting_field ll_ctx matches 0 unless score #setting_value ll_ctx matches 0 run return run function love_letter:settings/invalid
 execute if score #setting_field ll_ctx matches 1 unless score #setting_value ll_ctx matches 0..1 run return run function love_letter:settings/invalid
 execute if score #setting_field ll_ctx matches 2 unless score #setting_value ll_ctx matches 0..10 run return run function love_letter:settings/invalid
@@ -30,6 +31,7 @@ execute if score #setting_field ll_ctx matches 1 run scoreboard players operatio
 execute if score #setting_field ll_ctx matches 2 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_goal_setting = #setting_value ll_ctx
 execute if score #setting_field ll_ctx matches 3 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_discards_setting = #setting_value ll_ctx
 execute if score #setting_field ll_ctx matches 4 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_time_setting = #setting_value ll_ctx
+execute if score #setting_field ll_ctx matches 5 run scoreboard players operation @e[tag=ll.setting_table,limit=1] ll_target_mode = #setting_value ll_ctx
 tag @a[tag=ct.settings_actor] remove ct.settings_actor
 tag @s add ct.settings_actor
 execute as @e[tag=ll.setting_table,limit=1] at @s run function love_letter:settings/open

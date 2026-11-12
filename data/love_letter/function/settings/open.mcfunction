@@ -20,4 +20,5 @@ execute store result storage love_letter:settings first int 1 run scoreboard pla
 execute store result storage love_letter:settings goal int 1 run scoreboard players get @s ll_goal_setting
 execute store result storage love_letter:settings discards int 1 run scoreboard players get @s ll_discards_setting
 execute store result storage love_letter:settings time int 1 run scoreboard players get @s ll_time_setting
+execute store result storage love_letter:settings targeting int 1 run scoreboard players get @s ll_target_mode
 function love_letter:settings/root

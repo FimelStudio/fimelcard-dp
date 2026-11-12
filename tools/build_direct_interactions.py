@@ -17,6 +17,9 @@ def build(game):
   return
  for name,body in json.loads((P/f'tools/direct_interaction_templates/{game}.json').read_text(encoding='utf8')).items():
   path=P/f'data/{game}/function/{name}.mcfunction';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(body,encoding='utf8')
+ if game=='love_letter':
+  from build_love_letter_targeting import build as build_targeting
+  build_targeting()
  rp=P.resolve().parents[3]/'resourcepacks/fimelcard-rp'
  for root in (rp,rp.parent/'Fimel桌游馆'):
   if root!=rp and not (root/'pack.mcmeta').is_file():continue

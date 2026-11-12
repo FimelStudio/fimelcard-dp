@@ -1,5 +1,9 @@
 function love_letter:system/context
 function love_letter:targeting/clear
+# selection: begin
+scoreboard players set @s ll_select_epoch 0
+scoreboard players set @s ll_exact 0
+# selection: end
 scoreboard players set @s ll_state 0
 scoreboard players set @s ll_phase 0
 scoreboard players set @s ll_timer 0

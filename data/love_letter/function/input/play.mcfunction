@@ -8,6 +8,10 @@ scoreboard players operation #slot ll_ctx = @s ll_pick
 dialog clear @s
 execute as @e[tag=ll.current,limit=1] at @s run function love_letter:engine/play
 execute if score #ok ll_ctx matches 1 run return 1
+# selection: begin
+execute if score #error ll_ctx matches 5 run return run function love_letter:input/give
+scoreboard players set @s ll_hintwait 40
+# selection: end
 execute if score #error ll_ctx matches 2 run return run title @s actionbar {text:"持有女爵和王子或国王时，必须打出女爵。",color:"yellow"}
 execute if score #error ll_ctx matches 3 run return run title @s actionbar {text:"请朝向一名可选玩家，再按 Q 出牌。",color:"yellow"}
 execute if score #error ll_ctx matches 4 run return run title @s actionbar {text:"目标已出局或受侍女保护，请重新选择。",color:"yellow"}

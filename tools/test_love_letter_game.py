@@ -157,6 +157,29 @@ function love_letter_test:roles
             c+=self.score(part(3),'ll_alive',0,key+'_guess_resolves_target')+self.score(part(),'ll_alive',1,key+'_princess_owner_survives')
             c+=self.score(part(),'ll_hand',9,key+'_guess_does_not_discard_princess')
             self.case(key,c)
+        # 真实头颅丢弃路径：新掉落统计触发确认，回收后下一刻再打开侍卫猜测。
+        c=self.playable(4,(1,3,4))+[
+            f'scoreboard players set {TABLE} ll_target_mode 1', f'scoreboard players set {TABLE} ll_timeout 0',
+            f'scoreboard players set {part()} ll_hand 1', f'scoreboard players set {part()} ll_extra 9',
+            f'scoreboard players set {part(3)} ll_hand 2', 'scoreboard players set #ui_shown lt 0',
+            'data modify storage love_letter_test:q request set value {table:101,owner:1,slot:0,epoch:0}',
+            f'execute store result storage love_letter_test:q request.epoch int 1 run scoreboard players get {TABLE} ll_epoch',
+            f'execute as {person()} at @s run function love_letter:direct/play with storage love_letter_test:q request']
+        c+=self.score(part(),'ll_hand',1,'head_drop_guard_kept_until_confirm')+self.score(part(),'ll_extra',9,'head_drop_princess_kept_until_confirm')
+        c+=['data modify storage love_letter_test:q request.target set value 3',
+            'summon minecraft:item 8 65 8 {Tags:["lt.fixture","lt.head_drop"],PickupDelay:32767s,Item:{id:"minecraft:player_head",count:1,components:{"minecraft:custom_data":{love_letter:{tool:1b,head:1b}}}}}',
+            f'data modify entity @e[tag=lt.head_drop,limit=1] Thrower set from entity {person()} UUID',
+            'data modify entity @e[tag=lt.head_drop,limit=1] Item.components."minecraft:custom_data".love_letter merge from storage love_letter_test:q request',
+            f'scoreboard players set {person()} ll_head_drop 1', 'function love_letter:input/tick']
+        c+=self.count('@e[tag=lt.head_drop]',0,'head_drop_entity_reclaimed')+self.score(person(),'ll_head_drop',0,'head_drop_counter_reset')
+        c+=self.score(TABLE,'ll_target',3,'head_drop_target_confirmed')+self.score(TABLE,'ll_phase',3,'head_drop_guard_waits_for_guess')
+        c+=self.score('#ui_shown','lt',0,'head_drop_dialog_waits_for_reclaim')+['function love_letter:input/tick']+self.score('#ui_shown','lt',1,'head_drop_dialog_opens_next_tick')
+        c+=[f'scoreboard players operation #choice lt = {TABLE} ll_epoch','scoreboard players set #factor lt 1000',
+            'scoreboard players operation #choice lt *= #factor lt','scoreboard players add #choice lt 202',
+            f'scoreboard players operation {person()} ll_action = #choice lt','function love_letter:input/tick']
+        c+=self.score(part(3),'ll_alive',0,'head_drop_guess_resolves')+self.score(part(),'ll_hand',9,'head_drop_never_discards_princess')
+        c+=self.score(TABLE,'ll_select_epoch',0,'head_drop_selection_closed')
+        self.case('precise_head_drop',c)
         # 朝向已原子确定目标；末张侍卫仍须完成猜牌，才能进入轮末结算。
         c=self.playable(4,(1,3,4))+[f'scoreboard players set {part()} ll_hand 1',f'scoreboard players set {part()} ll_extra 8',f'scoreboard players set {part(3)} ll_hand 2',f'scoreboard players set {part(4)} ll_hand 3',f'data modify entity {TABLE} data.love_letter.deck set value []']+self.play()
         c+=self.score(TABLE,'ll_phase',3,'last_draw_guard_wait_guess')+self.score(TABLE,'ll_state',2,'last_draw_guard_still_playing')+['scoreboard players set #actor ll_ctx 1','scoreboard players set #guess ll_ctx 0']+self.call('engine/guess')+self.score(TABLE,'ll_state',3,'last_draw_guard_then_round_end')+self.score(TABLE,'ll_phase',6,'last_draw_guard_phase_six')

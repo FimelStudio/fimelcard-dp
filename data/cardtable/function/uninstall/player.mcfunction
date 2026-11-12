@@ -1044,7 +1044,6 @@ tag @s remove dd.actors
 tag @s remove dd.audience
 tag @s remove dd.bot
 tag @s remove dd.bot_best
-tag @s remove dd.hint_first
 tag @s remove dd.bottom
 tag @s remove dd.bottom_card
 tag @s remove dd.card
@@ -1053,12 +1052,13 @@ tag @s remove dd.controller
 tag @s remove dd.current
 tag @s remove dd.dropper
 tag @s remove dd.hand
+tag @s remove dd.hint_first
 tag @s remove dd.low_cards_announced
 tag @s remove dd.music_exciting
+tag @s remove dd.other_lane
 tag @s remove dd.owns_actionbar
 tag @s remove dd.player
 tag @s remove dd.pool
-tag @s remove dd.other_lane
 tag @s remove dd.pred_controller
 tag @s remove dd.public_card
 tag @s remove dd.speed_pool
@@ -1142,6 +1142,7 @@ tag @s remove gd.face
 tag @s remove gd.firework
 tag @s remove gd.firework.new
 tag @s remove gd.fx
+tag @s remove gd.hint_saved
 tag @s remove gd.hud_active
 tag @s remove gd.hudhand
 tag @s remove gd.label
@@ -1155,7 +1156,6 @@ tag @s remove gd.pick
 tag @s remove gd.player
 tag @s remove gd.playing
 tag @s remove gd.selected
-tag @s remove gd.hint_saved
 tag @s remove gd.setting_table
 tag @s remove gd.start
 tag @s remove gd.status
@@ -1352,6 +1352,8 @@ tag @s remove ll.favor
 tag @s remove ll.firework
 tag @s remove ll.firework.new
 tag @s remove ll.fx
+tag @s remove ll.head_actor
+tag @s remove ll.hint_target
 tag @s remove ll.hud_active
 tag @s remove ll.info
 tag @s remove ll.inventory_controller

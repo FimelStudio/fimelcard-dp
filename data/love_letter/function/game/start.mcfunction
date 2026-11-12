@@ -6,6 +6,16 @@ scoreboard players operation #table ll_ctx = @s ct_id
 scoreboard players set #occupied ll_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.0 * run scoreboard players set #occupied ll_ctx 1
 execute as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.1 * run scoreboard players set #occupied ll_ctx 1
+# selection: begin
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.2 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.3 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.4 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.5 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.6 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.7 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 as @a[tag=ct.player] if score @s ct_id = #table ll_ctx if items entity @s hotbar.8 * run scoreboard players set #occupied ll_ctx 1
+execute if score @s ll_target_mode matches 1 if score #occupied ll_ctx matches 1 run return run function love_letter:targeting/bad_slots
+# selection: end
 execute if score #occupied ll_ctx matches 1 run return run function love_letter:game/bad_slots
 function love_letter:game/clear
 function love_letter:game/init_table

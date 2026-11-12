@@ -535,6 +535,8 @@ scoreboard players operation #actor ll_ctx = @s ll_actor
 scoreboard players set #bottom ll_ctx 0
 function love_letter:engine/bottom
 ''')
+    from build_love_letter_targeting import build as build_targeting
+    build_targeting(root)
 
 
 if __name__ == '__main__':
