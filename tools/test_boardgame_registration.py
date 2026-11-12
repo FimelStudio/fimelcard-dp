@@ -38,7 +38,7 @@ def main():
     for capacity in (4,8):
         assert preserved[capacity][18]['label']['text']=='掼蛋（1–4人+人机）'
         assert preserved[capacity][19]['label']['text']==f'命悬一线（2–{capacity}人）'
-        assert preserved[capacity][21]['label']['text']=='卡坦岛（3–4人）'
+        assert preserved[capacity][21]['label']['text']=='卡坦岛（2–4人）'
         assert preserved[capacity][22]['label']['text']=='璀璨宝石（2–4人）'
         assert preserved[capacity][23]['label']['text']==f'胡闹运动会（2–{min(capacity,6)}人）'
     def check_preserved_buttons():

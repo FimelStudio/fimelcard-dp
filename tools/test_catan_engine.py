@@ -164,7 +164,7 @@ def build_suite():
     s.case('public_roll',dice)
 
     # Initial draft is tested through public actions, with actual reverse order.
-    for n in (3,4):
+    for n in (2,3,4):
         chosen=[]
         for _ in range(2*n):chosen.append(next(v for v in sorted(range(54),key=lambda v:(-len(VERTEX_HEXES[v]),v)) if v not in chosen and not any(w in chosen for w in VERTEX_NEIGHBORS[v])))
         order=list(range(1,n+1))+list(range(n,0,-1));expected={p:[0]*5 for p in range(1,n+1)}

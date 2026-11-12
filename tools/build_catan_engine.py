@@ -26,7 +26,7 @@ def build():
         'vertex_owner':[0]*54,'vertex_level':[0]*54,'road_owner':[0]*72,'port_types':PORT_RESOURCES,
         'robber':0,'bank':[19]*5,'dev_deck':[],'dev_discard':[0]*5,'used_dev':0,'dice':[0,0],'longest':0,'army':0,'winner':0,
         'last':{'code':0,'actor':0,'target':-1,'a':-1,'b':-1,'production':[]},**{'p'+str(p):player.copy() for p in range(1,5)}}
-    put('init',lines(guard('unless score #players ca_ctx matches 3..4',2),
+    put('init',lines(guard('unless score #players ca_ctx matches 2..4',2),
         'data modify storage catan:engine state set value '+snbt(initial),
         'execute store result storage catan:engine state.n int 1 run scoreboard players get #players ca_ctx',
         'execute store result storage catan:engine rng.seed int 1 run random value 0..2147483647',

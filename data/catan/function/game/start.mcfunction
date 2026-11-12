@@ -1,8 +1,8 @@
 function catan:settings/defaults
 function catan:system/context
 execute unless score @s ca_epoch matches 1.. run scoreboard players set @s ca_epoch 1
-execute unless score @s ct_joined matches 3..4 run tellraw @a[tag=ct.start_actor,limit=1] {"text": "[卡坦岛] 需要 3–4 名真人玩家。", "color": "red"}
-execute unless score @s ct_joined matches 3..4 run return fail
+execute unless score @s ct_joined matches 2..4 run tellraw @a[tag=ct.start_actor,limit=1] {"text": "[卡坦岛] 需要 2–4 名真人玩家。", "color": "red"}
+execute unless score @s ct_joined matches 2..4 run return fail
 scoreboard players set #online ca_ctx 0
 scoreboard players set #blocked ca_ctx 0
 execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx run scoreboard players add #online ca_ctx 1

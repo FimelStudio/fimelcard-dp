@@ -39,7 +39,14 @@ def assets():
         name=path.relative_to(CARD/'models/item/catan')
         item=json.loads((CARD/'items/catan'/name).read_text(encoding='utf-8'))
         assert item['model']['model']=='card:item/catan/'+name.with_suffix('').as_posix()
-        source_model=json.loads((source/'models'/name.with_suffix('.bbmodel')).read_text(encoding='utf-8'))
+        source_path=source/'models'/name.with_suffix('.bbmodel')
+        if not source_path.exists() and name.stem=='gray' and name.parts[0] in ('city','road','settlement'):
+            # These inventory-disabled variants are generated from their red model.
+            expected=json.loads((path.parent/'red.json').read_text(encoding='utf-8'))
+            expected['textures']={'all':'minecraft:block/light_gray_concrete','particle':'minecraft:block/light_gray_concrete'}
+            assert model==expected,(path,'gray variant diverged from its source')
+            continue
+        source_model=json.loads(source_path.read_text(encoding='utf-8'))
         assert len(source_model['elements'])==len(model.get('elements',[]))
         texture_indices={}
         for key,texture in model.get('textures',{}).items():
@@ -70,6 +77,20 @@ def assets():
         image=Image.open(CARD/f'textures/item/catan/tile/{name}.png').convert('RGBA')
         assert image.size==(128,128)
         assert image.getpixel((0,0))[3]==0 and image.getpixel((64,64))[3]==255
+        model=json.loads((CARD/f'models/item/catan/tile/{name}.json').read_text(encoding='utf-8'))
+        ornaments=[e for e in model['elements'] if e.get('name') not in (None,'cube')]
+        assert ornaments and max(e['to'][1] for e in ornaments)>1.5,(name,'terrain is still flat')
+        for e in ornaments:
+            dx=max(e['from'][0]-8,0,8-e['to'][0]);dz=max(e['from'][2]-8,0,8-e['to'][2])
+            assert math.hypot(dx,dz)>1.9,(name,e['name'],'number token space obstructed')
+    dock=json.loads((CARD/'models/item/catan/port/dock.json').read_text(encoding='utf-8'))
+    assert {'pier_piling','boat_mast','stepped_sail'} <= {e.get('name') for e in dock['elements']}
+    for group,names in [('number',list(range(2,7))+list(range(8,13))),('port',['generic','wood','brick','wool','grain','ore'])]:
+        for name in names:
+            model=json.loads((CARD/f'models/item/catan/{group}/{name}.json').read_text(encoding='utf-8'))
+            assert len(model['elements'])==1
+            e=model['elements'][0]
+            assert e['from'][1]==8 and 'up' in e['faces'],(group,name,'label must face upward at its pivot')
     for color in ('red','blue','white','orange'):
         settlement=json.loads((CARD/f'models/item/catan/settlement/{color}.json').read_text(encoding='utf-8'))
         city=json.loads((CARD/f'models/item/catan/city/{color}.json').read_text(encoding='utf-8'))
@@ -135,6 +156,12 @@ class Suite(Base):
         expected=round(value*100000)
         return [f'execute store result score #numeric ce run data get entity {entity} {path} 100000']+self.score('#numeric','ce',f'{expected-5}..{expected+5}',name)
 
+    def offset(self,entity,axis,value,name):
+        expected=round(value*100000)
+        return [f'execute store result score #numeric ce run data get entity {entity} Pos[{axis}] 100000',
+                f'execute store result score #origin ce run data get entity {TABLE} Pos[{axis}] 100000',
+                'scoreboard players operation #numeric ce -= #origin ce']+self.score('#numeric','ce',f'{expected-5}..{expected+5}',name)
+
     def display(self,kind,id=0,table=101):
         return f'@e[tag=ca.visual,scores={{ct_id={table},ca_vkind={kind},ca_vid={id}}},limit=1]'
 
@@ -176,12 +203,34 @@ class Suite(Base):
                         c+=self.numeric(who,f'transformation.translation[{index}]',point[axis],key+f'_hex{id}_{axis}')
                 for id in (0,4,8):
                     who=self.display(4,id);point=layout['ports'][id]['token']
-                    c+=self.numeric(who,'transformation.translation[0]',point['x'],key+f'_port{id}_x')
-                    c+=self.numeric(who,'transformation.translation[2]',point['z'],key+f'_port{id}_z')
+                    c+=self.offset(who,0,point['x'],key+f'_port{id}_x')
+                    c+=self.offset(who,2,point['z'],key+f'_port{id}_z')
+                    c+=self.offset(who,1,1.135,key+f'_port{id}_height')
+                    c+=self.check(f'data entity {who} {{billboard:"vertical",transformation:{{translation:[0f,0f,0f]}}}}',key+f'_port{id}_anchored_vertical')
+                for id in (0,9,18):
+                    # Fixed-map desert 0 has no number; actual numbered hexes below.
+                    if not FIXED_NUMBERS[id]:continue
+                    who=self.display(3,id);point=layout['hexes'][id]
+                    c+=self.offset(who,0,point['x'],key+f'_number{id}_x')
+                    c+=self.offset(who,2,point['z'],key+f'_number{id}_z')
+                    c+=self.offset(who,1,1.105,key+f'_number{id}_height')
+                    c+=self.check(f'data entity {who} {{billboard:"vertical",transformation:{{translation:[0f,0f,0f]}}}}',key+f'_number{id}_anchored_vertical')
                 c+=self.check(f'data entity {self.display(1)} {{item_display:"none",view_range:0.5f}}',key+'_native_none_view_range')
                 c+=self.check(f'data entity {self.display(1)} transformation{{right_rotation:[0.0f,1.0f,0.0f,0.0f]}}',key+'_renderer_y180_compensated')
                 c+=self.call('refresh')+self.count('@e[tag=ca.visual,scores={ct_id=101}]',59,key+'_refresh_no_duplicates')
                 self.case(key,c)
+                deck='@e[type=minecraft:item_display,tag=ca.deck_direct,scores={ct_id=101},limit=1]'
+                hit='@e[type=minecraft:interaction,tag=ca.deck_hit,scores={ct_id=101},limit=1]'
+                corner=1.18 if cap==4 else 1.65
+                c=self.setup(cap,orient)+[f'execute as {TABLE} at @s run function catan:direct/deck_spawn']
+                c+=self.offset(deck,0,corner,key+'_deck_x')+self.offset(deck,2,corner if orient else -corner,key+'_deck_z')
+                c+=self.offset(deck,1,1.1,key+'_deck_lifted')
+                c+=self.check(f'data entity {deck} item.components{{"minecraft:item_model":"card:catan/development_deck"}}',key+'_custom_deck_stack')
+                c+=self.offset(hit,0,corner,key+'_deck_hit_x')
+                c+=[f'execute as {TABLE} at @s run function catan:direct/deck_spawn']
+                c+=self.count('@e[tag=ca.deck_direct,scores={ct_id=101}]',3,key+'_deck_respawn_no_duplicates')
+                c+=self.call('clear')+self.count('@e[tag=ca.deck_direct,scores={ct_id=101}]',0,key+'_deck_cleanup')
+                self.case(key+'_development_deck',c)
         c=self.setup()+self.set('vertex_owner[10]',1)+self.set('vertex_level[10]',1)+self.set('road_owner[17]',2)
         c+=self.set('p1.color',3)+self.set('p2.color',4)+self.call('update')
         c+=self.count('@e[tag=ca.visual,scores={ct_id=101}]',61,'built_only_occupied_objects')

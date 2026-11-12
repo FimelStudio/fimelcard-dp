@@ -78,7 +78,7 @@ data merge entity @s {NoGravity:1b,Invisible:1b,Invulnerable:1b}
     def build(self):
         self.prepare()
         for cap in (4,8):
-            for n in (3,4):
+            for n in (2,3,4):
                 for orient in (0,1):
                     for first in (0,1):
                         name=f'start_{cap}_{n}_{orient}_{first}'

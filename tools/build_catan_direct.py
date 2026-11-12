@@ -444,12 +444,21 @@ def scene():
 scoreboard players operation #table ca_ctx = @s ct_id
 execute as @e[tag=ca.deck_direct] if score @s ct_id = #table ca_ctx run kill @s
 execute store result storage catan:direct remaining int 1 run data get entity @s data.catan.dev_deck
-execute if score @s ca_orient matches 0 positioned ~ ~1.08 ~-1.5 run function catan:direct/deck_at
-execute if score @s ca_orient matches 1 positioned ~1.5 ~1.08 ~ run function catan:direct/deck_at
+scoreboard players operation #deck_orient ca_ctx = @s ca_orient
+# The square table corners are outside the hexagonal sea frame at both sizes.
+execute if score @s ct_capacity matches 4 if score @s ca_orient matches 0 positioned ~1.18 ~1.10 ~-1.18 run function catan:direct/deck_at
+execute if score @s ct_capacity matches 4 if score @s ca_orient matches 1 positioned ~1.18 ~1.10 ~1.18 run function catan:direct/deck_at
+execute if score @s ct_capacity matches 8 if score @s ca_orient matches 0 positioned ~1.65 ~1.10 ~-1.65 run function catan:direct/deck_at
+execute if score @s ct_capacity matches 8 if score @s ca_orient matches 1 positioned ~1.65 ~1.10 ~1.65 run function catan:direct/deck_at
 ''')
     put('direct/deck_at','execute summon minecraft:item_display run function catan:direct/deck_init\nexecute summon minecraft:interaction run function catan:direct/deck_hit_init\nexecute positioned ~ ~0.2 ~ summon minecraft:text_display run function catan:direct/deck_label with storage catan:direct')
     put('direct/deck_label','tag @s add ca.deck_direct\nscoreboard players operation @s ct_id = #table ca_ctx\n$data merge entity @s {billboard:"vertical",Rotation:[0f,0f],background:0,shadow:1b,text:{text:"发展卡 $(remaining)",color:"gold"},transformation:{translation:[0f,0f,0f],scale:[0.2f,0.2f,0.2f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}')
-    put('direct/deck_init','tag @s add ca.deck_direct\nscoreboard players operation @s ct_id = #table ca_ctx\ndata merge entity @s {item:{id:"minecraft:book",count:1},item_display:"fixed",brightness:{block:15,sky:15},transformation:{scale:[0.4f,0.4f,0.4f],left_rotation:[0.7071068f,0f,0f,0.7071068f],right_rotation:[0f,0f,0f,1f]}}')
+    put('direct/deck_init','''
+tag @s add ca.deck_direct
+scoreboard players operation @s ct_id = #table ca_ctx
+data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:catan/development_deck"}},item_display:"none",brightness:{block:15,sky:15},transformation:{translation:[0f,0.15f,0f],scale:[0.3f,0.3f,0.3f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f]}}
+execute if score #deck_orient ca_ctx matches 1 run data modify entity @s transformation.left_rotation set value [0f,-0.7071068f,0f,0.7071068f]
+''')
     put('direct/deck_hit_init','tag @s add ca.deck_direct\ntag @s add ca.deck_hit\nscoreboard players operation @s ct_id = #table ca_ctx\ndata merge entity @s {width:0.5f,height:0.2f,response:1b}')
     put('direct/deck_click','scoreboard players operation #click_table ca_ctx = @s ct_id\nexecute on target if entity @s[type=minecraft:player] if score @s ca_table = #click_table ca_ctx run function catan:direct/deck_use\ndata remove entity @s interaction')
     put('direct/deck_use','function catan:input/context\nexecute unless entity @s[tag=ca.actor] run return 0\nscoreboard players set #code ca_ctx 23\nfunction catan:direct/confirm')

@@ -62,7 +62,7 @@ function cardtable:seat/mount
                             lines += self.score('#center','gt',8000,prefix+'_center_'+str(seat))
                     self.case(prefix,lines)
         # Public game minima, count clamp, and active-game refusal.
-        lines=self.setup(8,1,game=21)+self.quantity(8,3,0,'catan_minimum')
+        lines=self.setup(8,1,game=21)+self.quantity(8,2,0,'catan_minimum')
         self.case('minimum',lines)
         lines=self.setup(4,8)+self.quantity(4,4,0,'capacity_clamp')
         self.case('clamp',lines)
@@ -136,7 +136,7 @@ def prepare(target):
     p=target/'data/cardtable/function/chairs/settings/minimum.mcfunction';p.parent.mkdir(parents=True,exist_ok=True)
     source=public/'chairs/settings/minimum.mcfunction'
     if source.exists():shutil.copy2(source,p)
-    else:p.write_text('scoreboard players set #chair_min ct_ctx 1\nexecute if score @s ct_game matches 21 run scoreboard players set #chair_min ct_ctx 3\n',encoding='utf-8')
+    else:p.write_text('scoreboard players set #chair_min ct_ctx 1\nexecute if score @s ct_game matches 21 run scoreboard players set #chair_min ct_ctx 2\n',encoding='utf-8')
 
 
 if __name__=='__main__':

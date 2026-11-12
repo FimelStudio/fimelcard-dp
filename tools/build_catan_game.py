@@ -105,8 +105,8 @@ execute as @a[tag=ca.audience] run function catan:input/give
     put('game/start', [
         'function catan:settings/defaults','function catan:system/context',
         'execute unless score @s ca_epoch matches 1.. run scoreboard players set @s ca_epoch 1',
-        'execute unless score @s ct_joined matches 3..4 run '+msg('需要 3–4 名真人玩家。','red','@a[tag=ct.start_actor,limit=1]'),
-        'execute unless score @s ct_joined matches 3..4 run return fail',
+        'execute unless score @s ct_joined matches 2..4 run '+msg('需要 2–4 名真人玩家。','red','@a[tag=ct.start_actor,limit=1]'),
+        'execute unless score @s ct_joined matches 2..4 run return fail',
         'scoreboard players set #online ca_ctx 0','scoreboard players set #blocked ca_ctx 0',
         'execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx run scoreboard players add #online ca_ctx 1',
         'execute as @a[tag=ct.player] if score @s ct_id = #table ca_ctx if items entity @s hotbar.8 * unless items entity @s hotbar.8 minecraft:paper[minecraft:custom_data~{catan:{tool:1b}}] run scoreboard players set #blocked ca_ctx 1',

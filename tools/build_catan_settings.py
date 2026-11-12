@@ -138,7 +138,7 @@ execute if score #set_field ca_ctx matches 0 run return run function catan:setti
     put('settings/invalidate_table', ['scoreboard players operation #set_table ca_ctx = @s ct_id',
         'execute as @a if score @s ca_settable = #set_table ca_ctx run function catan:settings/clear_session'])
     paragraphs = [
-        '3～4 人 · 黑色强盗与五种资源 · 本人回合达到 10 分获胜。村庄 1 分、城市 2 分，最长道路与最大军队各 2 分；胜利点开发牌保密。',
+        '2～4 人 · 黑色强盗与五种资源 · 本人回合达到 10 分获胜。村庄 1 分、城市 2 分，最长道路与最大军队各 2 分；胜利点开发牌保密。',
         '开局按顺序放一村一道，再逆序放第二组；仅第二个村庄领取相邻地形的起始资源。村庄之间至少隔一个空交点。',
         '本人回合先掷两骰；所有玩家按数字生产，村庄 1 张、城市 2 张。强盗地块停产。掷出 7 时，超过 7 张资源者须弃掉一半（向下取整），随后当前玩家移动强盗并偷一张相邻对手的随机资源。',
         '建路：木＋砖；建村：木＋砖＋羊毛＋麦；升级城市：麦×2＋矿×3；买开发牌：羊毛＋麦＋矿。每人最多 15 道路、5 村庄、4 城市。',

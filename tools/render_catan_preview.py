@@ -62,16 +62,22 @@ def render_preview(layout,output=None,label=None):
     table_scale=3 if capacity==4 else 4
     append('',{'x':0,'y':table_scale/2-.12,'z':0,'scale':table_scale,'qx':0,'qy':0,'qz':0,'qw':1},table)
     append('board/sea',layout['sea'])
+    label_angle=math.atan2(camera[0],camera[2])
+    label_rotation={'qx':0,'qy':math.sin(label_angle/2),'qz':0,'qw':math.cos(label_angle/2)}
     for h in HEXES:
         p=layout['hexes'][h['id']]
         append('tile/'+('forest','hills','pasture','fields','mountains','desert')[FIXED_TERRAIN[h['id']]],p)
         value=FIXED_NUMBERS[h['id']]
         scale=layout['geom']['token_scale']
-        if value:append('number/'+str(value),{**p,'scale':scale,'y':scale/2+.026})
+        if value:append('number/'+str(value),{**p,**label_rotation,'scale':scale,'y':.065})
     for port,p in zip(PORTS,layout['ports']):
         append('port/dock',p['dock'])
         key={-1:'generic',0:'wood',1:'brick',2:'wool',3:'grain',4:'ore'}[port['resource']]
-        append('port/'+key,p['token'])
+        append('port/'+key,{**p['token'],**label_rotation,'y':.095})
+    deck_corner=1.18 if capacity==4 else 1.65
+    deck_z=deck_corner if layout['geom']['qy'] else -deck_corner
+    append('development_deck',{'x':deck_corner,'z':deck_z,'y':.21,'scale':.3,
+                              'qx':0,'qy':layout['geom']['qy'],'qz':0,'qw':layout['geom']['qw']})
     for vertex,color,kind in ((8,'red','settlement'),(19,'blue','city'),(32,'white','settlement'),(45,'orange','settlement')):
         append(kind+'/'+color,layout['vertices'][vertex])
         for edge in VERTICES[vertex]['edges'][:2]:append('road/'+color,layout['edges'][edge])

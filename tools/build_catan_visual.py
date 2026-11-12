@@ -14,6 +14,7 @@ from zipfile import ZipFile
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 from boardgame_assets import PACK, RP, CARD, cube, disc, export_texture, export_model, json_file, text_file
 from catan_topology import HEXES, VERTICES, EDGES, PORTS, hex_position, vertex_position
+from catan_scenery import materials, terrain, harbour, development_deck
 
 ROOT = PACK/'data/catan/function/visual'
 SOURCE = RP/'.source/catan'
@@ -42,6 +43,8 @@ def png(name,image):
 
 
 def model(name,body):
+    source=SOURCE/'models'/(name+'.bbmodel')
+    previous_display=json.loads(source.read_text(encoding='utf-8')).get('display') if source.exists() else None
     if name.split('/')[0] in ('road','settlement','city','dice'):
         from build_tabletop_hand_poses import apply
         apply(body,name.startswith('dice/'))
@@ -49,8 +52,9 @@ def model(name,body):
     body.setdefault('gui_light','front')
     export_model('catan',name,body)
     # Java uses an axis/angle object; Blockbench stores Euler rotations separately.
-    source=SOURCE/'models'/(name+'.bbmodel')
     editable=json.loads(source.read_text(encoding='utf-8'))
+    display=body.get('display',previous_display)
+    if display is not None:editable['display']=copy.deepcopy(display)
     for element,java in zip(editable['elements'],body.get('elements',[])):
         rotation=java.get('rotation')
         if rotation:
@@ -242,37 +246,25 @@ def resource_assets():
 
 def resources():
     SOURCE.mkdir(parents=True,exist_ok=True)
-    terrain_sources=('Grass/grass_12','Dirt/dirt_04','Grass/grass_05','Dirt/dirt_06','Stone/stone_07','Sand/sand_07')
+    materials(png)
+    png('wood_edge',wood('#9b713c',1421))
+    terrain_sources=('Grass/grass_05','Dirt/dirt_04','Grass/grass_05','Dirt/dirt_06','Stone/stone_07','Sand/sand_07')
     preview=Image.new('RGB',(128*6,196),'#eee6d4');pd=ImageDraw.Draw(preview)
     for index,(name,source) in enumerate(zip(TERRAINS,terrain_sources)):
         image=original('PNG/Tiles/Terrain/'+source+'.png').resize((128,128),Image.Resampling.NEAREST)
         image=ImageEnhance.Color(image).enhance(.78)
-        draw=ImageDraw.Draw(image)
-        if name=='pasture':
-            for x,y in ((35,30),(90,39),(34,88),(88,91)):sheep(draw,x,y)
-        if name=='fields':
-            draw.polygon([(12,37),(35,17),(53,31),(31,55)],fill='#c29b46')
-            draw.polygon([(77,80),(99,64),(115,87),(92,108)],fill='#d6b05b')
-            for x,y in ((20,38),(29,31),(38,25),(85,82),(94,75),(101,87)):
-                draw.line((x,y+8,x+4,y-2),fill='#f0d180',width=2)
-                draw.line((x+1,y+3,x-2,y),fill='#e4c365',width=2)
-            obj=original('PNG/Objects/hay.png').resize((22,20),Image.Resampling.NEAREST)
-            image.alpha_composite(obj,(82,23))
-        if name in ('hills','mountains','desert'):
-            objs={'hills':[('rockBrown_large',29,22,22,32),('rockBrown_small',78,82,24,21)],
-                  'mountains':[('rockGrey_large',17,14,38,47),('mine',79,71,25,31)],
-                  'desert':[('cactus1',31,23,16,28),('cactus2',82,82,16,22)]}[name]
-            for obj,x,y,w,h in objs:
-                image.alpha_composite(original('PNG/Objects/'+obj+'.png').resize((w,h),Image.Resampling.NEAREST),(x,y))
+        if name=='forest':image=ImageEnhance.Brightness(image).enhance(.85)
         mask,ps=hex_mask();image.putalpha(mask)
         draw=ImageDraw.Draw(image);draw.line(ps+[ps[0]],fill='#e3c58e',width=2)
         png('tile/'+name,image)
         preview.paste(image,(index*128,0),image);pd.text((index*128+64,150),name,anchor='mm',fill='#4f4337',font=font(14))
         # Thin top face carries the full six-corner silhouette; no overlapping tops.
-        model('tile/'+name,{'textures':{'top':f'card:item/catan/tile/{name}','particle':f'card:item/catan/tile/{name}'},
-                              'elements':[top_plane('top',8-4*math.sqrt(3),0,8+4*math.sqrt(3),16)]})
+        scenery=terrain(name)
+        rim=[(8,0),(8+4*math.sqrt(3),4),(8+4*math.sqrt(3),12),(8,16),(8-4*math.sqrt(3),12),(8-4*math.sqrt(3),4)]
+        model('tile/'+name,{'textures':{'top':f'card:item/catan/tile/{name}','edge':'card:item/catan/wood_edge',**scenery.textures,'particle':f'card:item/catan/tile/{name}'},
+                              'elements':[top_plane('top',8-4*math.sqrt(3),0,8+4*math.sqrt(3),16)]+[wall(rim[k],rim[(k+1)%6],'edge',height=.45,thickness=.12) for k in range(6)]+scenery.elements})
     preview.save(SOURCE/'terrain_preview.png')
-    png('wood_edge',wood('#9b713c',1421));png('dark',wood('#33323a',132))
+    png('dark',wood('#33323a',132))
     png('gold',Image.new('RGB',(16,16),'#f6d781'))
     # A flat-top sea hex and six actual side walls; rectangle corners stay transparent.
     ocean=Image.new('RGBA',(128,128),'#5d9caa');draw=ImageDraw.Draw(ocean)
@@ -286,7 +278,7 @@ def resources():
     corners=[(8+8*math.cos(k*math.pi/3),8+8*math.sin(k*math.pi/3)) for k in range(6)]
     model('board/sea',{'textures':{'top':'card:item/catan/board/sea','edge':'card:item/catan/wood_edge','particle':'card:item/catan/wood_edge'},
                        'elements':[top_plane('top')]+[wall(corners[k],corners[(k+1)%6],'edge') for k in range(6)]})
-    # Land numbers: red 6/8 and probability dots, raised octagonal wooden tokens.
+    # Upward labels: red 6/8 and probability dots, rotating about their own centres.
     for value in list(range(2,7))+list(range(8,13)):
         token=Image.new('RGB',(128,128),'#ecd9ad');d=ImageDraw.Draw(token)
         d.ellipse((4,4,123,123),outline='#997749',width=4)
@@ -295,8 +287,10 @@ def resources():
         count=6-abs(7-value)
         for i in range(count):
             x=64+(i-(count-1)/2)*14;d.ellipse((x-3,99,x+3,105),fill=ink)
+        mask=Image.new('L',token.size,0);ImageDraw.Draw(mask).ellipse((1,1,126,126),fill=255);token.putalpha(mask)
         png(f'number/{value}',token)
-        model(f'number/{value}',disc(f'card:item/catan/number/{value}','card:item/catan/wood_edge',height=.8,segments=8))
+        model(f'number/{value}',{'textures':{'top':f'card:item/catan/number/{value}','particle':'card:item/catan/wood_edge'},
+                                'elements':[top_plane('top',y=8)]})
     # Ports and public flying resource icons.
     icon_sources={0:'logPile',1:'rockBrown_small',4:'rockGrey_small1'}
     for resource in range(-1,5):
@@ -315,11 +309,14 @@ def resources():
             d.line((38,103,89,103),fill='#467b88',width=4);d.polygon([(41,102),(36,85),(91,85),(85,102)],fill='#467b88')
             d.line((63,83,63,57),fill='#467b88',width=4);d.polygon([(67,58),(67,81),(88,81)],fill='#7296a0')
         key={-1:'generic',0:'wood',1:'brick',2:'wool',3:'grain',4:'ore'}[resource]
+        mask=Image.new('L',token.size,0);ImageDraw.Draw(mask).ellipse((1,1,126,126),fill=255);token.putalpha(mask)
         png('port/'+key,token)
-        model('port/'+key,disc('card:item/catan/port/'+key,'card:item/catan/wood_edge',height=.65,segments=8))
+        model('port/'+key,{'textures':{'top':'card:item/catan/port/'+key,'particle':'card:item/catan/wood_edge'},
+                           'elements':[top_plane('top',y=8)]})
     resource_assets()
-    model('port/dock',{'textures':{'all':'card:item/catan/wood_edge','particle':'card:item/catan/wood_edge'},
-                       'elements':[wall((0,8),(8,12),'all',height=.18,thickness=.65),wall((16,8),(8,12),'all',height=.18,thickness=.65)]})
+    dock=harbour()
+    model('port/dock',{'textures':{'all':'card:item/catan/wood_edge',**dock.textures,'particle':'card:item/catan/wood_edge'},
+                       'elements':[wall((0,8),(8,12),'all',height=.18,thickness=.65),wall((16,8),(8,12),'all',height=.18,thickness=.65)]+dock.elements})
     for index,(name,color) in enumerate(zip(COLORS,COLORS_RGB)):
         png('piece/'+name,wood(color,401+index))
         texture=f'card:item/catan/piece/{name}'
@@ -367,20 +364,23 @@ def resources():
             d.rectangle((26,34,38,46),fill='#e3c58c')
         png(name,image)
         model(name,{'parent':'minecraft:item/generated','textures':{'layer0':'card:item/catan/'+name}})
+    model('development_deck',development_deck())
     manifest={'author':'Kenney Vleugels / Kenney','asset_page':'https://kenney.nl/assets/hexagon-pack','license':'CC0-1.0',
               'license_file':'vendor/Kenney-License.txt','archive':'vendor/kenney_hexagon-pack.zip',
               'archive_sha256':hashlib.sha256((SOURCE/'vendor/kenney_hexagon-pack.zip').read_bytes()).hexdigest(),
               'originals':[{'file':p,'sha256':hashlib.sha256((SOURCE/'vendor/originals'/p).read_bytes()).hexdigest()} for p in sorted(USED)],
-              'adaptation':'Nearest-neighbor resize, reduced saturation, hex alpha mask; original sheep/grain/sea/frame/number/piece/dice artwork and all cuboid geometry by Fimel Cards.',
+              'adaptation':'CC0 ground textures with nearest-neighbor resize and hex mask. Original 3D trees, clay, sheep, wheat, mines, cacti, harbour, boat, deck, palette textures and rotating number labels by Fimel Cards; geometry source tools/catan_scenery.py.',
               'topology_source':'fimelcard-dp/tools/catan_topology.py','sizes':{str(k):{'R':v[0],'L':v[1]} for k,v in SIZES.items()}}
     json_file(SOURCE/'visual_manifest.json',manifest)
     text_file(SOURCE/'visual/README.md','''# 卡坦岛视觉资源
 
-地形与自然物件取自 Kenney Hexagon Pack（https://kenney.nl/assets/hexagon-pack），作者 Kenney Vleugels / Kenney，CC0-1.0，允许修改与再分发。原始 ZIP、原始 PNG 及随包许可证保留于 ../vendor/；逐文件哈希见 ../visual_manifest.json。没有复制商业 CATAN 的牌面或插图。
+地形底图与港口资源图案取自 Kenney Hexagon Pack（https://kenney.nl/assets/hexagon-pack），作者 Kenney Vleugels / Kenney，CC0-1.0，允许修改与再分发。原始 ZIP、原始 PNG 及随包许可证保留于 ../vendor/；逐文件哈希见 ../visual_manifest.json。没有复制商业 CATAN 的牌面或插图。
 
-地形采用近邻缩放、适度降饱和与六边形遮罩；羊群、麦穗、海面、港口标记、数字木牌、骰面及所有立体建筑和道路为本项目确定性绘制。红、蓝、白、橙棋子为 Java 原版长方体模型；城市与村庄几何不同，强盗有立体底座、身体和头部。
+地形采用近邻缩放、适度降饱和与六边形遮罩。森林、丘陵、牧场、麦田、山地和沙漠分别使用原创立体树木、黏土岩层、羊群、麦穗、矿洞和仙人掌；港口含木栈桥、绳桩、货箱与帆船。几何与材质色板源为数据包 tools/catan_scenery.py，装饰并入每块地形的单个模型，中心数字与道路交点留空，不增加每棵树的展示实体。建筑、道路、海面、数字、骰面与发展牌堆同样由本项目制作。
 
-在数据包目录运行 python tools/build_catan_visual.py 重建。依赖 Pillow、NumPy 和 Windows Arial；使用本地保留的 CC0 原件，不需要再次下载。../models/ 中保存可编辑 Blockbench 源文件，纹理嵌入源模型。地形预览见 ../terrain_preview.png；四人桌、八人桌及两种朝向的实际模型离线预览见 ../board_preview_c4o0.png 等文件。预览使用原始模型面、UV、透明纹理和深度缓冲，属于资产检查图，不是游戏内截图。
+地块数字与港口比率用朝上的薄片模型，实体 billboard 为 vertical。位置写在实体 Pos，transformation.translation 恒为零，所以不同座位的客户端可以独立转向文字，而不会让标记绕桌心漂移。发展牌堆在四／八人桌的海域外角落，牌叠和点击区域同步定位，底面独立抬高；牌背不公开开发牌顺序。
+
+在数据包目录运行 python tools/build_catan_visual.py 重建。依赖 Pillow、NumPy 和 Windows Arial；使用本地保留的 CC0 原件，不需要再次下载。../models/ 中保存可编辑 Blockbench 源文件，纹理嵌入源模型并保留手持姿态。地形底图预览见 ../terrain_preview.png；四人桌、八人桌及两种朝向的立体模型预览见 ../board_preview_c4o0.png 等文件。预览使用实际模型面、UV、透明纹理和深度缓冲，不是游戏内截图。
 
 拓扑只导入数据包 tools/catan_topology.py，禁止另排 ID。四/八人桌 R=.25/.35、海框 L=1.35/1.8，棋盘旋转、道路、交点、港口和骰面均共享坐标。item_display:none 的固定 Y180 由 right_rotation 抵消。顶面只有一层，数字、建筑与高亮分层，不以重复共面矩形模拟六边形。
 
@@ -497,6 +497,16 @@ def functions():
         '$data merge entity @s {item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:catan/$(model)"}},item_display:"none",brightness:{block:15,sky:15},shadow_radius:0f,shadow_strength:0f,view_range:0.5f}',
         'function catan:visual/pose with storage catan:visual pose'])
     put('pose','$data merge entity @s {start_interpolation:0,interpolation_duration:1,transformation:{translation:[$(x)f,$(y)f,$(z)f],left_rotation:[$(qx)f,$(qy)f,$(qz)f,$(qw)f],right_rotation:[0f,1f,0f,0f],scale:[$(scale)f,$(scale)f,$(scale)f]}}')
+    # Billboard rotates local geometry, including translation: anchor labels in world Pos.
+    put('label_spawn','execute positioned ~ ~1.04 ~ summon minecraft:item_display run function catan:visual/label_init with storage catan:visual')
+    put('label_init',[
+        'tag @s add ca.visual','scoreboard players operation @s ct_id = #vis_table ca_ctx',
+        '$scoreboard players set @s ca_vid $(id)','$scoreboard players set @s ca_vkind $(kind)',
+        '$data merge entity @s {billboard:"vertical",Rotation:[0f,0f],item_display:"none",item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"card:catan/$(model)"}},brightness:{block:15,sky:15},shadow_radius:0f,shadow_strength:0f,view_range:0.75f}',
+        'function catan:visual/label_anchor with storage catan:visual pose'])
+    put('label_anchor',[
+        '$tp @s ~$(x) ~$(y) ~$(z)',
+        '$data merge entity @s {transformation:{translation:[0f,0f,0f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,1f,0f,0f],scale:[$(scale)f,$(scale)f,$(scale)f]}}'])
     put('coordinate',[
         '$data modify storage catan:visual pose set from storage catan:layout $(layout).$(collection)[$(target)]'])
     put('tile',[
@@ -517,11 +527,8 @@ def functions():
         '$data modify storage catan:visual model set value "number/$(number)"',
         'data modify storage catan:visual kind set value 3',
         'data modify storage catan:visual pose.scale set from storage catan:visual geom.token_scale',
-        'execute store result score #vis_scale ca_ctx run data get storage catan:visual geom.token_scale 100000',
-        'scoreboard players set #vis_two ca_ctx 2','scoreboard players operation #vis_scale ca_ctx /= #vis_two ca_ctx',
-        'scoreboard players add #vis_scale ca_ctx 2600',
-        'execute store result storage catan:visual pose.y double 0.00001 run scoreboard players get #vis_scale ca_ctx',
-        'function catan:visual/spawn'])
+        'data modify storage catan:visual pose.y set value 0.065',
+        'function catan:visual/label_spawn'])
     put('port',[
         '$data modify storage catan:visual target set value $(target)',
         '$data modify storage catan:visual port set from entity @s data.catan.port_types[$(target)]',
@@ -533,8 +540,9 @@ def functions():
         'function catan:visual/spawn',
         '$data modify storage catan:visual pose set from storage catan:layout $(layout).ports[$(target)].token',
         'data modify storage catan:visual kind set value 4',
+        'data modify storage catan:visual pose.y set value 0.095',
         *[f'execute if data storage catan:visual {{port:{i}}} run data modify storage catan:visual model set value "port/{name}"' for i,name in [(-1,'generic'),*enumerate(('wood','brick','wool','grain','ore'))]],
-        'function catan:visual/spawn'])
+        'function catan:visual/label_spawn'])
     put('update',['function catan:visual/context','execute at @s run function catan:visual/update_at',
                   'execute unless score @s ca_vkind matches 5 run function catan:visual/dice_done'])
     put('update_at',[

@@ -63,7 +63,8 @@ tag @s remove {p}.hud
         rows+=[('$' if '$(' in encoded else '')+'data modify storage fimel_title:io text set value '+encoded]
         if i==0:
             if ns=='catan':
-                rows += ['$execute if score @s ca_side matches $(side) run data modify storage fimel_title:io text.extra[2] set value '+js(val('vp','gold')),
+                rows += ['$function catan:hud/name_color {side:$(side),index:0}',
+                    '$execute if score @s ca_side matches $(side) run data modify storage fimel_title:io text.extra[2] set value '+js(val('vp','gold')),
                     '$execute if score @s ca_side matches $(side) run data modify storage fimel_title:io text.extra[3].text set value "分（本人）"',
                     '$execute if entity @e[tag=ca.current,scores={ca_turn=$(side),ca_state=1..8},limit=1] run data modify storage fimel_title:io text.extra insert 1 value {text:" ▶",color:"yellow"}']
             else:
@@ -79,6 +80,7 @@ tag @s remove {p}.hud
         rows += [f'$function {ns}:hud/line {{x:$(x),y:$({y}),origin:"$(origin)",align:"$(align)"}}']
     put('row',rows)
     if ns=='catan':
+        catan_name_colors(put)
         from build_catan_font import FONT_ID,RESOURCE_GLYPHS
         own=[]
         for resource,glyph in enumerate(RESOURCE_GLYPHS):
@@ -120,7 +122,10 @@ tag @s remove {p}.hud
     status += [f'function {ns}:feedback/status',f'function {ns}:hud/center']
     extra=[{'text':' · '},{'nbt':f'data.{ns}.p$(turn).name','entity':f'@e[tag={p}.current,limit=1]','interpret':True}]
     if ns=='magical_athlete':extra += [{'text':' · 第$(round)/4场','color':'gold'}]
-    put('status_turn','$data modify storage fimel_title:io text.extra set value '+js(extra))
+    status_turn=['$data modify storage fimel_title:io text.extra set value '+js(extra)]
+    if ns=='catan':
+        status_turn += ['$function catan:hud/name_color {side:$(turn),index:1}']
+    put('status_turn',status_turn)
     put('status',status)
     put('notice', [f'$data modify storage {ns}:hud incoming set value $(text)',f'function {ns}:hud/activate',
         f'execute store result storage {ns}:hud panel int 1 run scoreboard players get @s {p}_hpanel',
@@ -131,6 +136,21 @@ tag @s remove {p}.hud
     put('tick',[f'execute if score @s {p}_htimer matches 1.. run scoreboard players remove @s {p}_htimer 1'])
     game=PACK/f'data/{ns}/function/game/hud.mcfunction'
     game.write_text(f'scoreboard players set @s {p}_pulse 0\nfunction {ns}:system/context\nexecute as @a[tag={p}.audience] run function {ns}:hud/build\n',encoding='utf-8')
+
+
+def catan_name_colors(put):
+    """HUD names follow the player's Catan piece colour; preserve the captured name."""
+    from build_catan_visual import COLORS_RGB
+    lines=[
+        'data modify storage catan:hud colored_name set value {text:"",color:"white",extra:[]}',
+        '$data modify storage catan:hud colored_name.extra append from entity @e[tag=ca.current,limit=1] data.catan.p$(side).name',
+    ]
+    for side,color in enumerate(COLORS_RGB,1):
+        condition=f'$execute if data entity @e[tag=ca.current,limit=1] data.catan.p$(side){{color:{side}}} run '
+        lines += [condition+'data modify storage catan:hud colored_name.color set value "'+color+'"',
+                  condition+'data modify storage catan:hud colored_name.extra[0].color set value "'+color+'"']
+    lines += ['$data modify storage fimel_title:io text.extra[$(index)] set from storage catan:hud colored_name']
+    put('name_color',lines)
 
 
 def catan_fonts():
