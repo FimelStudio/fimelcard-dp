@@ -1,3 +1,4 @@
+execute unless score @s ct_capacity matches 8 run tellraw @a[tag=ct.start_actor,limit=1] {text:"[阿瓦隆] 四座桌无法开局，请使用八座桌（5～8 人）。",color:"red"}
 execute unless score @s ct_capacity matches 8 run return fail
 execute unless score @s ct_joined matches 5..8 run return run tellraw @a[tag=ct.start_actor,limit=1] {text:"阿瓦隆需要5～8人入座。",color:"red"}
 scoreboard players operation #table av_ctx = @s ct_id

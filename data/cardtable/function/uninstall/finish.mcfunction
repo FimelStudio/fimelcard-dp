@@ -377,6 +377,10 @@ scoreboard objectives remove dc_state
 scoreboard objectives remove dc_sync
 scoreboard objectives remove dc_team
 scoreboard objectives remove dc_team_mode
+scoreboard objectives remove dc_encode_limit
+scoreboard objectives remove dc_guess_limit
+scoreboard objectives remove dc_timer
+scoreboard objectives remove dc_seconds
 scoreboard objectives remove dc_w1
 scoreboard objectives remove dc_w2
 scoreboard objectives remove dc_w3

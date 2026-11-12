@@ -30,6 +30,7 @@ scoreboard players reset @s dc_drop
 scoreboard players reset @s dc_drop_book
 scoreboard players reset @s dc_drop_guess
 clear @s minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'prompt'}}]
+clear @s minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'timeout'}}]
 
 scoreboard players reset @s dc_role
 scoreboard players reset @s dc_index

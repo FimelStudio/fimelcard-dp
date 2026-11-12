@@ -10,6 +10,6 @@ execute store success score #other dc_ctx run data modify storage decrypto:input
 execute unless score #other dc_ctx matches 0 run return 0
 tag @s add dc.submitted_book
 execute as @e[tag=dc.controller,scores={dc_sync=1,dc_state=2}] if score @s dc_id = #ctx dc_ctx unless score @s dc_input matches 1 run function decrypto:sync/book
-execute as @e[type=minecraft:marker,tag=dc.controller,scores={dc_state=2,dc_mode=3}] at @s unless score @s dc_input matches 1 if score @s dc_id = #ctx dc_ctx if entity @a[tag=dc.submitter,scores={dc_team=1},limit=1] run function decrypto:input/accept_book
+execute as @e[type=minecraft:marker,tag=dc.controller,scores={dc_state=2,dc_mode=3}] at @s unless score @s dc_sync matches 1 unless score @s dc_input matches 1 if score @s dc_id = #ctx dc_ctx if entity @a[tag=dc.submitter,scores={dc_team=1},limit=1] run function decrypto:input/accept_book
 execute as @e[type=minecraft:marker,tag=dc.controller,scores={dc_state=4}] at @s unless score @s dc_input matches 1 if score @s dc_id = #ctx dc_ctx if entity @a[tag=dc.submitter,scores={dc_team=2},limit=1] run function decrypto:input/accept_book
 tag @s remove dc.submitted_book

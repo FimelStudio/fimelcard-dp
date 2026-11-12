@@ -1,4 +1,4 @@
-execute unless score @s dd_lane matches 1..2 run function cardtable:animation/deal/clear
+execute unless score @s dd_lane matches 2 run function cardtable:animation/deal/clear
 scoreboard players set @s dd_speed_time 0
 scoreboard players set @s dd_state 2
 function doudizhu:round/announce

@@ -1,4 +1,6 @@
 execute if score @s dc_mode matches 4 run return run function decrypto:sync/begin
+execute if score @s dc_encode_limit matches 1.. run return run function decrypto:sync/begin
+execute if score @s dc_guess_limit matches 1.. run return run function decrypto:sync/begin
 scoreboard players set @s dc_state 2
 function decrypto:title/update_all
 scoreboard players set @s dc_clue 0

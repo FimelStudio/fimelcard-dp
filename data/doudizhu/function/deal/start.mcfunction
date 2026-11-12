@@ -36,8 +36,8 @@ execute unless score @s dd_lane matches 1..2 run function doudizhu:deck/order
 execute if score @s dd_lane matches 1..2 run function doudizhu:duplicate/deal_hands
 execute unless score @s dd_lane matches 1..2 as @e[tag=dd.actors] run function doudizhu:deal/hand
 tag @e[tag=dd.pool] remove dd.pool
-execute unless score @s dd_lane matches 1..2 run function cardtable:animation/deal/clear
-execute unless score @s dd_lane matches 1..2 run function cardtable:animation/deal/box/spawn
+execute unless score @s dd_lane matches 2 run function cardtable:animation/deal/clear
+execute unless score @s dd_lane matches 2 run function cardtable:animation/deal/box/spawn
 tellraw @a[tag=dd.audience] [{text:"[斗地主] 第 ",color:"gold"},{score:{name:"@s",objective:"dd_round"}},{text:" / "},{score:{name:"@s",objective:"dd_limit"}},{text:" 局：发牌中，每人17张，留3张底牌。"}]
 execute if score @s dd_humans matches 4 as @e[tag=dd.actor] if score @s dd_id = #ctx dd_ctx if score @s dd_seat = #out dd_ctx run tellraw @a[tag=dd.audience] [{selector:"@s",color:"yellow"},{text:" 本局叫分轮空。",color:"gray"}]
 tag @a[tag=dd.audience] remove dd.audience

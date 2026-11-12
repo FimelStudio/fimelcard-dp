@@ -8,6 +8,6 @@ function cardtable:animation/deal/spawn_card
 item replace entity @e[type=minecraft:item,tag=ct.new_dealt_card,distance=..2,limit=1] contents with minecraft:paper[minecraft:item_model="card:poker/back",minecraft:custom_data={doudizhu:{visual:1b}}]
 tag @e[type=minecraft:item,tag=ct.new_dealt_card,distance=..2,limit=1] add ct.visual_only
 function cardtable:animation/deal/launch with storage cardtable:deal
-function cardtable:animation/deal/sound
+execute unless score @s dd_lane matches 1..2 run function cardtable:animation/deal/sound
 tag @a[tag=dd.audience] remove dd.audience
 tag @e[tag=dd.actors] remove dd.actors

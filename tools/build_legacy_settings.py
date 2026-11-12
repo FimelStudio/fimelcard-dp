@@ -17,6 +17,7 @@ def options(key, label, values, default=0):
 
 ON_OFF = [(0, '关闭'), (1, '开启')]
 BOOK_FORM = [(0, '书本'), (1, '对话框（提交需 OP）')]
+DECRYPTO_TIME = [(0, '无限制'), (1, '60秒'), (2, '90秒'), (3, '120秒'), (4, '180秒'), (5, '240秒')]
 GAMES = {
     1: ('fast_card', 'Fast Card', '4 人，按设定小局数累计积分；无效按钮乱按惩罚可开关。', [
         numeric('fc_max', '比赛小局数', 1, 999, 5), options('fc_rule', '无效抢按立即判负', ON_OFF)]),
@@ -26,9 +27,10 @@ GAMES = {
         options('hb_storm', '彩色风暴扩展', ON_OFF)]),
     4: ('abraca', '出包魔法师', '2～5 人；塔层分数跨局累计，达到目标分数获胜。', [numeric('ab_goal', '获胜分数', 1, 32, 8)]),
     5: ('bullshit', '瞎掰王', '固定规则：3～8 人，每人担任一次大聪明，每轮阅读 20 秒。没有独立玩法参数。', []),
-    6: ('decrypto', '谍报风云', '3～8 人。固定组队按座位分队；三人模式随机选截密者并固定五轮。分队回合上限仅影响 4～8 人。普通玩家选书本；对话框提交需要加密者有 OP。', [
+    6: ('decrypto', '谍报风云', '3～8 人。固定组队按座位分队；三人模式随机选截密者并固定五轮。分队回合上限仅影响 4～8 人。普通玩家选书本；对话框提交需要加密者有 OP。两个阶段分别限时，同阶段全桌共用倒计时。', [
         options('dc_team_mode', '组队方式', [(0, '随机组队'), (1, '按座位组队')]),
-        numeric('dc_round_limit', '分队回合上限', 1, 32, 8), options('dc_input', '提示输入方式', BOOK_FORM)]),
+        numeric('dc_round_limit', '分队回合上限', 1, 32, 8), options('dc_input', '提示输入方式', BOOK_FORM),
+        options('dc_encode_limit', '加密限时', DECRYPTO_TIME), options('dc_guess_limit', '拦截＋解密限时', DECRYPTO_TIME)]),
     7: ('critical_point', '临界点', '固定规则：3～6 人，安全线为 3×人数+2；危机后强制最终投票，全场一次主动投票。没有独立玩法参数。', []),
     8: ('wenfei', '问非所答', '2～8 人，按人数设置每人担任猜题者的次数。普通玩家选书本；对话框提交需要回答者有 OP。', [
         numeric('wq_duo', '双人局每人猜题次数', 1, 6, 3), numeric('wq_multi', '多人局每人猜题次数', 1, 6, 2),

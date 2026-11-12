@@ -11,6 +11,8 @@ data remove entity @s data.decrypto.note_lines
 scoreboard players reset @s dc_page
 scoreboard players reset @s dc_pages
 scoreboard players reset @s dc_page_tick
+scoreboard players reset @s dc_timer
+scoreboard players reset @s dc_seconds
 data remove entity @s data.decrypto.keywords
 tag @s remove dc.controller
 scoreboard players reset @s dc_id
