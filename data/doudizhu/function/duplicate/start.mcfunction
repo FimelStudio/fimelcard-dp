@@ -8,7 +8,7 @@ function doudizhu:predict/init
 data remove entity @s data.dd_duplicate
 execute summon minecraft:marker run function doudizhu:duplicate/init_other
 scoreboard players operation #match dd_ctx = @s ct_id
-execute as @a[tag=dd.player] if score @s ct_id = #match dd_ctx run function doudizhu:duplicate/assign_seat
+execute as @e[tag=dd.actor] if score @s dd_id = #match dd_ctx run function doudizhu:duplicate/assign_seat
 execute as @a[tag=dd.player] if score @s ct_id = #match dd_ctx run function doudizhu:duplicate/announce_seat
 scoreboard players set @s ct_start 1
 function doudizhu:duplicate/deal_pair

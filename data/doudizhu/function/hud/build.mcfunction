@@ -1,13 +1,9 @@
-# Called after hand/build, with dd.current intact. Do not change gameplay context.
+# 使用 hud/view_context 已绑定的观看席位与视角。
 execute unless score @s dd_panel matches 1.. run function doudizhu:hud/activate
-scoreboard players operation #hud_table dd_ctx = @s dd_id
-scoreboard players operation #hud_viewer dd_ctx = @s dd_seat
-scoreboard players set #hud_out dd_ctx 0
-execute if score @e[tag=dd.current,limit=1] dd_humans matches 4 run scoreboard players operation #hud_out dd_ctx = @e[tag=dd.current,limit=1] dd_out
 scoreboard players set #hud_up dd_ctx 0
 scoreboard players set #hud_down dd_ctx 9
-execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx unless score @s dd_seat = #hud_out dd_ctx if score @s dd_seat < #hud_viewer dd_ctx run scoreboard players operation #hud_up dd_ctx > @s dd_seat
-execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx unless score @s dd_seat = #hud_out dd_ctx if score @s dd_seat > #hud_viewer dd_ctx run scoreboard players operation #hud_down dd_ctx < @s dd_seat
+execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx unless score @s dd_seat = #hud_out dd_ctx if score @s dd_seat < #hud_pov dd_ctx run scoreboard players operation #hud_up dd_ctx > @s dd_seat
+execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx unless score @s dd_seat = #hud_out dd_ctx if score @s dd_seat > #hud_pov dd_ctx run scoreboard players operation #hud_down dd_ctx < @s dd_seat
 execute if score #hud_up dd_ctx matches 0 run function doudizhu:hud/wrap_up
 execute if score #hud_down dd_ctx matches 9 run function doudizhu:hud/wrap_down
 data modify storage fimel_title:io panel_buffer set value []
@@ -19,8 +15,9 @@ data modify storage fimel_title:io y set value -48.0d
 execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx unless score @s dd_seat = #hud_out dd_ctx if score @s dd_seat = #hud_up dd_ctx at @s run function doudizhu:hud/row
 data modify storage doudizhu:hud label set value "自己 "
 data modify storage fimel_title:io y set value -126.0d
-execute unless score @s dd_seat = #hud_out dd_ctx run function doudizhu:hud/row
-execute if score @s dd_seat = #hud_out dd_ctx run function doudizhu:hud/spectator
+execute unless score #hud_viewer dd_ctx = #hud_pov dd_ctx run data modify storage doudizhu:hud label set value "观战 "
+execute unless score #hud_pov dd_ctx = #hud_out dd_ctx as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx if score @s dd_seat = #hud_pov dd_ctx at @s run function doudizhu:hud/row
+execute if score #hud_pov dd_ctx = #hud_out dd_ctx run function doudizhu:hud/spectator
 data modify storage doudizhu:hud label set value "下家 "
 data modify storage fimel_title:io y set value -48.0d
 execute as @e[tag=dd.actor] if score @s dd_id = #hud_table dd_ctx unless score @s dd_seat = #hud_out dd_ctx if score @s dd_seat = #hud_down dd_ctx at @s run function doudizhu:hud/row

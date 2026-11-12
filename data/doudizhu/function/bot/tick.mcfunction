@@ -6,6 +6,7 @@ execute on origin if score @s ct_paused matches 1 run return 0
 execute if score @s dd_state matches 2 if score @s dd_bidmode matches 2 run return run function doudizhu:bot/speed_tick
 scoreboard players add @s dd_bot_timer 1
 execute unless score @s dd_bot_timer matches 20.. run return 0
+execute if score @s dd_lane matches 1..2 unless score @s dd_lane = #bot_lane dd_ctx run return 0
 scoreboard players set @s dd_bot_timer 0
 scoreboard players operation #ctx dd_ctx = @s dd_id
 scoreboard players operation #bot_turn dd_ctx = @s dd_turn

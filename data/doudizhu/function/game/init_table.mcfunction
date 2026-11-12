@@ -1,4 +1,5 @@
 # 设置保存在控制器上，切换游戏和结束比赛不清除。
+execute unless score @s dd_mode matches 0..2 run scoreboard players set @s dd_mode 0
 execute unless score @s dd_max matches 1..32 run scoreboard players set @s dd_max 1
 
 execute unless score @s dd_audio matches 0..1 run scoreboard players set @s dd_audio 1
@@ -14,3 +15,4 @@ execute unless score @s dd_counter matches 0..1 run scoreboard players set @s dd
 
 execute unless score @s dd_noshuffle matches 0..1 run scoreboard players set @s dd_noshuffle 0
 execute unless score @s dd_hide_score matches 0..1 run scoreboard players set @s dd_hide_score 0
+execute unless score @s dd_turn_limit matches 0 unless score @s dd_turn_limit matches 30 unless score @s dd_turn_limit matches 60 unless score @s dd_turn_limit matches 90 unless score @s dd_turn_limit matches 120 run scoreboard players set @s dd_turn_limit 0

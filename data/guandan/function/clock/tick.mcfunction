@@ -5,6 +5,7 @@ execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
 execute if score @s gd_anim matches 1.. run return run function guandan:clock/animation
 function guandan:system/context
+execute if score @s gd_state matches 3 if function guandan:autopass/tick run return 1
 scoreboard players operation #actor gd_ctx = @s gd_turn
 scoreboard players set #clock_bot gd_ctx 0
 execute if score @s gd_state matches 3 as @e[tag=gd.board,tag=gd.bot] if score @s gd_seat = #actor gd_ctx run scoreboard players set #clock_bot gd_ctx 1

@@ -1,6 +1,7 @@
 execute store result storage guandan:hud public_count int 1 run scoreboard players get @s gd_count
 function guandan:hud/public_label with storage guandan:hud
 data modify storage fimel_title:io text.extra append from entity @s data.gd_name
+execute unless entity @s[tag=gd.bot] if entity @e[tag=gd.current,scores={gd_state=2..3,gd_limit=1..,gd_clock=1..},limit=1] run function guandan:hud/countdown
 execute if score @e[tag=gd.current,limit=1] gd_show matches 1 run function guandan:hud/public_count with storage guandan:hud
 execute if score @s gd_seat = @e[tag=gd.current,limit=1] gd_turn run data modify storage fimel_title:io text.extra append value {text:" ◀",color:"green"}
 data modify storage fimel_title:io font set value "minecraft:default_mod"

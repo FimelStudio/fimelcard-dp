@@ -11,5 +11,4 @@ execute store result score #tool_table gd_ctx run data get entity @s Item.compon
 kill @s
 execute unless score @a[tag=gd.dropper,limit=1] gd_table = #tool_table gd_ctx run return 0
 execute as @a[tag=gd.dropper,limit=1] run function guandan:input/give
-execute if score #tool_action gd_ctx matches 8 as @a[tag=gd.dropper,limit=1] at @s run return run function guandan:ui/menu
-execute as @a[tag=gd.dropper,limit=1] at @s run function guandan:ui/open
+execute if score #tool_action gd_ctx matches 0 as @a[tag=gd.dropper,limit=1] at @s run function guandan:ui/open

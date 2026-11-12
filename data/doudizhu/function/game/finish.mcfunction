@@ -19,12 +19,11 @@ execute unless score #winner dd_ctx = #lord dd_ctx run tellraw @a[tag=dd.audienc
 execute unless score @s dd_lane matches 1..2 unless score @s dd_scoring matches 1 if score #spring dd_ctx matches 1 run tellraw @a[tag=dd.audience] {text:"春天／反春天，倍数翻倍。",color:"yellow"}
 execute if score @s dd_lane matches 1..2 run return run function doudizhu:duplicate/finish_side
 scoreboard players operation #scoring dd_ctx = @s dd_scoring
-execute if score @s dd_humans matches 4 if score @s dd_scoring matches 1 run function doudizhu:team/score_win
-execute if score @s dd_humans matches 4 unless score @s dd_scoring matches 1 as @e[tag=dd.actors] run function doudizhu:game/score
-execute unless score @s dd_humans matches 4 as @e[tag=dd.actors] run function doudizhu:game/score
+execute if score @s dd_humans matches 4 run function doudizhu:team/score_win
 execute if score @s dd_humans matches 4 run function doudizhu:team/totals
-execute unless score @s dd_audio matches 0 as @a[tag=dd.audience,scores={dd_points=1..}] run function doudizhu:music/start_win
-execute unless score @s dd_audio matches 0 as @a[tag=dd.audience,scores={dd_points=..-1}] run function doudizhu:music/start_lose
+execute unless score @s dd_humans matches 4 as @e[tag=dd.actors] run function doudizhu:game/score
+execute unless score @s dd_humans matches 4 unless score @s dd_audio matches 0 as @a[tag=dd.audience,scores={dd_points=1..}] run function doudizhu:music/start_win
+execute unless score @s dd_humans matches 4 unless score @s dd_audio matches 0 as @a[tag=dd.audience,scores={dd_points=..-1}] run function doudizhu:music/start_lose
 execute unless score @s dd_audio matches 0 unless score @s dd_humans matches 4 if score @s dd_scoring matches 1 as @a[tag=dd.audience,scores={dd_points=0}] run function doudizhu:music/start_lose
 function doudizhu:log {text:"本局结算完成，累计分数已保存"}
 execute as @a[tag=dd.audience] run dialog clear @s

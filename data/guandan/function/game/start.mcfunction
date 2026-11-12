@@ -10,7 +10,6 @@ execute as @a[tag=ct.player] if score @s ct_id = #table gd_ctx run tag @s add gd
 execute as @a[tag=gd.start] run scoreboard players add #online gd_ctx 1
 execute unless score #online gd_ctx matches 1..4 run return run function guandan:game/bad_count
 execute as @a[tag=gd.start] if items entity @s hotbar.0 * run scoreboard players set #occupied gd_ctx 1
-execute as @a[tag=gd.start] if items entity @s hotbar.8 * run scoreboard players set #occupied gd_ctx 1
 execute if score #occupied gd_ctx matches 1 run return run function guandan:game/bad_slots
 function guandan:game/init_table
 execute if score @s gd_pair matches 0 run function guandan:game/check_sides

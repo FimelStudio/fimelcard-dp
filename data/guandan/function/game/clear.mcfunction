@@ -8,6 +8,8 @@ scoreboard players set @s gd_phase 0
 scoreboard players set @s gd_timer 0
 scoreboard players set @s gd_anim 0
 scoreboard players set @s gd_clock 0
+scoreboard players reset @s gd_auto
+scoreboard players reset @s gd_hint
 function guandan:game/bump_epoch
 function guandan:visual/clear
 function cardtable:animation/deal/clear

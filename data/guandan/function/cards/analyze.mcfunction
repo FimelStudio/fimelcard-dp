@@ -3,29 +3,7 @@ function guandan:cards/constants
 function guandan:cards/context
 data modify entity @s data.guandan.options set value []
 scoreboard players set #options gd_ctx 0
-scoreboard players set #cards gd_ctx 0
-scoreboard players set #wild gd_ctx 0
-scoreboard players set #bad gd_ctx 0
-scoreboard players set #nonwild gd_ctx 0
-scoreboard players set #r2 gd_ctx 0
-scoreboard players set #r3 gd_ctx 0
-scoreboard players set #r4 gd_ctx 0
-scoreboard players set #r5 gd_ctx 0
-scoreboard players set #r6 gd_ctx 0
-scoreboard players set #r7 gd_ctx 0
-scoreboard players set #r8 gd_ctx 0
-scoreboard players set #r9 gd_ctx 0
-scoreboard players set #r10 gd_ctx 0
-scoreboard players set #r11 gd_ctx 0
-scoreboard players set #r12 gd_ctx 0
-scoreboard players set #r13 gd_ctx 0
-scoreboard players set #r14 gd_ctx 0
-scoreboard players set #r15 gd_ctx 0
-scoreboard players set #r16 gd_ctx 0
-scoreboard players set #s0 gd_ctx 0
-scoreboard players set #s1 gd_ctx 0
-scoreboard players set #s2 gd_ctx 0
-scoreboard players set #s3 gd_ctx 0
+function guandan:cards/reset_counts
 execute as @e[tag=gd.cards,tag=gd.selected] run function guandan:cards/count
 execute if score #bad gd_ctx matches 1.. run return 0
 execute unless score #cards gd_ctx matches 1..10 run return 0

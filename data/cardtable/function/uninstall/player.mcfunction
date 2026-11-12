@@ -1044,6 +1044,7 @@ tag @s remove dd.actors
 tag @s remove dd.audience
 tag @s remove dd.bot
 tag @s remove dd.bot_best
+tag @s remove dd.hint_first
 tag @s remove dd.bottom
 tag @s remove dd.bottom_card
 tag @s remove dd.card
@@ -1154,6 +1155,7 @@ tag @s remove gd.pick
 tag @s remove gd.player
 tag @s remove gd.playing
 tag @s remove gd.selected
+tag @s remove gd.hint_saved
 tag @s remove gd.setting_table
 tag @s remove gd.start
 tag @s remove gd.status

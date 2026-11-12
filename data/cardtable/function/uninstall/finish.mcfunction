@@ -391,6 +391,8 @@ scoreboard objectives remove dd_action
 scoreboard objectives remove dd_audio
 scoreboard objectives remove dd_auto_seat
 scoreboard objectives remove dd_autopass
+scoreboard objectives remove dd_turn_clock
+scoreboard objectives remove dd_turn_limit
 scoreboard objectives remove dd_bid
 scoreboard objectives remove dd_bidcount
 scoreboard objectives remove dd_bidleft
@@ -410,6 +412,7 @@ scoreboard objectives remove dd_drop_dye
 scoreboard objectives remove dd_eligible
 scoreboard objectives remove dd_firstcall
 scoreboard objectives remove dd_high
+scoreboard objectives remove dd_hint
 scoreboard objectives remove dd_humans
 scoreboard objectives remove dd_id
 scoreboard objectives remove dd_last
@@ -440,6 +443,7 @@ scoreboard objectives remove dd_team
 scoreboard objectives remove dd_team_mode
 scoreboard objectives remove dd_scoring
 scoreboard objectives remove dd_hide_score
+scoreboard objectives remove dd_mode
 scoreboard objectives remove dd_void
 scoreboard objectives remove dd_pred_phase
 scoreboard objectives remove dd_pred_round
@@ -525,6 +529,7 @@ scoreboard objectives remove gd_botclock
 scoreboard objectives remove gd_botepoch
 scoreboard objectives remove gd_botpick
 scoreboard objectives remove gd_clock
+scoreboard objectives remove gd_auto
 scoreboard objectives remove gd_count
 scoreboard objectives remove gd_ctx
 scoreboard objectives remove gd_dealorder
@@ -536,6 +541,7 @@ scoreboard objectives remove gd_first
 scoreboard objectives remove gd_firstorder
 scoreboard objectives remove gd_giftid
 scoreboard objectives remove gd_high
+scoreboard objectives remove gd_hint
 scoreboard objectives remove gd_hud
 scoreboard objectives remove gd_hud_key
 scoreboard objectives remove gd_humans

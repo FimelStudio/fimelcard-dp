@@ -2,6 +2,7 @@ tag @s add dd.controller
 scoreboard players operation @s ct_id = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] ct_id
 scoreboard players operation @s ct_capacity = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] ct_capacity
 scoreboard players operation @s dd_limit = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] dd_limit
+scoreboard players operation @s dd_turn_limit = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] dd_turn_limit
 scoreboard players operation @s dd_audio = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] dd_audio
 scoreboard players operation @s dd_counts = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] dd_counts
 scoreboard players operation @s dd_counter = @e[type=minecraft:marker,tag=ct.controller,tag=dd.controller,scores={dd_lane=1},distance=..0.1,limit=1] dd_counter

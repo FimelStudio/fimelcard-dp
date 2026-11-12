@@ -1,6 +1,7 @@
 # uninstall-guard: begin (tools/build_uninstall.py)
 execute if data storage cardtable:uninstall active run return 0
 # uninstall-guard: end
+scoreboard objectives add dd_mode dummy
 scoreboard objectives add dd_classic_bid dummy
 scoreboard objectives add dd_scoring dummy
 scoreboard objectives add dd_hide_score dummy
@@ -28,6 +29,9 @@ scoreboard objectives add dd_firstcall dummy
 scoreboard objectives add dd_bidleft dummy
 scoreboard objectives add dd_eligible dummy
 scoreboard objectives add dd_counts dummy
+scoreboard objectives add dd_hint dummy
+scoreboard objectives add dd_turn_limit dummy
+scoreboard objectives add dd_turn_clock dummy
 scoreboard objectives add dd_autopass dummy
 scoreboard objectives add dd_auto_seat dummy
 scoreboard objectives add dd_audio dummy

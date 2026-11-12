@@ -1,3 +1,4 @@
+function doudizhu:game/init_table
 execute unless score @s dd_max matches 1..32 run scoreboard players set @s dd_max 1
 scoreboard players operation #setting_current ct_ctx = @s dd_max
 data modify storage cardtable:settings field1 set value {"text":"比赛局数：","color":"gray","extra":[]}
@@ -62,4 +63,21 @@ scoreboard players set #setting_fieldbase ct_ctx 8000
 scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
 function cardtable:settings/choice {"field":8,"value":0,"label":"公开比分"}
 function cardtable:settings/choice {"field":8,"value":1,"label":"隐藏比分并预测"}
+scoreboard players operation #setting_current ct_ctx = @s dd_mode
+data modify storage cardtable:settings field9 set value {"text":"游戏模式：","color":"gray","extra":[]}
+scoreboard players set #setting_fieldbase ct_ctx 9000
+scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
+function cardtable:settings/choice {field:9,value:0,label:"经典模式"}
+function cardtable:settings/choice {field:9,value:1,label:"2v2"}
+execute if score @s ct_capacity matches 8 run function cardtable:settings/choice {field:9,value:2,label:"4v4"}
+execute unless score @s ct_capacity matches 8 run data modify storage cardtable:settings field9.extra append value {text:" [4v4 · 仅八座桌]",color:"dark_gray"}
+scoreboard players operation #setting_current ct_ctx = @s dd_turn_limit
+data modify storage cardtable:settings field10 set value {"text":"每步操作时限：","color":"gray","extra":[]}
+scoreboard players set #setting_fieldbase ct_ctx 10000
+scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
+function cardtable:settings/choice {field:10,value:0,label:"无限制"}
+function cardtable:settings/choice {field:10,value:30,label:"30秒"}
+function cardtable:settings/choice {field:10,value:60,label:"60秒"}
+function cardtable:settings/choice {field:10,value:90,label:"90秒"}
+function cardtable:settings/choice {field:10,value:120,label:"120秒"}
 function cardtable:settings/show_10 with storage cardtable:settings

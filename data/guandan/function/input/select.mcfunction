@@ -10,6 +10,7 @@ scoreboard players remove #ui_id gd_ctx 100
 tag @e[tag=gd.clicked] remove gd.clicked
 execute as @e[tag=gd.cards] if score @s gd_owner = #ui_seat gd_ctx if score @s gd_id = #ui_id gd_ctx run tag @s add gd.clicked
 execute unless entity @e[tag=gd.clicked,limit=1] run return run function guandan:input/invalid
+execute if score @s gd_seat = @e[tag=gd.current,limit=1] gd_turn run scoreboard players set @e[tag=gd.current,limit=1] gd_hint 0
 execute if entity @e[tag=gd.clicked,scores={gd_sel=1},limit=1] run return run function guandan:input/unselect_one
 execute if entity @e[tag=gd.current,scores={gd_state=2},limit=1] run function guandan:input/clear_selected
 scoreboard players set @e[tag=gd.clicked,limit=1] gd_sel 1

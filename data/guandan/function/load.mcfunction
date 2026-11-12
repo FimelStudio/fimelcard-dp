@@ -5,6 +5,7 @@ scoreboard objectives add gd_action trigger
 scoreboard objectives add gd_actor dummy
 scoreboard objectives add gd_anim dummy
 scoreboard objectives add gd_clock dummy
+scoreboard objectives add gd_auto dummy
 scoreboard objectives add gd_count dummy
 scoreboard objectives add gd_ctx dummy
 scoreboard objectives add gd_dealorder dummy
@@ -16,6 +17,7 @@ scoreboard objectives add gd_first dummy
 scoreboard objectives add gd_firstorder dummy
 scoreboard objectives add gd_giftid dummy
 scoreboard objectives add gd_high dummy
+scoreboard objectives add gd_hint dummy
 scoreboard objectives add gd_hud dummy
 scoreboard objectives add gd_hud_key dummy
 scoreboard objectives add gd_id dummy
