@@ -1,6 +1,7 @@
 scoreboard players set @s dc_timer 0
 scoreboard players set @s dc_seconds 0
 function decrypto:player/audience
+clear @a[tag=dc.audience] minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'timeout'}}]
 execute as @a[tag=dc.audience,scores={dc_gserial=1..}] run dialog clear @s
 scoreboard players reset @a[tag=dc.audience] dc_gserial
 function decrypto:input/clear_guess

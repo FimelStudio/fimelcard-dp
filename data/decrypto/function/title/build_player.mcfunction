@@ -1,6 +1,7 @@
 execute unless score @s dc_panel matches 1.. run function decrypto:title/activate_player
 
 # BetterTitle公共缓冲区每次完整构建前必须清空。
+# default_neg 按常规字宽回退；加粗会改变整块 Actionbar 的居中宽度。
 data modify storage fimel_title:io panel_buffer set value []
 data modify storage fimel_title:io text_buffer set value []
 data modify storage fimel_title:io neg_text_buffer set value []
@@ -20,7 +21,6 @@ execute if score @s dc_team matches 1 run function decrypto:title/append_white_s
 execute if score @s dc_team matches 2 unless entity @s[tag=dc.interceptor] run function decrypto:title/append_black_status
 # 底部电报追加到同一个面板，不能单独 title actionbar 覆盖已有笔记。
 execute as @e[type=minecraft:marker,tag=dc.controller,tag=dc.title_controller,scores={dc_state=5..8}] if score @s dc_id = #ctx dc_ctx if data entity @s data.decrypto.active_clues run function decrypto:title/append_clues
-execute as @e[type=minecraft:marker,tag=dc.title_controller,scores={dc_seconds=1..},limit=1] run function decrypto:title/append_timer
 function decrypto:title/append_action
 scoreboard players operation panel_id fbt_io = @s dc_panel
 function fimel_title:replace_panel

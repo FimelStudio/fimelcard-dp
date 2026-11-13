@@ -1,4 +1,5 @@
 function decrypto:player/audience
+execute if score @s dc_state matches 2 run clear @a[tag=dc.audience] minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'timeout'}}]
 tag @e[tag=dc.sync_controller] remove dc.sync_controller
 tag @s add dc.sync_controller
 scoreboard players operation #prompt_input dc_ctx = @s dc_input

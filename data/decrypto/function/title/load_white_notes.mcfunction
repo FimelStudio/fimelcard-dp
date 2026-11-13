@@ -1,4 +1,4 @@
-data modify storage fimel_title:io text set value [{text:'    ',bold:false},{text:'敌方笔记 · 蓝队（5秒翻页）',color:'blue',bold:true,shadow_color:0}]
+data modify storage fimel_title:io text set value [{text:'    ',bold:false},{text:'敌方笔记 · 蓝队（5秒翻页）',color:'blue',shadow_color:0}]
 data modify storage fimel_title:io y set value -18.0d
 function fimel_title:new_text
 function decrypto:title/page_group {side:"white",digit:1,y:-36}
