@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 tellraw @a[tag=dc.submitter,limit=1] [{text:'[谍报风云] ',color:'aqua'},{text:'提交失败：提示册必须恰好3页，每页一条且不能为空。书已退回脚边，拾起后可继续修改。',color:'red'}]
 tag @e[type=minecraft:item,tag=dc.submitted_book,limit=1] add dc.book_rejected
 data merge entity @e[type=minecraft:item,tag=dc.submitted_book,limit=1] {PickupDelay:0s}

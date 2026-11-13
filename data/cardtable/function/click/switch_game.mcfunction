@@ -1,3 +1,7 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 advancement revoke @s only cardtable:click/switch_game
 advancement revoke @s only cardtable:click/switch_game_attack
 execute unless entity @s[tag=ct.player] run tellraw @s [{text:'[牌桌] ',color:'dark_aqua'},{text:'请先右键一把空座椅入座。',color:'red'}]

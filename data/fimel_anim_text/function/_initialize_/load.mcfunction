@@ -21,4 +21,5 @@ execute unless score #info.version fca_store matches 1 run function fimel_anim_t
 
 # 加载设置
 
+function cardtable:uninstall/remember_chunk {x:1,z:1}
 forceload add 1 1

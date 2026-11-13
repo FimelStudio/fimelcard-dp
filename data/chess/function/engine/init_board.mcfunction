@@ -1,0 +1,80 @@
+# 既可供大厅预览，也可供正式开局：不改ch_state/计时/玩家归属。
+function chess:system/context
+scoreboard players set @s ch_turn 1
+scoreboard players set @s ch_castle 15
+scoreboard players set @s ch_ep -1
+scoreboard players set @s ch_half 0
+scoreboard players set @s ch_full 1
+scoreboard players set @s ch_result 0
+scoreboard players set @s ch_reason 0
+scoreboard players set @s ch_check 0
+scoreboard players set @s ch_repetition 0
+data modify entity @s data.chess.history set value []
+data remove entity @s data.chess.last
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=0},limit=1] ch_piece 4
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=1},limit=1] ch_piece 2
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=2},limit=1] ch_piece 3
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=3},limit=1] ch_piece 5
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=4},limit=1] ch_piece 6
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=5},limit=1] ch_piece 3
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=6},limit=1] ch_piece 2
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=7},limit=1] ch_piece 4
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=8},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=9},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=10},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=11},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=12},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=13},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=14},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=15},limit=1] ch_piece 1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=16},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=17},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=18},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=19},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=20},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=21},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=22},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=23},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=24},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=25},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=26},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=27},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=28},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=29},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=30},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=31},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=32},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=33},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=34},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=35},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=36},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=37},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=38},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=39},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=40},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=41},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=42},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=43},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=44},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=45},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=46},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=47},limit=1] ch_piece 0
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=48},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=49},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=50},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=51},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=52},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=53},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=54},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=55},limit=1] ch_piece -1
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=56},limit=1] ch_piece -4
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=57},limit=1] ch_piece -2
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=58},limit=1] ch_piece -3
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=59},limit=1] ch_piece -5
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=60},limit=1] ch_piece -6
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=61},limit=1] ch_piece -3
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=62},limit=1] ch_piece -2
+scoreboard players set @e[type=minecraft:marker,tag=ch.board,scores={ch_sq=63},limit=1] ch_piece -4
+function chess:engine/cache
+execute unless score #cache_ok ch_ctx matches 1 run return 0
+function chess:engine/history/record

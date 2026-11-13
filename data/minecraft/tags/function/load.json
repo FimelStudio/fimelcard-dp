@@ -11,6 +11,20 @@
     "critical_point:load",
     "wenfei:load",
     "skull:load",
-    "doudizhu:load"
+    "doudizhu:load",
+    "uno:load",
+    "chess:load",
+    "xiangqi:load",
+    "gomoku:load",
+    "aeroplane_chess:load",
+    "avalon:load",
+    "love_letter:load",
+    "guandan:load",
+    "weiqi:load",
+    "ito:load",
+    "catan:load",
+    "splendor:load",
+    "magical_athlete:load",
+    "cardtable:system/loaded"
   ]
 }

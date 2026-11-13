@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players set @s hb_drop_reward 0
 tag @e[tag=hb.reward_reopen_drop] remove hb.reward_reopen_drop
 execute at @s as @e[type=minecraft:item,distance=..3,sort=nearest,limit=1] if items entity @s contents minecraft:purple_dye[minecraft:custom_data~{hanabi:{action:'reward_reopen'}}] run tag @s add hb.reward_reopen_drop

@@ -1,0 +1,50 @@
+[
+  {
+    "seat": 1,
+    "name": "万寿菊",
+    "source": "docs/skull-art/set1-source.png",
+    "prompt": "Mexican Dia de Muertos; 万寿菊 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 2,
+    "name": "玫瑰",
+    "source": "docs/skull-art/set2-source.png",
+    "prompt": "Mexican Dia de Muertos; 玫瑰 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 3,
+    "name": "大丽花",
+    "source": "docs/skull-art/set3-source.png",
+    "prompt": "Mexican Dia de Muertos; 大丽花 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 4,
+    "name": "马蹄莲",
+    "source": "docs/skull-art/set4-source.png",
+    "prompt": "Mexican Dia de Muertos; 马蹄莲 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 5,
+    "name": "百日菊",
+    "source": "docs/skull-art/set5-source.png",
+    "prompt": "Mexican Dia de Muertos; 百日菊 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 6,
+    "name": "向日葵",
+    "source": "docs/skull-art/set6-source.png",
+    "prompt": "Mexican Dia de Muertos; 向日葵 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 7,
+    "name": "朱槿",
+    "source": "docs/skull-art/set7-source.png",
+    "prompt": "Mexican Dia de Muertos; 朱槿 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  },
+  {
+    "seat": 8,
+    "name": "牵牛花",
+    "source": "docs/skull-art/set8-source.png",
+    "prompt": "Mexican Dia de Muertos; 牵牛花 flowers on left, matching sugar skull on right, two flat 2:3 panels, ornamental borders, no text."
+  }
+]

@@ -1,0 +1,1 @@
+function gomoku:visual/refresh

@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 # 创建安装标记所用的基础记分项；重复加载时仅这一行可能提示已存在
 scoreboard objectives add fc_ctx dummy
 
@@ -7,5 +10,3 @@ execute if score #version fc_ctx matches 1 run function fast_card:system/upgrade
 execute if score #version fc_ctx matches 2 run function fast_card:system/upgrade_v3
 execute if score #version fc_ctx matches 3 run function fast_card:system/upgrade_v4
 execute if score #version fc_ctx matches 4 run function fast_card:system/upgrade_v5
-
-tellraw @a[tag=fc.player] [{text:'[Fast Card] ',color:'gold'},{text:'数据包已重新加载，正在恢复当前牌局。',color:'yellow'}]

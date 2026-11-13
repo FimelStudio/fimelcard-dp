@@ -7,6 +7,7 @@ function doudizhu:bid/can_operate
 execute unless score #can_operate dd_ctx matches 1 run return run function doudizhu:input/reject
 scoreboard players set @s dd_action 0
 scoreboard players enable @s dd_action
+function doudizhu:hud/view_context
 function doudizhu:hand/build
 function doudizhu:hud/build
 function doudizhu:dialog/grid

@@ -1,0 +1,1 @@
+$give @s minecraft:paper[minecraft:item_model="$(model)",minecraft:custom_name={text:"$(name)",color:"aqua",italic:false},minecraft:lore=[{text:"Q：弃牌／资源选择；普通回合Q选择银行支付资源",color:"gray",italic:false}],minecraft:custom_data={catan:{tool:1b,resource:1b,id:$(id),table:$(table)}}] $(count)

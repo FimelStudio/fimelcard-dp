@@ -1,3 +1,7 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 advancement revoke @s only cardtable:click/seat_5
 advancement revoke @s only cardtable:click/seat_5_attack
 tag @e[tag=ct.clicked_seat] remove ct.clicked_seat

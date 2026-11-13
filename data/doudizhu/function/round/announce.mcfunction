@@ -1,8 +1,10 @@
 scoreboard players set @s dd_autopass -1
+scoreboard players set @s dd_hint 0
 function doudizhu:input/sync
 function doudizhu:player/audience
 scoreboard players set @s dd_bot_timer 0
 scoreboard players operation #turn dd_ctx = @s dd_turn
+function doudizhu:clock/reset
 scoreboard players operation #phase dd_ctx = @s dd_state
 scoreboard players operation #bidmode dd_ctx = @s dd_bidmode
 execute as @e[tag=dd.actors] if score @s dd_seat = #turn dd_ctx if score #phase dd_ctx matches 2 unless score #bidmode dd_ctx matches 1..2 run tellraw @a[tag=dd.audience] [{text:"轮到 ",color:"gray"},{selector:"@s",color:"yellow"},{text:" 叫分。按Q打开选择。",color:"gray"}]

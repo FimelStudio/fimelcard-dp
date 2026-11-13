@@ -1,3 +1,9 @@
+# BEGIN public session finish
+execute unless score @s ct_state matches 1 run return 0
+execute if score @s ct_finishing matches 1 run return 0
+execute unless score @s ct_game matches 1..23 run return 0
+function cardtable:session/finish
+# END public session finish
 execute if score @s ct_game matches 1 run return run function fast_card:game/end_vote
 execute if score @s ct_game matches 2 run return run function liars_holdem:game/end_vote
 execute if score @s ct_game matches 3 run return run function hanabi:game/end_vote
@@ -8,3 +14,16 @@ execute if score @s ct_game matches 7 run return run function critical_point:gam
 execute if score @s ct_game matches 8 run return run function wenfei:game/end_vote
 execute if score @s ct_game matches 9 run return run function skull:game/end_vote
 execute if score @s ct_game matches 10 run return run function doudizhu:game/end_vote
+execute if score @s ct_game matches 11 run return run function uno:game/end_vote
+execute if score @s ct_game matches 12 run return run function chess:game/end_vote
+execute if score @s ct_game matches 13 run return run function xiangqi:game/end_vote
+execute if score @s ct_game matches 14 run return run function gomoku:game/end_vote
+execute if score @s ct_game matches 15 run return run function aeroplane_chess:game/end_vote
+execute if score @s ct_game matches 16 run return run function avalon:game/end_vote
+execute if score @s ct_game matches 17 run return run function love_letter:game/end_vote
+execute if score @s ct_game matches 18 run return run function guandan:game/end_vote
+execute if score @s ct_game matches 20 run return run function weiqi:game/end_vote
+execute if score @s ct_game matches 19 run return run function ito:game/end_vote
+execute if score @s ct_game matches 21 run return run function catan:game/end_vote
+execute if score @s ct_game matches 22 run return run function splendor:game/end_vote
+execute if score @s ct_game matches 23 run return run function magical_athlete:game/end_vote

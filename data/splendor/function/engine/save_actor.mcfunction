@@ -1,0 +1,12 @@
+$execute store result storage splendor:engine state.p$(actor).tokens[0] int 1 run scoreboard players get #token0 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).tokens[1] int 1 run scoreboard players get #token1 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).tokens[2] int 1 run scoreboard players get #token2 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).tokens[3] int 1 run scoreboard players get #token3 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).tokens[4] int 1 run scoreboard players get #token4 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).tokens[5] int 1 run scoreboard players get #token5 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).bonus[0] int 1 run scoreboard players get #bonus0 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).bonus[1] int 1 run scoreboard players get #bonus1 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).bonus[2] int 1 run scoreboard players get #bonus2 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).bonus[3] int 1 run scoreboard players get #bonus3 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).bonus[4] int 1 run scoreboard players get #bonus4 sp_ctx
+$execute store result storage splendor:engine state.p$(actor).vp int 1 run scoreboard players get #vp sp_ctx

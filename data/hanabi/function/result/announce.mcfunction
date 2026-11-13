@@ -17,5 +17,9 @@ execute if score @s hb_score matches 21..24 run tellraw @a[tag=hb.audience] [{te
 execute if score @s hb_storm matches 1 if score @s hb_score matches 25 run tellraw @a[tag=hb.audience] [{text:"评价：传说中的完美烟花，无论成年人还是小孩子都看得瞠目结舌。",color:"gold",bold:true}]
 execute if score @s hb_storm matches 1 if score @s hb_score matches 26..29 run tellraw @a[tag=hb.audience] [{text:"评价：超越传说，彩色风暴距离神圣只差一步。",color:"light_purple"}]
 execute if score @s hb_storm matches 1 if score @s hb_score matches 30 run tellraw @a[tag=hb.audience] [{text:"评价：神圣的花火，比星星更加璀璨夺目。",color:"aqua",bold:true}]
+data modify storage hanabi:result title set value {text:"烟花表演结束",color:"gold",bold:true}
+execute if score @s hb_reason matches 1 run data modify storage hanabi:result title set value {text:"花火失败",color:"red",bold:true}
+execute if score @s hb_reason matches 3 run data modify storage hanabi:result title set value {text:"合作队获胜",color:"green",bold:true}
+function hanabi:result/title with storage hanabi:result
 # 按最终得分、各颜色完成进度生成本局专属终场烟花。
 function hanabi:firework/finale/start

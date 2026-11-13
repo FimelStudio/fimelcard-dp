@@ -17,21 +17,14 @@ execute positioned ~1.5 ~0.5 ~-0.5 summon minecraft:item_display run function ca
 execute positioned ~1.5 ~0.5 ~0.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_table",yaw:0}
 execute positioned ~1.5 ~0.5 ~1.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_table",yaw:0}
 execute if block ~-1 ~ ~-2.5 minecraft:birch_stairs run setblock ~-1 ~ ~-2.5 minecraft:air
-execute positioned ~-1 ~0.5 ~-2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:0}
+function cardtable:chairs/layout/spawn_visual
 execute if block ~1 ~ ~-2.5 minecraft:birch_stairs run setblock ~1 ~ ~-2.5 minecraft:air
-execute positioned ~1 ~0.5 ~-2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:0}
 execute if block ~2.5 ~ ~-1 minecraft:birch_stairs run setblock ~2.5 ~ ~-1 minecraft:air
-execute positioned ~2.5 ~0.5 ~-1 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:90}
 execute if block ~2.5 ~ ~1 minecraft:birch_stairs run setblock ~2.5 ~ ~1 minecraft:air
-execute positioned ~2.5 ~0.5 ~1 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:90}
 execute if block ~1 ~ ~2.5 minecraft:birch_stairs run setblock ~1 ~ ~2.5 minecraft:air
-execute positioned ~1 ~0.5 ~2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:-180}
 execute if block ~-1 ~ ~2.5 minecraft:birch_stairs run setblock ~-1 ~ ~2.5 minecraft:air
-execute positioned ~-1 ~0.5 ~2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:-180}
 execute if block ~-2.5 ~ ~1 minecraft:birch_stairs run setblock ~-2.5 ~ ~1 minecraft:air
-execute positioned ~-2.5 ~0.5 ~1 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:-90}
 execute if block ~-2.5 ~ ~-1 minecraft:birch_stairs run setblock ~-2.5 ~ ~-1 minecraft:air
-execute positioned ~-2.5 ~0.5 ~-1 summon minecraft:item_display run function cardtable:skin/item {model:"garden_chair",yaw:-90}
 execute positioned ~-2.5 ~0.5 ~-2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_corner",yaw:0}
 execute positioned ~-2.5 ~1.5 ~-2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_prop0",yaw:45}
 execute positioned ~2.5 ~0.5 ~-2.5 summon minecraft:item_display run function cardtable:skin/item {model:"garden_corner",yaw:0}

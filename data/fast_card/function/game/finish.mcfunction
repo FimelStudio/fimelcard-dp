@@ -5,7 +5,6 @@ function fast_card:transition/cleanup
 scoreboard players set @s fc_rank 0
 execute as @a[tag=fc.player] if score @s fc_id = #ctx_id fc_ctx run tag @s remove fc.ranked
 
-execute as @a[tag=fc.player] if score @s fc_id = #ctx_id fc_ctx run title @s title {text:'游戏结束',color:'gold',bold:true}
 execute as @a[tag=fc.player] if score @s fc_id = #ctx_id fc_ctx run tellraw @s [{text:'========== Fast Card 排行榜 ==========',color:'gold',bold:true}]
 function fast_card:ranking/one
 function fast_card:ranking/one

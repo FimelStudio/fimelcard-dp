@@ -1,0 +1,1 @@
+tellraw @a[tag=go.audience] [{text:"[围棋] 黑方：",color:"gold"},{nbt:"data.weiqi.black_name",entity:"@s",interpret:true},{text:"　白方：",color:"gray"},{nbt:"data.weiqi.white_name",entity:"@s",interpret:true}]

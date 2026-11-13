@@ -11,9 +11,37 @@ execute if score @s ct_state matches 1 if score @s ct_game matches 7 run functio
 execute if score @s ct_state matches 1 if score @s ct_game matches 8 run function wenfei:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 9 run function skull:game/abort
 execute if score @s ct_state matches 1 if score @s ct_game matches 10 run function doudizhu:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 11 run function uno:game/abort
 
+execute if score @s ct_state matches 1 if score @s ct_game matches 12 run function chess:game/abort
+execute if score @s ct_game matches 12 run function chess:game/remove
+
+execute if score @s ct_state matches 1 if score @s ct_game matches 13 run function xiangqi:game/abort
+execute if score @s ct_game matches 13 run function xiangqi:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 14 run function gomoku:game/abort
+execute if score @s ct_game matches 14 run function gomoku:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 15 run function aeroplane_chess:game/abort
+execute if score @s ct_game matches 15 run function aeroplane_chess:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 16 run function avalon:game/abort
+execute if score @s ct_state matches 1 if score @s ct_game matches 17 run function love_letter:game/abort
+execute if score @s ct_game matches 17 run function love_letter:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 18 run function guandan:game/abort
+execute if score @s ct_game matches 18 run function guandan:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 20 run function weiqi:game/abort
+execute if score @s ct_game matches 20 run function weiqi:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 19 run function ito:game/abort
+execute if score @s ct_game matches 19 run function ito:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 21 run function catan:game/abort
+execute if score @s ct_game matches 21 run function catan:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 22 run function splendor:game/abort
+execute if score @s ct_game matches 22 run function splendor:game/remove
+execute if score @s ct_state matches 1 if score @s ct_game matches 23 run function magical_athlete:game/abort
+execute if score @s ct_game matches 23 run function magical_athlete:game/remove
 execute if score @s ct_skin matches 1..6 unless score @s ct_capacity matches 8 run function cardtable:skin/default4
 execute if score @s ct_skin matches 1..6 if score @s ct_capacity matches 8 run function cardtable:skin/default8
+# BEGIN public session end
+function cardtable:session/end
+# END public session end
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 execute as @a[tag=ct.player] if score @s ct_id = #ctx_id ct_ctx run function cardtable:seat/remove_player
 execute as @e[tag=ct.part] if score @s ct_id = #ctx_id ct_ctx run kill @s

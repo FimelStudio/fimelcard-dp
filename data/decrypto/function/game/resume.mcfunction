@@ -1,3 +1,5 @@
+execute if score @s dc_state matches 1..8 at @s run function decrypto:marker/update
+execute if score @s dc_sync matches 1 run return run function decrypto:sync/resume
 # 不重发提示册、不重抽词条/密码、不清空电报或已输入的数字。
 execute unless score @s dc_state matches 1..8 run return 0
 function decrypto:roles/ensure

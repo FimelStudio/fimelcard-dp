@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 # 内置前置先创建独立状态，再加载各游戏；升级迁移只执行一次。
 scoreboard objectives add fv_ctx dummy
 scoreboard objectives add fbt_external dummy
@@ -41,3 +44,5 @@ function fimel_skform:init
 function fimel_anim_text:_initialize_/load
 function fimel_math_light:load
 function fimel_title:code/load
+
+advancement revoke @a only fimel_anim_text:player.count

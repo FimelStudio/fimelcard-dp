@@ -91,4 +91,3 @@ scoreboard players set #two lh_ctx 2
 scoreboard players set #twenty lh_ctx 20
 scoreboard players set #base lh_ctx 15
 scoreboard players set #version lh_ctx 5
-tellraw @a [{text:'[赌命德州扑克] ',color:'red'},{text:'游戏模块安装完成。',color:'green'}]

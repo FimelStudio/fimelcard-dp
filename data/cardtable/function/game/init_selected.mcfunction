@@ -9,3 +9,18 @@ execute if score @s ct_game matches 7 run function critical_point:game/init_tabl
 execute if score @s ct_game matches 8 run function wenfei:game/init_table
 execute if score @s ct_game matches 9 run function skull:game/init_table
 execute if score @s ct_game matches 10 run function doudizhu:game/init_table
+execute if score @s ct_game matches 11 run function uno:game/init_table
+execute if score @s ct_game matches 12 run function chess:game/init_table
+execute if score @s ct_game matches 13 run function xiangqi:game/init_table
+execute if score @s ct_game matches 14 run function gomoku:game/init_table
+execute if score @s ct_game matches 15 run function aeroplane_chess:game/init_table
+execute if score @s ct_game matches 16 run function avalon:game/init_table
+execute if score @s ct_game matches 17 run function love_letter:game/init_table
+execute if score @s ct_game matches 18 run function guandan:game/init_table
+execute if score @s ct_game matches 20 run function weiqi:game/init_table
+execute if score @s ct_game matches 19 run function ito:game/init_table
+execute if score @s ct_game matches 21 run function catan:game/init_table
+# 新游戏最低人数可能更高，保留已有占用座并立即补足。
+function cardtable:chairs/layout/ensure
+execute if score @s ct_game matches 22 run function splendor:game/init_table
+execute if score @s ct_game matches 23 run function magical_athlete:game/init_table

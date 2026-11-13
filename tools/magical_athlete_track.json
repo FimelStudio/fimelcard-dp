@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "rules_edition": "CMYK 36-racer base game with August 2026 update",
+  "rules_revision": "2026-08-17",
+  "updates_2026_08": ["Simultaneous arrivals do not trigger stopping-together powers between the arriving racers.", "For multiple racers per player, the lineup pick order fixes the clockwise racer order for that race."],
+  "layout": {
+    "grid": 16,
+    "footprints": {"4":2.7,"8":3.6},
+    "positions": [[2,14],[3.5,14],[5,14],[6.5,14],[8,14],[9.5,14],[11,14],[12.5,14],[14,14],[14,12.28571429],[14,10.57142857],[14,8.85714286],[14,7.14285714],[14,5.42857143],[14,3.71428571],[14,2],[12.5,2],[11,2],[9.5,2],[8,2],[6.5,2],[5,2],[3.5,2],[2,2],[2,3.5],[2,5],[2,6.5],[2,8],[2,9.5],[2,11],[2,12.5]],
+    "artwork": "Fimel Card original rectangular sports stadium; board UV and runtime coordinates share these centers"
+  },
+  "start": 0,
+  "finish": 30,
+  "second_corner": 15,
+  "gold": [3,4,5,6],
+  "silver": [1,2,3,4],
+  "wild": {"1":{"points":1},"5":{"trip":1},"7":{"move":3},"11":{"move":1},"13":{"points":1},"16":{"move":-4},"17":{"trip":1},"23":{"move":2},"24":{"move":-2},"26":{"trip":1}},
+  "sources": ["https://boardgamegeek.com/filepage/307679/how-to-play-magical-athlete","https://boardgamegeek.com/thread/3754599/a-couple-august-2026-rules-updates/page/1","https://tesera.ru/images/items/2587383/How_to_play_Magical_Athlete_compressed.pdf"]
+}

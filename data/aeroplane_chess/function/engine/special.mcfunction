@@ -1,0 +1,13 @@
+execute if score @s ac_fly matches 1 if score #usedfly ac_ctx matches 0 if score #pos ac_ctx matches 19 run return run function aeroplane_chess:engine/fly
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 3 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 7 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 11 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 15 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 19 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 23 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 27 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 31 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 35 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 39 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 43 run return run function aeroplane_chess:engine/jump
+execute if score @s ac_jump matches 1 if score #usedjump ac_ctx matches 0 if score #pos ac_ctx matches 47 run return run function aeroplane_chess:engine/jump

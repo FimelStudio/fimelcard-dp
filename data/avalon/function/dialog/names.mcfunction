@@ -1,0 +1,14 @@
+data modify storage avalon:names leader set value {text:"未知玩家"}
+data modify storage avalon:names team set value []
+data modify storage avalon:names evil set value []
+data modify storage avalon:names pair set value []
+data modify storage avalon:names known set value []
+data modify storage avalon:names target set value {text:"尚未选择"}
+execute as @a[tag=av.audience,scores={av_seat=1}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=2}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=3}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=4}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=5}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=6}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=7}] at @s run function avalon:dialog/name_one
+execute as @a[tag=av.audience,scores={av_seat=8}] at @s run function avalon:dialog/name_one

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 当前执行者是花火控制器；桌角文字平放并朝上，点击区只覆盖文字附近
 scoreboard players operation #ctx_id hb_ctx = @s hb_id
 execute as @e[tag=hb.discard_button] if score @s hb_id = #ctx_id hb_ctx run kill @s

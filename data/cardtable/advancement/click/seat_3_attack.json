@@ -18,6 +18,22 @@
               "ct_kind": 13
             }
           }
+        ],
+        "player": [
+          {
+            "condition": "minecraft:value_check",
+            "value": {
+              "type": "minecraft:score",
+              "target": {
+                "type": "minecraft:fixed",
+                "name": "#version"
+              },
+              "score": "ct_ctx"
+            },
+            "range": {
+              "min": 1
+            }
+          }
         ]
       }
     }

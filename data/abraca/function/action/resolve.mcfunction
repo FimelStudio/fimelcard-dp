@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 执行者为本桌控制器；ab.actor是提交动作的玩家。
 execute unless entity @a[tag=ab.actor,tag=ab.turn,limit=1] run return 0
 scoreboard players operation #spell ab_ctx = @a[tag=ab.actor,limit=1] ab_action
