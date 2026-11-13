@@ -1,5 +1,14 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 advancement revoke @s only hanabi:click/discard_pile
 advancement revoke @s only hanabi:click/discard_pile_attack
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 
 # 从实际点击位置附近的入口读取桌号，允许未参赛的附近玩家查看公开弃牌信息
 scoreboard players set #discard_target hb_ctx 0

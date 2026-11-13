@@ -1,3 +1,6 @@
+# 公共椅子入口只打开菜单；修改另以一次性会话校验。
+scoreboard players set @a[tag=ct.settings_actor,limit=1] ct_chair_pick 0
+scoreboard players enable @a[tag=ct.settings_actor,limit=1] ct_chair_pick
 # 当前执行者是牌桌控制器，实际接收dialog的是带ct.settings_actor标签的点击玩家
 execute if score @s ct_game matches 1 run return run function fast_card:settings/open
 execute if score @s ct_game matches 2 run return run function liars_holdem:settings/open
@@ -9,5 +12,18 @@ execute if score @s ct_game matches 7 run return run function critical_point:set
 execute if score @s ct_game matches 8 run return run function wenfei:settings/open
 execute if score @s ct_game matches 9 run return run function skull:settings/open
 execute if score @s ct_game matches 10 run return run function doudizhu:settings/open
+execute if score @s ct_game matches 11 run return run function uno:settings/open
 
+execute if score @s ct_game matches 12 run return run function chess:settings/open
+execute if score @s ct_game matches 13 run return run function xiangqi:settings/open
+execute if score @s ct_game matches 14 run return run function gomoku:settings/open
+execute if score @s ct_game matches 15 run return run function aeroplane_chess:settings/open
+execute if score @s ct_game matches 16 run return run function avalon:settings/open
+execute if score @s ct_game matches 17 run return run function love_letter:settings/open
+execute if score @s ct_game matches 18 run return run function guandan:settings/open
+execute if score @s ct_game matches 20 run return run function weiqi:settings/open
+execute if score @s ct_game matches 19 run return run function ito:settings/open
+execute if score @s ct_game matches 21 run return run function catan:settings/open
+execute if score @s ct_game matches 22 run return run function splendor:settings/open
+execute if score @s ct_game matches 23 run return run function magical_athlete:settings/open
 tellraw @a[tag=ct.settings_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供设置界面。',color:'yellow'}]

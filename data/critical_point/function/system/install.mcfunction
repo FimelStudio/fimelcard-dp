@@ -17,4 +17,3 @@ scoreboard objectives add cp_drop_lime minecraft.dropped:minecraft.lime_dye
 scoreboard objectives add cp_drop_reopen minecraft.dropped:minecraft.purple_dye
 scoreboard players set #three cp_ctx 3
 scoreboard players set #version cp_ctx 2
-tellraw @a [{text:'[临界点] ',color:'red'},{text:'游戏模块安装完成。',color:'green'}]

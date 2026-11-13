@@ -1,0 +1,17 @@
+execute if score #to xq_ctx matches 0 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 if score #b54 xq_ctx matches 0 if score #b45 xq_ctx matches 0 if score #b36 xq_ctx matches 0 if score #b27 xq_ctx matches 0 if score #b18 xq_ctx matches 0 if score #b9 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 9 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 if score #b54 xq_ctx matches 0 if score #b45 xq_ctx matches 0 if score #b36 xq_ctx matches 0 if score #b27 xq_ctx matches 0 if score #b18 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 18 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 if score #b54 xq_ctx matches 0 if score #b45 xq_ctx matches 0 if score #b36 xq_ctx matches 0 if score #b27 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 27 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 if score #b54 xq_ctx matches 0 if score #b45 xq_ctx matches 0 if score #b36 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 36 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 if score #b54 xq_ctx matches 0 if score #b45 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 45 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 if score #b54 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 54 if score #b72 xq_ctx matches 0 if score #b63 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 63 if score #b72 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 72 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 82 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 83 if score #b82 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 84 if score #b82 xq_ctx matches 0 if score #b83 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 85 if score #b82 xq_ctx matches 0 if score #b83 xq_ctx matches 0 if score #b84 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 86 if score #b82 xq_ctx matches 0 if score #b83 xq_ctx matches 0 if score #b84 xq_ctx matches 0 if score #b85 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 87 if score #b82 xq_ctx matches 0 if score #b83 xq_ctx matches 0 if score #b84 xq_ctx matches 0 if score #b85 xq_ctx matches 0 if score #b86 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 88 if score #b82 xq_ctx matches 0 if score #b83 xq_ctx matches 0 if score #b84 xq_ctx matches 0 if score #b85 xq_ctx matches 0 if score #b86 xq_ctx matches 0 if score #b87 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1
+execute if score #to xq_ctx matches 89 if score #b82 xq_ctx matches 0 if score #b83 xq_ctx matches 0 if score #b84 xq_ctx matches 0 if score #b85 xq_ctx matches 0 if score #b86 xq_ctx matches 0 if score #b87 xq_ctx matches 0 if score #b88 xq_ctx matches 0 run return run scoreboard players set #shape xq_ctx 1

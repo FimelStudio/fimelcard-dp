@@ -1,11 +1,31 @@
 {
-    "criteria": {
-        "1": {
-            "trigger": "tick",
-            "conditions": {}
+  "criteria": {
+    "1": {
+      "trigger": "tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:all_of",
+          "terms": [
+            {
+              "value": {
+                "type": "minecraft:score",
+                "target": {
+                  "type": "minecraft:fixed",
+                  "name": "#version"
+                },
+                "score": "ct_ctx"
+              },
+              "type": "minecraft:int_value_check",
+              "test": {
+                "min": 1
+              }
+            }
+          ]
         }
-    },
-    "rewards": {
-        "function": "fimel_anim_text:_player_/count"
+      }
     }
+  },
+  "rewards": {
+    "function": "fimel_anim_text:_player_/count"
+  }
 }

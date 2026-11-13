@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # Q丢纸统计和附近物品扫描都只作事件入口；真正对象必须匹配本桌、本座位的花火手牌
 scoreboard players set @s hb_drop_card 0
 tag @e[tag=hb.dropped_owned] remove hb.dropped_owned
@@ -21,8 +26,8 @@ execute unless score #slot hb_ctx matches 1..5 run return 0
 execute unless entity @s[tag=hb.turn] run function hanabi:hand/sync
 execute unless entity @s[tag=hb.turn] run return 0
 
-# 本人回合中，Q始终对应弃牌动作；未满时返还1枚提示标记，已满时保持上限
+# 本人回合中，Q对应出牌动作；使用原有出牌与失误判定
 scoreboard players operation @s hb_action = #slot hb_ctx
-scoreboard players add @s hb_action 200
+scoreboard players add @s hb_action 100
 function hanabi:action/handle
 execute if entity @s[tag=hb.player] run function hanabi:hand/sync

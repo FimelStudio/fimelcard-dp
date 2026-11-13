@@ -1,9 +1,12 @@
+scoreboard players set @s dc_sync 0
+data remove entity @s data.decrypto.sync_history
 execute unless score @s ct_joined matches 3..8 run tellraw @a[tag=ct.start_actor,limit=1] [{text:'[谍报风云] ',color:'aqua'},{text:'需要3至8名玩家入座。',color:'yellow'}]
 execute unless score @s ct_joined matches 3..8 run return fail
 # 兼容升级后尚未重新选择过游戏、也未打开设置的旧牌桌。
 execute unless score @s dc_round_limit matches 1..32 run scoreboard players set @s dc_round_limit 8
 execute unless score @s dc_input matches 0..1 run scoreboard players set @s dc_input 0
 execute unless score @s dc_team_mode matches 0..1 run scoreboard players set @s dc_team_mode 0
+function decrypto:timer/init
 scoreboard players operation #ctx dc_ctx = @s ct_id
 execute if score @s dc_team_mode matches 1 if score @s ct_joined matches 4.. run function decrypto:team/validate_fixed
 execute if score @s dc_team_mode matches 1 if score @s ct_joined matches 4.. unless score #fixed_valid dc_ctx matches 1 run return fail

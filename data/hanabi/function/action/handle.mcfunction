@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 先保存提交值并立即关闭trigger窗口，随后按权威状态分派
 scoreboard players operation #action hb_ctx = @s hb_action
 scoreboard players set @s hb_action 0

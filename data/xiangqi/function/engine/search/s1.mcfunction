@@ -1,0 +1,15 @@
+scoreboard players set #from xq_ctx 1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 1 run function xiangqi:engine/search/side1/p1/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 2 run function xiangqi:engine/search/side1/p2/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 3 run function xiangqi:engine/search/side1/p3/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 4 run function xiangqi:engine/search/side1/p4/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 5 run function xiangqi:engine/search/side1/p5/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 6 run function xiangqi:engine/search/side1/p6/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches 7 run function xiangqi:engine/search/side1/p7/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -1 run function xiangqi:engine/search/side-1/p1/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -2 run function xiangqi:engine/search/side-1/p2/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -3 run function xiangqi:engine/search/side-1/p3/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -4 run function xiangqi:engine/search/side-1/p4/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -5 run function xiangqi:engine/search/side-1/p5/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -6 run function xiangqi:engine/search/side-1/p6/s1
+execute if score #found xq_ctx matches 0 if score #b1 xq_ctx matches -7 run function xiangqi:engine/search/side-1/p7/s1

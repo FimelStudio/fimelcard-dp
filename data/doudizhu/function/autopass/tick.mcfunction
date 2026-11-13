@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 每个真人回合只探测一次；重载保留倒计时，旧局缺失分数时补查。
 execute unless score @s dd_autopass matches -1..100 run scoreboard players set @s dd_autopass -1
 execute if score @s dd_autopass matches -1 run return run function doudizhu:autopass/start

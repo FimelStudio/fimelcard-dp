@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute store result storage abraca:pile p1 int 1 run scoreboard players get @s ab_play_1
 execute store result storage abraca:pile p2 int 1 run scoreboard players get @s ab_play_2
 execute store result storage abraca:pile p3 int 1 run scoreboard players get @s ab_play_3

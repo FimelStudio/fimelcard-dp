@@ -1,0 +1,21 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
+function catan:ui/prepare
+data modify storage catan:action input.code set value 30
+execute store result storage catan:action input.offer[0] int 1 run scoreboard players get @s ca_g0
+execute store result storage catan:action input.offer[1] int 1 run scoreboard players get @s ca_g1
+execute store result storage catan:action input.offer[2] int 1 run scoreboard players get @s ca_g2
+execute store result storage catan:action input.offer[3] int 1 run scoreboard players get @s ca_g3
+execute store result storage catan:action input.offer[4] int 1 run scoreboard players get @s ca_g4
+execute store result storage catan:action input.want[0] int 1 run scoreboard players get @s ca_w0
+execute store result storage catan:action input.want[1] int 1 run scoreboard players get @s ca_w1
+execute store result storage catan:action input.want[2] int 1 run scoreboard players get @s ca_w2
+execute store result storage catan:action input.want[3] int 1 run scoreboard players get @s ca_w3
+execute store result storage catan:action input.want[4] int 1 run scoreboard players get @s ca_w4
+data modify storage catan:action input.target set value 2
+execute store result storage catan:action input.a int 1 run scoreboard players get @s ca_a
+execute store result storage catan:action input.b int 1 run scoreboard players get @s ca_b
+function catan:ui/submit

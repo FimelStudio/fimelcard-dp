@@ -5,11 +5,24 @@ execute if entity @s[tag=hb.player] run function hanabi:player/clear_state
 execute if entity @s[tag=ab.player] run function abraca:player/clear_state
 execute if entity @s[tag=bw.player] run function bullshit:player/clear_state
 execute if entity @s[tag=dc.player] run function decrypto:player/clear_state
-execute if entity @s[tag=cp.player] run function critical_point:game/player_left
+execute if entity @s[tag=cp.player] run function critical_point:player/clear_state
 
 execute if entity @s[tag=wq.player] run function wenfei:player/clear_state
 
-# 离线即视为离开牌桌；保持静默，不发送入座或离座提示
+# 仅用于旧局已经结束/桌被移除的重连者；仍在进行的同局交给session恢复。
 execute if entity @s[tag=sk.player] run function skull:player/clear_state
 execute if entity @s[tag=dd.player] run function doudizhu:player/clear_state
+execute if entity @s[tag=un.player] run function uno:player/clear_state
+execute if entity @s[tag=gm.player] run function gomoku:player/clear_state
+execute if entity @s[tag=ac.player] run function aeroplane_chess:player/clear_state
+execute if entity @s[tag=av.player] run function avalon:player/clear
+execute if entity @s[tag=ll.player] run function love_letter:player/clear_state
+execute if entity @s[tag=gd.player] run function guandan:player/clear_state
+execute if entity @s[tag=go.player] run function weiqi:player/clear_state
+execute if entity @s[tag=it.player] run function ito:player/clear_state
+execute if entity @s[tag=ca.player] run function catan:player/clear_state
+execute if entity @s[tag=sp.player] run function splendor:player/clear_state
+execute if entity @s[tag=ma.player] run function magical_athlete:player/clear_state
 function cardtable:seat/remove_player
+execute if entity @s[tag=ch.player] run function chess:player/clear_state
+execute if entity @s[tag=xq.player] run function xiangqi:player/clear_state

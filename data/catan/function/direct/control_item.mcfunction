@@ -1,0 +1,1 @@
+$item replace entity @s hotbar.$(slot) with minecraft:paper[minecraft:item_model="$(model)",minecraft:custom_name={text:"$(label)",color:"gold",italic:false},minecraft:custom_data={catan:{tool:1b,control:1b,action:$(action),table:$(table),epoch:$(epoch)}}]

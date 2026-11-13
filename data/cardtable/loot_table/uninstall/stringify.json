@@ -1,0 +1,22 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:paper",
+          "modifier": {
+            "entity": "this",
+            "name": {
+              "nbt": "scan.component",
+              "storage": "cardtable:uninstall",
+              "interpret": true
+            },
+            "type": "minecraft:set_name"
+          }
+        }
+      ]
+    }
+  ]
+}

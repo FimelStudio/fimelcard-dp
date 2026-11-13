@@ -1,0 +1,2 @@
+execute if items entity @s hotbar.6 * unless items entity @s hotbar.6 *[minecraft:custom_data~{catan:{tool:1b}}] run return run title @s actionbar {text:"请腾空游戏操作物品需要的快捷栏位置",color:"yellow"}
+$item replace entity @s hotbar.6 with minecraft:paper[minecraft:item_model="minecraft:lime_dye",minecraft:custom_name={text:"结束回合（Q）",color:"green"},minecraft:custom_data={catan:{tool:1b,action:29,table:$(table)}}]

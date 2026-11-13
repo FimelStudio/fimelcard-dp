@@ -1,0 +1,2 @@
+function aeroplane_chess:visual/plane_data
+function aeroplane_chess:visual/capture_entity with storage aeroplane_chess:visual

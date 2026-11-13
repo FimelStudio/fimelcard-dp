@@ -1,3 +1,21 @@
+execute if score @s ma_setnonce matches 1.. run function magical_athlete:settings/clear_session
+execute if score @s sp_setnonce matches 1.. run function splendor:settings/clear_session
+# BEGIN public session member departure
+function cardtable:session/drop_member
+# END public session member departure
+# BEGIN public session player reset
+function cardtable:session/end_player
+# END public session player reset
+execute if score @s ca_setnonce matches 1.. run function catan:settings/clear_session
+execute if score @s it_setnonce matches 1.. run function ito:settings/clear_session
+execute if score @s go_setnonce matches 1.. run function weiqi:settings/clear_session
+execute if score @s gd_setnonce matches 1.. run function guandan:settings/clear_session
+execute if score @s ll_setnonce matches 1.. run function love_letter:settings/clear_session
+execute if score @s ac_setnonce matches 1.. run function aeroplane_chess:settings/clear_session
+execute if score @s gm_setnonce matches 1.. run function gomoku:settings/clear_session
+execute if score @s xq_setnonce matches 1.. run function xiangqi:input/clear
+execute if score @s ch_setnonce matches 1.. run function chess:input/clear
+execute if score @s un_setnonce matches 1.. run function uno:settings/clear_session
 scoreboard players reset @s ct_skin_pick
 scoreboard players reset @s ct_skin_table
 ride @s dismount

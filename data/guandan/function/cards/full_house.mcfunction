@@ -1,0 +1,13 @@
+function guandan:cards/full_2
+function guandan:cards/full_3
+function guandan:cards/full_4
+function guandan:cards/full_5
+function guandan:cards/full_6
+function guandan:cards/full_7
+function guandan:cards/full_8
+function guandan:cards/full_9
+function guandan:cards/full_10
+function guandan:cards/full_11
+function guandan:cards/full_12
+function guandan:cards/full_13
+function guandan:cards/full_14

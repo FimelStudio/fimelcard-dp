@@ -1,3 +1,5 @@
+execute unless score @s ct_state matches 1 run return fail
+execute unless score @a[tag=ct.voter,limit=1] ct_id = @s ct_id run return fail
 # 同一玩家每场游戏只能投一次
 execute if score @a[tag=ct.voter,limit=1] ct_voted matches 1 run tellraw @a[tag=ct.voter,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'你已经投过结束票了。',color:'yellow'}]
 execute if score @a[tag=ct.voter,limit=1] ct_voted matches 1 run return fail

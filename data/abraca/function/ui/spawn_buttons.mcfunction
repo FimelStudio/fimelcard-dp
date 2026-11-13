@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players operation #ctx ab_ctx = @s ab_id
 function abraca:ui/clear_buttons
 summon minecraft:text_display ~-1.20 ~1.12 ~-0.35 {data:{abraca:{button:1}},text:{text:'[1]',color:'red',bold:true},billboard:'vertical',alignment:'center',background:0,shadow:1b,see_through:0b}

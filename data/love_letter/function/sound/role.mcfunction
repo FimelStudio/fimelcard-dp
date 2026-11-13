@@ -1,0 +1,9 @@
+function love_letter:system/context
+execute if score @s ll_card matches 0 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:block.amethyst_block.chime block @s ~ ~ ~ 0.4 1.5 0
+execute if score @s ll_card matches 1 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:entity.player.attack.crit block @s ~ ~ ~ 0.4 1.2 0
+execute if score @s ll_card matches 2 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:block.enchantment_table.use block @s ~ ~ ~ 0.4 1.3 0
+execute if score @s ll_card matches 3 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:entity.player.attack.sweep block @s ~ ~ ~ 0.4 0.9 0
+execute if score @s ll_card matches 5 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:item.book.page_turn block @s ~ ~ ~ 0.4 0.8 0
+execute if score @s ll_card matches 6 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:item.book.page_turn block @s ~ ~ ~ 0.4 1.4 0
+execute if score @s ll_card matches 8 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:block.note_block.pling block @s ~ ~ ~ 0.4 1.25 0
+execute if score @s ll_card matches 9 at @s positioned ~ ~1 ~ as @a[tag=ll.audience] if score @s ct_id = #table ll_ctx if score @s ll_table = #table ll_ctx run playsound minecraft:block.glass.break block @s ~ ~ ~ 0.4 1.4 0

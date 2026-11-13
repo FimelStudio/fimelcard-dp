@@ -1,0 +1,20 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:paper",
+          "modifier": {
+            "entity": "this",
+            "name": {
+              "selector": "@s"
+            },
+            "type": "minecraft:set_name"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+ <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#814331"/><stop offset="1" stop-color="#111d31"/></linearGradient>
+ <radialGradient id="spot"><stop stop-color="#ff913d" stop-opacity="0.55"/><stop offset="1" stop-color="#ff913d" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff7c8"/><stop offset="0.5" stop-color="#f6ca61"/><stop offset="1" stop-color="#bd7c20"/></linearGradient>
+ <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fdffff"/><stop offset="1" stop-color="#b0d3e3"/></linearGradient>
+ <clipPath id="clip"><rect width="1024" height="1024" rx="88"/></clipPath>
+</defs>
+<g clip-path="url(#clip)">
+ <rect width="1024" height="1024" fill="url(#bg)"/>
+ <circle cx="512" cy="400" r="530" fill="url(#spot)"/>
+ <g opacity=".13" stroke="#ffffff" stroke-width="2" fill="none"><circle cx="512" cy="382" r="318"/><circle cx="512" cy="382" r="380"/><path d="M0 720L720 0M280 1024L1024 280"/></g>
+
+<g transform="translate(240 160) rotate(-18 100 140)"><rect width="200" height="280" rx="20" fill="#fffdf4" stroke="#bdcbd6" stroke-width="10"/><text x="100" y="180" text-anchor="middle" font-family="Arial" font-size="110" font-weight="bold" fill="#b62843">2</text></g><g transform="translate(420 150) rotate(8 100 140)"><rect width="200" height="280" rx="20" fill="#fffdf4" stroke="#bdcbd6" stroke-width="10"/><text x="100" y="180" text-anchor="middle" font-family="Arial" font-size="110" font-weight="bold" fill="#b62843">2</text></g><g transform="translate(600 210) rotate(22 100 140)"><rect width="200" height="280" rx="20" fill="#fffdf4" stroke="#bdcbd6" stroke-width="10"/><text x="100" y="180" text-anchor="middle" font-family="Arial" font-size="110" font-weight="bold" fill="#b62843">♥</text></g><path d="M380 530L460 590L650 470" fill="none" stroke="url(#gold)" stroke-width="35"/><rect x="14" y="14" width="996" height="996" rx="75" fill="none" stroke="#fff" stroke-opacity=".48" stroke-width="10"/></g></svg>

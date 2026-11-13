@@ -1,3 +1,9 @@
+execute if score @s dc_action matches 111.. run return run function decrypto:guess/handle
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players operation #choice dc_ctx = @s dc_action
 scoreboard players set @s dc_action 0
 execute unless score #choice dc_ctx matches 101..104 run return 0

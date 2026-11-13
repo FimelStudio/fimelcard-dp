@@ -1,3 +1,7 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 # 离线玩家重连时补做旧版面板迁移；新安装世界不读取外部状态。
 execute if score #legacy fv_ctx matches 1 as @a[tag=ct.player,tag=!fimel.vendor_migrated] run function fimel_vendor:migrate_player
 # 本包退出界面后恢复外部 BetterTitle 的面板。

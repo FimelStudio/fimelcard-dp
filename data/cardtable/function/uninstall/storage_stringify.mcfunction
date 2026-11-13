@@ -1,0 +1,4 @@
+execute as @e[type=minecraft:item_display,tag=ct.uninstall_resolver,limit=1] at @s run loot replace entity @s contents loot cardtable:uninstall/stringify
+data modify storage cardtable:uninstall scan.key set from entity @e[type=minecraft:item_display,tag=ct.uninstall_resolver,limit=1] item.components."minecraft:custom_name".extra[2].text
+execute if data entity @e[type=minecraft:item_display,tag=ct.uninstall_resolver,limit=1] item.components."minecraft:custom_name".extra[2].extra[0] run data modify storage cardtable:uninstall scan.quote set from entity @e[type=minecraft:item_display,tag=ct.uninstall_resolver,limit=1] item.components."minecraft:custom_name".extra[2].text
+data modify storage cardtable:uninstall scan.key set from entity @e[type=minecraft:item_display,tag=ct.uninstall_resolver,limit=1] item.components."minecraft:custom_name".extra[2].extra[0].text

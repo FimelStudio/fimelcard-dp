@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 锁定胜利者和牌型，之后停止传牌
 scoreboard players set @s fc_state 3
 scoreboard players operation @s fc_mode = #hand fc_ctx

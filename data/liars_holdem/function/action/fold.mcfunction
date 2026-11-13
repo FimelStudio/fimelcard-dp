@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 弃牌先退出当前局，再锁定左轮结果；其他人的行动在占位演出期间暂停
 scoreboard players set @a[tag=lh.action_actor,limit=1] lh_fold 1
 scoreboard players set @a[tag=lh.action_actor,limit=1] lh_wait 1

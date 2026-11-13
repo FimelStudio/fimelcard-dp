@@ -1,0 +1,5 @@
+$execute if data storage love_letter:visual {card:1} run particle minecraft:crit ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 10 force @a[tag=ll.audience]
+$execute if data storage love_letter:visual {card:2} run particle minecraft:enchant ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 14 force @a[tag=ll.audience]
+$execute if data storage love_letter:visual {card:3} run particle minecraft:damage_indicator ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 8 force @a[tag=ll.audience]
+$execute if data storage love_letter:visual {card:5} run particle minecraft:poof ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 16 force @a[tag=ll.audience]
+$execute if data storage love_letter:visual {card:7} run particle minecraft:portal ~$(x) ~1.37 ~$(z) 0.14 0.18 0.14 0.03 15 force @a[tag=ll.audience]

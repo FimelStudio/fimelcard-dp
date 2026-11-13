@@ -1,0 +1,16 @@
+$data modify storage magical_athlete:feedback pending set value {owner:$(owner),kind:"$(kind)",label:"选择技能选项：手持选项按Q一次确认"}
+execute if data storage magical_athlete:feedback pending{kind:"ready"} run data modify storage magical_athlete:feedback pending.label set value "轮到你了：手持骰子按Q开始行动"
+execute if data storage magical_athlete:feedback pending{kind:"genius"} run data modify storage magical_athlete:feedback pending.label set value "预测骰子：前六格1～6，按Q一次；第七格不预测"
+execute if data storage magical_athlete:feedback pending{kind:"reroll"} run data modify storage magical_athlete:feedback pending.label set value "选择接受当前点数，或重新投骰"
+execute if data storage magical_athlete:feedback pending{kind:"hypnotist"} run data modify storage magical_athlete:feedback pending.label set value "选择拉到身边的选手：右键亮起的棋子，或选择跳过"
+execute if data storage magical_athlete:feedback pending{kind:"flip"} run data modify storage magical_athlete:feedback pending.label set value "选择交换位置的选手：右键亮起的棋子，或选择跳过"
+execute if data storage magical_athlete:feedback pending{kind:"duel"} run data modify storage magical_athlete:feedback pending.label set value "选择决斗目标：右键亮起的棋子，或选择跳过"
+execute if data storage magical_athlete:feedback pending{kind:"mastermind"} run data modify storage magical_athlete:feedback pending.label set value "预测一名选手获胜：右键亮起的棋子"
+execute if data storage magical_athlete:feedback pending{kind:"copycat"} run data modify storage magical_athlete:feedback pending.label set value "选择要模仿的选手：右键亮起的棋子"
+execute if data storage magical_athlete:feedback pending{kind:"thirdwheel"} run data modify storage magical_athlete:feedback pending.label set value "选择传送到的格子：右键金色提示点，或选择跳过"
+execute if data storage magical_athlete:feedback pending{kind:"egg"} run data modify storage magical_athlete:feedback pending.label set value "选择本场继承的能力：手持角色选项按Q一次"
+execute if data storage magical_athlete:feedback pending{kind:"twin"} run data modify storage magical_athlete:feedback pending.label set value "选择能力：手持选项按Q，或查看全部候选能力"
+execute if data storage magical_athlete:feedback pending{kind:"legs"} run data modify storage magical_athlete:feedback pending.label set value "选择投骰，或直接走5格"
+execute if data storage magical_athlete:feedback pending{kind:"rocket"} run data modify storage magical_athlete:feedback pending.label set value "选择正常前进，或翻倍前进并承担绊倒风险"
+execute if data storage magical_athlete:feedback pending{kind:"alchemist"} run data modify storage magical_athlete:feedback pending.label set value "选择保留骰子，或改为4步"
+function magical_athlete:feedback/pending_message with storage magical_athlete:feedback pending

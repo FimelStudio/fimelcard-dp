@@ -3,6 +3,8 @@ tag @s add dd.actor
 scoreboard players operation @s dd_id = @s ct_id
 scoreboard players operation @s dd_seat = @s ct_seat
 scoreboard players set @s dd_plays 0
+scoreboard players set @s dd_team 0
+scoreboard players set @s dd_prediction 0
 scoreboard players set @s dd_points 0
 scoreboard players set @s dd_total 0
 scoreboard players set @s dd_action 0

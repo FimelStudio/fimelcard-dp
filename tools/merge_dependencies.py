@@ -333,7 +333,7 @@ def apply_plan(root, stage, report):
     if workspace_config.exists():
         config = json.loads(read_text(workspace_config))
         deps = config.setdefault("env", {}).get("dependencies", [])
-        config["env"]["gameVersion"] = "26.2"
+        config["env"]["gameVersion"] = "26.3"
         config.pop("gameVersion", None)
         from urllib.parse import unquote
         config["env"]["dependencies"] = [entry for entry in deps if not any(name in unquote(entry) for name in PACK_NAMES)]
@@ -346,7 +346,7 @@ def apply_plan(root, stage, report):
         shutil.move(str(src), str(backup / name))
     release_dir = root.parent / "卡牌发布"
     release_dir.mkdir(exist_ok=True)
-    release = release_dir / ("fimel_cards-26.2-合并版-" + timestamp + ".zip")
+    release = release_dir / ("fimel_cards-26.3-合并版-" + timestamp + ".zip")
     with zipfile.ZipFile(release, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(target_pack.rglob("*")):
             if not path.is_file():

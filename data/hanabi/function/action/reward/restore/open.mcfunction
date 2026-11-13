@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 奖励牌“弃牌恢复”：抽到后立即进入强制选择；空弃牌堆时按无效果结算
 scoreboard players operation #ctx_id hb_ctx = @s hb_id
 scoreboard players set #restore_count hb_ctx 0

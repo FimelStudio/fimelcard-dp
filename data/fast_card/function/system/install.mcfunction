@@ -36,5 +36,3 @@ scoreboard objectives add fc_drop_paper minecraft.dropped:minecraft.paper
 scoreboard players set #next_id fc_ctx 0
 scoreboard players set #clock fc_ctx 0
 scoreboard players set #version fc_ctx 5
-
-tellraw @a [{text:'[Fast Card] ',color:'gold'},{text:'数据包安装完成。',color:'green'}]

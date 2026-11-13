@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 消耗当前掉落物；无效阶段或本轮已提示时不重复广播。
 kill @e[type=minecraft:item,tag=cp.input_drop,limit=1]
 execute if entity @s[tag=cp.signal_used] run return 0

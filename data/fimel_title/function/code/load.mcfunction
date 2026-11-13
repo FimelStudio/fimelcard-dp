@@ -18,8 +18,11 @@ execute unless data storage fimel_title:io text_buffer run data modify storage f
 execute unless data storage fimel_title:io neg_text_buffer run data modify storage fimel_title:io neg_text_buffer set value '""'
 execute unless data storage fimel_title:io panel_buffer run data modify storage fimel_title:io panel_buffer set value '""'
 
+function cardtable:uninstall/remember_chunk {x:-1,z:-1}
+function cardtable:uninstall/remember_chunk {x:-1,z:1}
+function cardtable:uninstall/remember_chunk {x:1,z:-1}
+function cardtable:uninstall/remember_chunk {x:1,z:1}
 forceload add -1 -1 1 1
 
 summon text_display .0 .0 .0 {UUID:[I;173, 11337728, 0, 1178815820]}
 # 卡牌内置 BetterTitle 独立辅助实体 UUID，避免与外部原包重复
-

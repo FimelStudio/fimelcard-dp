@@ -1,3 +1,7 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 advancement revoke @s only cardtable:click/game_settings
 advancement revoke @s only cardtable:click/game_settings_attack
 function cardtable:log {text:"玩家点击游戏设置文本"}

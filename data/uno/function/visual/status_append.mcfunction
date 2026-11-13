@@ -1,0 +1,1 @@
+$data modify storage uno:visual roster.extra append value {text:"",extra:[{text:"\n$(status_seat)号位 ",color:"gray"},$(status_name),{text:" · $(status_count)张 · $(status_score)分",color:"gray"},{text:"$(status_turn)",color:"gold"}]}

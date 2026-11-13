@@ -17,3 +17,5 @@ data modify storage fimel_title:io align set value "left"
 data modify storage fimel_title:io origin set value "up-left"
 function fimel_title:new_text
 execute if score @s dc_encoder matches 1 as @e[type=minecraft:marker,tag=dc.controller,tag=dc.title_controller,scores={dc_state=4},limit=1] run function decrypto:title/append_black_password
+
+execute if score @s dc_encoder matches 1 as @e[type=minecraft:marker,tag=dc.controller,tag=dc.title_controller,scores={dc_state=2,dc_sync=1},limit=1] run function decrypto:title/append_black_password

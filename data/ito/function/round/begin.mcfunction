@@ -1,0 +1,26 @@
+execute unless score @s it_input matches 0..1 run scoreboard players set @s it_input 0
+function ito:system/context
+function ito:game/epoch
+execute as @a[tag=it.audience] run scoreboard players set @s it_offer 0
+execute as @a[tag=it.audience] run scoreboard players set @s it_done 0
+execute as @a[tag=it.audience] run scoreboard players set @s it_sum 0
+scoreboard players set @s it_state 1
+execute as @e[tag=it.cards] run kill @s
+execute as @e[tag=it.visual] if score @s ct_id = #table it_ctx run kill @s
+execute as @a[tag=it.audience] run clear @s *[minecraft:custom_data~{ito:{tool:1b}}]
+execute as @a[tag=it.audience] run scoreboard players set @s it_vote 0
+execute as @a[tag=it.audience] run dialog clear @s
+data modify entity @s data.ito.history set value []
+scoreboard players set #build it_ctx 1
+function ito:deck/create
+function ito:system/context
+execute as @a[tag=it.audience] run function ito:deal/player
+execute if score @s it_mode matches 0 if score @s it_round matches 3 run function ito:round/reference
+function ito:themes/draw
+function ito:system/context
+execute as @a[tag=it.audience] run function ito:input/give
+tellraw @a[tag=it.audience] {text:"[命悬一线] 拿数字牌按Q出牌；紫色染料用于查看手牌和填写描述。",color:"yellow"}
+function ito:visual/refresh
+function ito:hud/refresh
+
+execute if score @s it_mode matches 1 run tellraw @a[tag=it.audience] {text:"[红线] 每人一张数字牌。全部提交描述后，拿数字牌按Q选择搭档或单飞；双方互选后亮牌。",color:"red"}
