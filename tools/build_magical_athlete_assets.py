@@ -34,7 +34,7 @@ def texture(name, image):
 
 
 def model(name, value, gui=None):
-    value.setdefault('credit', 'Fimel Cards original sports artwork and geometry; no official Magical Athlete illustrations')
+    value.setdefault('credit', 'Fimel Card original sports artwork and geometry; no official Magical Athlete illustrations')
     value.setdefault('gui_light', 'front')
     value.setdefault('display', gui or {
         'gui': {'rotation': [20, 210, 0], 'scale': [.8,.8,.8]},
@@ -452,7 +452,7 @@ def build():
         'footprint_4':2.7,'footprint_8':3.6,'pawn_base_y':8,'draft_scale':.26,'pawn_recommended_scale':.2295})
     text_file(SOURCE/'README.md','''# 胡闹运动会原创资源
 
-本目录保留 Fimel Cards 原创体育场、36 个不同几何的立体角色、六面骰、骰盅、奖杯与道具模型的纹理、可编辑 Blockbench 工程及预览。角色依照身份分别设计成动物、人物或物件，不使用 CMYK 的官方插画、商标图或角色牌面。
+本目录保留 Fimel Card 原创体育场、36 个不同几何的立体角色、六面骰、骰盅、奖杯与道具模型的纹理、可编辑 Blockbench 工程及预览。角色依照身份分别设计成动物、人物或物件，不使用 CMYK 的官方插画、商标图或角色牌面。
 
 - `boards-preview.png`：日间橙红／夜间紫蓝两面体育场，带立体看台、护栏和灯塔；四人桌与八人桌共用模型，分别缩放至 2.7／3.6 格。
 - `racers-preview.png`：36 位角色的中文名、资源名和实际立体棋子缩略图；游戏中不再使用角色牌。

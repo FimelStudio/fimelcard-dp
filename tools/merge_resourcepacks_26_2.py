@@ -29,7 +29,7 @@ for name in names:
     for key,p in files.items():
         if not key.startswith('assets/') and not any(key.startswith(e['directory']+'/') for e in originals[name].get('overlays',{}).get('entries',[])):
             assets['sources/'+name+'/'+key]=p.read_bytes()
-assets['pack.mcmeta']=json.dumps({'pack':{'description':'Fimel Cards × 喵工坊 × Squid Workshop 台球 | 26.2 三合一','min_format':88,'max_format':88}},ensure_ascii=False,indent=2).encode('utf8')
+assets['pack.mcmeta']=json.dumps({'pack':{'description':'Fimel Card × 喵工坊 × Squid Workshop 台球 | 26.2 三合一','min_format':88,'max_format':88}},ensure_ascii=False,indent=2).encode('utf8')
 assets['pack.png']=(root/'fimelcard-rp/pack.png').read_bytes()
 assets['README-合并说明.txt']=('26.2 三合一资源包\n\n来源：\n- fimelcard-rp：Ylong\n- NyaaWorks喵工坊-r2.2-fixed：原作者署名以 sources 中原始说明为准\n- Pool-Resourcepack-Squid-Workshop-1.21plus：YMS2001 / Squid Workshop\n\n仅面向 Minecraft Java 26.2（资源格式88）。\n将此ZIP放入resourcepacks并启用，无需解压；原来三个资源包可以停用，避免重复覆盖。\n资源包只负责显示和声音，游戏仍需原有数据包或模组。\n已展开26.2启用的喵工坊物品模型覆盖层，不启用旧版本着色器。\n合并方块图集sources，保留牌桌HUD着色器、家具、台球、表情与声音。\n三个原始包未修改，原包元数据及说明位于sources目录。\n').encode('utf8')
 assets['merge-manifest.json']=json.dumps({'target_format':88,'sources':names,'merged':merged,'assets':{k:{'source':owners[k],'sha256':hashlib.sha256(v).hexdigest()} for k,v in assets.items() if k in owners}},ensure_ascii=False,indent=2).encode('utf8')

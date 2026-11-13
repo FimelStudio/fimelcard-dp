@@ -33,7 +33,7 @@ def cube(start, end, texture='all', name='cube'):
 
 
 def flat_board(texture):
-    return {'credit': 'Fimel Cards original artwork', 'textures': {'all': texture, 'particle': texture},
+    return {'credit': 'Fimel Card original artwork', 'textures': {'all': texture, 'particle': texture},
             'elements': [cube([0, 0, 0], [16, .06, 16], name='board')]}
 
 
@@ -49,7 +49,7 @@ def disc(top, edge, height=1.8, segments=16):
         # 棋子始终贴在不透明棋盘上；去掉不可见底面，16条圆盘共80面。
         del element['faces']['down']
         elements.append(element)
-    return {'credit': 'Fimel Cards original round geometry', 'gui_light': 'front',
+    return {'credit': 'Fimel Card original round geometry', 'gui_light': 'front',
             'textures': {'top': top, 'edge': edge, 'particle': edge}, 'elements': elements}
 
 

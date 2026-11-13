@@ -19,7 +19,7 @@ def check():
     font_manifest = json.loads((source / 'font/manifest.json').read_text(encoding='utf-8'))
     font = json.loads((RP / 'assets/card/font/catan.json').read_text(encoding='utf-8'))
     providers = {p['chars'][0]: p for p in font['providers']}
-    assert manifest['author'] == 'Fimel Cards'
+    assert manifest['author'] == 'Fimel Card'
     assert tuple(manifest['resources']) == RESOURCE_NAMES
     checked = 2
     logical_images = []

@@ -17,7 +17,7 @@ def cost_text(cost: list[int]) -> str:
 def splendor() -> str:
     data = json.loads((ROOT/'tools/splendor_cards.json').read_text(encoding='utf-8'))
     out = ['# 璀璨宝石完整卡牌图鉴', '',
-           '本表与 Fimel Cards v1.1 的实际牌库一致。发展卡费用按“钻石、蓝宝石、祖母绿、红宝石、缟玛瑙”记录；黄金不印在费用上，只在支付时充当任意颜色。', '',
+           '本表与 Fimel Card v1.1 的实际牌库一致。发展卡费用按“钻石、蓝宝石、祖母绿、红宝石、缟玛瑙”记录；黄金不印在费用上，只在支付时充当任意颜色。', '',
            '> 📷 **截图位：发展卡牌面标注图**  ',
            '> 请用箭头标出左上角分数、右上角永久折扣颜色、下方五色费用，保存为 `images/screenshots/22-璀璨宝石-牌面图解.webp`。', '',
            '## 怎样读一张发展卡', '',
@@ -50,7 +50,7 @@ def splendor() -> str:
 def magical_athlete() -> str:
     roles = json.loads((ROOT/'tools/magical_athlete_characters.json').read_text(encoding='utf-8'))
     out = ['# 胡闹运动会完整角色图鉴', '',
-           '本表列出 Fimel Cards v1.1 的全部 36 名选手。能力中的“主要移动”指自己回合投骰后进行的那次移动；技能、赛道或其他角色造成的额外移动不是主要移动。', '',
+           '本表列出 Fimel Card v1.1 的全部 36 名选手。能力中的“主要移动”指自己回合投骰后进行的那次移动；技能、赛道或其他角色造成的额外移动不是主要移动。', '',
            '> 📷 **截图位：36 名立体棋子合照**  ',
            '> 建议使用资源包预览或在游戏内分组拍摄，确保每名棋子都能辨认，保存为 `images/screenshots/23-胡闹运动会-角色合照.webp`。', '',
            '## 先理解五个词', '',

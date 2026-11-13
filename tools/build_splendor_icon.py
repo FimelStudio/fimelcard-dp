@@ -143,13 +143,13 @@ def build(publish_dir=None, force_render=False, refresh_preview=True):
     font_icon = CARD/'textures/font/splendor/icon.png'
     font_icon.parent.mkdir(parents=True, exist_ok=True)
     image.resize((64, 64), Image.Resampling.LANCZOS).save(font_icon)
-    export_model('splendor', 'icon', {'credit': 'Fimel Cards original geometric gemstone artwork and models',
+    export_model('splendor', 'icon', {'credit': 'Fimel Card original geometric gemstone artwork and models',
                  'gui_light': 'front', 'parent': 'minecraft:item/generated',
                  'textures': {'layer0': 'card:item/splendor/icon'}, 'display': {}})
     register_font(image)
     write(meta_path, (json.dumps({'name': '璀璨宝石', 'id': 22, 'format': 'SVG 1024; PNG RGBA 256',
           'svg_sha256': digest, 'png_sha256': hashlib.sha256(png_bytes).hexdigest(),
-          'source': 'Fimel Cards vector layout with Minecraft item sprites (Mojang); no official Splendor artwork or logo'},
+          'source': 'Fimel Card vector layout with Minecraft item sprites (Mojang); no official Splendor artwork or logo'},
           ensure_ascii=False, indent=2)+'\n').encode('utf-8'))
     if refresh_preview:
         preview(DOCS)

@@ -344,7 +344,7 @@ def build():
     palette();manifest=[]
     for entry in [*CHARS,{'slug':'back','id':-1,'name':'未公开选手'}]:
         slug=entry['slug'];figure=sculpt(slug);elements=figure.mesh()
-        body={'credit':'Fimel Cards original voxel racer sculptures; character concepts from Magical Athlete',
+        body={'credit':'Fimel Card original voxel racer sculptures; character concepts from Magical Athlete',
               'gui_light':'front','textures':{'palette':'card:item/magical_athlete/figures/palette','particle':'card:item/magical_athlete/figures/palette'},
               'elements':elements,'display':DISPLAY}
         for kind in ('racer','token','hand'):

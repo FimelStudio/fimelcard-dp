@@ -59,11 +59,11 @@ def build(publish_dir: Path | None = None, force_render: bool = False, refresh_p
     write(DOCS/'21.svg', encoded)
     export_model('catan', 'icon', {'parent': 'minecraft:item/generated', 'gui_light': 'front',
                  'textures': {'layer0': 'card:item/catan/icon'},
-                 'credit': 'Fimel Cards original Catan inspired Minecraft island illustration'})
+                 'credit': 'Fimel Card original Catan inspired Minecraft island illustration'})
     register_font(image)
     write(meta_path, (json.dumps({'id': 21, 'name': '卡坦岛', 'format': 'SVG 1024; PNG RGBA 256',
           'svg_sha256': digest, 'png_sha256': hashlib.sha256(png_bytes).hexdigest(),
-          'source': 'Fimel Cards original vector art; no official Catan artwork or logo'},
+          'source': 'Fimel Card original vector art; no official Catan artwork or logo'},
           ensure_ascii=False, indent=2)+'\n').encode('utf-8'))
     if refresh_preview:
         preview(DOCS)

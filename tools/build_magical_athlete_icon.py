@@ -102,11 +102,11 @@ def build(publish_dir=None,force_render=False):
     write(DOCS/'23.svg',encoded)
     export_model('magical_athlete','icon',{'parent':'minecraft:item/generated',
         'textures':{'layer0':'card:item/magical_athlete/icon'},'gui_light':'front',
-        'credit':'Fimel Cards original sports illustration; no official Magical Athlete artwork'})
+        'credit':'Fimel Card original sports illustration; no official Magical Athlete artwork'})
     register_font(image)
     write(meta_path,(json.dumps({'id':23,'name':'胡闹运动会','svg_sha256':digest,
         'png_sha256':hashlib.sha256(content).hexdigest(),
-        'source':'Fimel Cards original voxel athlete vector art, no official illustrations or logo'},ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
+        'source':'Fimel Card original voxel athlete vector art, no official illustrations or logo'},ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
     preview(DOCS)
     if publish_dir is not None:
         folder=Path(publish_dir);write(folder/'23.svg',encoded);write(folder/'23.png',content);preview(folder)

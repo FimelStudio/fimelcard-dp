@@ -141,24 +141,24 @@ def build():
               for name, item in audio.items()}
     json_file(RP/'assets/magical_athlete/sounds.json', events)
     score = {'tempo': 120, 'meter': '4/4', 'bars': 16, 'key': 'C major', 'duration_seconds': 32,
-             'loop_ticks': LOOP_TICKS, 'composition': 'Original Fimel Cards sports theme',
+             'loop_ticks': LOOP_TICKS, 'composition': 'Original Fimel Card sports theme',
              'synthesis': 'Sine/plucked harmonics, bass, deterministic noise percussion; no samples'}
     json_file(SOURCE/'score.json', score)
     json_file(SOURCE/'manifest.json', {'license': 'CC0-1.0', 'loop_ticks': LOOP_TICKS,
-        'original_audio': 'Fimel Cards generated original composition and sound synthesis',
+        'original_audio': 'Fimel Card generated original composition and sound synthesis',
         'synthesis_source': 'fimel_cards/tools/build_magical_athlete_sound.py', 'audio': audio,
         'external_sources': [{'author': 'Kenney', 'title': 'Casino Audio 1.1',
             'page': 'https://kenney.nl/assets/casino-audio', 'license': 'CC0-1.0',
             'retained_originals': '.source/catan/audio/kenney/casino/'}]})
     text_file(SOURCE/'LICENSE.txt', 'SPDX-License-Identifier: CC0-1.0\n\n'
-        'Fimel Cards dedicates the original synthesized music and sound effects in this directory '
+        'Fimel Card dedicates the original synthesized music and sound effects in this directory '
         'to the public domain under CC0 1.0 Universal.\n'
         'https://creativecommons.org/publicdomain/zero/1.0/\n'
         'Kenney dice audio is separately CC0; the original notice is retained in '
         '.source/catan/audio/kenney/casino/License.txt.')
     text_file(SOURCE/'README.md', '''# 胡闹运动会音频
 
-`bgm.wav` 是 Fimel Cards 原创轻快运动主题：C 大调、120 BPM、4/4 拍、16 小节，共 32 秒（640 游戏刻）。旋律、低音、拨弦和打击乐均由生成器合成，无第三方采样。其余短音效也为原创合成，许可 CC0-1.0。
+`bgm.wav` 是 Fimel Card 原创轻快运动主题：C 大调、120 BPM、4/4 拍、16 小节，共 32 秒（640 游戏刻）。旋律、低音、拨弦和打击乐均由生成器合成，无第三方采样。其余短音效也为原创合成，许可 CC0-1.0。
 
 掷骰事件复用已经合并的 [Kenney Casino Audio 1.1](https://kenney.nl/assets/casino-audio) `dice-throw-1.ogg`，许可为 CC0；原始文件及许可在 `.source/catan/audio/kenney/casino/`。运行资源引用同一 Ogg，不重复打包。
 

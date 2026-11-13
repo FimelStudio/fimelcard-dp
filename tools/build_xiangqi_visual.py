@@ -58,7 +58,7 @@ def circle_model(texture, edge):
   faces['up']={'texture':'#top','uv':[x0,z0,x1,z1]}
   faces['down']={'texture':'#edge','uv':[x0,z0,x1,z1]}
   elements.append({'name':f'disc_{index:02}','from':[x0,0,z0],'to':[x1,3,z1],'faces':faces})
- return {'credit':'Fimel Cards: original Xiangqi geometry and artwork','textures':{'top':texture,'edge':edge,'particle':edge},'gui_light':'front','elements':elements}
+ return {'credit':'Fimel Card: original Xiangqi geometry and artwork','textures':{'top':texture,'edge':edge,'particle':edge},'gui_light':'front','elements':elements}
 
 
 def item_model(name,model):
@@ -450,9 +450,9 @@ function xiangqi:visual/captured_pose
 
 def export_notes():
     text_file(SOURCE/'README.md', """
-# Fimel Cards \u4e2d\u56fd\u8c61\u68cb\u539f\u521b\u8d44\u6e90
+# Fimel Card \u4e2d\u56fd\u8c61\u68cb\u539f\u521b\u8d44\u6e90
 
-\u68cb\u76d8\u3001\u68cb\u5b50\u7eb9\u7406\u548c\u5706\u76d8\u51e0\u4f55\u5747\u4e3a Fimel Cards \u81ea\u5236\uff0c\u672a\u4f7f\u7528\u7f51\u7ad9\u7684\u68cb\u76d8\u56fe\u7247\u6216\u7b2c\u4e09\u65b9\u68cb\u5b50\u6a21\u578b\u3002
+\u68cb\u76d8\u3001\u68cb\u5b50\u7eb9\u7406\u548c\u5706\u76d8\u51e0\u4f55\u5747\u4e3a Fimel Card \u81ea\u5236\uff0c\u672a\u4f7f\u7528\u7f51\u7ad9\u7684\u68cb\u76d8\u56fe\u7247\u6216\u7b2c\u4e09\u65b9\u68cb\u5b50\u6a21\u578b\u3002
 \u68cb\u5b50\u4f7f\u7528 32 \u4e2a Java \u539f\u7248\u5143\u7d20\u62fc\u6210\u8fd1\u5706\u5f62\u8fb9\u7f18\uff0c\u76f4\u5f84 15/16\uff0c\u539a\u5ea6 3/16\uff0c\u65e0\u9700 OptiFine \u6216\u6a21\u7ec4\u3002
 \u4e03\u79cd\u7ea2\u65b9\u68cb\u5b50\u4e3a\u5e05\u3001\u4ed5\u3001\u76f8\u3001\u9a6c\u3001\u8f66\u3001\u70ae\u3001\u5175\uff1b\u9ed1\u65b9\u4e3a\u5c06\u3001\u58eb\u3001\u8c61\u3001\u9a6c\u3001\u8f66\u3001\u70ae\u3001\u5352\u3002
 \u7ecf\u5178\u548c\u6728\u8272\u4e24\u79cd\u68cb\u5b50\u6750\u8d28\u4e0e\u68cb\u76d8\u914d\u8272\u53ef\u5728\u6e38\u620f\u8bbe\u7f6e\u4e2d\u8c03\u6574\u3002 `palettes.png` \u4e3a\u9884\u89c8\uff0c`models/` \u5185\u662f\u53ef\u4ee5\u5728 Blockbench \u7ee7\u7eed\u7f16\u8f91\u7684 .bbmodel\u3002

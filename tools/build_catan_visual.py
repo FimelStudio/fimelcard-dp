@@ -48,7 +48,7 @@ def model(name,body):
     if name.split('/')[0] in ('road','settlement','city','dice'):
         from build_tabletop_hand_poses import apply
         apply(body,name.startswith('dice/'))
-    body.setdefault('credit','Fimel Cards; CC0 terrain by Kenney, original game-piece geometry')
+    body.setdefault('credit','Fimel Card; CC0 terrain by Kenney, original game-piece geometry')
     body.setdefault('gui_light','front')
     export_model('catan',name,body)
     # Java uses an axis/angle object; Blockbench stores Euler rotations separately.
@@ -213,7 +213,7 @@ def resource_assets():
     for index, name in enumerate(RESOURCE_NAMES):
         icon = resource_icon(name)
         png('resource/' + name, icon.resize((64, 64), Image.Resampling.NEAREST))
-        model('resource/' + name, {'credit': 'Fimel Cards original pixel resource artwork',
+        model('resource/' + name, {'credit': 'Fimel Card original pixel resource artwork',
               'parent': 'minecraft:item/generated',
               'textures': {'layer0': 'card:item/catan/resource/' + name}})
         large = icon.resize((128, 128), Image.Resampling.NEAREST)
@@ -227,13 +227,13 @@ def resource_assets():
     target = SOURCE / 'resource'
     target.mkdir(parents=True, exist_ok=True)
     preview.save(target / 'preview.png')
-    json_file(target / 'manifest.json', {'author': 'Fimel Cards', 'artwork': 'Original procedural pixel artwork',
+    json_file(target / 'manifest.json', {'author': 'Fimel Card', 'artwork': 'Original procedural pixel artwork',
               'generator': 'fimel_cards/tools/build_catan_visual.py:resource_icon',
               'logical_pixels': [32, 32], 'item_texture_pixels': [64, 64],
               'resize': 'nearest-neighbor, integer scale 2', 'resources': records})
     text_file(target / 'README.md', '''# 卡坦岛资源牌
 
-五种资源使用 Fimel Cards 原创像素图案：木材为双木段，砖块为红砖堆，羊毛为浅色毛线团，粮食为金色麦穗，矿石为带浅色矿脉的灰色矿块。
+五种资源使用 Fimel Card 原创像素图案：木材为双木段，砖块为红砖堆，羊毛为浅色毛线团，粮食为金色麦穗，矿石为带浅色矿脉的灰色矿块。
 
 砖块港和羊毛港采用同样的红砖堆、浅色毛线团，移除方框底色并放大到 72×72，分别使用红色、绿色圆框。`2:1` 与资源图案分区显示；总览见 `../ports-preview.png`。在数据包仓库执行 `python tools/build_catan_visual.py --ports-only` 可同步运行纹理、Blockbench 工程与四种棋盘预览。
 资源牌不再裁切港口圆牌；图案在 32×32 逻辑像素上绘制，以整数倍近邻放大到 64×64，避免非等比拉伸与港口圆框残角。
@@ -389,7 +389,7 @@ def resources():
               'license_file':'vendor/Kenney-License.txt','archive':'vendor/kenney_hexagon-pack.zip',
               'archive_sha256':hashlib.sha256((SOURCE/'vendor/kenney_hexagon-pack.zip').read_bytes()).hexdigest(),
               'originals':[{'file':p,'sha256':hashlib.sha256((SOURCE/'vendor/originals'/p).read_bytes()).hexdigest()} for p in sorted(USED)],
-              'adaptation':'CC0 ground textures with nearest-neighbor resize and hex mask. Original 3D trees, clay, sheep, wheat, mines, cacti, harbour, boat, deck, palette textures and rotating number labels by Fimel Cards; geometry source tools/catan_scenery.py.',
+              'adaptation':'CC0 ground textures with nearest-neighbor resize and hex mask. Original 3D trees, clay, sheep, wheat, mines, cacti, harbour, boat, deck, palette textures and rotating number labels by Fimel Card; geometry source tools/catan_scenery.py.',
               'topology_source':'fimelcard-dp/tools/catan_topology.py','sizes':{str(k):{'R':v[0],'L':v[1]} for k,v in SIZES.items()}}
     json_file(SOURCE/'visual_manifest.json',manifest)
     text_file(SOURCE/'visual/README.md','''# 卡坦岛视觉资源

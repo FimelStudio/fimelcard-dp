@@ -146,7 +146,7 @@ def resources():
                       cube([5.8,.25,4.4],[6.6,1.25,6.1],'wheel','wheel_left'),
                       cube([9.4,.25,4.4],[10.2,1.25,6.1],'wheel','wheel_right')]
             export_model('aeroplane_chess',f'plane/{palette}_{COLORS[c]}',{
-                'credit':'Fimel Cards original aeroplane', 'textures':{
+                'credit':'Fimel Card original aeroplane', 'textures':{
                     'body':f'card:item/aeroplane_chess/plane/{palette}_{COLORS[c]}',
                     'glass':'card:item/aeroplane_chess/glass','wheel':'card:item/aeroplane_chess/wheel'},'elements':elements},editable=False)
     export_texture('aeroplane_chess','glass',Image.new('RGB',(16,16),'#e3f4f8'))
@@ -191,7 +191,7 @@ def resources():
     text_file(RP/'.source/aeroplane_chess/README.md','''
 # 飞行棋原创资源
 
-棋盘图像、飞机、六面骰由 Fimel Cards 绘制/建模。模型为原版 Java 方块元素，保留可编辑 Blockbench 文件。
+棋盘图像、飞机、六面骰由 Fimel Card 绘制/建模。模型为原版 Java 方块元素，保留可编辑 Blockbench 文件。
 棋盘布局借鉴传统实体飞行棋的折角跑道、四角机场和彩色终点，参考 [AlbertNi 的 Aeroplane Chess 棋盘展示](https://steamcommunity.com/sharedfiles/filedetails/?id=2131170438)。本项目重新绘制，未直接使用该展示图片。
 从数据包目录运行 `python tools/build_aeroplane_visual.py` 重建，依赖 Pillow。
 路径唯一来源为 `tools/aeroplane_path.json`，先运行 `tools/build_aeroplane_game.py` 更新规则路径。

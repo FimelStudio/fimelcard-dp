@@ -138,7 +138,7 @@ def model(name, body):
         export_blockbench('splendor',name,resolve_model(body))
         unique_editable_textures(name)
         return
-    body.setdefault('credit', 'Fimel Cards Minecraft-themed card composition; Minecraft textures by Mojang')
+    body.setdefault('credit', 'Fimel Card Minecraft-themed card composition; Minecraft textures by Mojang')
     body.setdefault('gui_light', 'front')
     body.setdefault('display', GUI)
     export_model('splendor', name, body)
@@ -213,7 +213,7 @@ def build_card_bases():
         element=cube(lo,hi,'edge','printed_card' if name=='table' else 'held_card')
         element['faces'][front]={'texture':'#front','uv':[0,0,16,16]}
         element['faces'][back]={'texture':'#back','uv':[0,0,16,16]}
-        body={'credit':'Fimel Cards custom double-sided card geometry','gui_light':'front',
+        body={'credit':'Fimel Card custom double-sided card geometry','gui_light':'front',
               'textures':{'front':'card:item/splendor/base/paper','back':'card:item/splendor/base/paper',
                           'edge':'card:item/splendor/base/edge','particle':'#front'},
               'elements':[element],'display':copy.deepcopy(display)}
@@ -547,7 +547,7 @@ def build():
                   for p in sorted(VANILLA.rglob('*.png'))}})
     text_file(SOURCE/'README.md', '''# 璀璨宝石 Minecraft 主题资源
 
-发展牌、贵族牌、桌垫与宝石袋使用 Fimel Cards 自行设计的版式，不复刻璀璨宝石原作插画。
+发展牌、贵族牌、桌垫与宝石袋使用 Fimel Card 自行设计的版式，不复刻璀璨宝石原作插画。
 宝石、材料、方块与生物脸部来自本机 Minecraft 26.2 客户端；权利归 Mojang / Microsoft，参与合成的原版源图保留在 vanilla/，SHA-256 见 vanilla/manifest.json。
 重建优先复用 vanilla/，源图缺失时才从本机版本 jar 提取。源图只供此 Minecraft 资源包合成使用，不宣称原创或 CC0。
 牌面数值来自数据包 tools/splendor_cards.json，数值引用见该文件 sources。

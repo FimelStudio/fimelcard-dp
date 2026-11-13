@@ -101,7 +101,7 @@ def card_model(role):
     element = cube([1,0,8], [13,18,8.35], 'edge', 'card')
     element['faces']['north'] = {'texture':'#front', 'uv':[0,0,16,16]}
     element['faces']['south'] = {'texture':'#back', 'uv':[16,0,0,16]}
-    model = {'credit':'Fimel Cards original court cards; portrait atlas generated with built-in image_gen',
+    model = {'credit':'Fimel Card original court cards; portrait atlas generated with built-in image_gen',
              'textures': {'front':f'card:item/love_letter/{role}', 'back':'card:item/love_letter/back',
                           'edge':'card:item/love_letter/edge','particle':f'card:item/love_letter/{role}'},
              'elements':[element]}
