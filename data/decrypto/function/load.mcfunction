@@ -25,5 +25,4 @@ execute if score #version dc_ctx matches 11 run function decrypto:system/upgrade
 execute if score #version dc_ctx matches 12 run function decrypto:system/upgrade_v13
 execute if score #version dc_ctx matches 13 run function decrypto:system/upgrade_v14
 function decrypto:title/ensure_library
-tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'数据包已重新加载，当前对局已保留。',color:'yellow'}]
 execute as @e[type=minecraft:marker,tag=dc.controller] at @s run function decrypto:game/resume

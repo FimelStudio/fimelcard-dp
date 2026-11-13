@@ -108,22 +108,7 @@ execute as @e[tag=sp.current,limit=1] at @s run function splendor:visual/selecti
     quote += ['execute store result storage splendor:direct pay[5] int 1 run scoreboard players get #quote_gold sp_ctx',
         'execute store result score #quote_owned sp_ctx run data get storage splendor:direct hand.tokens[5]']
     put('direct/quote', quote)
-    put('direct/card', '''
-'''+stop('unless score @s sp_target matches 0..11', '请选择市场中的发展卡。')+'''
-function splendor:direct/hand
-function splendor:direct/read_card
-'''+stop('unless score #card sp_ctx matches 0..89', '这张发展卡已不在市场中。')+'''
-scoreboard players set #select_kind sp_ctx 2
-execute unless score @s sp_select_kind matches 2 run return run function splendor:direct/card_select
-execute unless score @s sp_select_id = @s sp_target run return run function splendor:direct/card_select
-execute if predicate {condition:"minecraft:entity_properties",entity:"this",predicate:{flags:{is_sneaking:true}}} run return run function splendor:direct/reserve
-execute if score @s sp_select_stage matches 2 run return run function splendor:direct/reserve
-function splendor:direct/quote
-execute if score #quote_gold sp_ctx > #quote_owned sp_ctx run return run function splendor:direct/card_unaffordable
-scoreboard players set #action_code sp_ctx 3
-function splendor:direct/submit
-''')
-    put('direct/card_select', ['function splendor:direct/select', notice('已选中发展卡，再次右键购买；潜行右键可直接预定，左键取消。')])
+    build_card_interaction()
     put('direct/card_unaffordable', ['scoreboard players set @s sp_select_stage 2', notice('宝石不足，再次右键可预定。')])
     put('direct/reserve', ['scoreboard players set #action_code sp_ctx 2', 'function splendor:direct/submit'])
     put('direct/deck', '''
@@ -240,6 +225,32 @@ execute unless score @s sp_select_epoch = @e[tag=sp.current,limit=1] sp_epoch ru
 $scoreboard players set @s sp_target $(color)
 function splendor:direct/gem
 ''')
+
+
+def build_card_interaction():
+    put('direct/card',[
+        stop('unless score @s sp_target matches 0..11','请选择市场中的发展卡。'),
+        'function splendor:direct/hand','function splendor:direct/read_card',
+        stop('unless score #card sp_ctx matches 0..89','这张发展卡已不在市场中。'),
+        'scoreboard players set #select_kind sp_ctx 2',
+        'execute if predicate {condition:"minecraft:entity_properties",entity:"this",predicate:{flags:{is_sneaking:true}}} run return run function splendor:direct/card_shift',
+        'execute unless score @s sp_select_kind matches 2 run return run function splendor:direct/card_select',
+        'execute unless score @s sp_select_id = @s sp_target run return run function splendor:direct/card_select',
+        'execute if score @s sp_select_stage matches 3 run return run function splendor:direct/card_select',
+        'execute if score @s sp_select_stage matches 2 run return run function splendor:direct/reserve',
+        'function splendor:direct/quote',
+        'execute if score #quote_gold sp_ctx > #quote_owned sp_ctx run return run function splendor:direct/card_unaffordable',
+        'scoreboard players set #action_code sp_ctx 3','function splendor:direct/submit'])
+    put('direct/card_shift',[
+        'execute unless score @s sp_select_kind matches 2 run return run function splendor:direct/card_reserve_select',
+        'execute unless score @s sp_select_id = @s sp_target run return run function splendor:direct/card_reserve_select',
+        'execute unless score @s sp_select_stage matches 3 run return run function splendor:direct/card_reserve_select',
+        'function splendor:direct/reserve'])
+    put('direct/card_reserve_select',[
+        'function splendor:direct/select','scoreboard players set @s sp_select_stage 3',
+        notice('预约发展卡：再次潜行右键同一张牌确认；左键取消。')])
+    put('direct/card_select',[
+        'function splendor:direct/select',notice('已选中发展卡，再次右键购买；预约请潜行右键两次，左键取消。')])
 
 
 if __name__ == '__main__':

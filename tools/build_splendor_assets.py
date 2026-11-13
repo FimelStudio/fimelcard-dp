@@ -4,17 +4,20 @@ from __future__ import annotations
 import json
 import argparse
 import base64
+import copy
 import hashlib
 import math
 import random
+import uuid
 import zipfile
 from functools import lru_cache
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
-from boardgame_assets import PACK, RP, CARD, cube, disc, export_model, export_texture, json_file, text_file
+from boardgame_assets import PACK, RP, CARD, cube, disc, export_model, export_blockbench, export_texture, json_file, text_file
 
 SOURCE = RP / '.source/splendor'
+CARD_BASES = {}
 COLORS = ('diamond', 'sapphire', 'emerald', 'ruby', 'onyx', 'gold')
 INKS = ('#e6edf2', '#407bc5', '#439d77', '#ca5361', '#535062', '#e3b94d')
 DARK = ('#698492', '#224a85', '#23654d', '#8e283c', '#292435', '#a47426')
@@ -128,37 +131,102 @@ def texture(name, image):
 
 
 def model(name, body):
+    if body.get('parent','').startswith('card:item/splendor/base/'):
+        # Runtime variants only contain their parent and texture overrides.
+        # Blockbench needs the resolved geometry to remain directly editable.
+        export_model('splendor',name,body,editable=False)
+        export_blockbench('splendor',name,resolve_model(body))
+        unique_editable_textures(name)
+        return
     body.setdefault('credit', 'Fimel Cards Minecraft-themed card composition; Minecraft textures by Mojang')
     body.setdefault('gui_light', 'front')
     body.setdefault('display', GUI)
     export_model('splendor', name, body)
+    if name.startswith('base/'):unique_editable_textures(name)
+
+
+def unique_editable_textures(name):
+    # Front/back can intentionally share a PNG, but Blockbench texture UUIDs
+    # must remain distinct for the two material slots inside one project.
+    path=SOURCE/'models'/(name+'.bbmodel')
+    editable=json.loads(path.read_text(encoding='utf-8'))
+    for index,entry in enumerate(editable['textures']):
+        entry['uuid']=str(uuid.uuid5(uuid.NAMESPACE_URL,f'fimel:splendor:{name}:texture:{index}'))
+    json_file(path,editable)
 
 
 def plane_model(name, width=12, depth=16):
-    resource = 'card:item/splendor/' + name
-    element = cube([8-width/2, 7.98, 8-depth/2], [8+width/2, 8.06, 8+depth/2], 'face', 'printed_card')
-    element['faces'] = {'up': {'texture': '#face', 'uv': [0, 0, 16, 16]}}
-    model(name, {'textures': {'face': resource, 'particle': resource}, 'elements': [element]})
-    if name.startswith(('tier', 'noble/', 'back/')):
+    if name.startswith(('tier','noble/','back/')):
+        if not CARD_BASES:build_card_bases()
+        textures=card_textures(name)
+        model(name,{'parent':'card:item/splendor/base/table','textures':textures})
         hand_model(name)
         json_file(CARD/f'items/splendor/{name}.json', {
             'model': {'type': 'minecraft:select', 'property': 'minecraft:display_context',
                       'cases': [{'when': FIRST_PERSON+PUBLIC_HAND,
                                  'model': {'type': 'minecraft:model', 'model': 'card:item/splendor/hand/'+name}}],
                       'fallback': {'type': 'minecraft:model', 'model': 'card:item/splendor/'+name}}})
+        return
+    resource = 'card:item/splendor/' + name
+    element = cube([8-width/2, 7.98, 8-depth/2], [8+width/2, 8.06, 8+depth/2], 'face', 'printed_card')
+    element['faces'] = {'up': {'texture': '#face', 'uv': [0, 0, 16, 16]}}
+    model(name, {'textures': {'face': resource, 'particle': resource}, 'elements': [element]})
 
 
 def hand_model(name):
-    # 桌面使用横放薄片；手持单独使用与 poker/fake_card 相同的外轮廓、中心和姿态。
-    # 两种几何不能直接共用 display，否则同样的旋转会把横放牌旋到错误方向。
-    resource = 'card:item/splendor/'+name
+    model('hand/'+name,{'parent':'card:item/splendor/base/hand','textures':card_textures(name)})
+
+
+def card_textures(name):
+    front='card:item/splendor/'+name
+    # Public noble cards have no secret reverse. Reserved development cards
+    # still use the existing private item-definition selectors in every view.
+    back=front
+    if name.startswith('tier'):back='card:item/splendor/back/'+name.split('/')[0]
+    return {'front':front,'back':back}
+
+
+def resolve_model(body):
+    parent=body.get('parent','')
+    if not parent.startswith('card:item/splendor/'):
+        return copy.deepcopy(body)
+    relative=parent.removeprefix('card:item/splendor/')
+    source=CARD_BASES.get(relative)
+    if source is None:
+        source=json.loads((CARD/f'models/item/splendor/{relative}.json').read_text(encoding='utf-8'))
+    base=resolve_model(source)
+    return {**base,**{k:v for k,v in body.items() if k not in ('parent','textures')},
+            'textures':{**base.get('textures',{}),**body.get('textures',{})}}
+
+
+def build_card_bases():
+    texture('base/paper',Image.new('RGB',(16,16),PAPER))
+    edge=Image.new('RGB',(16,16),'#d9c8a6')
+    ImageDraw.Draw(edge).line((0,0,15,0),fill='#f5ead2',width=2)
+    texture('base/edge',edge)
     poker = json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
-    element = cube([1, 0, 8], [13, 18, 9], 'face', 'held_card')
-    element['faces']['south']['uv'] = [16, 0, 0, 16]
-    for face in ('up', 'down', 'east', 'west'):
-        element['faces'][face]['uv'] = [0, 0, .25, 16]
-    model('hand/'+name, {'textures': {'face': resource, 'particle': resource},
-                         'elements': [element], 'display': poker['display']})
+    for name,lo,hi,front,back,display in [
+        ('table',[2,7.98,0],[14,8.06,16],'up','down',GUI),
+        # Same pivot and handheld poses as poker; the new card is thinner and
+        # its 12:16.5 proportions match the 256:352 printed face exactly.
+        ('hand',[1,.75,8.4],[13,17.25,8.6],'north','south',poker['display'])]:
+        element=cube(lo,hi,'edge','printed_card' if name=='table' else 'held_card')
+        element['faces'][front]={'texture':'#front','uv':[0,0,16,16]}
+        element['faces'][back]={'texture':'#back','uv':[0,0,16,16]}
+        body={'credit':'Fimel Cards custom double-sided card geometry','gui_light':'front',
+              'textures':{'front':'card:item/splendor/base/paper','back':'card:item/splendor/base/paper',
+                          'edge':'card:item/splendor/base/edge','particle':'#front'},
+              'elements':[element],'display':copy.deepcopy(display)}
+        CARD_BASES['base/'+name]=body
+        model('base/'+name,body)
+
+
+def build_card_models():
+    CARD_BASES.clear();build_card_bases()
+    data=json.loads((PACK/'tools/splendor_cards.json').read_text(encoding='utf-8'))
+    for card in data['cards']:plane_model(card['name'])
+    for card in data['nobles']:plane_model('noble/'+card['name'])
+    for tier in range(1,4):plane_model(f'back/tier{tier}')
 
 
 def reserved_definition(card):
@@ -487,6 +555,7 @@ def build():
 贵族使用村民、流浪商人、铁傀儡、雪傀儡、悦灵、蜜蜂、狐狸、美西螈、海龟和猪；下方要求采用发展卡轮廓，表示需要永久折扣而非支付宝石。
 牌面 canonical signature 为 bonus:points:cost；相同奖励、分数、花费使用同一 canonical_id/model 和同一纹理。物品组件也应只携带这种牌的身份，不携带取得时间或牌槽，才能叠加。
 预定牌物品入口位于 card:splendor/reserved/层级/牌名；本人 GUI 与第一人称显示正面，第三人称、掉落、展示框及其他上下文统一显示对应层牌背，避免暴露盲预定身份。
+所有发展卡、贵族卡与牌背分别复用 `base/table`、`base/hand` 两份自定义父模型，不依赖原版生成物品父类。模型都有正反面与独立纸边，手持牌采用与 poker 一致的姿态及中心，牌面比例为 256:352；子模型仅覆盖纹理，Blockbench 源文件保留展开后的完整几何。执行 `python tools/build_splendor_assets.py --models-only --check` 可只重建这部分。
 以 tier1/diamond_01 等“层级／宝石／同组序号”命名；源模型位于 models/*.bbmodel，可在 Blockbench 编辑。
 纹理源位于 textures/，预览见 preview.png；所有源文件可由数据包 tools/build_splendor_assets.py 重建。
 选游图标以 Minecraft 原版像素钻石、六色物品宝石和发展卡构图，保留双语铭牌。
@@ -531,7 +600,8 @@ def check():
     models = list((CARD/'models/item/splendor').rglob('*.json'))
     assert required <= {p.relative_to(CARD/'models/item/splendor').with_suffix('').as_posix() for p in models}
     for path in models:
-        body = json.loads(path.read_text(encoding='utf-8'))
+        raw_body = json.loads(path.read_text(encoding='utf-8'))
+        body = resolve_model(raw_body)
         name = path.relative_to(CARD/'models/item/splendor')
         item = json.loads((CARD/'items/splendor'/name).read_text(encoding='utf-8'))
         if name.as_posix().startswith(('tier', 'noble/', 'back/')):
@@ -542,8 +612,14 @@ def check():
         if name.as_posix().startswith('hand/'):
             poker = json.loads((CARD/'models/item/fake_card.json').read_text(encoding='utf-8'))
             assert body['display'] == poker['display'], (name, 'handheld pose differs from poker')
-            assert body['elements'][0]['from'] == [1, 0, 8] and body['elements'][0]['to'] == [13, 18, 9]
+            assert body['elements'][0]['from'] == [1,.75,8.4] and body['elements'][0]['to'] == [13,17.25,8.6]
             assert set(body['elements'][0]['faces']) == {'up', 'down', 'north', 'south', 'east', 'west'}
+            assert body['elements'][0]['faces']['north']['texture']=='#front'
+            assert body['elements'][0]['faces']['south']=={'texture':'#back','uv':[0,0,16,16]}
+        if name.as_posix().startswith(('hand/','tier','noble/','back/')):
+            assert raw_body['parent'] in ('card:item/splendor/base/hand','card:item/splendor/base/table')
+            assert set(raw_body)=={'parent','textures'},(name,'card variants must reuse shared geometry and poses')
+            assert 'parent' not in body,(name,'card base must be self contained')
         editable = json.loads((SOURCE/'models'/name.with_suffix('.bbmodel')).read_text(encoding='utf-8'))
         assert len(editable['elements']) == len(body.get('elements', []))
         index = 0
@@ -558,6 +634,7 @@ def check():
                 assert embedded == texture_path.read_bytes(), (path, key, 'editable texture differs')
                 index += 1
         assert len(editable['textures']) == index
+        assert len({entry['uuid'] for entry in editable['textures']}) == len(editable['textures'])
         for element in body.get('elements', []):
             assert all(-16 <= v <= 32 for v in element['from']+element['to'])
             for face in element['faces'].values():
@@ -597,7 +674,9 @@ def check():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true', help='重建后校验模型、源文件、纹理、图片字体及音频引用')
+    parser.add_argument('--models-only',action='store_true',help='只重建卡牌共用父模型、子模型和可编辑源文件')
     args = parser.parse_args()
-    build()
+    if args.models_only:build_card_models()
+    else:build()
     if args.check:
         check()

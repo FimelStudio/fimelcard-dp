@@ -62,4 +62,3 @@ scoreboard objectives add hb_drop_reward minecraft.dropped:minecraft.purple_dye
 
 scoreboard players set #clock hb_ctx 0
 scoreboard players set #version hb_ctx 9
-tellraw @a [{text:'[花火] ',color:'light_purple'},{text:'游戏模块安装完成。',color:'green'}]

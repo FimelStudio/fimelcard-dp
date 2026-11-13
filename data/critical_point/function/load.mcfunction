@@ -7,5 +7,4 @@ kill @e[type=minecraft:item_display,tag=cp.card]
 execute unless score #version cp_ctx matches 1.. run function critical_point:system/install
 execute if score #version cp_ctx matches 1 run function critical_point:system/upgrade_v2
 scoreboard players set #three cp_ctx 3
-tellraw @a[tag=cp.player] [{text:'[临界点] ',color:'red'},{text:'数据包已重新加载，当前对局已保留。',color:'yellow'}]
 execute as @e[type=minecraft:marker,tag=cp.controller] at @s run function critical_point:game/resume

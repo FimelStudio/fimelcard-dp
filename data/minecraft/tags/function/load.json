@@ -24,6 +24,7 @@
     "ito:load",
     "catan:load",
     "splendor:load",
-    "magical_athlete:load"
+    "magical_athlete:load",
+    "cardtable:system/loaded"
   ]
 }

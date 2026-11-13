@@ -10,5 +10,3 @@ execute if score #version fc_ctx matches 1 run function fast_card:system/upgrade
 execute if score #version fc_ctx matches 2 run function fast_card:system/upgrade_v3
 execute if score #version fc_ctx matches 3 run function fast_card:system/upgrade_v4
 execute if score #version fc_ctx matches 4 run function fast_card:system/upgrade_v5
-
-tellraw @a[tag=fc.player] [{text:'[Fast Card] ',color:'gold'},{text:'数据包已重新加载，正在恢复当前牌局。',color:'yellow'}]

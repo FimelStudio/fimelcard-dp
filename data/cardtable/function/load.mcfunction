@@ -49,7 +49,6 @@ function cardtable:display/repair_occlusion
 # 修复旧版牌盒未成功绑定标签而遗留的微小模型，不中断正常发牌动画。
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:animation/deal/box/cleanup_legacy
 
-tellraw @a[tag=ct.player] [{text:'[牌桌] ',color:'dark_aqua'},{text:'通用牌桌模块已重新加载。',color:'yellow'}]
 
 scoreboard objectives add ct_skin dummy
 scoreboard objectives add ct_skin_pick trigger

@@ -22,5 +22,3 @@ kill @e[type=minecraft:item_display,nbt={data:{liars_holdem:{new_bullet:1b}}}]
 # 先清除已结束牌局的遗留展示，再修复仍在进行中的两种牌桌。
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function liars_holdem:showdown/cleanup_inactive
 execute as @e[type=minecraft:marker,tag=lh.controller] at @s run function liars_holdem:showdown/repair_layout
-
-tellraw @a[tag=lh.player] [{text:'[赌命德州扑克] ',color:'red'},{text:'数据包已重新加载，正在恢复当前牌局。',color:'yellow'}]
