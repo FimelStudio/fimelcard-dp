@@ -234,6 +234,8 @@ def resource_assets():
     text_file(target / 'README.md', '''# 卡坦岛资源牌
 
 五种资源使用 Fimel Cards 原创像素图案：木材为双木段，砖块为红砖堆，羊毛为浅色毛线团，粮食为金色麦穗，矿石为带浅色矿脉的灰色矿块。
+
+砖块港和羊毛港采用同样的红砖堆、浅色毛线团，移除方框底色并放大到 72×72，分别使用红色、绿色圆框。`2:1` 与资源图案分区显示；总览见 `../ports-preview.png`。在数据包仓库执行 `python tools/build_catan_visual.py --ports-only` 可同步运行纹理、Blockbench 工程与四种棋盘预览。
 资源牌不再裁切港口圆牌；图案在 32×32 逻辑像素上绘制，以整数倍近邻放大到 64×64，避免非等比拉伸与港口圆框残角。
 深色轮廓、不同底色与大面积剪影用于改善小字号下的辨认；颜色不是唯一识别依据。
 
@@ -242,6 +244,44 @@ def resource_assets():
 可编辑模型见 `../models/resource/*.bbmodel`，其嵌入纹理与发布 PNG 同步；`manifest.json` 保存纹理哈希。
 `preview.png` 上排为放大图，下排为实际 14 像素图标的三倍近邻检查图，不是游戏截图。
 ''')
+
+
+def port_assets():
+    """Large, matching resource silhouettes with the ratio kept separate."""
+    preview=Image.new('RGB',(128*6,160),'#eee6d4')
+    pd=ImageDraw.Draw(preview)
+    icon_sources={0:'logPile',4:'rockGrey_small1'}
+    for resource in range(-1,5):
+        key={-1:'generic',0:'wood',1:'brick',2:'wool',3:'grain',4:'ore'}[resource]
+        rim={1:'#a94431',2:'#47765b'}.get(resource,'#375e6a')
+        token=Image.new('RGB',(128,128),'#f0e4c8');d=ImageDraw.Draw(token)
+        d.ellipse((4,4,123,123),outline=rim,width=5)
+        d.text((64,30),'3:1' if resource==-1 else '2:1',anchor='mm',font=font(33),fill='#34505c')
+        if resource in (1,2):
+            # Reuse the recognizable hand/HUD symbol, stripped of its square
+            # frame and background. 24 logical pixels become 72 physical pixels.
+            icon=resource_icon(key).crop((4,4,28,28))
+            background={'brick':(229,183,155),'wool':(169,197,182)}[key]
+            icon.putdata([(*p[:3],0 if p[:3]==background else p[3]) for p in icon.getdata()])
+            icon=icon.resize((72,72),Image.Resampling.NEAREST)
+            token.paste(icon,(28,48),icon)
+        elif resource in icon_sources:
+            icon=original('PNG/Objects/'+icon_sources[resource]+'.png');icon.thumbnail((45,45))
+            token.paste(icon,((128-icon.width)//2,62),icon)
+        elif resource==3:
+            for x in (48,62,76):
+                d.line((x,103,x+8,63),fill='#b58637',width=4)
+                for y in (70,80,90):d.line((x+4,y,x-4,y-5),fill='#d9ae4e',width=5)
+        else:
+            d.line((38,103,89,103),fill='#467b88',width=4);d.polygon([(41,102),(36,85),(91,85),(85,102)],fill='#467b88')
+            d.line((63,83,63,57),fill='#467b88',width=4);d.polygon([(67,58),(67,81),(88,81)],fill='#7296a0')
+        mask=Image.new('L',token.size,0);ImageDraw.Draw(mask).ellipse((1,1,126,126),fill=255);token.putalpha(mask)
+        png('port/'+key,token)
+        model('port/'+key,{'textures':{'top':'card:item/catan/port/'+key,'particle':'card:item/catan/wood_edge'},
+                           'elements':[top_plane('top',y=8)]})
+        preview.paste(token,((resource+1)*128,0),token)
+        pd.text(((resource+1)*128+64,144),key,anchor='mm',font=font(14),fill='#34505c')
+    preview.save(SOURCE/'ports-preview.png')
 
 
 def resources():
@@ -292,27 +332,7 @@ def resources():
         model(f'number/{value}',{'textures':{'top':f'card:item/catan/number/{value}','particle':'card:item/catan/wood_edge'},
                                 'elements':[top_plane('top',y=8)]})
     # Ports and public flying resource icons.
-    icon_sources={0:'logPile',1:'rockBrown_small',4:'rockGrey_small1'}
-    for resource in range(-1,5):
-        token=Image.new('RGB',(128,128),'#f0e4c8');d=ImageDraw.Draw(token)
-        d.ellipse((4,4,123,123),outline='#375e6a',width=5)
-        d.text((64,36),'3:1' if resource==-1 else '2:1',anchor='mm',font=font(33),fill='#34505c')
-        if resource in icon_sources:
-            icon=original('PNG/Objects/'+icon_sources[resource]+'.png');icon.thumbnail((45,45))
-            token.paste(icon,((128-icon.width)//2,62),icon)
-        elif resource==2:sheep(d,62,75,3)
-        elif resource==3:
-            for x in (48,62,76):
-                d.line((x,103,x+8,63),fill='#b58637',width=4)
-                for y in (70,80,90):d.line((x+4,y,x-4,y-5),fill='#d9ae4e',width=5)
-        else:
-            d.line((38,103,89,103),fill='#467b88',width=4);d.polygon([(41,102),(36,85),(91,85),(85,102)],fill='#467b88')
-            d.line((63,83,63,57),fill='#467b88',width=4);d.polygon([(67,58),(67,81),(88,81)],fill='#7296a0')
-        key={-1:'generic',0:'wood',1:'brick',2:'wool',3:'grain',4:'ore'}[resource]
-        mask=Image.new('L',token.size,0);ImageDraw.Draw(mask).ellipse((1,1,126,126),fill=255);token.putalpha(mask)
-        png('port/'+key,token)
-        model('port/'+key,{'textures':{'top':'card:item/catan/port/'+key,'particle':'card:item/catan/wood_edge'},
-                           'elements':[top_plane('top',y=8)]})
+    port_assets()
     resource_assets()
     dock=harbour()
     model('port/dock',{'textures':{'all':'card:item/catan/wood_edge',**dock.textures,'particle':'card:item/catan/wood_edge'},
@@ -822,15 +842,17 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--assets-only',action='store_true')
     parser.add_argument('--resources-only',action='store_true',help='Only rebuild the five resource cards and editable sources.')
+    parser.add_argument('--ports-only',action='store_true',help='Only rebuild port symbols, editable sources and board previews.')
     args=parser.parse_args()
     if args.resources_only:
         resource_assets()
         print('Generated Catan resource cards only.')
         raise SystemExit(0)
-    resources()
+    if args.ports_only:port_assets()
+    else:resources()
     from render_catan_preview import render_preview
     render_preview(layouts()['c4o0'])
     for name,layout in layouts().items():
         render_preview(layout,SOURCE/f'board_preview_{name}.png',f'{name[1]}-seat table | rotation {int(name[-1])*90} deg')
-    if not args.assets_only:functions()
-    print('Generated Catan visual assets'+(' only' if args.assets_only else ' and functions')+'.')
+    if not args.assets_only and not args.ports_only:functions()
+    print('Generated Catan '+('port symbols and board previews.' if args.ports_only else 'visual assets'+(' only.' if args.assets_only else ' and functions.')))

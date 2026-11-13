@@ -85,7 +85,7 @@ function catan:direct/control_item with storage catan:direct control
 ''')
     put('direct/control_item','$item replace entity @s hotbar.$(slot) with minecraft:paper[minecraft:item_model="$(model)",minecraft:custom_name={text:"$(label)",color:"gold",italic:false},minecraft:custom_data={catan:{tool:1b,control:1b,action:$(action),table:$(table),epoch:$(epoch)}}]')
     put('direct/space',notice('请腾空操作物品需要的快捷栏位置，并留出资源牌空间。'))
-    controls=['function catan:direct/buildings',tool(3,23,'购买发展卡〔Q两次〕','minecraft:book'),tool(4,210,'银行／港口兑换〔Q〕','minecraft:gold_ingot'),tool(5,200,'玩家交易／查看报价〔Q〕','minecraft:emerald'),tool(6,29,'结束回合〔Q两次〕','minecraft:lime_dye'),tool(7,10,'投骰〔Q〕','card:aeroplane_chess/dice'),tool(8,999,'取消选择〔Q〕','minecraft:barrier')]
+    controls=['function catan:direct/buildings',tool(3,23,'购买发展卡〔Q〕','minecraft:book'),tool(4,210,'银行／港口兑换〔Q〕','minecraft:gold_ingot'),tool(5,200,'玩家交易／查看报价〔Q〕','minecraft:emerald'),tool(6,29,'结束回合〔Q〕','minecraft:lime_dye'),tool(7,10,'投骰〔Q〕','card:aeroplane_chess/dice'),tool(8,999,'取消选择〔Q〕','minecraft:barrier')]
     controls += ['execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] run '+tool(6,31,'放弃剩余免费道路〔Q两次〕','minecraft:barrier'),
         'execute if score @s ca_edit matches 1 run function catan:direct/resource_controls',
         'execute if score @s ca_edit matches 3..5 run function catan:direct/resource_controls',

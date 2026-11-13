@@ -340,6 +340,7 @@ scoreboard objectives remove dc_ctx
 scoreboard objectives remove dc_drop
 scoreboard objectives remove dc_drop_book
 scoreboard objectives remove dc_drop_guess
+scoreboard objectives remove dc_encode_limit
 scoreboard objectives remove dc_encoder
 scoreboard objectives remove dc_error
 scoreboard objectives remove dc_form
@@ -352,6 +353,7 @@ scoreboard objectives remove dc_gserial
 scoreboard objectives remove dc_guess1
 scoreboard objectives remove dc_guess2
 scoreboard objectives remove dc_guess3
+scoreboard objectives remove dc_guess_limit
 scoreboard objectives remove dc_hint
 scoreboard objectives remove dc_id
 scoreboard objectives remove dc_index
@@ -369,6 +371,7 @@ scoreboard objectives remove dc_round
 scoreboard objectives remove dc_round_limit
 scoreboard objectives remove dc_sd
 scoreboard objectives remove dc_seat
+scoreboard objectives remove dc_seconds
 scoreboard objectives remove dc_set_table
 scoreboard objectives remove dc_settings
 scoreboard objectives remove dc_sform
@@ -377,10 +380,7 @@ scoreboard objectives remove dc_state
 scoreboard objectives remove dc_sync
 scoreboard objectives remove dc_team
 scoreboard objectives remove dc_team_mode
-scoreboard objectives remove dc_encode_limit
-scoreboard objectives remove dc_guess_limit
 scoreboard objectives remove dc_timer
-scoreboard objectives remove dc_seconds
 scoreboard objectives remove dc_w1
 scoreboard objectives remove dc_w2
 scoreboard objectives remove dc_w3

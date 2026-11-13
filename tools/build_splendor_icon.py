@@ -88,14 +88,14 @@ def render(svg_path):
 
 def preview(folder):
     games = sorted({int(p.stem) for p in (CARD/'textures/gui/game_icons').glob('*.png') if p.stem.isdecimal()})
-    image = Image.new('RGBA', (1024, math.ceil(len(games)/4)*256), '#151725')
+    image = Image.new('RGBA', (1280, math.ceil(len(games)/5)*256), '#151725')
     for index, game in enumerate(games):
         path = folder/f'{game}.png'
         if not path.is_file():
             path = CARD/f'textures/gui/game_icons/{game}.png'
         with Image.open(path) as icon:
             assert icon.size == (256, 256), path
-            image.paste(icon.convert('RGBA'), ((index % 4)*256, (index//4)*256))
+            image.alpha_composite(icon.convert('RGBA'), ((index % 5)*256, (index//5)*256))
     image.save(folder/'preview.png')
 
 

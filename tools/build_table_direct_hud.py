@@ -110,7 +110,7 @@ tag @s remove {p}.hud
     put('center','function '+ns+':hud/line {x:0,y:0,origin:"default",align:"middle"}')
     status=[]
     states=({1:'招募：右键角色选择／确认，左键取消',2:'秘密出场：角色按Q选中，再按Q确认',3:'行动：骰子按Q；技能选项按Q或右键目标',4:'本场已结算，即将进入下一场',5:'四场比赛结束'} if ns=='magical_athlete' else
-        {1:'初始村庄：手持村庄瞄准交点，右键或Q两次确认',2:'初始道路：手持道路瞄准相邻边，右键或Q两次确认',3:'投骰前：骰子按Q，或使用旧发展卡',4:'行动：建造／交易／发展卡；结束回合按Q两次',5:'弃牌：资源按Q加入，撤销物品按Q退回，选满自动提交',6:'强盗：瞄准新地块，右键或Q两次确认',7:'偷取：选择相邻对手',8:'免费修路：选择道路位置，或按Q放弃',11:'本局已结束'})
+        {1:'初始村庄：手持村庄瞄准交点，右键或Q两次确认',2:'初始道路：手持道路瞄准相邻边，右键或Q两次确认',3:'投骰前：骰子按Q，或使用旧发展卡',4:'行动：建造／交易；第4格Q一次购牌，第7格Q一次结束',5:'弃牌：资源按Q加入，撤销物品按Q退回，选满自动提交',6:'强盗：瞄准新地块，右键或Q两次确认',7:'偷取：选择相邻对手',8:'免费修路：选择道路位置，或按Q放弃',11:'本局已结束'})
     status+=['data modify storage fimel_title:io text set value '+js({'text':'等待其他玩家行动','color':'yellow','bold':False})]
     for state,label in states.items():
         extra=[{'nbt':f'data.{ns}.p1.name','entity':f'@e[tag={p}.current,limit=1]','interpret':True}]

@@ -79,7 +79,8 @@ def build():
     for kind,options in {'ready':[0],'reroll':[0,1],'alchemist':[0,1],'rocket':[0,1],'cheerleader':[0,1],'hypnotist':[-1,0,1],'flip':[-1,0,1],'duel':[-1,1],'mastermind':[0,1],'copycat':[0,1],'genius':list(range(7)),'legs':[0,1],'egg':[0,21,35],'twin':list(range(36)),'suckerfish':[0,1],'thirdwheel':[-1,0,13,29]}.items():
         c=s.setup()+s.set('phase',3)+s.set('pending',{'kind':kind,'owner':1,'pawn':0,'options':options})
         for i in range(2):c+=s.set(f'racers[{i}]',{'owner':i+1,'char':i,'power':i,'copy':-1,'pos':5,'trip':0,'status':0,'first':1,'prediction':-1,'done':0})
-        c+=s.call('game/sync')+s.player('direct/sync')+s.equal('storage magical_athlete:direct options',options,kind+'_inventory_options')
+        displayed=[1,2,3,4,5,6,0] if kind=='genius' else options
+        c+=s.call('game/sync')+s.player('direct/sync')+s.equal('storage magical_athlete:direct options',displayed,kind+'_inventory_options')
         c+=s.call('visual/refresh')+s.score('#dialog','ce',0,kind+'_no_forced_dialog')
         if kind=='thirdwheel':c+=s.check('entity @e[tag=ma.hit,scores={ma_dtype=3,ct_id=101}]','thirdwheel_has_board_cells')+s.player('direct/use {table:101,epoch:1,type:3,id:13}')+s.check('entity @e[tag=ma.cell_preview,scores={ct_id=101}]','thirdwheel_cell_preview_visible')
         if kind=='hypnotist':c+=s.check('entity @e[tag=ma.hit,scores={ma_dtype=2,ct_id=101}]','hypnotist_has_racer_targets')
@@ -103,10 +104,15 @@ def build():
     c+=cv('phase',3)+[f'execute as {TABLE} at @s run function catan:game/sync',f'execute as {TABLE} at @s run function catan:feedback/check']
     c+=s.equal(f'entity {person()} data.feedback_subtitle',{'text':'轮到你了 · 投骰或使用旧发展卡','color':'aqua'},'catan_turn_owner_subtitle')
     s.case('ca_feedback',c)
-    c=ca_setup()+cv('p1.resources',[1,0,1,1,1])+['scoreboard players set #code ca_ctx 23']+cp('direct/confirm')+eq('p1.resources',[1,0,1,1,1],'buy_preview_no_payment')
-    c+=['scoreboard players set #code ca_ctx 23']+cp('direct/confirm')+eq('p1.resources',[1,0,0,0,0],'buy_confirm_pays_once')
+    c=ca_setup()+cv('p1.resources',[1,0,1,1,1])+['scoreboard players set #code ca_ctx 23']+cp('direct/confirm')+eq('p1.resources',[1,0,0,0,0],'buy_one_q_pays_once')
+    c+=['scoreboard players set #code ca_ctx 23']+cp('direct/confirm')+eq('p1.resources',[1,0,0,0,0],'buy_without_resources_cannot_repeat')
     c+=s.score('#dialog','ce',0,'catan_buy_no_dialog')
     s.case('ca_buy',c)
+    c=ca_setup()+['scoreboard players set #code ca_ctx 29']+cp('direct/confirm')+eq('turn',2,'end_turn_one_q_advances_player')+eq('phase',3,'next_player_must_roll')
+    s.case('ca_end_one_q',c)
+    c=ca_setup(3)+['scoreboard players set #code ca_ctx 29']+cp('direct/confirm')+eq('turn',1,'end_before_roll_rejected')+eq('phase',3,'invalid_end_preserves_phase')
+    c+=s.equal('storage catan:hud incoming.text','请先投骰，完成资源分配后才能建造或与银行兑换。','invalid_end_explains_roll_first')
+    s.case('ca_end_guard',c)
     c=ca_setup(5)+cv('p1.resources',[4,4,0,0,0])+cv('p1.discard_due',4)+cp('direct/discard_begin')
     c+=cp('direct/resource {id:0}')*2+eq('p1.resources',[4,4,0,0,0],'discard_not_paid_early')
     c+=cp('direct/undo')+s.score(person(),'ca_g0',1,'discard_undo_one')

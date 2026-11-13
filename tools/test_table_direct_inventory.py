@@ -58,6 +58,29 @@ def build():
     c+=s.score(A,'ma_dice_expected',0,'ma_waiting_player_die_removed')
     c+=['scoreboard players set #leftover ce 0',f'execute if items entity {A} container.7 minecraft:paper[minecraft:custom_data~{{magical_athlete:{{dice:1b}}}}] run scoreboard players set #leftover ce 1']+s.score('#leftover','ce',0,'ma_waiting_inventory_has_no_die')
     s.case('ma_inventory',c)
+    # Real item components, including the model index, survive mirror recovery.
+    c=setup('magical_athlete')+set('magical_athlete','phase',3)+set('magical_athlete','pending',{'kind':'genius','owner':1,'pawn':0,'options':[0,1,2,3,4,5,6]})+[f'execute as {TABLE} run function magical_athlete:game/sync']+call('magical_athlete','direct/sync')
+    for i in range(6):
+        c+=has(i,f'minecraft:paper[minecraft:item_model="card:magical_athlete/guess/{i+1}",minecraft:custom_data~{{magical_athlete:{{code:{2101+i},table:101,epoch:1}}}}]',f'ma_genius_face_{i+1}_in_matching_slot')
+    c+=has(6,'minecraft:paper[minecraft:item_model="minecraft:barrier",minecraft:custom_data~{magical_athlete:{code:2100}}]','ma_genius_skip_in_seventh_slot')
+    c+=has(8,'minecraft:paper[minecraft:custom_data~{magical_athlete:{code:9998}}]','ma_genius_cancel_in_ninth_slot')
+    c+=s.score(A,'ma_expected',8,'ma_genius_mirror_count_no_phantom_die')+s.score(A,'ma_dice_expected',0,'ma_genius_waits_for_prediction')
+    c+=[f'data modify storage direct_inventory_test:run saved set from entity {TABLE} data.magical_athlete',f'item replace entity {A} container.5 with minecraft:air',f'scoreboard players set {A} ma_depoch -1']+call('magical_athlete','direct/sync')
+    c+=has(5,'minecraft:paper[minecraft:item_model="card:magical_athlete/guess/6"]','ma_genius_lost_six_recovers_without_page')
+    c+=[f'execute store success score #changed ce run data modify storage direct_inventory_test:run saved set from entity {TABLE} data.magical_athlete']+s.score('#changed','ce',0,'ma_genius_display_never_changes_authority')
+    s.case('ma_genius_faces',c)
+    for kind in ('hypnotist','flip','duel','mastermind','copycat','egg','twin'):
+        ids=[23,30] if kind in ('egg','twin') else [1,2]
+        opts=([-1]+ids) if kind in ('hypnotist','flip','duel','twin') else ids
+        c=setup('magical_athlete')+set('magical_athlete','phase',3)
+        for pawn,char in [(0,12),(1,23),(2,30)]:
+            c+=set('magical_athlete',f'racers[{pawn}]',dict(owner=1 if pawn==0 else 2,char=char,power=char,copy=-1,pos=0,trip=0,status=0,first=1,prediction=-1,done=0))
+        c+=set('magical_athlete','pending',dict(kind=kind,owner=1,pawn=0,options=opts))+[f'execute as {TABLE} run function magical_athlete:game/sync']+call('magical_athlete','direct/sync')
+        start=1 if opts[0]==-1 else 0
+        if start:c+=has(0,'minecraft:paper[minecraft:item_model="minecraft:barrier"]',f'ma_{kind}_skip_model')
+        for index,slug in enumerate(('magician','sisyphus')):
+            c+=has(start+index,f'minecraft:paper[minecraft:item_model="card:magical_athlete/token/{slug}",minecraft:custom_data~{{magical_athlete:{{code:{2100+ids[index]}}}}}]',f'ma_{kind}_{slug}_uses_actual_character_model')
+        s.case('ma_choice_models_'+kind,c)
     s.finish()
     s.files['bootstrap']='\n'.join(['forceload add 0 0 63 31','scoreboard objectives add ce dummy','scoreboard objectives add ce_id dummy','function direct_inventory_bridge:load',f'schedule function catan_engine_test:case/{next(iter(s.cases))} 5t'])+'\n'
     return s
