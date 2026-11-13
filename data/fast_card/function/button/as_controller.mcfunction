@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 保存点击发生时的阶段，防止子函数改变状态后重复进入其他分支
 scoreboard players operation #ctx_id fc_ctx = @s fc_id
 scoreboard players operation #click_state fc_ctx = @s fc_state

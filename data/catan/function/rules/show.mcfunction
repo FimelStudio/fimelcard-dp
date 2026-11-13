@@ -1,0 +1,1 @@
+function catan:rules/panel

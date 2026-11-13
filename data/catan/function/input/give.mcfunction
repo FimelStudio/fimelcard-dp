@@ -1,0 +1,1 @@
+function catan:direct/sync

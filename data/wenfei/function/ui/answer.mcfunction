@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if entity @a[tag=wq.actor,scores={wq_guess=1}] run tellraw @a[tag=wq.actor] {text:"[问非所答] 正在收集大家的答案，请等待。",color:"yellow"}
 execute if entity @a[tag=wq.actor,scores={wq_guess=1}] run return 0
 data modify storage wenfei:ui secret set from entity @s data.wenfei.correct.text

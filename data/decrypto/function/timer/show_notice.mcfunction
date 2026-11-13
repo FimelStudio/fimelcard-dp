@@ -1,0 +1,1 @@
+$dialog show @s {type:"minecraft:notice",title:{text:"第 $(round) 回合 · 加密超时",color:"red"},body:[{type:"minecraft:plain_message",width:320,contents:{text:"加密超时的队伍记一次失误。该队密码的解密及对手对该密码的拦截取消。已提交提示的密码照常解密和拦截，首轮只解密。",color:"yellow"}}],action:{label:{text:"关闭"}},pause:false}

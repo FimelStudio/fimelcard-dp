@@ -1,0 +1,25 @@
+# 新游戏用 ct_id，早期游戏用 prefix_id；只匹配暂停的本桌。
+execute if score @s ct_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s fc_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s lh_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s hb_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s ab_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s bw_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s dc_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s cp_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s wq_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s sk_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s dd_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s un_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s ch_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s xq_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s gm_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s ac_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s av_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s ll_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s gd_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s it_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s go_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s ca_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s sp_id = #pause_table ct_id run return run function cardtable:session/discard_game_click
+execute if score @s ma_id = #pause_table ct_id run return run function cardtable:session/discard_game_click

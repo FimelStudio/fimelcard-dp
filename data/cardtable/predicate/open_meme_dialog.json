@@ -1,24 +1,24 @@
 {
-    "condition": "minecraft:entity_properties",
-    "entity": "this",
-    "predicate": {
-        "type_specific": {
-            "type": "minecraft:player",
-            "input": {
-                "jump": true
-            }
-        },
-        "nbt": {
-            "Tags": [
-                "ct.player"
-            ]
-        },
-        "vehicle": {
-            "nbt": {
-                "Tags": [
-                    "ct.seat"
-                ]
-            }
-        }
+  "condition": "minecraft:entity_properties",
+  "entity": "this",
+  "predicate": {
+    "vehicle": {
+      "nbt": {
+        "Tags": [
+          "ct.seat"
+        ]
+      }
+    },
+    "type_specific": {
+      "type": "minecraft:player",
+      "input": {
+        "jump": true
+      }
+    },
+    "nbt": {
+      "Tags": [
+        "ct.player"
+      ]
     }
+  }
 }

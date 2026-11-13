@@ -1,0 +1,2 @@
+$execute if items entity @s hotbar.$(side) * unless items entity @s hotbar.$(side) *[minecraft:custom_data~{catan:{tool:1b}}] run return run function catan:direct/space
+$item replace entity @s hotbar.$(side) with minecraft:paper[minecraft:item_model="minecraft:emerald",minecraft:custom_name={text:"交易：",italic:false,extra:[$(name)]},minecraft:custom_data={catan:{tool:1b,control:1b,action:50$(side),table:$(table),epoch:$(epoch)}}]

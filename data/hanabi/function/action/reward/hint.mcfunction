@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 奖励牌“提示恢复”：抽到后立即生效，不占普通手牌，也不额外消耗回合
 function hanabi:player/tag_audience
 tellraw @a[tag=hb.audience] [{text:"[花火] 奖励牌：",color:"light_purple"},{text:"提示恢复",color:"aqua",bold:true},{text:"——恢复1枚提示标记。",color:"gray"}]

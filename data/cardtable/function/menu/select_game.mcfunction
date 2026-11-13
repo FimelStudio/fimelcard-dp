@@ -1,5 +1,20 @@
 # 玩家提交已由picker/handle验证；再次选择当前游戏不重置原设置。
+execute if score #pick_choice ct_ctx matches 16 unless score @s ct_capacity matches 8 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：阿瓦隆。四座桌无法开局，请使用八座桌（5～8 人）。",color:"yellow"}
 execute if score @s ct_game = #pick_choice ct_ctx run return 0
+# 即使随后切回同一游戏，旧椅子窗口也不能再次生效。
+scoreboard players add @s ct_ch_epoch 1
+execute if score @s ct_game matches 11 run function uno:settings/invalidate_table
+execute if score @s ct_game matches 12 run function chess:game/remove
+execute if score @s ct_game matches 13 run function xiangqi:game/remove
+execute if score @s ct_game matches 14 run function gomoku:game/remove
+execute if score @s ct_game matches 15 run function aeroplane_chess:game/remove
+execute if score @s ct_game matches 17 run function love_letter:game/remove
+execute if score @s ct_game matches 18 run function guandan:game/remove
+execute if score @s ct_game matches 20 run function weiqi:game/remove
+execute if score @s ct_game matches 19 run function ito:game/remove
+execute if score @s ct_game matches 21 run function catan:game/remove
+execute if score @s ct_game matches 22 run function splendor:game/remove
+execute if score @s ct_game matches 23 run function magical_athlete:game/remove
 scoreboard players operation @s ct_game = #pick_choice ct_ctx
 scoreboard players operation #ctx_id ct_ctx = @s ct_id
 # 其他人的旧窗口也失效，防止覆盖刚刚选定的游戏。
@@ -25,5 +40,28 @@ execute if score @s ct_game matches 8 run function cardtable:log {text:"切换�
 execute if score @s ct_game matches 9 run function cardtable:log {text:"切换游戏：骷髅牌"}
 execute if score @s ct_game matches 10 run tellraw @a[tag=ct.switch_actor,limit=1] [{text:"[牌桌] ",color:"dark_aqua"},{text:"已选择：斗地主",color:"gold"}]
 execute if score @s ct_game matches 10 run function cardtable:log {text:"切换游戏：斗地主"}
+execute if score @s ct_game matches 11 run tellraw @a[tag=ct.switch_actor,limit=1] [{text:"[牌桌] ",color:"dark_aqua"},{text:"已选择：UNO",color:"red"}]
+execute if score @s ct_game matches 11 run function cardtable:log {text:"切换游戏：UNO"}
+execute if score @s ct_game matches 12 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：国际象棋",color:"gold"}
+execute if score @s ct_game matches 13 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：中国象棋",color:"gold"}
+execute if score @s ct_game matches 14 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：五子棋",color:"gold"}
+execute if score @s ct_game matches 14 run function cardtable:log {text:"切换游戏：五子棋"}
+execute if score @s ct_game matches 15 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：飞行棋",color:"gold"}
+execute if score @s ct_game matches 15 run function cardtable:log {text:"切换游戏：飞行棋"}
+execute if score @s ct_game matches 16 if score @s ct_capacity matches 8 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：阿瓦隆",color:"gold"}
+execute if score @s ct_game matches 17 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：情书",color:"gold"}
+execute if score @s ct_game matches 17 run function cardtable:log {text:"切换游戏：情书"}
+execute if score @s ct_game matches 18 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：掼蛋",color:"gold"}
+execute if score @s ct_game matches 18 run function cardtable:log {text:"切换游戏：掼蛋"}
+execute if score @s ct_game matches 20 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：围棋",color:"gold"}
+execute if score @s ct_game matches 20 run function cardtable:log {text:"切换游戏：围棋"}
+execute if score @s ct_game matches 19 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：命悬一线",color:"gold"}
+execute if score @s ct_game matches 19 run function cardtable:log {text:"切换游戏：命悬一线"}
+execute if score @s ct_game matches 21 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：卡坦岛",color:"gold"}
+execute if score @s ct_game matches 21 run function cardtable:log {text:"切换游戏：卡坦岛"}
+execute if score @s ct_game matches 22 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：璀璨宝石",color:"gold"}
+execute if score @s ct_game matches 22 run function cardtable:log {text:"切换游戏：璀璨宝石"}
+execute if score @s ct_game matches 23 run tellraw @a[tag=ct.switch_actor,limit=1] {text:"[牌桌] 已选择：胡闹运动会",color:"gold"}
+execute if score @s ct_game matches 23 run function cardtable:log {text:"切换游戏：胡闹运动会"}
 function cardtable:game/init_selected
 function cardtable:menu/render

@@ -1,5 +1,6 @@
 {
   "values": [
+    "cardtable:session/pre_tick",
     "fimel_sklibs:skapi_arrays/native/tick",
     "fimel_sklibs:skapi_math/native/tick",
     "fimel_sklibs:sk_schedule/tick",
@@ -19,6 +20,19 @@
     "critical_point:tick",
     "wenfei:tick",
     "skull:tick",
-    "doudizhu:tick"
+    "doudizhu:tick",
+    "uno:tick",
+    "chess:tick",
+    "xiangqi:tick",
+    "gomoku:tick",
+    "aeroplane_chess:tick",
+    "avalon:tick",
+    "love_letter:tick",
+    "guandan:tick",
+    "weiqi:tick",
+    "ito:tick",
+    "catan:tick",
+    "splendor:tick",
+    "magical_athlete:tick"
   ]
 }

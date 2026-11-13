@@ -1,0 +1,12 @@
+[
+  {
+    "pack": "fimelcard-rp",
+    "before": 65536,
+    "after": 39535,
+    "removed": 26001,
+    "bytes_before": 857818,
+    "bytes_after": 535929,
+    "backup": "D:\\PCL2\\MinecraftPcl\\versions\\26.2-Fabric_0.19.3\\saves\\Card Games\\datapacks\\fimel_cards\\tools\\font_backups\\fimelcard-rp_unifont_neg.json.gz",
+    "sha256": "beb331ac0d41fb2707432b3ecf976a83a3518a8394168fb50d56022ba35e2e07"
+  }
+]

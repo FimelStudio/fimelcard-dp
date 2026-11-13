@@ -1,3 +1,4 @@
+execute if score #scoring dd_ctx matches 1 run return run function doudizhu:game/score_win
 scoreboard players operation @s dd_points = #unit dd_ctx
 execute if score #winner dd_ctx = #lord dd_ctx unless score @s dd_seat = #lord dd_ctx run scoreboard players operation @s dd_points -= #unit dd_ctx
 execute if score #winner dd_ctx = #lord dd_ctx unless score @s dd_seat = #lord dd_ctx run scoreboard players operation @s dd_points -= #unit dd_ctx

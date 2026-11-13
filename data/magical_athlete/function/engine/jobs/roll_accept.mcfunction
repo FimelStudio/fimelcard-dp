@@ -1,0 +1,1 @@
+function magical_athlete:engine/roll_accept

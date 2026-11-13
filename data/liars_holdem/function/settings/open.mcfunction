@@ -1,1 +1,2 @@
-dialog show @a[tag=ct.settings_actor,limit=1] {"type":"minecraft:notice","title":{"text":"德州扑克 · 游戏设置","color":"gold"},"body":[{"type":"minecraft:plain_message","width":440,"contents":{"text":"【牌桌皮肤 · 点击选择】","color":"aqua","bold":true,"underlined":true,"click_event":{"action":"run_command","command":"trigger ct_skin_pick set 4"},"hover_event":{"action":"show_text","value":{"text":"选择本桌皮肤；离开本页不会保存尚未提交的游戏设置。"}}}},{"type":"minecraft:plain_message","width":440,"contents":{"text":"当前游戏没有可用设置。","color":"gray"}}],"pause":false}
+# 公共单页文本设置；保留本游戏的实际控制器参数。
+function cardtable:settings/open

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players add @s dc_clue 1
 execute if score @s dc_state matches 2 if score @s dc_clue matches 1 run data modify storage decrypto:round white.1 set from storage decrypto:input name
 execute if score @s dc_state matches 2 if score @s dc_clue matches 2 run data modify storage decrypto:round white.2 set from storage decrypto:input name

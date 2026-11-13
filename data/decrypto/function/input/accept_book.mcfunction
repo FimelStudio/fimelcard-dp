@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 整本校验通过后才写入回合；转为纯文本组件以复用笔记和面板。
 execute if items entity @e[type=minecraft:item,tag=dc.submitted_book,limit=1] contents minecraft:written_book run return run function decrypto:input/unsigned_book
 data modify storage decrypto:input pages set value []
@@ -15,6 +20,7 @@ execute if data storage decrypto:input pages[2].raw run data modify storage decr
 execute if data storage decrypto:input clues[{text:""}] run return run function decrypto:input/reject_book
 kill @e[type=minecraft:item,tag=dc.submitted_book,limit=1]
 tellraw @a[tag=dc.submitter,limit=1] [{text:"[谍报风云] ",color:"aqua"},{text:"三条提示已提交。",color:"green"}]
+execute if score @s dc_sync matches 1 run return run function decrypto:sync/save_clues
 scoreboard players set @s dc_clue 0
 data modify storage decrypto:input name set from storage decrypto:input clues[0]
 function decrypto:input/save_prompt

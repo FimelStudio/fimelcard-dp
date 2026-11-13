@@ -1,0 +1,16 @@
+execute if score #r2 gd_ctx matches 1 run function guandan:cards/single_2
+execute if score #r3 gd_ctx matches 1 run function guandan:cards/single_3
+execute if score #r4 gd_ctx matches 1 run function guandan:cards/single_4
+execute if score #r5 gd_ctx matches 1 run function guandan:cards/single_5
+execute if score #r6 gd_ctx matches 1 run function guandan:cards/single_6
+execute if score #r7 gd_ctx matches 1 run function guandan:cards/single_7
+execute if score #r8 gd_ctx matches 1 run function guandan:cards/single_8
+execute if score #r9 gd_ctx matches 1 run function guandan:cards/single_9
+execute if score #r10 gd_ctx matches 1 run function guandan:cards/single_10
+execute if score #r11 gd_ctx matches 1 run function guandan:cards/single_11
+execute if score #r12 gd_ctx matches 1 run function guandan:cards/single_12
+execute if score #r13 gd_ctx matches 1 run function guandan:cards/single_13
+execute if score #r14 gd_ctx matches 1 run function guandan:cards/single_14
+execute if score #r15 gd_ctx matches 1 run function guandan:cards/single_15
+execute if score #r16 gd_ctx matches 1 run function guandan:cards/single_16
+execute if score #wild gd_ctx matches 1 run function guandan:cards/single_wild

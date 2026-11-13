@@ -1,0 +1,12 @@
+execute if score @s ct_capacity matches 4 if score #victory_seat gm_ctx matches 1 positioned ~0 ~0.32 ~-2 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 4 if score #victory_seat gm_ctx matches 2 positioned ~2 ~0.32 ~0 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 4 if score #victory_seat gm_ctx matches 3 positioned ~0 ~0.32 ~2 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 4 if score #victory_seat gm_ctx matches 4 positioned ~-2 ~0.32 ~0 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 1 positioned ~-1 ~0.32 ~-2.5 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 2 positioned ~1 ~0.32 ~-2.5 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 3 positioned ~2.5 ~0.32 ~-1 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 4 positioned ~2.5 ~0.32 ~1 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 5 positioned ~1 ~0.32 ~2.5 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 6 positioned ~-1 ~0.32 ~2.5 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 7 positioned ~-2.5 ~0.32 ~1 run function gomoku:game/firework_player
+execute if score @s ct_capacity matches 8 if score #victory_seat gm_ctx matches 8 positioned ~-2.5 ~0.32 ~-1 run function gomoku:game/firework_player

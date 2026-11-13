@@ -1,0 +1,1 @@
+$tellraw @a[tag=ma.audience] [{nbt:"data.magical_athlete.p$(side).name",entity:"@s",interpret:true},{text:" · ",color:"gray"},{nbt:"data.magical_athlete.p$(side).points",entity:"@s"},{text:"分",color:"gold"}]

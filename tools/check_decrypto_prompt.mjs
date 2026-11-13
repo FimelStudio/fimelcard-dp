@@ -43,7 +43,10 @@ assert.equal((read('prompt/accept').match(/function decrypto:input\/save_prompt/
 assert.match(read('prompt/submit'),/incoming set value \$\(p\)/);
 assert.match(read('prompt/give_selected'),/matches 1 run return run function decrypto:prompt\/give_tool/);
 assert.match(read('prompt/give_selected'),/function decrypto:input\/give_book/);
-assert.equal((read('input/check_book_drop').match(/unless score @s dc_input matches 1/g)||[]).length,2);
+// Every legacy and synchronous book route must reject dialog-only input.
+const bookRoutes=read('input/check_book_drop').split(/\r?\n/).filter(l=>/run function decrypto:(sync\/book|input\/accept_book)/.test(l));
+assert.equal(bookRoutes.length,3);
+for(const route of bookRoutes)assert.match(route,/unless score @s dc_input matches 1/);
 const rawTemplate=JSON.parse(labels.split(/\r?\n/).find(l=>l.includes('dialog.yes.action.template')).split(' set value ')[1]);
 const substitute=(s,values)=>s.replace(/\$\((\w+)\)/g,(_,key)=>values[key]);
 const clientTemplate=substitute(rawTemplate,{a:'$(a)',b:'$(b)',c:'$(c)',table:-2147483648,token:-2147483648});
@@ -55,26 +58,14 @@ for(const sample of ['汉'.repeat(24),"'".repeat(24),'"'.repeat(24),'\\'.repeat(
  assert.ok(command.length<=256);maxCommand=Math.max(maxCommand,command.length);
  assert.ok(command.includes('t:-2147483648,n:-2147483648'));
 }
-// Interpret the real settings arithmetic rather than assuming its encoding.
-const header=read('settings/save').split('scoreboard players operation #settings_table')[0];
-const inRange=(v,r)=>r.includes('..')?v>=+r.split('..')[0]&&v<=+r.split('..')[1]:v===+r;
-function decode(raw){
- const scores={'@s dc_settings':raw};
- for(const line of header.split(/\r?\n/)){
-  let m=line.match(/^scoreboard players set (\S+) (\S+) (-?\d+)$/);
-  if(m){scores[m[1]+' '+m[2]]=+m[3];continue;}
-  m=line.match(/^scoreboard players operation (\S+) (\S+) (=|%=|\/=) (\S+) (\S+)$/);
-  if(m){const a=m[1]+' '+m[2],b=scores[m[4]+' '+m[5]];scores[a]=m[3]==='='?b:m[3]==='%='?scores[a]%b:Math.floor(scores[a]/b);continue;}
-  m=line.match(/^execute unless score (\S+) (\S+) matches (\S+) run return fail$/);
-  if(m&&!inRange(scores[m[1]+' '+m[2]],m[3]))return null;
- }
- const rounds=scores['#settings_rounds dc_ctx'];
- return rounds>=1&&rounds<=32?[rounds,scores['#settings_input dc_ctx'],scores['#settings_teams dc_ctx']]:null;
+// Legacy decimal settings were retired in favour of one-use table sessions.
+// Native setting changes and range checks are covered by test_legacy_settings.py.
+assert.match(read('settings/save'),/scoreboard players reset @s dc_settings/);
+assert.match(read('settings/save'),/return 0/);
+assert.doesNotMatch(read('settings/save'),/scoreboard players operation .*dc_round_limit/);
+const applySettings=fs.readFileSync(path.join(root,'data/cardtable/function/settings/apply_6.mcfunction'),'utf8');
+for(const [field,objective] of [[4,'dc_encode_limit'],[5,'dc_guess_limit']]){
+ assert.ok(applySettings.includes(`#setting_field ct_ctx matches ${field} unless score #setting_value ct_ctx matches 0..5 run return 0`));
+ assert.ok(applySettings.includes(`#setting_field ct_ctx matches ${field} run scoreboard players operation @s ${objective} = #setting_value ct_ctx`));
 }
-for(let rounds=1;rounds<=32;rounds++)for(let mode=0;mode<=1;mode++)for(let teams=0;teams<=1;teams++){
- assert.deepEqual(decode(Number(`${rounds}${mode}${teams}8`)),[rounds,mode,teams]);
- assert.equal(decode(Number(`${rounds}${mode}7`)),null);
-}
-for(const invalid of [1000,1028,1208,33008,0,-1])assert.equal(decode(invalid),null);
-for(let old=1;old<=32;old++)assert.equal(decode(old),null);
-console.log(`PASS: ${count} 个函数结构与引用、128种设置组合、旧窗口拒绝、两种输入路由、隐私与令牌校验；转义后命令最长 ${maxCommand} 字符。`);
+console.log(`PASS: ${count} 个函数结构与引用、旧窗口拒绝、两种输入路由、限时设置入口、隐私与令牌校验；转义后命令最长 ${maxCommand} 字符。`);

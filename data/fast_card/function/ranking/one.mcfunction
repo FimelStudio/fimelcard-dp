@@ -2,6 +2,7 @@
 scoreboard players add @s fc_rank 1
 scoreboard players set #best fc_ctx -2147483648
 execute as @a[tag=fc.player,tag=!fc.ranked] if score @s fc_id = #ctx_id fc_ctx if score @s fc_score > #best fc_ctx run scoreboard players operation #best fc_ctx = @s fc_score
+execute if score @s fc_rank matches 1 run function fast_card:ranking/announce_winners
 
 # 同分时依次选择座位1至4，保证输出稳定
 tag @a[tag=fc.rank_pick] remove fc.rank_pick

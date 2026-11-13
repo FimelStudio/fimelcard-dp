@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add wq_ctx dummy
 execute unless score #version wq_ctx matches 1.. run function wenfei:system/install
 execute unless score #serial wq_ctx matches 0.. run scoreboard players set #serial wq_ctx 0

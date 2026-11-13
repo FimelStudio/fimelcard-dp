@@ -1,5 +1,7 @@
-
-
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 # detect
 execute as @e[type=marker,tag=fimel.skfirework.load] at @s run function fimel_sklibs:skfirework/spawn_egg/load with entity @s data
 
@@ -9,5 +11,3 @@ execute as @e[type=minecraft:firework_rocket,tag=fimel.skfirework.lau] run funct
 # Trigger
 scoreboard players enable @a fcs_fw_trigger
 execute as @a[scores={fcs_fw_trigger=1}] run function fimel_sklibs:skfirework/ui/give/from_ui1
-
-

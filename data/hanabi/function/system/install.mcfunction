@@ -55,11 +55,10 @@ scoreboard objectives add hb_self dummy
 scoreboard objectives add hb_panel dummy
 scoreboard objectives add hb_prev_panel dummy
 
-# 实体物品输入：纸牌Q弃牌、烟火之星Q打开提示；F键直接检测副手
+# 实体物品输入：纸牌Q出牌、烟火之星Q打开提示；F键直接检测副手
 scoreboard objectives add hb_drop_card minecraft.dropped:minecraft.paper
 scoreboard objectives add hb_drop_hint minecraft.dropped:minecraft.firework_star
 scoreboard objectives add hb_drop_reward minecraft.dropped:minecraft.purple_dye
 
 scoreboard players set #clock hb_ctx 0
 scoreboard players set #version hb_ctx 9
-tellraw @a [{text:'[花火] ',color:'light_purple'},{text:'游戏模块安装完成。',color:'green'}]

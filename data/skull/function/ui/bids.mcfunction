@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute store result storage skull:ui bid.current int 1 run scoreboard players get @s sk_bid
 execute store result storage skull:ui bid.total int 1 run scoreboard players get @s sk_total
 function skull:ui/bid_info with storage skull:ui bid

@@ -1,0 +1,3 @@
+$execute if items entity @s hotbar.$(slot) *[minecraft:custom_data~{love_letter:{hand:1b,card:$(card),epoch:$(epoch),owner:$(owner),table:$(table),slot:$(slot)}}] run return 0
+$execute if items entity @s hotbar.$(slot) * unless items entity @s hotbar.$(slot) *[minecraft:custom_data~{love_letter:{hand:1b}}] run return 0
+$item replace entity @s hotbar.$(slot) with minecraft:purple_dye[minecraft:item_model="card:love_letter/hand/$(model)",minecraft:item_name={text:"$(name)",italic:false},minecraft:custom_data={love_letter:{tool:1b,hand:1b,slot:$(slot),card:$(card),epoch:$(epoch),owner:$(owner),table:$(table)}}]

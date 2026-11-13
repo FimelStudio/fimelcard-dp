@@ -1,0 +1,3 @@
+$execute if score @s $(guess)1 matches 1.. run tellraw @a[tag=dc.round_audience] [{"text":"拦截者输入密码：","color":"light_purple"},{"score":{"name":"@s","objective":"$(guess)1"},"color":"yellow"},{"text":"-","color":"white"},{"score":{"name":"@s","objective":"$(guess)2"},"color":"yellow"},{"text":"-","color":"white"},{"score":{"name":"@s","objective":"$(guess)3"},"color":"yellow"}]
+$execute if score @s $(guess)1 matches 0 run tellraw @a[tag=dc.round_audience] {text:"拦截者超时未提交",color:"yellow"}
+$execute if score @s $(guess)1 matches -1 run tellraw @a[tag=dc.round_audience] {text:"本回合拦截因加密超时取消",color:"gray"}

@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if items entity @e[tag=wq.drop,limit=1] contents minecraft:purple_dye[minecraft:custom_data~{wenfei:{tool:"menu"}}] run return run function wenfei:input/reopen_category
 execute if items entity @e[tag=wq.drop,limit=1] contents *[minecraft:custom_data~{wenfei:{tool:"score"}}] run return run function wenfei:input/score
 execute if items entity @e[tag=wq.drop,limit=1] contents minecraft:purple_dye[minecraft:custom_data~{wenfei:{tool:"answer_dialog"}}] run return run function wenfei:form/drop

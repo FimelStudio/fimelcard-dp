@@ -1,0 +1,9 @@
+scoreboard objectives add ca_depoch dummy
+scoreboard objectives add ca_confirm dummy
+scoreboard objectives add ca_cepoch dummy
+scoreboard objectives add ca_cmode dummy
+scoreboard objectives add ca_step dummy
+scoreboard objectives add ca_lastres dummy
+scoreboard objectives add ca_dphase dummy
+scoreboard objectives add ca_discepoch dummy
+scoreboard objectives add ca_dclock dummy

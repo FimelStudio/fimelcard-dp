@@ -1,0 +1,64 @@
+from pathlib import Path
+import json,itertools
+P=Path(__file__).resolve().parents[1];B=P.parents[3];F=P/'data/avalon/function'
+def read(n):return (F/(n+'.mcfunction')).read_text(encoding='utf8')
+assert 'translation:[0f,0f,0f]' in read('hud/init') and 'tp @s ~ ~2.2 ~' in read('hud/init')
+assert read('dialog/show').strip()=='$dialog show @s $(dialog)'
+assert 'function avalon:dialog/known' not in read('dialog/open')
+assert '你的身份' not in read('dialog/open')
+assert 'execute if score #show_ui av_ctx matches 1 run function avalon:dialog/show' in read('dialog/open')
+assert 'function avalon:player/private_info' in read('game/tick')
+assert 'av_clock matches 10..' in read('game/tick')
+info=read('player/private_info')
+assert info.count('run title @s actionbar')==7
+assert 'title @a' not in info
+assert 'scores={av_role=6}] add av.info_oberon' in info
+assert info.count('tag=!av.info_oberon')==3
+assert 'selector:"@a[tag=av.audience,tag=av.info_pair]"' in info
+assert 'tag=!av.info_viewer' in info
+assert 'title @s actionbar {text:""}' in read('player/clear')
+assert 'click_event.command set from storage avalon:chat actions[0].action.command' in read('chat/actions')
+for code in [20,21,30,31]:assert '{code:'+str(code)+',' not in read('dialog/open')
+assert 'execute on origin if entity @s[tag=av.player,tag=ct.player]' in read('input/drop_ballot')
+for guard in ['@s av_id = #ballot_table','@s ct_id = #ballot_table','#ballot_epoch av_ctx = @e[tag=av.current,limit=1] av_epoch']:
+ assert guard in read('input/ballot')
+assert 'av_vote matches 0' in read('input/dispatch') and 'av_mission matches 0' in read('input/dispatch')
+assert 'av_selected matches 1' in read('input/dispatch')
+for n in ['input/vote','input/mission']:assert 'clear @a[tag=av.actor,limit=1] *[minecraft:custom_data~{avalon:{ballot:1b}}]' in read(n)
+assert 'unless score @a[tag=av.actor,limit=1] av_role matches 4..7 run return' in read('input/mission')
+assert 'av_role' not in read('player/mission_ballots'), 'tool issuance must not reveal alignment'
+assert 'unless items entity @s $(slot) * run return run item replace' in read('player/give_ballot')
+roles=['merlin','percival','loyalist','morgana','assassin','oberon','minion']
+contexts=['gui','firstperson_righthand','firstperson_lefthand','thirdperson_righthand','thirdperson_lefthand','ground','fixed','head','none']
+cases=0
+for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
+ for role in roles:
+  m=json.loads((rp/f'assets/card/items/avalon/{role}.json').read_text(encoding='utf8'))['model']
+  assert m['property']=='minecraft:display_context'
+  for ctx in contexts:
+   target=next((x['model'] for x in m['cases'] if x['when']==ctx),m['fallback'])['model']
+   assert target==('card:item/avalon/'+role if ctx in contexts[:3] else 'card:item/avalon/private_back')
+   cases+=1
+  reveal=json.loads((rp/f'assets/card/items/avalon/reveal/{role}.json').read_text(encoding='utf8'))
+  assert reveal['model']['model']==f'card:item/avalon/reveal/{role}'
+print(f'PASS: fixed HUD anchor; private actionbar and selective operation dialogs; Q ballot ownership/table/epoch/double-submit guards; {cases} role display contexts; public end reveal retained.')
+
+assert 'minecraft:purple_dye' not in read('player/tools')
+assert 'hotbar.8 * run scoreboard players set #blocked' in read('game/start')
+assert 'function avalon:input/reopen' in read('input/drop_role')
+assert 'minecraft:item_model="card:avalon/ballot_$(color)"' in read('player/give_ballot')
+result=read('game/mission_result')
+assert 'if score #fail av_ctx < #threshold av_ctx at @s run function avalon:fx/success' in result
+assert 'if score #fail av_ctx >= #threshold av_ctx at @s run function avalon:fx/failure' in result
+assert result.index('avalon:fx/success') < result.index('run return run function avalon:game/evil_win')
+for effect in ['success','failure']:
+ assert 'particle ' in read('fx/'+effect)
+ assert 'playsound ' in read('fx/'+effect)
+ assert 'summon ' not in read('fx/'+effect)
+for rp in [B/'resourcepacks/fimelcard-rp',B/'resourcepacks/Fimel桌游馆']:
+ for color,private in [('green','lime_dye'),('red','red_dye')]:
+  m=json.loads((rp/f'assets/card/items/avalon/ballot_{color}.json').read_text(encoding='utf8'))['model']
+  for ctx in contexts:
+   model=next((x['model'] for x in m['cases'] if x['when']==ctx),m['fallback'])['model']
+   assert model=='minecraft:item/'+(private if ctx in contexts[:3] else 'lime_dye')
+print('PASS: retired purple tool; private green/red ballot models in both packs; result effects before end routing and no destructive entities.')

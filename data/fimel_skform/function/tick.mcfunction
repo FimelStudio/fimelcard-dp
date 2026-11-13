@@ -1,5 +1,7 @@
-
-
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 # 移除用不到的Trigger计分板
 # data modify storage fimel_skform:runtime temp.forms set from storage fimel_skform:runtime database.forms
 # execute if data storage fimel_skform:runtime temp.forms[0] run function fimel_skform:tick/_for2
@@ -11,4 +13,3 @@ execute if data storage fimel_skform:runtime temp.scoreboards[0] run function fi
 
 # 检测玩家是否提交了表单
 execute as @a[tag=fimel.skform.had,scores={fcs_form_submit=1}] run function fimel_skform:tick/_submit/_0
-

@@ -31,7 +31,7 @@ for(const [file,ref]of Object.entries(routes)){
  assert.ok(source.split(/\r?\n/).some(l=>l.includes('ct_game matches 9')&&l.includes('skull:'+ref)),file);
 }
 assert.ok(fs.readFileSync(path.join(root,'data/cardtable/function/menu/render.mcfunction'),'utf8').includes('game_name_skull'));
-assert.ok(fs.readFileSync(path.join(root,'data/cardtable/function/load.mcfunction'),'utf8').includes('#game_count ct_ctx 10'));
+assert.ok(Number(fs.readFileSync(path.join(root,'data/cardtable/function/load.mcfunction'),'utf8').match(/#game_count ct_ctx (\d+)/)[1])>=9);
 assert.ok(fs.readFileSync(path.join(root,'data/cardtable/function/game/remove_offline_player.mcfunction'),'utf8').includes('skull:player/clear_state'));
 for(const kind of ['load','tick'])assert.equal(JSON.parse(fs.readFileSync(path.join(root,'data/minecraft/tags/function',kind+'.json'))).values.filter(x=>x==='skull:'+kind).length,1);
 assert.ok(read('hand/give').includes('id:$(seat)$(slot)'));

@@ -1,0 +1,1 @@
+$tellraw @a[tag=ca.audience] [{"text":"[卡坦岛] ","color":"gold"},{"nbt":"data.catan.p$(turn).name","entity":"@s","interpret":true},{"text":" 掷出 ","color":"gray"},{"nbt":"data.catan.dice[0]","entity":"@s"},{"text":" + "},{"nbt":"data.catan.dice[1]","entity":"@s"}]

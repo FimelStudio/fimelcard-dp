@@ -1,3 +1,6 @@
+execute if score @s dc_mode matches 4 run return run function decrypto:sync/begin
+execute if score @s dc_encode_limit matches 1.. run return run function decrypto:sync/begin
+execute if score @s dc_guess_limit matches 1.. run return run function decrypto:sync/begin
 scoreboard players set @s dc_state 2
 function decrypto:title/update_all
 scoreboard players set @s dc_clue 0
@@ -9,4 +12,4 @@ execute as @a[tag=dc.player,scores={dc_team=1,dc_encoder=1}] if score @s dc_id =
 tellraw @a[tag=dc.prompt_audience] [{text:'[本轮密码] ',color:'gold'},{score:{name:'@s',objective:'dc_w1'}},{text:' - '},{score:{name:'@s',objective:'dc_w2'}},{text:' - '},{score:{name:'@s',objective:'dc_w3'}}]
 tag @a[tag=dc.prompt_audience] remove dc.prompt_audience
 execute as @a[tag=dc.player,scores={dc_team=1,dc_encoder=1}] if score @s dc_id = #ctx dc_ctx run function decrypto:prompt/give_selected
-execute as @a[tag=dc.player] if score @s dc_id = #ctx dc_ctx run tellraw @s [{text:'[谍报风云] ',color:'aqua'},{text:'现在由白队加密者填写并提交三条提示。',color:'yellow'}]
+execute as @a[tag=dc.player] if score @s dc_id = #ctx dc_ctx run tellraw @s [{text:'[谍报风云] ',color:'aqua'},{text:'现在由红队加密者填写并提交三条提示。',color:'yellow'}]

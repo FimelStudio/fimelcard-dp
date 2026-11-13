@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 仅分发当前物品，处理期间不再搜索玩家附近的其它物品。
 execute if items entity @e[type=minecraft:item,tag=cp.input_drop,limit=1] contents minecraft:paper[minecraft:custom_data~{critical_point:{card:1b}}] run return run function critical_point:input/card
 execute if items entity @e[type=minecraft:item,tag=cp.input_drop,limit=1] contents minecraft:paper[minecraft:custom_data~{critical_point:{card:2b}}] run return run function critical_point:input/card

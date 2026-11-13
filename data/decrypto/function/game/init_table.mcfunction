@@ -2,6 +2,7 @@
 execute unless score @s dc_round_limit matches 1..32 run scoreboard players set @s dc_round_limit 8
 execute unless score @s dc_input matches 0..1 run scoreboard players set @s dc_input 0
 execute unless score @s dc_team_mode matches 0..1 run scoreboard players set @s dc_team_mode 0
+function decrypto:timer/init
 
 # 运行期状态在大厅初始化时归零，不覆盖牌桌设置。
 scoreboard players set @s dc_round 0

@@ -1,0 +1,3 @@
+execute as @e[tag=go.board,scores={go_sq=342},limit=1] run function weiqi:engine/group/neighbor
+execute as @e[tag=go.board,scores={go_sq=344},limit=1] run function weiqi:engine/group/neighbor
+execute as @e[tag=go.board,scores={go_sq=324},limit=1] run function weiqi:engine/group/neighbor

@@ -1,3 +1,4 @@
+dialog clear @s
 function decrypto:title/deactivate_player
 clear @s minecraft:paper[minecraft:custom_data~{decrypto:{clue:1b}}]
 clear @s minecraft:writable_book[minecraft:custom_data~{decrypto:{clue:1b}}]
@@ -29,9 +30,19 @@ scoreboard players reset @s dc_drop
 scoreboard players reset @s dc_drop_book
 scoreboard players reset @s dc_drop_guess
 clear @s minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'prompt'}}]
+clear @s minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'timeout'}}]
 
 scoreboard players reset @s dc_role
 scoreboard players reset @s dc_index
 scoreboard players reset @s dc_size
 tag @s remove dc.audience
 tag @s remove dc.guesser
+
+scoreboard players reset @s dc_action
+scoreboard players reset @s dc_gp
+scoreboard players reset @s dc_gr
+scoreboard players reset @s dc_g1
+scoreboard players reset @s dc_g2
+scoreboard players reset @s dc_g3
+scoreboard players reset @s dc_gserial
+scoreboard players reset @s dc_hint

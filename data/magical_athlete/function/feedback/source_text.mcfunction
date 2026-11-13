@@ -1,0 +1,1 @@
+$tellraw @a[tag=ma.audience] [{"text":"[胡闹运动会] ","color":"gold"},{"nbt":"data.magical_athlete.p$(caster_owner).name","entity":"@s","interpret":true},{"text":" 的「$(caster_name)」对 ","color":"aqua"},{"nbt":"data.magical_athlete.p$(target_owner).name","entity":"@s","interpret":true},{"text":" 的「$(target_name)」发动了「$(ability_name)」能力。","color":"aqua"}]
