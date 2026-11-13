@@ -255,10 +255,10 @@ class Assets(unittest.TestCase):
 
     def test_sound_license_hashes_codec_and_loop(self):
         manifest=json.loads((SOURCE/'audio/manifest.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['license'],'CC0-1.0')
+        self.assertEqual(manifest['license'],'Mixed; see each audio entry')
         self.assertEqual(manifest['loop_ticks'],640)
         definitions=json.loads((RP/'assets/magical_athlete/sounds.json').read_text(encoding='utf-8'))
-        self.assertEqual(len(definitions),12)
+        self.assertEqual(len(definitions),13)
         for event,data in manifest['audio'].items():
             ns,location=data['resource'].split(':',1)
             path=RP/f'assets/{ns}/sounds/{location}.ogg'
@@ -270,6 +270,15 @@ class Assets(unittest.TestCase):
             if event=='bgm':
                 self.assertAlmostEqual(float(probe['format']['duration']),32,places=2)
                 self.assertTrue(definitions[event]['sounds'][0]['stream'])
+            elif event=='bgm_wild':
+                self.assertAlmostEqual(float(probe['format']['duration']),data['duration'],places=2)
+                self.assertTrue(definitions[event]['sounds'][0]['stream'])
+                self.assertEqual(data['loop_ticks'],math.ceil(data['duration']*20))
+                self.assertEqual(hashlib.sha256((SOURCE/'audio'/data['original']).read_bytes()).hexdigest(),data['original_sha256'])
+                self.assertLess(abs(data['normalization']['output_lufs']-data['normalization']['reference_lufs']),1)
+                self.assertLess(data['normalization']['output_true_peak_dbfs'],-1)
+            else:
+                self.assertEqual(data['license'],'CC0-1.0')
         self.assertTrue((SOURCE/'audio/LICENSE.txt').exists())
         self.assertTrue((RP/'.source/catan/audio/kenney/casino/License.txt').exists())
 

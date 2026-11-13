@@ -40,10 +40,8 @@ execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8}] at
 # 规则按钮独立刷新，已建桌也立即采用当前桌型的外沿坐标。
 execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:table/ensure_seats
 
-execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:rules/render
-
-# 八人桌结束按钮采用新的内收布局，保留已有票数。
-execute as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8,ct_state=1}] at @s run function cardtable:vote/render
+# 新点击区与结束按钮文字即时应用到已加载的四座／八座桌。
+execute as @e[type=minecraft:marker,tag=ct.controller] at @s run function cardtable:table/repair_buttons
 
 # 立即修复重载前已经存在的牌桌与游戏文本，避免必须重建牌桌才能获得方块遮挡
 function cardtable:display/repair_occlusion

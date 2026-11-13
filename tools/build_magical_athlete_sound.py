@@ -166,6 +166,8 @@ def build():
 
 重建：在数据包根目录运行 `python tools/build_magical_athlete_sound.py`，需要 NumPy、ffmpeg。原始无损 WAV、乐曲说明、许可及每个输出的 SHA-256 均保留在本目录。音乐首尾使用短淡化消除点击，播放循环不改变规则或骰值。
 ''')
+    from build_magical_athlete_music import build as wild_music
+    wild_music()
     return LOOP_TICKS
 
 

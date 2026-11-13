@@ -716,6 +716,7 @@ stopsound @s * card:xiangqi.illegal
 stopsound @s * card:xiangqi.move
 stopsound @s * card:xiangqi.start
 stopsound @s * magical_athlete:bgm
+stopsound @s * magical_athlete:bgm_wild
 stopsound @s * magical_athlete:coin
 stopsound @s * magical_athlete:finish
 stopsound @s * magical_athlete:illegal

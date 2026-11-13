@@ -289,6 +289,8 @@ def sound():
     put('sound/pause',['function magical_athlete:system/context','function magical_athlete:sound/stop'])
     put('sound/resume',['function magical_athlete:system/context','function magical_athlete:sound/stop','execute if score @s ct_state matches 1 if score @s ma_music matches 1 run function magical_athlete:sound/start'])
     put('sound/reload',['function magical_athlete:sound/stop','execute unless score @s ct_paused matches 1 run function magical_athlete:sound/start'])
+    from build_magical_athlete_music import functions as track_music
+    track_music()
 
 
 if __name__=='__main__':main()

@@ -28,6 +28,7 @@ execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.c
 
 # 旧牌桌或启动时尚未加载实体的牌桌只执行一次第十三版迁移
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{menu_version:13}}} run function cardtable:table/migrate_v13
+execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller] at @s unless data entity @s {data:{cardtable:{button_regions_version:1}}} run function cardtable:table/repair_buttons
 # 尚未加载的八人桌也补做座椅迁移，只执行一次。
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:marker,tag=ct.controller,scores={ct_capacity=8}] at @s unless data entity @s {data:{cardtable:{chairs_version:1}}} run function cardtable:table/migrate_chairs8
 # 未加载区块中的旧按钮，在牌桌重新加载后只更新一次。
