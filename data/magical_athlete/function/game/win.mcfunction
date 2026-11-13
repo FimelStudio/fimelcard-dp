@@ -8,9 +8,11 @@ execute if data entity @s data.magical_athlete.p3.name run function magical_athl
 execute if data entity @s data.magical_athlete.p4.name run function magical_athlete:game/score {side:4}
 execute if data entity @s data.magical_athlete.p5.name run function magical_athlete:game/score {side:5}
 execute if data entity @s data.magical_athlete.p6.name run function magical_athlete:game/score {side:6}
+data modify storage cardtable:result names set value {text:"",extra:[]}
 execute if data entity @s data.magical_athlete{winners:[1]} run function magical_athlete:game/announce {side:1}
 execute if data entity @s data.magical_athlete{winners:[2]} run function magical_athlete:game/announce {side:2}
 execute if data entity @s data.magical_athlete{winners:[3]} run function magical_athlete:game/announce {side:3}
 execute if data entity @s data.magical_athlete{winners:[4]} run function magical_athlete:game/announce {side:4}
 execute if data entity @s data.magical_athlete{winners:[5]} run function magical_athlete:game/announce {side:5}
 execute if data entity @s data.magical_athlete{winners:[6]} run function magical_athlete:game/announce {side:6}
+function cardtable:game/result/title {audience:"@a[tag=ma.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{nbt:"names",storage:"cardtable:result",interpret:true}}

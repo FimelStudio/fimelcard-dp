@@ -1,4 +1,6 @@
 scoreboard players set @s dd_pred_phase 0
+scoreboard players set @s dd_pred_round 0
+execute unless score @s dd_scoring matches 0 run return 0
 scoreboard players add #prediction_serial dd_ctx 1
 scoreboard players operation @s dd_pred_token = #prediction_serial dd_ctx
 # 3/4 向上取整。短赛将预测安排在末副前；单副赛没有中途预测。

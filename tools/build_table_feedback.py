@@ -138,8 +138,6 @@ def catan():
         *[f'data modify storage catan:feedback pose.{a} set from entity @s transformation.translation[{i}]' for i,a in enumerate(('x','y','z'))],
         'function catan:feedback/dice_particle with storage catan:feedback pose'])
     w.put('feedback/dice_particle','$execute positioned ~$(x) ~$(y) ~$(z) run particle minecraft:end_rod ~ ~0.12 ~ 0.09 0.02 0.09 0 1 normal @a[tag=ca.audience]')
-    # 结束结算放在原赢家聊天之后，重要结果只显示一次。
-    w.hook('game/winner_announce','$execute as @a[tag=ca.audience,scores={ca_side=$(winner)}] run '+w.subtitle('卡坦岛胜利！','gold'))
 
 
 def magical_athlete():
@@ -209,7 +207,7 @@ def magical_athlete():
     for kind,label in labels.items():
         color='green' if kind==6 else 'red' if kind in (3,5) else 'aqua' if kind in (7,8) else 'white'
         lines += [f'$execute if predicate {{condition:"minecraft:value_check",value:$(kind),range:{kind}}} run '+w.chat([w.name(),{'text':' 的 $(name)：'+label,'color':color}])[1:]]
-        if kind in (3,4,5,6,7):
+        if kind in (3,4,5):
             lines += [f'$execute if predicate {{condition:"minecraft:value_check",value:$(kind),range:{kind}}} as @a[tag=ma.audience,scores={{ma_side=$(actor)}}] run '+w.subtitle('$(name)：'+label,color)]
     lines += ['$execute if predicate {condition:"minecraft:value_check",value:$(source),range:{min:0,max:35}} if predicate {condition:"minecraft:value_check",value:$(kind),range:{min:1,max:5}} run function magical_athlete:feedback/source with storage magical_athlete:feedback event']
     w.put('feedback/event_text',lines)
@@ -282,7 +280,6 @@ def magical_athlete():
     w.put('feedback/reveal_text',w.chat([w.name(),{'text':' 派出 $(name)：$(ability)','color':'aqua'}]))
     w.put('feedback/scores',[f'execute if data entity @s data.magical_athlete.p{side}.name run function magical_athlete:feedback/score {{side:{side}}}' for side in range(1,7)])
     w.put('feedback/score',w.chat([w.name('$(side)'),{'text':' · 本场 '},{'nbt':'data.magical_athlete.p$(side).race_points','entity':'@s'},{'text':' 分 · 总分 '},{'nbt':'data.magical_athlete.p$(side).points','entity':'@s'}]))
-    w.hook('game/announce','$execute as @a[tag=ma.audience,scores={ma_side=$(side)}] run '+w.subtitle('胡闹运动会总冠军！','gold'))
     # 提示合法目标使用稀疏粒子；蓝色实线发光继续专用于玩家实际选中。
     w.hook('game/tick','execute if score @s ma_pulse matches 0 run function magical_athlete:feedback/guide')
     w.put('feedback/guide',[

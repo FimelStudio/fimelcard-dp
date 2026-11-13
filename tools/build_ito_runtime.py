@@ -246,8 +246,8 @@ data modify entity @e[tag=it.current,limit=1] data.ito.history append from stora
  put('round/clear','''scoreboard players set @s it_state 3
 scoreboard players set @s it_timer 60
 '''+say('本关通过！3秒后进入下一关。','green'))
- put('game/win',say('三关全部通过，蛛丝没有断！全员胜利！','green')+'\nfunction ito:game/finish')
- put('game/lose',say('生命归零，蛛丝断了，本场全员失败。','red')+'\nfunction ito:game/finish')
+ put('game/win',say('三关全部通过，蛛丝没有断！全员胜利！','green')+'\nfunction cardtable:game/result/title {audience:"@a[tag=it.audience]",title:{text:"合作队获胜",color:"green",bold:true},subtitle:{selector:"@a[tag=it.audience]",separator:{text:"、"}}}\nfunction ito:game/finish')
+ put('game/lose',say('生命归零，蛛丝断了，本场全员失败。','red')+'\nfunction cardtable:game/result/title {audience:"@a[tag=it.audience]",title:{text:"全员失败",color:"red",bold:true},subtitle:{text:""}}\nfunction ito:game/finish')
  put('game/finish','''scoreboard players set @s it_state 4
 scoreboard players set @s it_timer 100
 execute as @a[tag=it.audience] run clear @s *[minecraft:custom_data~{ito:{tool:1b}}]

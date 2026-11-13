@@ -33,6 +33,7 @@ execute as @a[tag=ab.player] if score @s ab_score >= #goal ab_ctx if score @s ab
 scoreboard players set #game_over ab_ctx 0
 execute if entity @a[tag=ab.tower_winner] run scoreboard players set #game_over ab_ctx 1
 execute if entity @a[tag=ab.tower_winner] run tellraw @a[tag=ab.audience] [{text:'[出包魔法师] ',color:'dark_purple'},{selector:'@a[tag=ab.tower_winner]',color:'gold',bold:true},{text:' 达到目标分数，赢得整场游戏！',color:'green'}]
+execute if score #game_over ab_ctx matches 1 run function cardtable:game/result/title {audience:"@a[tag=ab.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{selector:"@a[tag=ab.tower_winner]"}}
 tag @a[tag=ab.audience] remove ab.audience
 tag @a[tag=ab.this_winner] remove ab.this_winner
 tag @a[tag=ab.tower_winner] remove ab.tower_winner

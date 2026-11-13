@@ -1,11 +1,14 @@
 execute if score #setting_field ct_ctx matches 1 unless score #setting_value ct_ctx matches 1..32 run return 0
 execute if score #setting_field ct_ctx matches 2 unless score #setting_value ct_ctx matches 0..1 run return 0
 execute if score #setting_field ct_ctx matches 3 unless score #setting_value ct_ctx matches 0..2 run return 0
+execute if score #setting_field ct_ctx matches 3 unless score @s dd_mode matches 0 run return 0
 execute if score #setting_field ct_ctx matches 4 unless score #setting_value ct_ctx matches 0..1 run return 0
 execute if score #setting_field ct_ctx matches 5 unless score #setting_value ct_ctx matches 0..1 run return 0
 execute if score #setting_field ct_ctx matches 6 unless score #setting_value ct_ctx matches 0..1 run return 0
 execute if score #setting_field ct_ctx matches 7 unless score #setting_value ct_ctx matches 0..1 run return 0
 execute if score #setting_field ct_ctx matches 8 unless score #setting_value ct_ctx matches 0..1 run return 0
+execute if score #setting_field ct_ctx matches 8 unless score @s dd_mode matches 2 run return 0
+execute if score #setting_field ct_ctx matches 8 unless score @s ct_capacity matches 8 run return 0
 execute if score #setting_field ct_ctx matches 9 unless score #setting_value ct_ctx matches 0..2 run return 0
 execute if score #setting_field ct_ctx matches 9 if score #setting_value ct_ctx matches 2 unless score @s ct_capacity matches 8 run return 0
 execute if score #setting_field ct_ctx matches 10 unless score #setting_value ct_ctx matches 0 unless score #setting_value ct_ctx matches 30 unless score #setting_value ct_ctx matches 60 unless score #setting_value ct_ctx matches 90 unless score #setting_value ct_ctx matches 120 run return 0

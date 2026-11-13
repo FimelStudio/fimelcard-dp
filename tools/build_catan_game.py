@@ -275,7 +275,8 @@ execute store result score #required ca_ctx run data get entity @s data.catan.n
     put('game/hud_player',['function catan:ui/guidance','execute store result storage catan:ui turn int 1 run scoreboard players get @e[tag=ca.current,limit=1] ca_turn','data modify storage catan:ui turn_name set value {text:"—",color:"gray"}','function catan:ui/turn_name with storage catan:ui','function catan:game/hud_text with storage catan:ui'])
     put('game/hud_text','$title @s actionbar [{text:"卡坦岛 · ",color:"gold"},$(turn_name),{text:" · ",color:"gray"},$(hud_guidance)]')
     put('game/win',['execute if score @s ca_finish matches 1.. run return 0','execute unless score @s ca_winner matches 1..4 run return 0','scoreboard players set @s ca_finish 100','scoreboard players set @s ca_anim 0','function catan:input/clear_surface','function catan:sound/result','data modify entity @s data.catan.last.kind set value "win"','execute store result entity @s data.catan.last.owner int 1 run scoreboard players get @s ca_winner','function catan:visual/animate','function catan:game/winner_announce with entity @s data.catan','function catan:game/firework'])
-    put('game/winner_announce','$tellraw @a[tag=ca.audience] [{text:"[卡坦岛] ",color:"gold"},{nbt:"data.catan.p$(winner).name",entity:"@s",interpret:true},{text:" 达到 10 分，获得胜利！",color:"gold"}]')
+    put('game/winner_announce',['$tellraw @a[tag=ca.audience] [{text:"[卡坦岛] ",color:"gold"},{nbt:"data.catan.p$(winner).name",entity:"@s",interpret:true},{text:" 达到 10 分，获得胜利！",color:"gold"}]',
+        '$function cardtable:game/result/title {audience:"@a[tag=ca.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{nbt:"data.catan.p$(winner).name",entity:"@s",interpret:true}}'])
     put('game/firework','''
 scoreboard players operation #winner ca_ctx = @s ca_winner
 execute as @a[tag=ca.audience] if score @s ca_side = #winner ca_ctx at @s run function catan:game/firework_player

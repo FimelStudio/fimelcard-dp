@@ -417,7 +417,10 @@ function weiqi:clock/update
 function weiqi:ui/refresh
 function weiqi:log {text:"围棋结束，五秒后回大厅并保留终局"}
 ''')
-    put('game/result_text', ['tellraw @a[tag=go.audience] [{text:"[围棋] ",color:"gold"},{nbt:"data.weiqi.result",entity:"@s",interpret:false,color:"gold",bold:true},{text:"。五秒后返回大厅，可通过最后一格菜单复盘。",color:"yellow"}]', 'execute if score @s go_reason matches 1 run function weiqi:game/result_score', 'execute if score @s go_reason matches 6 run ' + say('胜负原因：一方超时。'), 'execute if score @s go_reason matches 7 run ' + say('胜负原因：一方认输。')])
+    put('game/result_text', ['tellraw @a[tag=go.audience] [{text:"[围棋] ",color:"gold"},{nbt:"data.weiqi.result",entity:"@s",interpret:false,color:"gold",bold:true},{text:"。五秒后返回大厅，可通过最后一格菜单复盘。",color:"yellow"}]', 'execute if score @s go_reason matches 1 run function weiqi:game/result_score', 'execute if score @s go_reason matches 6 run ' + say('胜负原因：一方超时。'), 'execute if score @s go_reason matches 7 run ' + say('胜负原因：一方认输。'),
+        'execute if score @s go_result matches 1 run function cardtable:game/result/title {audience:"@a[tag=go.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{nbt:"data.weiqi.black_name",entity:"@s",interpret:true}}',
+        'execute if score @s go_result matches 2 run function cardtable:game/result/title {audience:"@a[tag=go.audience]",title:{text:"白方获胜",color:"white",bold:true},subtitle:{nbt:"data.weiqi.white_name",entity:"@s",interpret:true}}',
+        'execute if score @s go_result matches 3 run function cardtable:game/result/title {audience:"@a[tag=go.audience]",title:{text:"和棋",color:"yellow",bold:true},subtitle:{text:""}}'])
     put('game/result_score', ['function weiqi:ui/value_bscore', 'function weiqi:ui/value_wscore', 'function weiqi:ui/value_komi', 'function weiqi:ui/half {key:"bscore"}', 'function weiqi:ui/half {key:"wscore"}', 'function weiqi:ui/half {key:"komi"}', 'function weiqi:game/result_score_text with storage weiqi:ui'])
     put('game/result_score_text', '$tellraw @a[tag=go.audience] {text:"[围棋] 面积计分：黑 $(bscore_label) 目，白 $(wscore_label) 目（含贴目 $(komi_label) 目）。提子不另计分。",color:"gray"}')
     put('game/firework', '''

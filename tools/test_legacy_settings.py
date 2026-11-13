@@ -62,13 +62,32 @@ class Suite(ChairSuite):
             for index, field in enumerate(fields, 1):
                 values = [v for v, _ in field['choices']] if 'choices' in field else [field['low'], field['high']]
                 for value in values:
-                    c = self.fixture(game=game) + self.opening() + self.setting(index, value)
+                    c = self.fixture(game=game)
+                    if field['key'] == 'dd_hide_score':
+                        c = self.fixture(game=game, cap=8) + [f'scoreboard players set {TABLE} dd_mode 2']
+                    c += self.opening() + self.setting(index, value)
                     c += self.score(TABLE, field['key'], value, f'instant_{game}_{index}_{value}_changes')
                     c += self.score('#settings_compiled', 'gt', 2, f'instant_{game}_{index}_{value}_same_page_reopens')
                     self.case(f'instant_{game}_{index}_{value}', c)
                 c = self.fixture(game=game) + self.opening() + self.setting(index, field['high'] + 1)
                 c += self.score(TABLE, field['key'], field['default'], f'invalid_{game}_{index}_range_rejected')
                 self.case(f'invalid_{game}_{index}', c)
+        for mode in (1, 2):
+            c = self.fixture(game=10, cap=8) + [f'scoreboard players set {TABLE} dd_mode {mode}',
+                                              f'scoreboard players set {TABLE} dd_classic_bid 2'] + self.opening()
+            c += self.check('data storage cardtable:settings field3.extra[{text:" [叫分制] ",color:"gold"}]', f'team_{mode}_shows_fixed_bid')
+            c += self.check('data storage cardtable:settings field3.extra[{text:" [叫抢制] [手速制] ",color:"dark_gray"}]', f'team_{mode}_shows_disabled_bid_options')
+            c += self.setting(3, 1) + self.score(TABLE, 'dd_classic_bid', 2, f'team_{mode}_rejects_bid_change')
+            self.case(f'doudizhu_team_bid_{mode}', c)
+        for mode in (0, 1, 2):
+            c = self.fixture(game=10, cap=8) + [f'scoreboard players set {TABLE} dd_mode {mode}',
+                                              f'scoreboard players set {TABLE} dd_scoring 1'] + self.opening()
+            if mode == 2:
+                c += self.check('data storage cardtable:settings field8.extra[{text:" [隐藏比分] "}]', 'duplicate_wins_can_hide_scores')
+            else:
+                c += self.check('data storage cardtable:settings field8.extra[{text:" 仅4v4可设置",color:"dark_gray"}]', f'mode_{mode}_shows_unavailable_prediction')
+                c += self.setting(8, 1) + self.score(TABLE, 'dd_hide_score', 0, f'mode_{mode}_rejects_prediction_setting')
+            self.case(f'doudizhu_prediction_setting_{mode}', c)
         changes = {
             'start': [f'scoreboard players set {TABLE} ct_state 1'],
             'game': [f'scoreboard players set {TABLE} ct_game 3'],

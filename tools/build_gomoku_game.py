@@ -567,7 +567,14 @@ execute positioned ~ ~1 ~ run function fimel_sklibs:skfirework/fx/firework {conf
 scoreboard players operation @e[type=minecraft:firework_rocket,tag=gm.firework.new] ct_id = #table gm_ctx
 tag @e[type=minecraft:firework_rocket,tag=gm.firework.new] remove gm.firework.new
 ''')
-    put('game/result_text', '$tellraw @a[tag=gm.audience] [{text:"[五子棋] $(title)",color:"gold",bold:true},{text:"：$(reason)。五秒后返回大厅。",color:"yellow"}]')
+    put('game/result_text', ['$tellraw @a[tag=gm.audience] [{text:"[五子棋] $(title)",color:"gold",bold:true},{text:"：$(reason)。五秒后返回大厅。",color:"yellow"}]',
+        'execute if score @s gm_result matches 1 if entity @a[tag=gm.audience,scores={gm_side=1}] run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{selector:"@a[tag=gm.audience,scores={gm_side=1}]"}}',
+        'execute if score @s gm_result matches 1 if score @s gm_bot matches 1 run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{text:"人机",color:"aqua"}}',
+        'execute if score @s gm_result matches 1 unless entity @a[tag=gm.audience,scores={gm_side=1}] unless score @s gm_bot matches 1 run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{text:""}}',
+        'execute if score @s gm_result matches 2 if entity @a[tag=gm.audience,scores={gm_side=-1}] run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"白方获胜",color:"white",bold:true},subtitle:{selector:"@a[tag=gm.audience,scores={gm_side=-1}]"}}',
+        'execute if score @s gm_result matches 2 if score @s gm_bot matches -1 run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"白方获胜",color:"white",bold:true},subtitle:{text:"人机",color:"aqua"}}',
+        'execute if score @s gm_result matches 2 unless entity @a[tag=gm.audience,scores={gm_side=-1}] unless score @s gm_bot matches -1 run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"白方获胜",color:"white",bold:true},subtitle:{text:""}}',
+        'execute if score @s gm_result matches 3 run function cardtable:game/result/title {audience:"@a[tag=gm.audience]",title:{text:"和棋",color:"yellow",bold:true},subtitle:{text:""}}'])
     put('game/result_tick', '''
 scoreboard players remove @s gm_timer 1
 execute if score @s gm_timer matches ..0 run function gomoku:game/cleanup

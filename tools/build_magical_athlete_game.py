@@ -172,10 +172,12 @@ execute if score @s ma_finish matches 1.. run return 0
 scoreboard players set @s ma_finish 100
 function magical_athlete:sound/win
 tellraw @a[tag=ma.audience] {text:"[胡闹运动会] 四场结束，积分最高的队伍获胜（同分共享胜利）。",color:"gold"}
-'''+ '\n'.join(f'execute if data entity @s data.magical_athlete.p{side}.name run function magical_athlete:game/score {{side:{side}}}' for side in range(1,7))+'\n'+ '\n'.join(f'execute if data entity @s data.magical_athlete{{winners:[{side}]}} run function magical_athlete:game/announce {{side:{side}}}' for side in range(1,7)))
+data modify storage cardtable:result names set value {text:"",extra:[]}
+'''+ '\n'.join(f'execute if data entity @s data.magical_athlete.p{side}.name run function magical_athlete:game/score {{side:{side}}}' for side in range(1,7))+'\n'+ '\n'.join(f'execute if data entity @s data.magical_athlete{{winners:[{side}]}} run function magical_athlete:game/announce {{side:{side}}}' for side in range(1,7)) + '\nfunction cardtable:game/result/title {audience:"@a[tag=ma.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{nbt:"names",storage:"cardtable:result",interpret:true}}')
     put('game/score','$tellraw @a[tag=ma.audience] [{nbt:"data.magical_athlete.p$(side).name",entity:"@s",interpret:true},{text:" · ",color:"gray"},{nbt:"data.magical_athlete.p$(side).points",entity:"@s"},{text:"分",color:"gold"}]')
     put('game/announce','''
 $tellraw @a[tag=ma.audience] [{text:"获胜：",color:"gold"},{nbt:"data.magical_athlete.p$(side).name",entity:"@s",interpret:true},{text:" · ",color:"gray"},{nbt:"data.magical_athlete.p$(side).points",entity:"@s"},{text:"分",color:"gray"}]
+$function cardtable:game/result/append_name {path:"data.magical_athlete.p$(side).name"}
 $execute as @a[tag=ma.audience,scores={ma_side=$(side)}] at @s run function magical_athlete:game/firework
 ''')
     put('game/firework','''

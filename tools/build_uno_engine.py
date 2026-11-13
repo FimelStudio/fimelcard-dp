@@ -206,6 +206,11 @@ put("game/finish", """
     execute if score @s un_mode matches 0 as @a[tag=un.audience] if score @s un_seat = #u_winner un_ctx run tellraw @a[tag=un.audience] [{text:'本场胜者：',color:'gold'},{selector:'@s',color:'aqua'}]
     execute unless score @s un_mode matches 0 as @a[tag=un.audience] if score @s un_score = #u_best un_ctx run tellraw @a[tag=un.audience] [{text:'本场胜者：',color:'gold'},{selector:'@s',color:'aqua'}]
     execute as @a[tag=un.audience] run tellraw @a[tag=un.audience] [{selector:'@s',color:'aqua'},{text:'：'},{score:{name:'@s',objective:'un_score'},color:'yellow'},{text:' 分'}]
+    tag @a[tag=ct.final_winner] remove ct.final_winner
+    execute if score @s un_mode matches 0 as @a[tag=un.audience] if score @s un_seat = #u_winner un_ctx run tag @s add ct.final_winner
+    execute unless score @s un_mode matches 0 as @a[tag=un.audience] if score @s un_score = #u_best un_ctx run tag @s add ct.final_winner
+    execute if entity @a[tag=ct.final_winner] run function cardtable:game/result/title {audience:"@a[tag=un.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{selector:"@a[tag=ct.final_winner]"}}
+    tag @a[tag=ct.final_winner] remove ct.final_winner
     function uno:log {text:"完成整场结算，返回大厅"}
     function uno:game/cleanup
 """)

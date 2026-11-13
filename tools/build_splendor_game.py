@@ -218,9 +218,11 @@ execute if score @s sp_finish matches 1.. run return 0
 scoreboard players set @s sp_finish 100
 function splendor:sound/result
 tellraw @a[tag=sp.audience] {text:"[璀璨宝石] 本轮结束，按声望优先、已购开发卡更少者优先结算：",color:"gold"}
-'''+ '\n'.join(f'execute if data entity @s data.splendor{{winners:[{side}]}} run function splendor:game/announce {{side:{side}}}' for side in range(1,5)))
+data modify storage cardtable:result names set value {text:"",extra:[]}
+'''+ '\n'.join(f'execute if data entity @s data.splendor{{winners:[{side}]}} run function splendor:game/announce {{side:{side}}}' for side in range(1,5)) + '\nfunction cardtable:game/result/title {audience:"@a[tag=sp.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{nbt:"names",storage:"cardtable:result",interpret:true}}')
     put('game/announce', '''
 $tellraw @a[tag=sp.audience] [{text:"获胜：",color:"gold"},{nbt:"data.splendor.p$(side).name",entity:"@s",interpret:true},{text:" · ",color:"gray"},{nbt:"data.splendor.p$(side).vp",entity:"@s"},{text:"分，",color:"gray"},{nbt:"data.splendor.p$(side).card_count",entity:"@s"},{text:"张开发卡",color:"gray"}]
+$function cardtable:game/result/append_name {path:"data.splendor.p$(side).name"}
 $execute as @a[tag=sp.audience,scores={sp_side=$(side)}] at @s run function splendor:game/firework
 ''')
     put('game/firework', '''

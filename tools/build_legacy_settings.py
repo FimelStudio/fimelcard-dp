@@ -165,6 +165,9 @@ tag @e[tag=ct.setting_controller] remove ct.setting_controller
 ''')
     put('apply', '\n'.join(f'execute if score @s ct_game matches {game} run return run function cardtable:settings/apply_{game}' for game in GAMES))
     for game, (namespace, title, description, fields) in GAMES.items():
+        # 斗地主的设置页按模式和计分方式控制按钮，保留手写的三个函数。
+        if namespace == 'doudizhu':
+            continue
         commands = []
         for index, field in enumerate(fields, 1):
             key, low, high = field['key'], field['low'], field['high']

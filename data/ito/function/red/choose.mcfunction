@@ -32,5 +32,6 @@ scoreboard players set @a[tag=it.partner] it_done 1
 execute as @e[tag=it.cards,scores={it_used=0}] if score @s it_owner = #actor it_ctx run function ito:game/reveal
 execute as @e[tag=it.cards,scores={it_used=0}] if score @s it_owner = #target it_ctx run function ito:game/reveal
 execute if score #sum it_ctx matches 100 run tellraw @a[tag=it.audience] [{text:"合计100，搭档立即获胜：",color:"gold"},{selector:"@s"},{text:" 与 "},{selector:"@a[tag=it.partner]"}]
+execute if score #sum it_ctx matches 100 run function cardtable:game/result/title {audience:"@a[tag=it.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:[{selector:"@s"},{text:"、"},{selector:"@a[tag=it.partner]"}]}
 execute if score #sum it_ctx matches 100 as @e[tag=it.current,limit=1] at @s run return run function ito:game/finish
 execute as @e[tag=it.current,limit=1] at @s run function ito:red/check

@@ -22,12 +22,14 @@ function cardtable:settings/choice {"field":2,"value":0,"label":"关闭"}
 function cardtable:settings/choice {"field":2,"value":1,"label":"开启"}
 execute unless score @s dd_classic_bid matches 0..2 run scoreboard players set @s dd_classic_bid 0
 scoreboard players operation #setting_current ct_ctx = @s dd_classic_bid
-data modify storage cardtable:settings field3 set value {"text":"经典局叫地主模式：","color":"gray","extra":[]}
+execute if score @s dd_mode matches 1..2 run scoreboard players set #setting_current ct_ctx 0
+data modify storage cardtable:settings field3 set value {"text":"叫地主模式：","color":"gray","extra":[]}
 scoreboard players set #setting_fieldbase ct_ctx 3000
 scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
 function cardtable:settings/choice {"field":3,"value":0,"label":"叫分制"}
-function cardtable:settings/choice {"field":3,"value":1,"label":"叫抢制"}
-function cardtable:settings/choice {"field":3,"value":2,"label":"手速制"}
+execute if score @s dd_mode matches 0 run function cardtable:settings/choice {"field":3,"value":1,"label":"叫抢制"}
+execute if score @s dd_mode matches 0 run function cardtable:settings/choice {"field":3,"value":2,"label":"手速制"}
+execute if score @s dd_mode matches 1..2 run data modify storage cardtable:settings field3.extra append value {text:" [叫抢制] [手速制] ",color:"dark_gray"}
 execute unless score @s dd_counts matches 0..1 run scoreboard players set @s dd_counts 1
 scoreboard players operation #setting_current ct_ctx = @s dd_counts
 data modify storage cardtable:settings field4 set value {"text":"显示剩余牌数：","color":"gray","extra":[]}
@@ -61,8 +63,12 @@ scoreboard players operation #setting_current ct_ctx = @s dd_hide_score
 data modify storage cardtable:settings field8 set value {"text":"8人4v4比分：","color":"gray","extra":[]}
 scoreboard players set #setting_fieldbase ct_ctx 8000
 scoreboard players operation #setting_fieldbase ct_ctx += #setting_base ct_ctx
-function cardtable:settings/choice {"field":8,"value":0,"label":"公开比分"}
-function cardtable:settings/choice {"field":8,"value":1,"label":"隐藏比分并预测"}
+execute if score @s dd_mode matches 2 if score @s ct_capacity matches 8 run function cardtable:settings/choice {"field":8,"value":0,"label":"公开比分"}
+execute if score @s dd_mode matches 2 if score @s ct_capacity matches 8 if score @s dd_scoring matches 0 run function cardtable:settings/choice {"field":8,"value":1,"label":"隐藏比分并预测"}
+execute if score @s dd_mode matches 2 if score @s ct_capacity matches 8 if score @s dd_scoring matches 1 run function cardtable:settings/choice {"field":8,"value":1,"label":"隐藏比分"}
+execute if score @s dd_mode matches 2 if score @s ct_capacity matches 8 if score @s dd_scoring matches 1 run data modify storage cardtable:settings field8.extra append value {text:" 赢副制不预测",color:"dark_gray"}
+execute unless score @s dd_mode matches 2 run data modify storage cardtable:settings field8.extra append value {text:" 仅4v4可设置",color:"dark_gray"}
+execute if score @s dd_mode matches 2 unless score @s ct_capacity matches 8 run data modify storage cardtable:settings field8.extra append value {text:" 仅八座桌可设置",color:"dark_gray"}
 scoreboard players operation #setting_current ct_ctx = @s dd_mode
 data modify storage cardtable:settings field9 set value {"text":"游戏模式：","color":"gray","extra":[]}
 scoreboard players set #setting_fieldbase ct_ctx 9000

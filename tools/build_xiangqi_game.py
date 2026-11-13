@@ -594,7 +594,14 @@ function xiangqi:game/finish
     finish += [f'execute if score @s xq_reason matches {n} run data modify storage xiangqi:runtime result.reason set value "{reason}"' for n,reason in reasons.items()]
     finish += ['function xiangqi:game/result_text with storage xiangqi:runtime result', 'function xiangqi:clock/update', 'function xiangqi:ui/refresh', 'function xiangqi:log {text:"对局结束，五秒后返回大厅"}']
     put('game/finish', finish)
-    put('game/result_text', '$tellraw @a[tag=xq.audience] [{text:"[中国象棋] $(title)",color:"gold",bold:true},{text:"：$(reason)。五秒后返回大厅。",color:"yellow"}]')
+    put('game/result_text', ['$tellraw @a[tag=xq.audience] [{text:"[中国象棋] $(title)",color:"gold",bold:true},{text:"：$(reason)。五秒后返回大厅。",color:"yellow"}]',
+        'execute if score @s xq_result matches 1 if entity @a[tag=xq.audience,scores={xq_side=1}] run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"红方获胜",color:"red",bold:true},subtitle:{selector:"@a[tag=xq.audience,scores={xq_side=1}]"}}',
+        'execute if score @s xq_result matches 1 if score @s xq_bot matches 1 run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"红方获胜",color:"red",bold:true},subtitle:{text:"人机",color:"aqua"}}',
+        'execute if score @s xq_result matches 1 unless entity @a[tag=xq.audience,scores={xq_side=1}] unless score @s xq_bot matches 1 run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"红方获胜",color:"red",bold:true},subtitle:{text:""}}',
+        'execute if score @s xq_result matches 2 if entity @a[tag=xq.audience,scores={xq_side=-1}] run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{selector:"@a[tag=xq.audience,scores={xq_side=-1}]"}}',
+        'execute if score @s xq_result matches 2 if score @s xq_bot matches -1 run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{text:"人机",color:"aqua"}}',
+        'execute if score @s xq_result matches 2 unless entity @a[tag=xq.audience,scores={xq_side=-1}] unless score @s xq_bot matches -1 run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"黑方获胜",color:"gray",bold:true},subtitle:{text:""}}',
+        'execute if score @s xq_result matches 3 run function cardtable:game/result/title {audience:"@a[tag=xq.audience]",title:{text:"和棋",color:"yellow",bold:true},subtitle:{text:""}}'])
     put('game/result_tick', '''
 scoreboard players remove @s xq_timer 1
 execute if score @s xq_timer matches ..0 run function xiangqi:game/cleanup

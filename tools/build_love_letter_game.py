@@ -310,12 +310,15 @@ execute if score @s ll_alive matches 0 run tellraw @a[tag=ll.audience] [{nbt:"da
 execute if score @s ll_state matches 4 run return 0
 scoreboard players set @s ll_state 4
 scoreboard players set @s ll_timer 120
+data modify storage cardtable:result names set value {text:"",extra:[]}
 execute as @e[tag=ll.board,scores={ll_matchwin=1}] run function love_letter:game/match_winner
+function cardtable:game/result/title {audience:"@a[tag=ll.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{nbt:"names",storage:"cardtable:result",interpret:true}}
 function love_letter:sound/end
 function love_letter:log {text:"情书整场结束，所有达到目标者共同获胜"}
 ''')
     put('game/match_winner', '''
 tellraw @a[tag=ll.audience] [{text:"[情书] 本场胜者：",color:"gold"},{nbt:"data.ll_name",entity:"@s",interpret:true,color:"aqua"},{text:" · "},{score:{name:"@s",objective:"ll_points"}},{text:" 好感。"}]
+function cardtable:game/result/append_name {path:"data.ll_name"}
 scoreboard players operation #victory_seat ll_ctx = @s ll_seat
 execute as @a[tag=ll.audience] if score @s ll_seat = #victory_seat ll_ctx at @s run function love_letter:game/firework
 ''')
