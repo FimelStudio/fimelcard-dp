@@ -1,5 +1,8 @@
 # 具体游戏已完成清理后，由通用层恢复大厅界面和可离座状态
 function cardtable:log {text:"游戏清理完成，返回牌桌大厅"}
+# BEGIN public session end
+function cardtable:session/end
+# END public session end
 scoreboard players set @s ct_state 0
 scoreboard players set @s ct_start 0
 scoreboard players set @s ct_votes 0

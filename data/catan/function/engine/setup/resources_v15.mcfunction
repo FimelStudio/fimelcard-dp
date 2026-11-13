@@ -1,0 +1,5 @@
+execute if score #ht6 ca_ctx matches 0 if score #bank0 ca_ctx matches 1.. run function catan:engine/setup/give {resource:0,hex:6}
+execute if score #ht6 ca_ctx matches 1 if score #bank1 ca_ctx matches 1.. run function catan:engine/setup/give {resource:1,hex:6}
+execute if score #ht6 ca_ctx matches 2 if score #bank2 ca_ctx matches 1.. run function catan:engine/setup/give {resource:2,hex:6}
+execute if score #ht6 ca_ctx matches 3 if score #bank3 ca_ctx matches 1.. run function catan:engine/setup/give {resource:3,hex:6}
+execute if score #ht6 ca_ctx matches 4 if score #bank4 ca_ctx matches 1.. run function catan:engine/setup/give {resource:4,hex:6}

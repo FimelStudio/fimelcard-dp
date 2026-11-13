@@ -1,0 +1,1 @@
+tellraw @a[tag=dd.audience] [{text:"红队累计 ",color:"red",bold:true},{score:{name:"@s",objective:"dd_team_one"},color:"red"},{text:"　蓝队累计 ",color:"blue",bold:true},{score:{name:"@s",objective:"dd_team_two"},color:"blue"}]

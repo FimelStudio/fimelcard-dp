@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 当前执行者由物品实体的origin关系解析得到，lh.dropped_owned已精确标记该玩家丢出的牌
 scoreboard players set @s lh_drop_card 0
 scoreboard players set @s lh_drop_retry 0

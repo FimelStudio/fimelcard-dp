@@ -1,0 +1,10 @@
+execute if score @s dd_id matches 1.. run tellraw @s {text:"[斗地主] 你在甲桌。",color:"yellow"}
+execute if score @s dd_id matches ..-1 run tellraw @s {text:"[斗地主] 你在乙桌。",color:"yellow"}
+execute if score @s dd_seat matches 1 run tellraw @s {text:"你的座位是 红1。",color:"red"}
+execute if score @s dd_seat matches 2 run tellraw @s {text:"你的座位是 红3。",color:"red"}
+execute if score @s dd_seat matches 3 run tellraw @s {text:"你的座位是 蓝2。",color:"blue"}
+execute if score @s dd_seat matches 4 run tellraw @s {text:"你的座位是 蓝4。",color:"blue"}
+execute if score @s dd_seat matches 5 run tellraw @s {text:"你的座位是 红2。",color:"red"}
+execute if score @s dd_seat matches 6 run tellraw @s {text:"你的座位是 红4。",color:"red"}
+execute if score @s dd_seat matches 7 run tellraw @s {text:"你的座位是 蓝1。",color:"blue"}
+execute if score @s dd_seat matches 8 run tellraw @s {text:"你的座位是 蓝3。",color:"blue"}

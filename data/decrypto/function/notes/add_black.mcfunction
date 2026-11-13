@@ -11,3 +11,18 @@ data modify storage decrypto:input name set from storage decrypto:round black.3
 execute store result storage decrypto:wrap args.digit int 1 run scoreboard players get @s dc_b3
 data modify storage decrypto:wrap args.side set value "white"
 function decrypto:notes/record with storage decrypto:wrap args
+
+execute store result storage decrypto:sync digit int 1 run scoreboard players get @s dc_b1
+data modify storage decrypto:sync side set value "black"
+data modify storage decrypto:sync clue set from storage decrypto:round black.1
+function decrypto:sync/archive with storage decrypto:sync
+
+execute store result storage decrypto:sync digit int 1 run scoreboard players get @s dc_b2
+data modify storage decrypto:sync side set value "black"
+data modify storage decrypto:sync clue set from storage decrypto:round black.2
+function decrypto:sync/archive with storage decrypto:sync
+
+execute store result storage decrypto:sync digit int 1 run scoreboard players get @s dc_b3
+data modify storage decrypto:sync side set value "black"
+data modify storage decrypto:sync clue set from storage decrypto:round black.3
+function decrypto:sync/archive with storage decrypto:sync

@@ -1,0 +1,18 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
+tag @a[tag=ca.actor] remove ca.actor
+tag @e[tag=ca.current] remove ca.current
+execute unless entity @s[tag=ct.player,tag=ca.player] run return 0
+execute unless score @s ca_table = @s ct_id run return 0
+scoreboard players operation #input_table ca_ctx = @s ca_table
+execute as @e[type=minecraft:marker,tag=ct.controller,tag=ca.controller,scores={ct_game=21,ct_state=1}] if score @s ct_id = #input_table ca_ctx run tag @s add ca.current
+execute unless entity @e[tag=ca.current,limit=1] run return 0
+tag @s add ca.actor
+execute as @e[tag=ca.current,limit=1] at @s run function catan:system/context
+# direct-v2
+execute if score @s ct_paused matches 1 run tag @s remove ca.actor
+execute if entity @e[tag=ca.current,scores={ct_paused=1},limit=1] run tag @s remove ca.actor
+execute if entity @s[nbt={Health:0.0f}] run tag @s remove ca.actor

@@ -12,6 +12,9 @@ tag @e[tag=ct.seat_candidate,tag=ct.seat_occupied,limit=1] add ct.seat_keep
 execute unless entity @e[tag=ct.seat_keep] run tag @e[tag=ct.seat_candidate,limit=1] add ct.seat_keep
 # 若罕见地有多个有人乘坐的副本，先保留它们，待离座后再收回。
 kill @e[type=minecraft:interaction,tag=ct.seat_candidate,tag=!ct.seat_keep,tag=!ct.seat_occupied]
+execute if entity @s[tag=ct.layout_busy] as @e[tag=ct.seat_keep] run tp @s ~ ~ ~
+# 离线旧载具可能晚于缩椅回载；只校正无人且偏离当前锚点的副本。
+execute as @e[tag=ct.seat_keep,tag=!ct.seat_occupied] unless entity @s[distance=..0.001] run tp @s ~ ~ ~
 tag @e[tag=ct.seat_candidate] remove ct.seat_candidate
 tag @e[tag=ct.seat_occupied] remove ct.seat_occupied
 tag @e[tag=ct.seat_keep] remove ct.seat_keep

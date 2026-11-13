@@ -1,4 +1,15 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
+scoreboard objectives add dc_sync dummy
 scoreboard objectives add dc_ctx dummy
+scoreboard objectives add dc_gp dummy
+scoreboard objectives add dc_gr dummy
+scoreboard objectives add dc_g1 dummy
+scoreboard objectives add dc_g2 dummy
+scoreboard objectives add dc_g3 dummy
+scoreboard objectives add dc_gserial dummy
+scoreboard objectives add dc_hint dummy
 execute unless score #version dc_ctx matches 1.. run function decrypto:system/install
 execute if score #version dc_ctx matches 1 run function decrypto:system/upgrade_v2
 execute if score #version dc_ctx matches 2 run function decrypto:system/upgrade_v3
@@ -12,6 +23,6 @@ execute if score #version dc_ctx matches 9 run function decrypto:system/upgrade_
 execute if score #version dc_ctx matches 10 run function decrypto:system/upgrade_v11
 execute if score #version dc_ctx matches 11 run function decrypto:system/upgrade_v12
 execute if score #version dc_ctx matches 12 run function decrypto:system/upgrade_v13
+execute if score #version dc_ctx matches 13 run function decrypto:system/upgrade_v14
 function decrypto:title/ensure_library
-tellraw @a[tag=dc.player] [{text:'[谍报风云] ',color:'aqua'},{text:'数据包已重新加载，当前对局已保留。',color:'yellow'}]
 execute as @e[type=minecraft:marker,tag=dc.controller] at @s run function decrypto:game/resume

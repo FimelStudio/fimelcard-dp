@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 当前执行者是提交选择的玩家
 scoreboard players operation #swap_choice lh_ctx = @s lh_swap_pick
 scoreboard players set @s lh_swap_pick 0

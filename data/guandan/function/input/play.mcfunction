@@ -1,0 +1,15 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
+execute unless entity @e[tag=gd.current,scores={gd_state=3,gd_anim=0},limit=1] run return run function guandan:input/invalid
+execute unless score @s gd_seat = @e[tag=gd.current,limit=1] gd_turn run return run function guandan:input/invalid
+execute if score @e[tag=gd.current,limit=1] gd_auto matches 1..100 run return run function guandan:ui/open
+scoreboard players set #ok gd_ctx 0
+scoreboard players set #options gd_ctx 0
+execute as @e[tag=gd.current,limit=1] at @s run function guandan:game/play
+execute if score #ok gd_ctx matches 1 run return run dialog clear @s
+execute if score #options gd_ctx matches 2.. run return run function guandan:ui/interpret
+function guandan:input/invalid
+function guandan:ui/open

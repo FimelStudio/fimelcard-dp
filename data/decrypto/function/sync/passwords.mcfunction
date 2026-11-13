@@ -1,0 +1,2 @@
+tellraw @a[tag=dc.audience,scores={dc_team=1,dc_encoder=1}] [{"text": "本轮密码：", "color": "gold"}, {"score": {"name": "@s", "objective": "dc_w1"}}, {"text": " "}, {"score": {"name": "@s", "objective": "dc_w2"}}, {"text": " "}, {"score": {"name": "@s", "objective": "dc_w3"}}, {"text": " "}]
+tellraw @a[tag=dc.audience,scores={dc_team=2,dc_encoder=1}] [{"text": "本轮密码：", "color": "gold"}, {"score": {"name": "@s", "objective": "dc_b1"}}, {"text": " "}, {"score": {"name": "@s", "objective": "dc_b2"}}, {"text": " "}, {"score": {"name": "@s", "objective": "dc_b3"}}, {"text": " "}]

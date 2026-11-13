@@ -1,0 +1,16 @@
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 0 if score #winning ac_ctx matches 0 positioned ~0 ~0.32 ~2 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 0 if score #winning ac_ctx matches 1 positioned ~-2 ~0.32 ~0 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 0 if score #winning ac_ctx matches 2 positioned ~0 ~0.32 ~-2 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 0 if score #winning ac_ctx matches 3 positioned ~2 ~0.32 ~0 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 1 if score #winning ac_ctx matches 0 positioned ~-2 ~0.32 ~0 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 1 if score #winning ac_ctx matches 1 positioned ~0 ~0.32 ~-2 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 1 if score #winning ac_ctx matches 2 positioned ~2 ~0.32 ~0 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 4 if score @s ac_orient matches 1 if score #winning ac_ctx matches 3 positioned ~0 ~0.32 ~2 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 0 if score #winning ac_ctx matches 0 positioned ~1 ~0.32 ~2.5 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 0 if score #winning ac_ctx matches 1 positioned ~-2.5 ~0.32 ~1 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 0 if score #winning ac_ctx matches 2 positioned ~-1 ~0.32 ~-2.5 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 0 if score #winning ac_ctx matches 3 positioned ~2.5 ~0.32 ~-1 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 1 if score #winning ac_ctx matches 0 positioned ~-2.5 ~0.32 ~1 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 1 if score #winning ac_ctx matches 1 positioned ~-1 ~0.32 ~-2.5 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 1 if score #winning ac_ctx matches 2 positioned ~2.5 ~0.32 ~-1 run function aeroplane_chess:game/firework_player
+execute if score @s ct_capacity matches 8 if score @s ac_orient matches 1 if score #winning ac_ctx matches 3 positioned ~1 ~0.32 ~2.5 run function aeroplane_chess:game/firework_player

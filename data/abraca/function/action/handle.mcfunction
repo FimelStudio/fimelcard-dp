@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute unless entity @s[tag=ab.player,tag=ab.turn] run return 0
 # 施法和结束都只接受合法掉落，旧聊天链接不再生效。
 execute unless entity @s[tag=ab.q_input] run scoreboard players set @s ab_action 0

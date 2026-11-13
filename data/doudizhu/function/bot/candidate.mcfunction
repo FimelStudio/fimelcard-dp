@@ -1,3 +1,5 @@
+$execute if score #bot_probe dd_ctx matches 2 store result score #hint_worth dd_ctx run function doudizhu:hint/candidate_can_improve {low:$(low),high:$(high),copies:$(copies),wings:$(wings),unit:$(unit)}
+execute if score #bot_probe dd_ctx matches 2 if score #hint_worth dd_ctx matches 0 run return 0
 scoreboard players set @e[tag=dd.hand] dd_selected 0
 $scoreboard players set #wing_need dd_ctx $(wings)
 $scoreboard players set #wing_unit dd_ctx $(unit)

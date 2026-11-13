@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 execute if score #spell ab_ctx matches 1 run function abraca:action/fail_dragon
 # 古代巨龙反噬若使玩家倒地，会在子函数内直接开始新局；牌库重建会复用#spell，必须先按游戏状态截断旧流程。
 execute unless score @s ab_state matches 2 run return 0

@@ -1,0 +1,1 @@
+$data modify storage fimel_title:io text.extra set value [{"text":" · "},{"nbt":"data.magical_athlete.p$(turn).name","entity":"@e[tag=ma.current,limit=1]","interpret":true},{"text":" · 第$(round)/4场","color":"gold"}]

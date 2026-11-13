@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 scoreboard players operation #action bw_ctx = @s bw_action
 scoreboard players set @s bw_action 0
 execute unless entity @s[tag=bw.player,tag=bw.smart] run return fail

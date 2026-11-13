@@ -1,0 +1,3 @@
+$execute if score @s hb_reason matches 3 run return run function cardtable:game/result/title {audience:"@a[tag=hb.audience]",title:$(title),subtitle:{selector:"@a[tag=hb.audience]",separator:{text:"、"}}}
+$execute if score @s hb_storm matches 0 run function cardtable:game/result/title {audience:"@a[tag=hb.audience]",title:$(title),subtitle:[{text:"最终得分 "},{score:{name:"@s",objective:"hb_score"},color:"gold"},{text:" / 25"}]}
+$execute if score @s hb_storm matches 1 run function cardtable:game/result/title {audience:"@a[tag=hb.audience]",title:$(title),subtitle:[{text:"最终得分 "},{score:{name:"@s",objective:"hb_score"},color:"gold"},{text:" / 30"}]}

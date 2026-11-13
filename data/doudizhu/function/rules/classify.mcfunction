@@ -123,6 +123,8 @@ execute if score #n dd_ctx matches 3 if score #r17 dd_ctx matches 3 run function
 execute if score #n dd_ctx matches 4 if score #r17 dd_ctx matches 3 run function doudizhu:rules/accept {type:4,high:17}
 execute if score #n dd_ctx matches 4 if score #r17 dd_ctx matches 4 run function doudizhu:rules/accept {type:13,high:17}
 execute if score #n dd_ctx matches 2 if score #r16 dd_ctx matches 1 if score #r17 dd_ctx matches 1 run function doudizhu:rules/accept {type:14,high:17}
+# 四张及以下的牌型已经检查完毕。
+execute if score #n dd_ctx matches ..4 run return 0
 scoreboard players set #pairs dd_ctx 0
 execute if score #r3 dd_ctx matches 2 run scoreboard players add #pairs dd_ctx 1
 execute if score #r4 dd_ctx matches 2 run scoreboard players add #pairs dd_ctx 1
@@ -184,6 +186,8 @@ execute if score #n dd_ctx matches 8 if score #r16 dd_ctx matches 4 if score #pa
 execute if score #n dd_ctx matches 5 if score #r17 dd_ctx matches 3 if score #pairs dd_ctx matches 1 run function doudizhu:rules/accept {type:5,high:17}
 execute if score #n dd_ctx matches 6 if score #r17 dd_ctx matches 4 run function doudizhu:rules/accept {type:11,high:17}
 execute if score #n dd_ctx matches 8 if score #r17 dd_ctx matches 4 if score #pairs dd_ctx matches 2 run function doudizhu:rules/accept {type:12,high:17}
+# 三带二与四带二不会同时组成顺子、连对或飞机。
+execute if score #type dd_ctx matches 1.. run return 0
 execute if score #n dd_ctx matches 5 if score #r3 dd_ctx matches 1 if score #r4 dd_ctx matches 1 if score #r5 dd_ctx matches 1 if score #r6 dd_ctx matches 1 if score #r7 dd_ctx matches 1 run function doudizhu:rules/accept {type:6,high:7}
 execute if score #n dd_ctx matches 5 if score #r4 dd_ctx matches 1 if score #r5 dd_ctx matches 1 if score #r6 dd_ctx matches 1 if score #r7 dd_ctx matches 1 if score #r8 dd_ctx matches 1 run function doudizhu:rules/accept {type:6,high:8}
 execute if score #n dd_ctx matches 5 if score #r5 dd_ctx matches 1 if score #r6 dd_ctx matches 1 if score #r7 dd_ctx matches 1 if score #r8 dd_ctx matches 1 if score #r9 dd_ctx matches 1 run function doudizhu:rules/accept {type:6,high:9}
@@ -272,6 +276,8 @@ execute if score #n dd_ctx matches 18 if score #r6 dd_ctx matches 2 if score #r7
 execute if score #n dd_ctx matches 20 if score #r3 dd_ctx matches 2 if score #r4 dd_ctx matches 2 if score #r5 dd_ctx matches 2 if score #r6 dd_ctx matches 2 if score #r7 dd_ctx matches 2 if score #r8 dd_ctx matches 2 if score #r9 dd_ctx matches 2 if score #r10 dd_ctx matches 2 if score #r11 dd_ctx matches 2 if score #r12 dd_ctx matches 2 run function doudizhu:rules/accept {type:7,high:12}
 execute if score #n dd_ctx matches 20 if score #r4 dd_ctx matches 2 if score #r5 dd_ctx matches 2 if score #r6 dd_ctx matches 2 if score #r7 dd_ctx matches 2 if score #r8 dd_ctx matches 2 if score #r9 dd_ctx matches 2 if score #r10 dd_ctx matches 2 if score #r11 dd_ctx matches 2 if score #r12 dd_ctx matches 2 if score #r13 dd_ctx matches 2 run function doudizhu:rules/accept {type:7,high:13}
 execute if score #n dd_ctx matches 20 if score #r5 dd_ctx matches 2 if score #r6 dd_ctx matches 2 if score #r7 dd_ctx matches 2 if score #r8 dd_ctx matches 2 if score #r9 dd_ctx matches 2 if score #r10 dd_ctx matches 2 if score #r11 dd_ctx matches 2 if score #r12 dd_ctx matches 2 if score #r13 dd_ctx matches 2 if score #r14 dd_ctx matches 2 run function doudizhu:rules/accept {type:7,high:14}
+# 顺子、连对没有飞机所需的三张同点数牌。
+execute if score #type dd_ctx matches 1.. run return 0
 execute if score #n dd_ctx matches 6 if score #r3 dd_ctx matches 3 if score #r4 dd_ctx matches 3 run function doudizhu:rules/accept {type:8,high:4}
 execute if score #n dd_ctx matches 8 if score #r3 dd_ctx matches 3 if score #r4 dd_ctx matches 3 run function doudizhu:rules/plane_single {start:3,end:4,high:4}
 execute if score #n dd_ctx matches 10 if score #pairs dd_ctx matches 2 if score #r3 dd_ctx matches 3 if score #r4 dd_ctx matches 3 run function doudizhu:rules/accept {type:10,high:4}

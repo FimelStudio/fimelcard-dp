@@ -1,0 +1,1 @@
+$function splendor:sound/$(event)

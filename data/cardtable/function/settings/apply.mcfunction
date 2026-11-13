@@ -1,0 +1,12 @@
+execute if score @s ct_game matches 1 run return run function cardtable:settings/apply_1
+execute if score @s ct_game matches 2 run return run function cardtable:settings/apply_2
+execute if score @s ct_game matches 3 run return run function cardtable:settings/apply_3
+execute if score @s ct_game matches 4 run return run function cardtable:settings/apply_4
+execute if score @s ct_game matches 5 run return run function cardtable:settings/apply_5
+execute if score @s ct_game matches 6 run return run function cardtable:settings/apply_6
+execute if score @s ct_game matches 7 run return run function cardtable:settings/apply_7
+execute if score @s ct_game matches 8 run return run function cardtable:settings/apply_8
+execute if score @s ct_game matches 9 run return run function cardtable:settings/apply_9
+execute if score @s ct_game matches 10 run return run function cardtable:settings/apply_10
+execute if score @s ct_game matches 16 run return run function cardtable:settings/apply_16
+execute if score @s ct_game matches 19 run return run function cardtable:settings/apply_19

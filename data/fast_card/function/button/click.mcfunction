@@ -1,5 +1,14 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 # 进度奖励函数会立即撤销自身，因此下一次点击仍可触发
 advancement revoke @s only fast_card:button_click
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 
 # 非参赛玩家点击不会产生游戏效果
 execute unless entity @s[tag=fc.player] run return fail

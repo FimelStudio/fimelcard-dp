@@ -1,0 +1,15 @@
+execute if data storage magical_athlete:engine choice{kind:"cheerleader"} run return run function magical_athlete:engine/choices/cheerleader with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"hypnotist"} run return run function magical_athlete:engine/choices/hypnotist with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"flip"} run return run function magical_athlete:engine/choices/flip with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"genius"} run return run function magical_athlete:engine/choices/genius with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"legs"} run return run function magical_athlete:engine/choices/legs with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"mastermind"} run return run function magical_athlete:engine/choices/mastermind with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"thirdwheel"} run return run function magical_athlete:engine/choices/thirdwheel with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"egg"} run return run function magical_athlete:engine/choices/egg with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"twin"} run return run function magical_athlete:engine/choices/twin with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"alchemist"} run return run function magical_athlete:engine/choices/alchemist with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"rocket"} run return run function magical_athlete:engine/choices/rocket with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"reroll"} run return run function magical_athlete:engine/choices/reroll with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"duel"} run return run function magical_athlete:engine/choices/duel with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"suckerfish"} run return run function magical_athlete:engine/choices/suckerfish with storage magical_athlete:engine choice
+execute if data storage magical_athlete:engine choice{kind:"copycat"} run return run function magical_athlete:engine/choices/copycat with storage magical_athlete:engine choice

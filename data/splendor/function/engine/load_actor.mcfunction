@@ -1,0 +1,14 @@
+$execute store result score #token0 sp_ctx run data get storage splendor:engine state.p$(actor).tokens[0]
+$execute store result score #token1 sp_ctx run data get storage splendor:engine state.p$(actor).tokens[1]
+$execute store result score #token2 sp_ctx run data get storage splendor:engine state.p$(actor).tokens[2]
+$execute store result score #token3 sp_ctx run data get storage splendor:engine state.p$(actor).tokens[3]
+$execute store result score #token4 sp_ctx run data get storage splendor:engine state.p$(actor).tokens[4]
+$execute store result score #token5 sp_ctx run data get storage splendor:engine state.p$(actor).tokens[5]
+$execute store result score #bonus0 sp_ctx run data get storage splendor:engine state.p$(actor).bonus[0]
+$execute store result score #bonus1 sp_ctx run data get storage splendor:engine state.p$(actor).bonus[1]
+$execute store result score #bonus2 sp_ctx run data get storage splendor:engine state.p$(actor).bonus[2]
+$execute store result score #bonus3 sp_ctx run data get storage splendor:engine state.p$(actor).bonus[3]
+$execute store result score #bonus4 sp_ctx run data get storage splendor:engine state.p$(actor).bonus[4]
+$execute store result score #vp sp_ctx run data get storage splendor:engine state.p$(actor).vp
+$execute store result score #reserved sp_ctx run data get storage splendor:engine state.p$(actor).reserve
+$execute store result score #bought sp_ctx run data get storage splendor:engine state.p$(actor).cards

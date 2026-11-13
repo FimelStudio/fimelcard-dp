@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 只根据掉落物的origin找到真正丢出者，不选最近玩家。
 scoreboard players set #drop_spell ab_ctx 0
 scoreboard players set #drop_table ab_ctx 0

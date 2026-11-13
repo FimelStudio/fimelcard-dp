@@ -1,9 +1,11 @@
 function decrypto:player/audience
 scoreboard players add @s dc_round 1
 execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run tellraw @a[tag=dc.audience] [{text:'[谍报风云] ',color:'aqua'},{text:'五轮结束，合作队获胜！',color:'gold'}]
+execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run function cardtable:game/result/title {audience:"@a[tag=dc.audience]",title:{text:"合作队获胜",color:"green",bold:true},subtitle:{selector:"@a[tag=dc.audience,scores={dc_team=1}]",separator:{text:"、"}}}
 execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run function decrypto:game/finish
 execute if score @s dc_mode matches 3 if score @s dc_round matches 6.. run return 0
 execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run tellraw @a[tag=dc.audience] [{text:'[谍报风云] ',color:'aqua'},{text:'已完成设定的 ',color:'yellow'},{score:{name:'@s',objective:'dc_round_limit'},color:'gold'},{text:' 轮，回合数耗尽，本局结束。',color:'yellow'}]
+execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run function cardtable:game/result/title {audience:"@a[tag=dc.audience]",title:{text:"回合数耗尽",color:"yellow",bold:true},subtitle:{text:"双方未达成胜利条件"}}
 execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run function decrypto:game/finish
 execute if score @s dc_mode matches 4 if score @s dc_round > @s dc_round_limit run return 0
 # 整局沿用开局词条和累计电报记录；回合间只生成新数字密码。

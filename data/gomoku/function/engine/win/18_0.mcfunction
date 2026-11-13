@@ -1,0 +1,19 @@
+execute unless data entity @s data.gomoku{win:[18]} run data modify entity @s data.gomoku.win append value 18
+execute if score #left gm_ctx matches 1.. unless data entity @s data.gomoku{win:[17]} run data modify entity @s data.gomoku.win append value 17
+execute if score #left gm_ctx matches 2.. unless data entity @s data.gomoku{win:[16]} run data modify entity @s data.gomoku.win append value 16
+execute if score #left gm_ctx matches 3.. unless data entity @s data.gomoku{win:[15]} run data modify entity @s data.gomoku.win append value 15
+execute if score #left gm_ctx matches 4.. unless data entity @s data.gomoku{win:[14]} run data modify entity @s data.gomoku.win append value 14
+execute if score #left gm_ctx matches 5.. unless data entity @s data.gomoku{win:[13]} run data modify entity @s data.gomoku.win append value 13
+execute if score #left gm_ctx matches 6.. unless data entity @s data.gomoku{win:[12]} run data modify entity @s data.gomoku.win append value 12
+execute if score #left gm_ctx matches 7.. unless data entity @s data.gomoku{win:[11]} run data modify entity @s data.gomoku.win append value 11
+execute if score #left gm_ctx matches 8.. unless data entity @s data.gomoku{win:[10]} run data modify entity @s data.gomoku.win append value 10
+execute if score #left gm_ctx matches 9.. unless data entity @s data.gomoku{win:[9]} run data modify entity @s data.gomoku.win append value 9
+execute if score #left gm_ctx matches 10.. unless data entity @s data.gomoku{win:[8]} run data modify entity @s data.gomoku.win append value 8
+execute if score #left gm_ctx matches 11.. unless data entity @s data.gomoku{win:[7]} run data modify entity @s data.gomoku.win append value 7
+execute if score #left gm_ctx matches 12.. unless data entity @s data.gomoku{win:[6]} run data modify entity @s data.gomoku.win append value 6
+execute if score #left gm_ctx matches 13.. unless data entity @s data.gomoku{win:[5]} run data modify entity @s data.gomoku.win append value 5
+execute if score #left gm_ctx matches 14.. unless data entity @s data.gomoku{win:[4]} run data modify entity @s data.gomoku.win append value 4
+execute if score #left gm_ctx matches 15.. unless data entity @s data.gomoku{win:[3]} run data modify entity @s data.gomoku.win append value 3
+execute if score #left gm_ctx matches 16.. unless data entity @s data.gomoku{win:[2]} run data modify entity @s data.gomoku.win append value 2
+execute if score #left gm_ctx matches 17.. unless data entity @s data.gomoku{win:[1]} run data modify entity @s data.gomoku.win append value 1
+execute if score #left gm_ctx matches 18.. unless data entity @s data.gomoku{win:[0]} run data modify entity @s data.gomoku.win append value 0

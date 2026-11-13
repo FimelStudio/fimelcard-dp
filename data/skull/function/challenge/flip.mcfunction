@@ -2,6 +2,11 @@ $execute unless data entity @s data.skull.seats.s$(seat).stack[-1] run return 0
 $data modify storage skull:io revealed set from entity @s data.skull.seats.s$(seat).stack[-1]
 $data remove entity @s data.skull.seats.s$(seat).stack[-1]
 function skull:player/audience
+execute store result storage skull:io visual.seat int 1 run scoreboard players get @s sk_source
+data modify storage skull:io visual.slot set from storage skull:io revealed.slot
+data modify storage skull:io visual.model set from storage skull:io revealed.model
+function skull:visual/reveal with storage skull:io visual
+function skull:visual/refresh
 scoreboard players operation #source sk_ctx = @s sk_source
 execute as @a[tag=sk.audience] if score @s sk_seat = #source sk_ctx run tellraw @a[tag=sk.audience] [{text:"翻开 ",color:"yellow"},{selector:"@s"},{text:" 的堆顶："},{"nbt":"revealed.name","storage":"skull:io"}]
 execute if data storage skull:io revealed{type:1} run return run function skull:challenge/fail

@@ -9,5 +9,18 @@ execute if score @s ct_game matches 7 run return run function critical_point:rul
 execute if score @s ct_game matches 8 run return run function wenfei:rules/show
 execute if score @s ct_game matches 9 run return run function skull:rules/show
 execute if score @s ct_game matches 10 run return run function doudizhu:rules/show
+execute if score @s ct_game matches 11 run return run function uno:rules/show
 
+execute if score @s ct_game matches 12 run return run function chess:rules/show
+execute if score @s ct_game matches 13 run return run function xiangqi:rules/show
+execute if score @s ct_game matches 14 run return run function gomoku:rules/show
+execute if score @s ct_game matches 15 run return run function aeroplane_chess:rules/show
+execute if score @s ct_game matches 16 run return run function avalon:rules/show
+execute if score @s ct_game matches 17 run return run function love_letter:rules/show
+execute if score @s ct_game matches 18 run return run function guandan:rules/show
+execute if score @s ct_game matches 20 run return run function weiqi:rules/show
+execute if score @s ct_game matches 19 run return run function ito:rules/show
+execute if score @s ct_game matches 21 run return run function catan:rules/show
+execute if score @s ct_game matches 22 run return run function splendor:rules/show
+execute if score @s ct_game matches 23 run return run function magical_athlete:rules/show
 tellraw @a[tag=ct.rules_actor,limit=1] [{text:'[牌桌] ',color:'dark_aqua'},{text:'当前游戏没有提供规则介绍。',color:'yellow'}]

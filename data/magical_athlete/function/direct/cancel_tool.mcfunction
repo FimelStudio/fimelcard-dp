@@ -1,0 +1,2 @@
+execute if items entity @s hotbar.8 * unless items entity @s hotbar.8 *[minecraft:custom_data~{magical_athlete:{tool:1b}}] run return run function magical_athlete:direct/space_notice
+$item replace entity @s hotbar.8 with minecraft:paper[minecraft:item_model="minecraft:barrier",minecraft:custom_name={text:"取消选中〔Q〕",color:"red",italic:false},minecraft:custom_data={magical_athlete:{tool:1b,choice:1b,code:9998,epoch:$(epoch),table:$(table)}}]

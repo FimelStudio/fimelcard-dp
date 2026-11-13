@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # #restore_option来自本次trigger，只有当前桌、当前弃牌堆且序号仍匹配的标记有效
 tag @e[tag=hb.restore_selected] remove hb.restore_selected
 execute as @e[type=minecraft:marker,tag=hb.discard] if score @s hb_id = #ctx_id hb_ctx if score @s hb_option = #restore_option hb_ctx run tag @s add hb.restore_selected

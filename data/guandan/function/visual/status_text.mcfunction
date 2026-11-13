@@ -1,0 +1,1 @@
+$data modify entity @s text set value {text:"掼蛋 · 打$(level)",color:"gold",extra:[{text:"\n队0 $(level0)级 / 队1 $(level1)级"},{text:"\n轮到 "},{score:{name:"@e[tag=gd.current,limit=1]",objective:"gd_turn"}},{text:" 号位 · 逆时针"}]}

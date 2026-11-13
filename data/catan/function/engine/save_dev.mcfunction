@@ -1,0 +1,10 @@
+$execute store result storage catan:engine state.p$(actor).dev[0] int 1 run scoreboard players get #dev0 ca_ctx
+$execute store result storage catan:engine state.p$(actor).dev[1] int 1 run scoreboard players get #dev1 ca_ctx
+$execute store result storage catan:engine state.p$(actor).dev[2] int 1 run scoreboard players get #dev2 ca_ctx
+$execute store result storage catan:engine state.p$(actor).dev[3] int 1 run scoreboard players get #dev3 ca_ctx
+$execute store result storage catan:engine state.p$(actor).dev[4] int 1 run scoreboard players get #dev4 ca_ctx
+$execute store result storage catan:engine state.p$(actor).fresh[0] int 1 run scoreboard players get #fresh0 ca_ctx
+$execute store result storage catan:engine state.p$(actor).fresh[1] int 1 run scoreboard players get #fresh1 ca_ctx
+$execute store result storage catan:engine state.p$(actor).fresh[2] int 1 run scoreboard players get #fresh2 ca_ctx
+$execute store result storage catan:engine state.p$(actor).fresh[3] int 1 run scoreboard players get #fresh3 ca_ctx
+$execute store result storage catan:engine state.p$(actor).fresh[4] int 1 run scoreboard players get #fresh4 ca_ctx

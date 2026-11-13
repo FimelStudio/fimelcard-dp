@@ -1,0 +1,12 @@
+execute if data entity @s data.magical_athlete.pool[0] run function magical_athlete:direct/pool_card {index:0,x:-0.8400000000000001,z:-0.65}
+execute if data entity @s data.magical_athlete.pool[1] run function magical_athlete:direct/pool_card {index:1,x:-0.28,z:-0.65}
+execute if data entity @s data.magical_athlete.pool[2] run function magical_athlete:direct/pool_card {index:2,x:0.28,z:-0.65}
+execute if data entity @s data.magical_athlete.pool[3] run function magical_athlete:direct/pool_card {index:3,x:0.8400000000000001,z:-0.65}
+execute if data entity @s data.magical_athlete.pool[4] run function magical_athlete:direct/pool_card {index:4,x:-0.8400000000000001,z:0.0}
+execute if data entity @s data.magical_athlete.pool[5] run function magical_athlete:direct/pool_card {index:5,x:-0.28,z:0.0}
+execute if data entity @s data.magical_athlete.pool[6] run function magical_athlete:direct/pool_card {index:6,x:0.28,z:0.0}
+execute if data entity @s data.magical_athlete.pool[7] run function magical_athlete:direct/pool_card {index:7,x:0.8400000000000001,z:0.0}
+execute if data entity @s data.magical_athlete.pool[8] run function magical_athlete:direct/pool_card {index:8,x:-0.8400000000000001,z:0.65}
+execute if data entity @s data.magical_athlete.pool[9] run function magical_athlete:direct/pool_card {index:9,x:-0.28,z:0.65}
+execute if data entity @s data.magical_athlete.pool[10] run function magical_athlete:direct/pool_card {index:10,x:0.28,z:0.65}
+execute if data entity @s data.magical_athlete.pool[11] run function magical_athlete:direct/pool_card {index:11,x:0.8400000000000001,z:0.65}

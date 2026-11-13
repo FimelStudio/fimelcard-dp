@@ -1,0 +1,16 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
+execute if entity @e[tag=ca.current,scores={ca_state=1},limit=1] run data modify storage catan:ui phase set value "初始布置：放置村庄"
+execute if entity @e[tag=ca.current,scores={ca_state=2},limit=1] run data modify storage catan:ui phase set value "初始布置：放置相邻道路"
+execute if entity @e[tag=ca.current,scores={ca_state=3},limit=1] run data modify storage catan:ui phase set value "投掷双骰"
+execute if entity @e[tag=ca.current,scores={ca_state=4},limit=1] run data modify storage catan:ui phase set value "建造、交易或使用开发牌"
+execute if entity @e[tag=ca.current,scores={ca_state=5},limit=1] run data modify storage catan:ui phase set value "掷出 7：超过 7 张资源的玩家必须弃一半（向下取整）"
+execute if entity @e[tag=ca.current,scores={ca_state=6},limit=1] run data modify storage catan:ui phase set value "移动强盗到其他地块"
+execute if entity @e[tag=ca.current,scores={ca_state=7},limit=1] run data modify storage catan:ui phase set value "选择强盗偷取对象"
+execute if entity @e[tag=ca.current,scores={ca_state=8},limit=1] run data modify storage catan:ui phase set value "修路卡：免费建造道路"
+execute if entity @e[tag=ca.current,scores={ca_state=10},limit=1] run data modify storage catan:ui phase set value "正在计算最长道路"
+execute if entity @e[tag=ca.current,scores={ca_state=11},limit=1] run data modify storage catan:ui phase set value "对局结束"
+execute store result storage catan:ui turn int 1 run scoreboard players get @e[tag=ca.current,limit=1] ca_turn

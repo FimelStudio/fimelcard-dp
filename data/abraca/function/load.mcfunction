@@ -1,3 +1,6 @@
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+# uninstall-guard: end
 scoreboard objectives add ab_goal dummy
 scoreboard objectives add ab_settings trigger
 scoreboard objectives add ab_set_table dummy
@@ -19,5 +22,4 @@ execute if score #version ab_ctx matches 5 run function abraca:system/upgrade_v6
 # 升级移除旧物品牌背，真实手牌marker保持不变。
 execute as @a[tag=ab.player] run function abraca:input/clear_tools
 execute as @e[type=minecraft:item] if items entity @s contents minecraft:paper[minecraft:custom_data~{abraca:{stone:1b}}] run kill @s
-tellraw @a[tag=ab.player] [{text:'[出包魔法师] ',color:'dark_purple'},{text:'数据包已重新加载，当前对局已保留。',color:'yellow'}]
 execute as @e[type=minecraft:marker,tag=ab.controller] at @s run function abraca:game/resume

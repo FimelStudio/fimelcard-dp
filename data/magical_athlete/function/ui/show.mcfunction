@@ -1,0 +1,6 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
+$dialog show @s {type:"minecraft:multi_action",title:{text:"$(title)",color:"gold"},body:[{type:"minecraft:plain_message",width:470,contents:$(public)},{type:"minecraft:plain_message",width:470,contents:$(private)},{type:"minecraft:plain_message",width:470,contents:$(detail)}],columns:3,actions:$(buttons),exit_action:{label:{text:"返回牌桌"},action:{type:"minecraft:run_command",command:"trigger ma_action set $(close)"}},pause:false,can_close_with_escape:true,after_action:"none"}

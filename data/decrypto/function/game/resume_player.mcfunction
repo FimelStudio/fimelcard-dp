@@ -7,4 +7,4 @@ function decrypto:player/can_input
 scoreboard players operation #resume_authorized dc_ctx = #authorized dc_ctx
 execute unless score #resume_authorized dc_ctx matches 1 run return 0
 execute if score #resume_state dc_ctx matches 5..8 unless items entity @s hotbar.* minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'guess'}}] unless items entity @s inventory.* minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'guess'}}] unless items entity @s weapon.offhand minecraft:purple_dye[minecraft:custom_data~{decrypto:{tool:'guess'}}] run function decrypto:input/give_guess
-execute if score @s dc_action matches 0 run function decrypto:dialog/digits
+execute if score #resume_state dc_ctx matches 1..3 if score @s dc_action matches 0 run function decrypto:dialog/digits

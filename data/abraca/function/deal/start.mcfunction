@@ -5,5 +5,5 @@ scoreboard players set @s ab_timer 0
 scoreboard players set @s ab_deal 0
 scoreboard players set @s ab_scan 0
 function cardtable:animation/deal/clear
-function cardtable:animation/deal/box/spawn
+function cardtable:animation/deal/box/spawn_model {model:"card:abraca/box"}
 playsound minecraft:block.chest.open master @a[distance=..16] ~ ~ ~ 0.7 1.25

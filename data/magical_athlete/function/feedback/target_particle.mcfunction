@@ -1,0 +1,1 @@
+$execute if data storage magical_athlete:feedback {target_options:[$(id)]} positioned ~$(x) ~$(y) ~$(z) run particle minecraft:dust{color:[1.0,0.82,0.24],scale:0.55} ~ ~0.025 ~ 0.005 0 0.005 0 1 normal @a[tag=ma.audience]

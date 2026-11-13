@@ -1,3 +1,8 @@
+# table-pause: begin (tools/build_table_pause_guards.py)
+execute if score @s ct_paused matches 1 run return 0
+execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
+execute on origin if score @s ct_paused matches 1 run return 0
+# table-pause: end
 # 一桌一刻最多接收一张牌；地面实体扫描必须先通过当前玩家的Q键统计
 scoreboard players operation #ctx_id fc_ctx = @s fc_id
 scoreboard players operation #ctx_turn fc_ctx = @s fc_turn
