@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+ <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#183d57"/><stop offset="1" stop-color="#101f3e"/></linearGradient>
+ <radialGradient id="spot"><stop stop-color="#52c8c9" stop-opacity="0.55"/><stop offset="1" stop-color="#52c8c9" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff7c8"/><stop offset="0.5" stop-color="#f6ca61"/><stop offset="1" stop-color="#bd7c20"/></linearGradient>
+ <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fdffff"/><stop offset="1" stop-color="#b0d3e3"/></linearGradient>
+ <clipPath id="clip"><rect width="1024" height="1024" rx="88"/></clipPath>
+</defs>
+<g clip-path="url(#clip)">
+ <rect width="1024" height="1024" fill="url(#bg)"/>
+ <circle cx="512" cy="400" r="530" fill="url(#spot)"/>
+ <g opacity=".13" stroke="#ffffff" stroke-width="2" fill="none"><circle cx="512" cy="382" r="318"/><circle cx="512" cy="382" r="380"/><path d="M0 720L720 0M280 1024L1024 280"/></g>
+ 
+ <g transform="translate(215 114)"><rect x="0" y="38" width="590" height="577" rx="45" fill="#152b43" stroke="#b6b69c" stroke-width="22"/>
+<rect x="46" y="101" width="498" height="105" rx="15" fill="#d8bb78" stroke="#66472c" stroke-width="10"/>
+<text x="295" y="174" font-family="DejaVu Sans Mono" font-weight="bold" font-size="81" fill="#232d34" text-anchor="middle">2·1·4</text>
+<rect x="52" y="242" width="292" height="191" rx="12" fill="#070f20" stroke="#7b9fae" stroke-width="13"/>
+<path d="M70 341L110 341L143 296L171 384L203 310L235 340L330 340" stroke="#64e0ac" stroke-width="12" fill="none"/>
+<g fill="#e8c88b" stroke="#a8734a" stroke-width="8"><circle cx="435" cy="303" r="46"/><circle cx="435" cy="405" r="46"/></g>
+<rect x="58" y="487" width="480" height="80" rx="12" fill="#1d4e62"/>
+<g fill="#e8ebd2"><circle cx="116" cy="525" r="15"/><circle cx="173" cy="525" r="15"/><circle cx="230" cy="525" r="15"/><circle cx="288" cy="525" r="15"/><circle cx="345" cy="525" r="15"/><circle cx="402" cy="525" r="15"/><circle cx="459" cy="525" r="15"/></g></g>
+ <rect x="14" y="14" width="996" height="996" rx="75" fill="none" stroke="#ffffff" stroke-opacity=".48" stroke-width="10"/>
+ </g></svg>
