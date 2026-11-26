@@ -1,5 +1,6 @@
 """生成 UNO Dialog、名字解析、输入路由与规则；不修改核心规则或通用牌桌。"""
 from build_table_pause_guards import write_guarded
+from build_uno_hud import stack_variants
 from pathlib import Path
 import json
 
@@ -198,11 +199,13 @@ scoreboard players operation #ui_seat un_ctx = @s un_seat
 execute store result storage uno:ui table int 1 run scoreboard players get @s un_table
 tag @e[tag=un.uihand] remove un.uihand
 execute as @e[type=minecraft:marker,tag=un.card] if score @s ct_id = #ui_table un_ctx if score @s un_owner = #ui_seat un_ctx run tag @s add un.uihand
-# 54px牌面向基线上方延伸50px；五个空行留出完整的首行牌面。
-data modify storage uno:ui grid set value {text:"\\n\\n\\n\\n\\n",shadow_color:0,extra:[]}
+# 牌面向基线上方延伸50px，六个空行给首行留足空间。
+data modify storage uno:ui grid set value {text:"\\n\\n\\n\\n\\n\\n",shadow_color:0,extra:[]}
 data modify storage uno:ui selected set value {text:"未选择",color:"gray"}
 scoreboard players set #ui_col un_ctx 0
 function uno:ui/build
+# 最后一行最多向基线下方延伸34px，补四行以免遮住底部操作按钮。
+data modify storage uno:ui grid.extra append value {text:"\\n\\n\\n\\n"}
 tag @e[tag=un.uihand] remove un.uihand
 function uno:ui/status
 function uno:ui/controls
@@ -252,14 +255,14 @@ for color in ["红", "黄", "绿", "蓝"]:
     names.extend([color + str(i) for i in range(10)] + [color + "·跳过", color + "·反转", color + "·+2"])
 names += ["变色", "变色+4"]
 put("ui/build", "\n".join(
-    f'function uno:ui/append {js({"id": i, "glyph": chr(0xE600+i), "name": name})}'
+    f'function uno:ui/append {js({"id": i, **stack_variants(i), "name": name})}'
     for i, name in enumerate(names)))
 put("ui/append", '''
 $execute store result score #ui_count un_ctx if entity @e[tag=un.uihand,scores={un_card=$(id)}]
 execute if score #ui_count un_ctx matches 0 run return 0
-# 每行仍为8牌型；七个9px换行给54px牌面留出9px行距。
-execute if score #ui_col un_ctx matches 8 run data modify storage uno:ui grid.extra append value {text:"\\n\\n\\n\\n\\n\\n\\n"}
-execute if score #ui_col un_ctx matches 8 run scoreboard players set #ui_col un_ctx 0
+# 每行12种完整牌面（444px），十个9px换行为四层堆叠预留6px行距。
+execute if score #ui_col un_ctx matches 12 run data modify storage uno:ui grid.extra append value {text:"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n"}
+execute if score #ui_col un_ctx matches 12 run scoreboard players set #ui_col un_ctx 0
 scoreboard players add #ui_col un_ctx 1
 $scoreboard players set #ui_code un_ctx $(id)
 scoreboard players add #ui_code un_ctx 100
@@ -267,6 +270,9 @@ scoreboard players operation #ui_code un_ctx += #ui_base un_ctx
 execute store result storage uno:ui pick int 1 run scoreboard players get #ui_code un_ctx
 execute store result storage uno:ui count int 1 run scoreboard players get #ui_count un_ctx
 $data modify storage uno:ui glyph set value "$(glyph)"
+$execute if score #ui_count un_ctx matches 2 run data modify storage uno:ui glyph set value "$(glyph2)"
+$execute if score #ui_count un_ctx matches 3 run data modify storage uno:ui glyph set value "$(glyph3)"
+$execute if score #ui_count un_ctx matches 4.. run data modify storage uno:ui glyph set value "$(glyph4)"
 $data modify storage uno:ui name set value "$(name)"
 data modify storage uno:ui card_font set value "card:uno/dialog"
 data modify storage uno:ui pick_hint set value "点击选择"
@@ -276,7 +282,7 @@ $execute if score @s un_pick matches $(id) run data modify storage uno:ui select
 function uno:ui/append_card with storage uno:ui
 ''')
 put("ui/append_card", '''
-$data modify storage uno:ui grid.extra append value {text:"",click_event:{action:"run_command",command:"trigger un_action set $(pick)"},hover_event:{action:"show_text",value:{text:"$(name) ×$(count) · $(pick_hint)"}},extra:[{text:"$(glyph)",font:"$(card_font)",color:"white"},{text:"×$(count)  ",font:"minecraft:default",color:"white"}]}
+$data modify storage uno:ui grid.extra append value {text:"",click_event:{action:"run_command",command:"trigger un_action set $(pick)"},hover_event:{action:"show_text",value:{text:"$(name) ×$(count) · $(pick_hint)"}},extra:[{text:"$(glyph)\uE7F0",font:"$(card_font)",color:"white"}]}
 ''')
 put("ui/status", '''
 scoreboard players operation #ui_top_idx un_ctx = @e[tag=un.current,limit=1] un_top
@@ -341,7 +347,7 @@ put("ui/control_append", '''
 $data modify storage uno:ui controls append value {label:{text:"$(label)",color:"$(control_color)"},width:140,action:{type:"minecraft:run_command",command:"trigger un_action set $(code)"}}
 ''')
 put("ui/show", '''
-$dialog show @s {type:"minecraft:multi_action",title:{text:"UNO · 手牌",color:"gold"},body:[{type:"minecraft:plain_message",width:460,contents:$(phase)},{type:"minecraft:plain_message",width:460,contents:[{text:"顶牌：",color:"gray"},$(top),{text:" · 当前颜色：",color:"gray"},$(color),{text:" · $(direction)\\n已选：",color:"gray"},$(selected)]},{type:"minecraft:plain_message",width:660,contents:$(grid)}],columns:3,actions:$(controls),exit_action:{label:{text:"返回游戏"},width:140},pause:false,can_close_with_escape:true,after_action:"close"}
+$dialog show @s {type:"minecraft:multi_action",title:{text:"UNO · 手牌",color:"gold"},body:[{type:"minecraft:plain_message",width:460,contents:$(phase)},{type:"minecraft:plain_message",width:460,contents:[{text:"顶牌：",color:"gray"},$(top),{text:" · 当前颜色：",color:"gray"},$(color),{text:" · $(direction)\\n已选：",color:"gray"},$(selected)]},{type:"minecraft:plain_message",width:460,contents:$(grid)}],columns:3,actions:$(controls),exit_action:{label:{text:"返回游戏"},width:140},pause:false,can_close_with_escape:true,after_action:"close"}
 ''')
 put("ui/colors", '''
 # 万能牌的选色按钮携带原窗口epoch；后续回合无法提交。

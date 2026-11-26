@@ -17,11 +17,13 @@ scoreboard players operation #ui_seat un_ctx = @s un_seat
 execute store result storage uno:ui table int 1 run scoreboard players get @s un_table
 tag @e[tag=un.uihand] remove un.uihand
 execute as @e[type=minecraft:marker,tag=un.card] if score @s ct_id = #ui_table un_ctx if score @s un_owner = #ui_seat un_ctx run tag @s add un.uihand
-# 54px牌面向基线上方延伸50px；五个空行留出完整的首行牌面。
-data modify storage uno:ui grid set value {text:"\n\n\n\n\n",shadow_color:0,extra:[]}
+# 牌面向基线上方延伸50px，六个空行给首行留足空间。
+data modify storage uno:ui grid set value {text:"\n\n\n\n\n\n",shadow_color:0,extra:[]}
 data modify storage uno:ui selected set value {text:"未选择",color:"gray"}
 scoreboard players set #ui_col un_ctx 0
 function uno:ui/build
+# 最后一行最多向基线下方延伸34px，补四行以免遮住底部操作按钮。
+data modify storage uno:ui grid.extra append value {text:"\n\n\n\n"}
 tag @e[tag=un.uihand] remove un.uihand
 function uno:ui/status
 function uno:ui/controls
