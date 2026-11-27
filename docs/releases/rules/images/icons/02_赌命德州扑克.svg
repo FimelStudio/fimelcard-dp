@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+ <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#281326"/><stop offset="1" stop-color="#7b162d"/></linearGradient>
+ <radialGradient id="spot"><stop stop-color="#f24a64" stop-opacity="0.55"/><stop offset="1" stop-color="#f24a64" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff7c8"/><stop offset="0.5" stop-color="#f6ca61"/><stop offset="1" stop-color="#bd7c20"/></linearGradient>
+ <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fdffff"/><stop offset="1" stop-color="#b0d3e3"/></linearGradient>
+ <clipPath id="clip"><rect width="1024" height="1024" rx="88"/></clipPath>
+</defs>
+<g clip-path="url(#clip)">
+ <rect width="1024" height="1024" fill="url(#bg)"/>
+ <circle cx="512" cy="400" r="530" fill="url(#spot)"/>
+ <g opacity=".13" stroke="#ffffff" stroke-width="2" fill="none"><circle cx="512" cy="382" r="318"/><circle cx="512" cy="382" r="380"/><path d="M0 720L720 0M280 1024L1024 280"/></g>
+ 
+ <circle cx="520" cy="369" r="285" stroke="#ff5c63" stroke-opacity=".5" stroke-width="20" fill="#2c1023"/><g transform="translate(290 181) rotate(-15 100 136)"><rect x="4" y="9" width="198" height="280" rx="19" fill="#080e1f" opacity=".4"/><rect width="198" height="275" rx="18" fill="#fffdf4" stroke="#d8dfeb" stroke-width="8"/><text x="35" y="84" fill="#15161e" font-family="DejaVu Sans" font-weight="bold" font-size="71">A</text><text x="100" y="217" font-size="128" font-family="DejaVu Sans" fill="#15161e" text-anchor="middle">♠</text></g><g transform="translate(495 181) rotate(12 100 136)"><rect x="4" y="9" width="198" height="280" rx="19" fill="#080e1f" opacity=".4"/><rect width="198" height="275" rx="18" fill="#fffdf4" stroke="#d8dfeb" stroke-width="8"/><text x="35" y="84" fill="#bd1b34" font-family="DejaVu Sans" font-weight="bold" font-size="71">A</text><text x="100" y="217" font-size="128" font-family="DejaVu Sans" fill="#bd1b34" text-anchor="middle">♥</text></g><g transform="translate(525 555)"><circle r="126" fill="#d83d4e" stroke="#fac8ba" stroke-width="14"/><circle r="92" fill="#131e34" stroke="#f0dfcf" stroke-dasharray="30 20" stroke-width="16"/><circle r="60" fill="#631727"/><path d="M-28 18L-15 2L0 18L15 2L28 18" stroke="#f9d5b2" stroke-width="11" fill="none"/></g><path d="M185 130L262 92M760 121L842 178" stroke="#ffb5aa" stroke-width="12"/>
+ <rect x="14" y="14" width="996" height="996" rx="75" fill="none" stroke="#ffffff" stroke-opacity=".48" stroke-width="10"/>
+ </g></svg>

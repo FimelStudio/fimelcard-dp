@@ -10,3 +10,7 @@ execute as @a[tag=ll.player,scores={ll_head_drop=1..}] unless score @s ct_paused
 execute as @a[tag=ll.player,scores={ll_drop=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function love_letter:input/drop
 execute as @a[tag=ll.player,scores={ll_action=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function love_letter:input/submit
 execute as @a[scores={ll_settings=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s run function love_letter:settings/save
+# 恢复物每秒补齐一次，重载或阶段切换后仍可使用。
+scoreboard players add #reopen_clock ll_ctx 1
+execute if score #reopen_clock ll_ctx matches 20.. as @a[tag=ll.player] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] run function love_letter:input/ensure_reopen
+execute if score #reopen_clock ll_ctx matches 20.. run scoreboard players set #reopen_clock ll_ctx 0

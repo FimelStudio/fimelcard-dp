@@ -7,7 +7,6 @@ execute unless entity @e[tag=hb.dialog_controller,limit=1] run return fail
 
 scoreboard players set @s hb_action 0
 scoreboard players enable @s hb_action
-dialog clear @s
 
 execute store result storage hanabi:dialog clues int 1 run scoreboard players get @e[tag=hb.dialog_controller,limit=1] hb_clues
 execute store result storage hanabi:dialog clue_max int 1 run scoreboard players get @e[tag=hb.dialog_controller,limit=1] hb_clue_max

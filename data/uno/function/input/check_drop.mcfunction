@@ -7,6 +7,7 @@ execute on origin if score @s ct_paused matches 1 run return 0
 scoreboard players set #ui_drop_owner un_ctx 0
 execute on origin if entity @s[tag=un.dropper,tag=un.player] run scoreboard players set #ui_drop_owner un_ctx 1
 execute unless score #ui_drop_owner un_ctx matches 1 run return 0
+execute store result score #ui_drop_table un_ctx run data get entity @s Item.components."minecraft:custom_data".uno.table
 kill @s
 execute as @a[tag=un.dropper,limit=1] run function uno:input/give
-execute as @a[tag=un.dropper,limit=1] at @s run function uno:ui/open
+execute as @a[tag=un.dropper,limit=1] if score @s un_table = #ui_drop_table un_ctx at @s run function uno:ui/open
