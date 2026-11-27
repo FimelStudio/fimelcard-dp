@@ -7,6 +7,7 @@ data modify storage uno:ui card_font set value "card:uno/dialog_selected"
 data modify storage uno:ui pick_hint set value "已选中 · 再点取消"
 data modify storage uno:ui grid.extra set value [{text:"",font:"card:uno/dialog_selected",color:"white"},{text:"×2  ",color:"white"}]
 data modify storage uno:ui grid.text set value "\n\n\n\n\n"
+data modify storage uno:ui close set value 1010
 function uno:ui/show with storage uno:ui
 say UNO_DIALOG_HAND_COMPILED
 # 等待其他玩家时不再放刷新按钮，空操作列表也必须能解码。
@@ -30,4 +31,8 @@ data merge storage uno:settings {mode:2,rounds:32,target:1000,auto:0,challenge:1
 function uno:settings/root with storage uno:settings
 say UNO_DIALOG_SETTING_MAXIMUM_COMPILED
 function uno:rules/show
+data merge storage doudizhu:ui {status:{text:"选牌"},last_play:{text:"无"},grid:{text:"示例牌"},controls:[]}
+function doudizhu:dialog/show with storage doudizhu:ui
+data merge storage guandan:ui {phase:{text:"选牌"},last_play:{text:"无"},info:{text:"测试"},grid:{text:"示例牌"},buttons:[],close:10004}
+function guandan:ui/hand_show with storage guandan:ui
 say UNO_DIALOGS_END

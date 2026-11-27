@@ -20,6 +20,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
+from build_uno_hud import stack_variants
 
 
 PACK = Path(__file__).resolve().parents[1]
@@ -230,11 +231,12 @@ $scoreboard players add #queued_seat_$(seat) ut 1
         commands += ['tag @e[tag=un.uihand] remove un.uihand', f'tag {card(2)} add un.uihand', f'tag {card(14)} add un.uihand', f'tag {card(3)} add un.uihand',
                      'scoreboard players set #ui_base un_ctx 1000','scoreboard players set #ui_col un_ctx 0',
                      'data modify storage uno:ui grid set value {text:"",extra:[]}',
-                     f'execute as {person(1)} run function uno:ui/append {{id:2,glyph:"\ue602",name:"红2"}}']
+                     f'execute as {person(1)} run function uno:ui/append ' + json.dumps({'id': 2, 'name': '红2', **stack_variants(2)}, ensure_ascii=False)]
         commands += self.check('data storage uno:ui grid.extra[0].extra[{font:"card:uno/dialog_selected"}]','selection_selected_card_glows')
-        commands += [f'execute as {person(1)} run function uno:ui/append {{id:1,glyph:"\ue601",name:"红1"}}']
+        commands += [f'execute as {person(1)} run function uno:ui/append ' + json.dumps({'id': 1, 'name': '红1', **stack_variants(1)}, ensure_ascii=False)]
         commands += self.check('data storage uno:ui grid.extra[1].extra[{font:"card:uno/dialog"}]','selection_old_card_not_glowing')
-        commands += self.check('data storage uno:ui grid.extra[1].extra[{text:"×2  "}]','selection_keeps_duplicate_count')
+        commands += self.check('data storage uno:ui grid.extra[1].extra[{text:"\ue601\ue7f5\ue801\ue7f0"}]','selection_duplicate_cards_stack')
+        commands += self.check('data storage uno:ui grid.extra[1].hover_event.value{text:"红1 ×2 · 点击选择"}', 'selection_hover_keeps_exact_count')
         commands += self.score(person(1),'un_count',3,'selection_never_plays_or_consumes')
         self.case('selection_toggle_glow',commands)
 

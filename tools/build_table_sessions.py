@@ -265,4 +265,7 @@ def build():
     tag['values']=[v for v in tag['values'] if v!='cardtable:session/pre_tick'];tag['values'].insert(0,'cardtable:session/pre_tick')
     p.write_text(json.dumps(tag,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
-if __name__=='__main__':build()
+if __name__=='__main__':
+    build()
+    from build_dialog_cursor import install_runtime
+    install_runtime()
