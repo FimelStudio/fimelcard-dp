@@ -16,6 +16,8 @@ scoreboard players operation #ui_nonce gd_ctx /= #ui_factor gd_ctx
 execute unless score #ui_nonce gd_ctx = @s gd_seen run return run function guandan:input/invalid
 scoreboard players operation #ui_action gd_ctx = @s gd_ui_tmp
 scoreboard players operation #ui_action gd_ctx %= #ui_factor gd_ctx
+# 手牌窗口点击后保持打开；独立退出动作只关窗，保留当前选牌。
+execute if score #ui_action gd_ctx matches 4 run return run dialog clear @s
 execute if score #ui_action gd_ctx matches 1 run return run function guandan:ui/open
 execute if score #ui_action gd_ctx matches 3 run return run function guandan:rules/player
 execute if score #ui_action gd_ctx matches 20 run return run function guandan:input/play

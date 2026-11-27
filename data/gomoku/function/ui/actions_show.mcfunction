@@ -3,4 +3,6 @@ execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
 execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
-$dialog show @s {"type":"minecraft:multi_action","title":{"text":"五子棋 · 对局面板","color":"gold"},"body":[{"type":"minecraft:plain_message","width":460,"contents":{"text":"$(phase)","color":"yellow"}}],"columns":2,"actions":$(buttons),"exit_action":{"label":{"text":"返回棋盘"}},"pause":false}
+scoreboard players set @s ct_ui_close 0
+scoreboard players enable @s ct_ui_close
+$dialog show @s {"type":"minecraft:multi_action","title":{"text":"五子棋 · 对局面板","color":"gold"},"body":[{"type":"minecraft:plain_message","width":460,"contents":{"text":"$(phase)","color":"yellow"}}],"columns":2,"actions":$(buttons),"exit_action":{"label":{"text":"返回棋盘"},action:{type:"minecraft:run_command",command:"trigger ct_ui_close set 1"}},"pause":false,after_action:"none"}
