@@ -18,3 +18,5 @@ scoreboard players reset @s un_settings
 tag @s remove un.player
 tag @s remove un.audience
 tag @s remove un.actor
+
+clear @s minecraft:purple_dye[minecraft:custom_data~{uno:{reopen:1b}}]

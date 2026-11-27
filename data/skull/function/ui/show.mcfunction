@@ -3,4 +3,6 @@ execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
 execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
+scoreboard players set @s ct_ui_close 0
+scoreboard players enable @s ct_ui_close
 $dialog show @s $(dialog)

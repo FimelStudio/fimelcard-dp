@@ -1,3 +1,4 @@
+function uno:input/ensure_reopen
 # 手牌和 HUD 始终保留；操作物只在本人的正常行动回合提供。
 execute unless entity @s[tag=un.player,tag=ct.player] run return 0
 execute unless score @s un_table = @s ct_id run return 0

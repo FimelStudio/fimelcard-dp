@@ -4,7 +4,6 @@ function hanabi:input/clear_actions
 scoreboard players set @s hb_action 0
 scoreboard players enable @s hb_action
 scoreboard players operation #ctx_id hb_ctx = @s hb_id
-dialog clear @s
 
 data modify storage hanabi:dialog restore_view set value {text:"",font:"card:hanabi_ui",shadow_color:0,extra:[]}
 scoreboard players set #restore_added hb_ctx 0

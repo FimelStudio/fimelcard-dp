@@ -18,15 +18,25 @@ NAMES = [c + r for c in "rygb" for r in [str(n) for n in range(10)] + ["skip", "
 
 # 斗地主实际使用 hand_0 的 height/ascent=56、默认原点 y=0。UNO 常规
 # 手牌沿用其真实大小。BetterTitle 的正 y 向上，不能按屏幕坐标的方向使用。
-# 牌面 y=12、数量 y=0：按各自字体 ascent 计算，数量在牌下方留出 5px。
-# 多牌型逐步压紧并缩小，保持最多三行，最小 320×240 GUI 仍能显示全部。
-# height, glyph_advance, card_gap, count_gap, card_tail, count_lead, count_tail
+# 同种牌向下错位堆叠，不增加横向宽度。每行最多18种，极端手牌最多三行。
+# height, glyph_advance, card_gap, card_tail, stack_step
 LAYOUTS = {
-    "hud": (56, 34, 3, 25, 0, 11, -11),       # 1～8 型：完整牌面，最多 296px
-    "hud_dense": (56, 34, -18, 4, 18, 2, 16), # 9～18 型：同尺寸交叠，最多 306px
-    "hud_medium": (40, 25, -9, 4, 9, 2, 7),   # 19～36 型：两行，最多 297px
-    "hud_small": (32, 20, -4, 4, 4, 2, 2),    # 37～54 型：三行，最多 292px
+    "hud": (56, 34, 3, 0, 10),         # 1～8型，重复牌沿用斗地主10px层间距
+    "hud_dense": (56, 34, 3, 0, 10),   # 9～18型仍完整并排，最多666px
+    "hud_medium": (40, 25, 3, 0, 8),   # 19～36型两行，最多504px
+    "hud_small": (32, 20, 3, 0, 5),    # 37～54型三行，最多414px
 }
+
+
+def stack_text(index: int, count: int, selected: bool = False) -> str:
+    # 沿用斗地主：先画上方牌，再画向下错开的前层，露出每张牌顶部的角标。
+    return "\uE7F5".join(chr(0xE600 + depth * 0x200 + int(selected) * 0x100 + index)
+                         for depth in range(count))
+
+
+def stack_variants(index: int) -> dict[str, str]:
+    return {name + (str(count) if count > 1 else ""): stack_text(index, count, selected)
+            for name, selected in [("glyph", False), ("selected", True)] for count in range(1, 5)}
 
 
 def put(name: str, commands: str) -> None:
@@ -93,7 +103,7 @@ def functions() -> None:
         scoreboard players operation #hud_pick un_ctx = @s un_pick
         tag @e[tag=un.hudhand] remove un.hudhand
         execute as @e[type=minecraft:marker,tag=un.card] if score @s ct_id = #hud_table un_ctx if score @s un_owner = #hud_seat un_ctx run tag @s add un.hudhand
-        data modify storage uno:hud rows set value [{cards:{text:"",shadow_color:0,extra:[]},counts:{text:"",shadow_color:0,extra:[]}},{cards:{text:"",shadow_color:0,extra:[]},counts:{text:"",shadow_color:0,extra:[]}},{cards:{text:"",shadow_color:0,extra:[]},counts:{text:"",shadow_color:0,extra:[]}}]
+        data modify storage uno:hud rows set value [{cards:{text:"",shadow_color:0,extra:[]}},{cards:{text:"",shadow_color:0,extra:[]}},{cards:{text:"",shadow_color:0,extra:[]}}]
         scoreboard players set #hud_col un_ctx 0
         scoreboard players set #hud_row un_ctx 0
         scoreboard players set #hud_types un_ctx 0
@@ -102,11 +112,13 @@ def functions() -> None:
         data modify storage fimel_title:io panel_buffer set value []
         data modify storage fimel_title:io text_buffer set value []
         data modify storage fimel_title:io neg_text_buffer set value []
-        # 正 y 向上：数量独立位于牌下方，多行向上延伸并留出上下行间距。
-        execute if score #hud_types un_ctx matches 1.. run function uno:hud/line {row:0,y:12,count_y:0}
-        execute if score #hud_types un_ctx matches 19..36 run function uno:hud/line {row:1,y:68,count_y:56}
-        execute if score #hud_types un_ctx matches 37.. run function uno:hud/line {row:1,y:60,count_y:48}
-        execute if score #hud_types un_ctx matches 37.. run function uno:hud/line {row:2,y:108,count_y:96}
+        # 正 y 向上；预留四张万能牌堆叠的高度，各行互不遮挡。
+        execute if score #hud_types un_ctx matches 1..18 run function uno:hud/line {row:0,y:42}
+        execute if score #hud_types un_ctx matches 19..36 run function uno:hud/line {row:0,y:36}
+        execute if score #hud_types un_ctx matches 19..36 run function uno:hud/line {row:1,y:106}
+        execute if score #hud_types un_ctx matches 37.. run function uno:hud/line {row:0,y:27}
+        execute if score #hud_types un_ctx matches 37.. run function uno:hud/line {row:1,y:78}
+        execute if score #hud_types un_ctx matches 37.. run function uno:hud/line {row:2,y:129}
         execute if score #hud_types un_ctx matches 0 run function uno:hud/no_cards
         function uno:hud/status
         scoreboard players operation panel_id fbt_io = @s un_panel
@@ -116,14 +128,20 @@ def functions() -> None:
     put("cards", "\n".join(
         f"scoreboard players set #hud_count un_ctx 0\n"
         f"execute as @e[type=minecraft:marker,tag=un.hudhand,scores={{un_card={index}}}] run scoreboard players add #hud_count un_ctx 1\n"
-        f"execute if score #hud_count un_ctx matches 1.. run function uno:hud/card {{id:{index},glyph:\"{chr(0xE600 + index)}\",selected:\"{chr(0xE700 + index)}\"}}"
+        f"execute if score #hud_count un_ctx matches 1.. run function uno:hud/card {json.dumps({'id': index, **stack_variants(index)}, ensure_ascii=False, separators=(',', ':'))}"
         for index in range(54)))
     put("card", """
         execute if score #hud_col un_ctx matches 18 run function uno:hud/next_row
         execute store result storage uno:hud row int 1 run scoreboard players get #hud_row un_ctx
         execute store result storage uno:hud count int 1 run scoreboard players get #hud_count un_ctx
         $data modify storage uno:hud card set value {text:"$(glyph)",color:"white"}
+        $execute if score #hud_count un_ctx matches 2 run data modify storage uno:hud card.text set value "$(glyph2)"
+        $execute if score #hud_count un_ctx matches 3 run data modify storage uno:hud card.text set value "$(glyph3)"
+        $execute if score #hud_count un_ctx matches 4.. run data modify storage uno:hud card.text set value "$(glyph4)"
         $execute if score #hud_pick un_ctx matches $(id) run data modify storage uno:hud card.text set value "$(selected)"
+        $execute if score #hud_pick un_ctx matches $(id) if score #hud_count un_ctx matches 2 run data modify storage uno:hud card.text set value "$(selected2)"
+        $execute if score #hud_pick un_ctx matches $(id) if score #hud_count un_ctx matches 3 run data modify storage uno:hud card.text set value "$(selected3)"
+        $execute if score #hud_pick un_ctx matches $(id) if score #hud_count un_ctx matches 4.. run data modify storage uno:hud card.text set value "$(selected4)"
         function uno:hud/append with storage uno:hud
         scoreboard players add #hud_col un_ctx 1
         scoreboard players add #hud_types un_ctx 1
@@ -135,19 +153,12 @@ def functions() -> None:
     put("append", """
         $data modify storage uno:hud rows[$(row)].cards.extra append from storage uno:hud card
         $data modify storage uno:hud rows[$(row)].cards.extra append value {text:"\uE7F0"}
-        $data modify storage uno:hud rows[$(row)].counts.extra append value {text:"x$(count)",color:"white"}
-        $data modify storage uno:hud rows[$(row)].counts.extra append value {text:"\uE7F1"}
     """)
     put("line", """
         $data modify storage fimel_title:io text set from storage uno:hud rows[$(row)].cards
-        # 交叠行最后一张保留完整牌面宽度，避免居中时偏右或裁掉末牌。
+        # 每种牌的全部层共用X坐标，下一种牌在完整牌面之后留3px间距。
         data modify storage fimel_title:io text.extra append value {text:"\uE7F2"}
         $data modify storage fimel_title:io y set value $(y).0d
-        function uno:hud/text_cards
-        $data modify storage fimel_title:io text set from storage uno:hud rows[$(row)].counts
-        data modify storage fimel_title:io text.extra prepend value {text:"\uE7F3"}
-        data modify storage fimel_title:io text.extra append value {text:"\uE7F4"}
-        $data modify storage fimel_title:io y set value $(count_y).0d
         function uno:hud/text_cards
     """)
     put("text_cards", """
@@ -195,10 +206,10 @@ def functions() -> None:
         execute if score @e[tag=un.current,limit=1] un_color matches 3 run data modify storage fimel_title:io text.extra append value {text:"蓝色",color:"blue"}
         execute if score @e[tag=un.current,limit=1] un_dir matches 1 run data modify storage fimel_title:io text.extra append value {text:" · 顺时针",color:"gray"}
         execute if score @e[tag=un.current,limit=1] un_dir matches -1 run data modify storage fimel_title:io text.extra append value {text:" · 逆时针",color:"gray"}
-        data modify storage fimel_title:io y set value 76.0d
+        data modify storage fimel_title:io y set value 108.0d
         execute if score #hud_types un_ctx matches 0 run data modify storage fimel_title:io y set value 36.0d
-        execute if score #hud_types un_ctx matches 19..36 run data modify storage fimel_title:io y set value 120.0d
-        execute if score #hud_types un_ctx matches 37..54 run data modify storage fimel_title:io y set value 152.0d
+        execute if score #hud_types un_ctx matches 19..36 run data modify storage fimel_title:io y set value 154.0d
+        execute if score #hud_types un_ctx matches 37..54 run data modify storage fimel_title:io y set value 167.0d
         function uno:hud/text_default
     """)
 
@@ -207,20 +218,29 @@ def fonts(resource_pack: Path) -> None:
     target = resource_pack / "assets/card/font/uno"
     target.mkdir(parents=True, exist_ok=True)
     definitions = {}
-    for layout, (height, advance, gap, count_gap, tail, lead_count, tail_count) in LAYOUTS.items():
-        spacing = dict(zip("\uE7F0\uE7F1\uE7F2\uE7F3\uE7F4", (gap, count_gap, tail, lead_count, tail_count)))
+    for layout, (height, advance, gap, tail, step) in LAYOUTS.items():
+        spacing = {"\uE7F0": gap, "\uE7F2": tail, "\uE7F5": -advance}
         providers = []
         # BetterTitle 的居中回绕字体必须等于真实 advance 的负二分之一；
         # 交叠使用的负间距在回绕字体中对应正值。
         advances = {glyph: -width / 2 for glyph, width in spacing.items()}
-        for base, prefix in [(0xE600, ""), (0xE700, "selected/")]:
-            for index, name in enumerate(NAMES):
-                glyph = chr(base + index)
-                providers.append({"type": "bitmap", "file": f"card:font/uno/{prefix}{name}.png", "height": height, "ascent": height, "chars": [glyph]})
-                advances[glyph] = -advance / 2
+        for depth in range(4):
+            for base, prefix in [(0xE600, ""), (0xE700, "selected/")]:
+                for index, name in enumerate(NAMES):
+                    glyph = chr(base + depth * 0x200 + index)
+                    providers.append({"type": "bitmap", "file": f"card:font/uno/{prefix}{name}.png", "height": height, "ascent": height - depth * step, "chars": [glyph]})
+                    advances[glyph] = -advance / 2
         providers += [{"type": "space", "advances": spacing}, {"type": "reference", "id": "minecraft:default_mod"}]
         definitions[layout + ".json"] = {"providers": providers}
         definitions[layout + "_neg.json"] = {"providers": [{"type": "space", "advances": advances}, {"type": "reference", "id": "minecraft:default_neg"}]}
+    # Dialog 独立换行，牌种之间保留间隔。重复牌沿用HUD的字形编码。
+    for selected, prefix in [(False, ""), (True, "selected/")]:
+        providers = []
+        for depth in range(4):
+            for index, name in enumerate(NAMES):
+                providers.append({"type": "bitmap", "file": f"card:font/uno/{prefix}{name}.png", "height": 54, "ascent": 50 - depth * 10, "chars": [chr(0xE600 + depth * 0x200 + index)]})
+        providers.append({"type": "space", "advances": {"\uE7F0": 4, "\uE7F5": -33}})
+        definitions["dialog_selected.json" if selected else "dialog.json"] = {"providers": providers}
     for name, definition in definitions.items():
         write_guarded(target / name, json.dumps(definition, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 

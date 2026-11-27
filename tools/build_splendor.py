@@ -11,6 +11,8 @@ def main():
         subprocess.run([sys.executable,str(tools/('build_splendor_'+module+'.py'))],cwd=tools.parent,check=True)
     from build_direct_interactions import build as direct_interactions
     direct_interactions("splendor")
+    from build_table_end_results import build as end_results
+    end_results(('splendor',))
     from register_splendor import register_rules
     register_rules()
     from build_table_pause_guards import game_guards, discard_inputs

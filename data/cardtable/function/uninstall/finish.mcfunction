@@ -1271,6 +1271,7 @@ scoreboard objectives remove xq_ui_tmp
 scoreboard objectives remove xq_undo
 scoreboard objectives remove xq_variant
 scoreboard objectives remove xq_weight
+scoreboard objectives remove ct_ui_close
 scoreboard objectives remove ct_ctx
 data remove storage cardtable:uninstall queue
 data remove storage cardtable:uninstall scan

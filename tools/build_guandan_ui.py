@@ -102,6 +102,8 @@ scoreboard players operation #ui_nonce gd_ctx /= #ui_factor gd_ctx
 execute unless score #ui_nonce gd_ctx = @s gd_seen run return run function guandan:input/invalid
 scoreboard players operation #ui_action gd_ctx = @s gd_ui_tmp
 scoreboard players operation #ui_action gd_ctx %= #ui_factor gd_ctx
+# 手牌窗口点击后保持打开；独立退出动作只关窗，保留当前选牌。
+execute if score #ui_action gd_ctx matches 4 run return run dialog clear @s
 execute if score #ui_action gd_ctx matches 1 run return run function guandan:ui/open
 execute if score #ui_action gd_ctx matches 2 run return run function guandan:ui/menu
 execute if score #ui_action gd_ctx matches 3 run return run function guandan:rules/player
@@ -215,11 +217,14 @@ function guandan:ui/button {code:22,label:"取消所选",color:"gray"}
 function guandan:ui/button {code:2,label:"对局菜单",color:"gray"}
 function guandan:hud/update
 function guandan:ui/normalize
+scoreboard players operation #ui_code gd_ctx = #ui_base gd_ctx
+scoreboard players add #ui_code gd_ctx 4
+execute store result storage guandan:ui close int 1 run scoreboard players get #ui_code gd_ctx
 function guandan:ui/hand_show with storage guandan:ui
 ''')
     put('ui/last_play','data modify storage guandan:ui last_play set value {text:"还没有出牌，或等待重新领出。",color:"gray"}\nexecute if score @e[tag=gd.current,limit=1] gd_lastkind matches 1.. run data modify storage guandan:ui last_play set value {text:"",extra:[]}\nscoreboard players operation #ui_lastseat gd_ctx = @e[tag=gd.current,limit=1] gd_lastseat\nexecute if score @e[tag=gd.current,limit=1] gd_lastkind matches 1.. as @e[tag=gd.board] if score @s gd_seat = #ui_lastseat gd_ctx run function guandan:ui/last_play_owner\n')
     put('ui/last_play_owner','data modify storage guandan:ui last_play.extra append from entity @s data.gd_name\ndata modify storage guandan:ui last_play.extra append value {text:"："}\ndata modify storage guandan:ui last_play.extra append from entity @s data.last_label\n')
-    put('ui/hand_show','$dialog show @s {"type":"minecraft:multi_action","title":{"text":"掼蛋 · 手牌","color":"gold"},"body":[{"type":"minecraft:plain_message","width":440,"contents":$(phase)},{"type":"minecraft:plain_message","width":440,"contents":[{"text":"上一手：","color":"gray"},$(last_play)]},{"type":"minecraft:plain_message","width":440,"contents":$(info)},{"type":"minecraft:plain_message","width":440,"contents":{"text":"从大到小排列，同点数上下堆叠；点击露出的牌面选中／取消，金边表示选中，★表示级牌（红桃级牌为逢人配）。","color":"gray"}},{"type":"minecraft:plain_message","width":690,"contents":$(grid)}],"columns":4,"actions":$(buttons),"exit_action":{"label":{"text":"返回游戏（保留选择）"}},"pause":false,"can_close_with_escape":true,"after_action":"close"}\n')
+    put('ui/hand_show','$dialog show @s {"type":"minecraft:multi_action","title":{"text":"掼蛋 · 手牌","color":"gold"},"body":[{"type":"minecraft:plain_message","width":440,"contents":$(phase)},{"type":"minecraft:plain_message","width":440,"contents":[{"text":"上一手：","color":"gray"},$(last_play)]},{"type":"minecraft:plain_message","width":440,"contents":$(info)},{"type":"minecraft:plain_message","width":440,"contents":{"text":"从大到小排列，同点数上下堆叠；点击露出的牌面选中／取消，金边表示选中，★表示级牌（红桃级牌为逢人配）。","color":"gray"}},{"type":"minecraft:plain_message","width":690,"contents":$(grid)}],"columns":4,"actions":$(buttons),"exit_action":{"label":{"text":"返回游戏（保留选择）"},"action":{"type":"minecraft:run_command","command":"trigger gd_action set $(close)"}},"pause":false,"can_close_with_escape":true,"after_action":"none"}\n')
     put('ui/hand','''
 tag @e[tag=gd.uicards] remove gd.uicards
 execute as @e[tag=gd.cards] if score @s gd_owner = #ui_seat gd_ctx run tag @s add gd.uicards

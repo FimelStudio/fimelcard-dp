@@ -12,8 +12,8 @@ execute if score @e[tag=un.current,limit=1] un_color matches 2 run data modify s
 execute if score @e[tag=un.current,limit=1] un_color matches 3 run data modify storage fimel_title:io text.extra append value {text:"蓝色",color:"blue"}
 execute if score @e[tag=un.current,limit=1] un_dir matches 1 run data modify storage fimel_title:io text.extra append value {text:" · 顺时针",color:"gray"}
 execute if score @e[tag=un.current,limit=1] un_dir matches -1 run data modify storage fimel_title:io text.extra append value {text:" · 逆时针",color:"gray"}
-data modify storage fimel_title:io y set value 76.0d
+data modify storage fimel_title:io y set value 108.0d
 execute if score #hud_types un_ctx matches 0 run data modify storage fimel_title:io y set value 36.0d
-execute if score #hud_types un_ctx matches 19..36 run data modify storage fimel_title:io y set value 120.0d
-execute if score #hud_types un_ctx matches 37..54 run data modify storage fimel_title:io y set value 152.0d
+execute if score #hud_types un_ctx matches 19..36 run data modify storage fimel_title:io y set value 154.0d
+execute if score #hud_types un_ctx matches 37..54 run data modify storage fimel_title:io y set value 167.0d
 function uno:hud/text_default
