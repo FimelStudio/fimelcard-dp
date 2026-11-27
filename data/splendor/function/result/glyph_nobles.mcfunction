@@ -1,0 +1,10 @@
+execute if score #result_card sp_ctx matches 0 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 1 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 2 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 3 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 4 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 5 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 6 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 7 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 8 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}
+execute if score #result_card sp_ctx matches 9 run data modify storage splendor:result glyph set value {"text":"","font":"card:splendor/small","color":"white","shadow_color":0}

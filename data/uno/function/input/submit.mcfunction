@@ -18,6 +18,8 @@ scoreboard players operation #ui_base un_ctx = @s un_seen
 scoreboard players operation #ui_base un_ctx *= #ui_1000 un_ctx
 scoreboard players operation #ui_action un_ctx = @s un_ui_tmp
 scoreboard players operation #ui_action un_ctx %= #ui_1000 un_ctx
+# 手牌窗口点击后保持打开；独立退出动作只关窗，保留当前选牌。
+execute if score #ui_action un_ctx matches 10 run return run function uno:ui/close
 execute if score #ui_action un_ctx matches 200..203 unless score @s un_pick = @s un_colorpick run return run function uno:input/invalid
 execute if score #ui_action un_ctx matches 210..213 unless score @s un_pick = @s un_colorpick run return run function uno:input/invalid
 execute if score #ui_action un_ctx matches 200..203 unless score @s un_colorpick matches 52..53 run return run function uno:input/invalid

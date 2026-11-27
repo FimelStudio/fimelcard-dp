@@ -7,6 +7,9 @@ scoreboard players set #drop_owner ll_ctx 0
 execute on origin if entity @s[tag=ll.dropper,tag=ll.player] run scoreboard players set #drop_owner ll_ctx 1
 execute unless score #drop_owner ll_ctx matches 1 run return 0
 data modify storage love_letter:input dropped set from entity @s Item.components."minecraft:custom_data".love_letter
+execute if data storage love_letter:input dropped{reopen:1b} run kill @s
+execute if data storage love_letter:input dropped{reopen:1b} as @a[tag=ll.dropper,limit=1] at @s run function love_letter:input/reopen with storage love_letter:input dropped
+execute if data storage love_letter:input dropped{reopen:1b} run return 0
 # selection: begin
 execute if data storage love_letter:input dropped{head:1b} as @a[tag=ll.dropper,limit=1] run function love_letter:targeting/confirm with storage love_letter:input dropped
 execute if data storage love_letter:input dropped{head:1b} run return run kill @s

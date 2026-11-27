@@ -10,7 +10,7 @@ scoreboard players operation #role av_ctx = @s av_role
 scoreboard players operation #state av_ctx = @e[tag=av.current,limit=1] av_state
 scoreboard players operation #leader av_ctx = @e[tag=av.current,limit=1] av_leader
 execute as @e[tag=av.current,limit=1] run function avalon:context
-data modify storage avalon:ui dialog set value {"type":"minecraft:multi_action","title":{"text":"阿瓦隆 · 本轮操作","color":"gold"},"body":[],"actions":[],"columns":2,"exit_action":{"label":{"text":"返回游戏（Q重开）"}},"pause":false}
+data modify storage avalon:ui dialog set value {"type":"minecraft:multi_action","title":{"text":"阿瓦隆 · 本轮操作","color":"gold"},"body":[],"actions":[],"columns":2,"exit_action":{"label":{"text":"返回游戏（Q重开）"},action:{type:"minecraft:run_command",command:"trigger ct_ui_close set 1"}},"pause":false,after_action:"none"}
 scoreboard players set #target av_ctx 0
 scoreboard players operation #target av_ctx = @s av_target
 function avalon:dialog/names

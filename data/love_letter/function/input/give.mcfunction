@@ -12,3 +12,4 @@ execute store result storage love_letter:input table int 1 run scoreboard player
 execute store result storage love_letter:input epoch int 1 run scoreboard players get @e[tag=ll.inventory_controller,limit=1] ll_epoch
 execute store result storage love_letter:input owner int 1 run scoreboard players get @s ll_seat
 function love_letter:input/give_tools with storage love_letter:input
+function love_letter:input/ensure_reopen

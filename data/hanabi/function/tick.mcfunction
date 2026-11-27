@@ -1,12 +1,12 @@
-# uninstall-guard: begin (tools/build_uninstall.py)
-execute if data storage cardtable:uninstall active run return 0
-execute unless score #version ct_ctx matches 1.. run return 0
-# uninstall-guard: end
 # table-pause: begin (tools/build_table_pause_guards.py)
 execute if score @s ct_paused matches 1 run return 0
 execute if entity @s[type=minecraft:item,tag=ct.paused_return] run return 0
 execute on origin if score @s ct_paused matches 1 run return 0
 # table-pause: end
+# uninstall-guard: begin (tools/build_uninstall.py)
+execute if data storage cardtable:uninstall active run return 0
+execute unless score #version ct_ctx matches 1.. run return 0
+# uninstall-guard: end
 # 游戏设置提交与回合操作使用彼此独立的trigger，设置保存还会复核原牌桌状态
 execute as @a[scores={hb_settings=1..}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] run function hanabi:settings/save
 
@@ -32,3 +32,6 @@ execute as @e[type=minecraft:marker,tag=hb.controller,scores={hb_state=3}] unles
 scoreboard players add #clock hb_ctx 1
 execute if score #clock hb_ctx matches 20.. run function hanabi:system/maintenance
 execute if score #clock hb_ctx matches 20.. run scoreboard players set #clock hb_ctx 0
+
+# reward-reopen-fallback: 丢弃统计先到、物品下一刻才出现时也能恢复。
+execute as @a[tag=hb.player,tag=hb.reward_pending,scores={hb_drop_reward=0}] unless score @s ct_paused matches 1 unless entity @s[tag=ct.paused_return] at @s if entity @e[type=minecraft:item,distance=..3,nbt={Item:{id:"minecraft:purple_dye"}}] run function hanabi:input/reopen_reward

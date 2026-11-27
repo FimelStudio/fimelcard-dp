@@ -64,3 +64,5 @@ execute as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at
 
 # 关闭已有牌桌家具的亮度覆盖。
 function cardtable:display/repair_furniture_brightness
+# dialog-cursor: explicit self-close
+scoreboard objectives add ct_ui_close trigger
