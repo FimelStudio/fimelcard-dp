@@ -165,6 +165,8 @@ def write_guarded(path, text, *args, **kwargs):
         if pos + 2 < len(parts) and parts[pos + 1] in GAMES and parts[pos + 2] == 'function':
             name = '/'.join(parts[pos + 3:])[:-11]
             text, _ = augment(parts[pos + 1], name, text)
+            from build_dialog_cursor import normalize_dialog
+            text = normalize_dialog(parts[pos + 1], name, text)
             if name.startswith('settings/'):
                 from table_chair_settings import normalize_settings_file
                 text = normalize_settings_file(path, text)

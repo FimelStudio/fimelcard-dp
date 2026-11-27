@@ -127,6 +127,8 @@ scoreboard players operation #ui_base un_ctx = @s un_seen
 scoreboard players operation #ui_base un_ctx *= #ui_1000 un_ctx
 scoreboard players operation #ui_action un_ctx = @s un_ui_tmp
 scoreboard players operation #ui_action un_ctx %= #ui_1000 un_ctx
+# 手牌窗口点击后保持打开；独立退出动作只关窗，保留当前选牌。
+execute if score #ui_action un_ctx matches 10 run return run function uno:ui/close
 execute if score #ui_action un_ctx matches 200..203 unless score @s un_pick = @s un_colorpick run return run function uno:input/invalid
 execute if score #ui_action un_ctx matches 210..213 unless score @s un_pick = @s un_colorpick run return run function uno:input/invalid
 execute if score #ui_action un_ctx matches 200..203 unless score @s un_colorpick matches 52..53 run return run function uno:input/invalid
@@ -209,6 +211,9 @@ data modify storage uno:ui grid.extra append value {text:"\\n\\n\\n\\n"}
 tag @e[tag=un.uihand] remove un.uihand
 function uno:ui/status
 function uno:ui/controls
+scoreboard players operation #ui_code un_ctx = #ui_base un_ctx
+scoreboard players add #ui_code un_ctx 10
+execute store result storage uno:ui close int 1 run scoreboard players get #ui_code un_ctx
 function uno:ui/show with storage uno:ui
 scoreboard players set @s un_action 0
 scoreboard players enable @s un_action
@@ -347,7 +352,7 @@ put("ui/control_append", '''
 $data modify storage uno:ui controls append value {label:{text:"$(label)",color:"$(control_color)"},width:140,action:{type:"minecraft:run_command",command:"trigger un_action set $(code)"}}
 ''')
 put("ui/show", '''
-$dialog show @s {type:"minecraft:multi_action",title:{text:"UNO · 手牌",color:"gold"},body:[{type:"minecraft:plain_message",width:460,contents:$(phase)},{type:"minecraft:plain_message",width:460,contents:[{text:"顶牌：",color:"gray"},$(top),{text:" · 当前颜色：",color:"gray"},$(color),{text:" · $(direction)\\n已选：",color:"gray"},$(selected)]},{type:"minecraft:plain_message",width:460,contents:$(grid)}],columns:3,actions:$(controls),exit_action:{label:{text:"返回游戏"},width:140},pause:false,can_close_with_escape:true,after_action:"close"}
+$dialog show @s {type:"minecraft:multi_action",title:{text:"UNO · 手牌",color:"gold"},body:[{type:"minecraft:plain_message",width:460,contents:$(phase)},{type:"minecraft:plain_message",width:460,contents:[{text:"顶牌：",color:"gray"},$(top),{text:" · 当前颜色：",color:"gray"},$(color),{text:" · $(direction)\\n已选：",color:"gray"},$(selected)]},{type:"minecraft:plain_message",width:460,contents:$(grid)}],columns:3,actions:$(controls),exit_action:{label:{text:"返回游戏"},width:140,action:{type:"minecraft:run_command",command:"trigger un_action set $(close)"}},pause:false,can_close_with_escape:true,after_action:"none"}
 ''')
 put("ui/colors", '''
 # 万能牌的选色按钮携带原窗口epoch；后续回合无法提交。

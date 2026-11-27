@@ -8,6 +8,8 @@ execute if score @s dd_action matches 301..308 run return run function doudizhu:
 scoreboard players set #submitted dd_ctx 0
 scoreboard players operation #action dd_ctx = @s dd_action
 scoreboard players set @s dd_action 0
+# 手牌窗口点击后保持打开；独立退出动作只关窗，保留当前选牌。
+execute if score #action dd_ctx matches 104 run return run dialog clear @s
 function doudizhu:action/context
 execute unless entity @e[tag=dd.current,limit=1] run return run function doudizhu:player/clear_state
 execute unless score @e[tag=dd.current,limit=1] dd_state matches 2..3 run return run function doudizhu:action/clear_context

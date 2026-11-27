@@ -27,6 +27,9 @@ data modify storage uno:ui grid.extra append value {text:"\n\n\n\n"}
 tag @e[tag=un.uihand] remove un.uihand
 function uno:ui/status
 function uno:ui/controls
+scoreboard players operation #ui_code un_ctx = #ui_base un_ctx
+scoreboard players add #ui_code un_ctx 10
+execute store result storage uno:ui close int 1 run scoreboard players get #ui_code un_ctx
 function uno:ui/show with storage uno:ui
 scoreboard players set @s un_action 0
 scoreboard players enable @s un_action

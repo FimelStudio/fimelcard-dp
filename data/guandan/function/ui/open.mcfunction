@@ -16,4 +16,7 @@ execute if entity @e[tag=gd.current,scores={gd_state=2,gd_anim=0},limit=1] run f
 function guandan:ui/button {code:22,label:"取消所选",color:"gray"}
 function guandan:hud/update
 function guandan:ui/normalize
+scoreboard players operation #ui_code gd_ctx = #ui_base gd_ctx
+scoreboard players add #ui_code gd_ctx 4
+execute store result storage guandan:ui close int 1 run scoreboard players get #ui_code gd_ctx
 function guandan:ui/hand_show with storage guandan:ui

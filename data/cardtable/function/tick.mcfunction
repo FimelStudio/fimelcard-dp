@@ -42,3 +42,5 @@ execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,ta
 execute if score #clock ct_ctx matches 10.. as @e[type=minecraft:item_display,tag=ct.skin,tag=!ct.theme_chair_v2] at @s if items entity @s contents minecraft:paper[minecraft:item_model="card:table_skin/garden_chair"] run function cardtable:skin/rotate_theme_chair
 execute if score #clock ct_ctx matches 10.. run function cardtable:display/repair_furniture_brightness
 execute if score #clock ct_ctx matches 10.. run scoreboard players set #clock ct_ctx 0
+# dialog-cursor: explicit self-close
+execute as @a[scores={ct_ui_close=1..}] run function cardtable:dialog/close
