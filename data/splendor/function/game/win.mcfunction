@@ -8,3 +8,5 @@ execute if data entity @s data.splendor{winners:[2]} run function splendor:game/
 execute if data entity @s data.splendor{winners:[3]} run function splendor:game/announce {side:3}
 execute if data entity @s data.splendor{winners:[4]} run function splendor:game/announce {side:4}
 function cardtable:game/result/title {audience:"@a[tag=sp.audience]",title:{text:"最终胜利者",color:"gold",bold:true},subtitle:{nbt:"names",storage:"cardtable:result",interpret:true}}
+# terminal-review: 仅终局显示，保留至新局／拆桌。
+function splendor:result/show

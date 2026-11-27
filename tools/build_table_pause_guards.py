@@ -167,6 +167,10 @@ def write_guarded(path, text, *args, **kwargs):
             text, _ = augment(parts[pos + 1], name, text)
             from build_dialog_cursor import normalize_dialog
             text = normalize_dialog(parts[pos + 1], name, text)
+            from build_dialog_recovery import normalize_recovery
+            text = normalize_recovery(parts[pos + 1], name, text)
+            from build_table_end_results import normalize_results
+            text = normalize_results(parts[pos + 1], name, text)
             if name.startswith('settings/'):
                 from table_chair_settings import normalize_settings_file
                 text = normalize_settings_file(path, text)

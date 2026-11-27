@@ -21,6 +21,8 @@ def main():
     # 已有公共注册不重复生成，避免改变其他游戏的菜单顺序。
     from build_direct_interactions import build as direct_interactions
     direct_interactions("catan")
+    from build_table_end_results import build as end_results
+    end_results(('catan',))
 
 
 if __name__=='__main__':main()

@@ -9,3 +9,5 @@ execute store result entity @s data.catan.last.owner int 1 run scoreboard player
 function catan:visual/animate
 function catan:game/winner_announce with entity @s data.catan
 function catan:game/firework
+# terminal-review: 仅终局显示，保留至新局／拆桌。
+function catan:result/show
