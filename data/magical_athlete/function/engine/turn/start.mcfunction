@@ -11,6 +11,9 @@ execute unless score #owner ma_ctx = #actor ma_ctx run return run function magic
 execute unless score #status ma_ctx matches 0 run return run function magical_athlete:engine/error {id:8}
 function magical_athlete:engine/turn/validate_pawn with storage magical_athlete:engine job
 execute unless score #valid ma_ctx matches 1 run return run function magical_athlete:engine/error {id:8}
+function magical_athlete:engine/race/survivor
+execute unless data storage magical_athlete:engine s{phase:3} run scoreboard players set #ok ma_ctx 1
+execute unless data storage magical_athlete:engine s{phase:3} run return 1
 data modify storage magical_athlete:engine s.used_merchants set value []
 data modify storage magical_athlete:engine s.transmuted set value 0
 data modify storage magical_athlete:engine s.active set from storage magical_athlete:engine request.target
