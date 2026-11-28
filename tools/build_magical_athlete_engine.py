@@ -361,9 +361,10 @@ def build_race():
     put('race/master_award',[f'$data modify {S} s.finishers append value $(pawn)',f'$data modify {S} job set value {{type:"points",pawn:$(pawn),amount:0,source:24}}',f'data modify {S} job.amount set from {S} s.round',fn('jobs/points')+' with storage magical_athlete:engine job'])
     survivor=[fn('powers'),'scoreboard players set #alive ma_ctx 0','scoreboard players set #survivor ma_ctx -1']
     for j in range(6):survivor +=[f'execute if score #s{j} ma_ctx matches 0 run scoreboard players add #alive ma_ctx 1',f'execute if score #s{j} ma_ctx matches 0 run scoreboard players set #survivor ma_ctx {j}']
-    for j in range(6):survivor +=[f'execute if score #alive ma_ctx matches 1 if score #survivor ma_ctx matches {j} run '+fn('jobs/finish')+f' {{pawn:{j}}}']
+    for j in range(6):survivor +=[f'execute if score #alive ma_ctx matches 1 if score #survivor ma_ctx matches {j} run '+fn('race/finish_survivor')+f' {{pawn:{j}}}']
     survivor +=['execute if score #alive ma_ctx matches ..1 run '+fn('race/end')]
     put('race/survivor',survivor)
+    put('race/finish_survivor',[f'$data modify {S} job set value {{pawn:$(pawn)}}',fn('jobs/finish')+' with storage magical_athlete:engine job'])
     race_end=[f'execute if data {S} s{{phase:4}} run return 0',f'data modify {S} s.phase set value 4',f'data modify {S} s.queue set value []',f'data modify {S} s.pending set value {{kind:"",owner:0,pawn:-1,options:[]}}',f'data modify {S} s.active set value -1',f'data modify {S} s.pawn set value -1',f'data modify {S} index.pawn set from {S} s.finishers[0]',fn('race/history')+' with storage magical_athlete:engine index',fn('race/next_starter'),get('round','round'),'execute if score #round ma_ctx matches 4 run '+fn('race/final')]
     put('race/end',race_end)
     put('race/history',f'$data modify {S} s.history append from {S} s.racers[$(pawn)].char')
@@ -451,6 +452,7 @@ def build_refinements():
     build_power_refinements()
     build_copy_interrupt()
     build_immediate_finish()
+    build_survivor_checks()
     build_activation_timing()
     build_warp_arrivals()
     build_batch_distance()
@@ -553,6 +555,24 @@ def build_immediate_finish():
                 finish +=[f'execute if score #turn ma_ctx matches {turn} if score #o{j} ma_ctx matches {owner} if data {S} s.motion{{group:[{j}]}} run '+fn('move/finish_one')+f' {{pawn:{j}}}',f'execute if data {S} s{{phase:4}} run return 0',f'execute if data {S} s{{phase:5}} run return 0']
     put('move/finish_arrivals',finish)
     put('move/finish_one',[f'$execute store result score #finished_pos ma_ctx run data get {S} s.racers[$(pawn)].pos',f'$execute store result score #finished_status ma_ctx run data get {S} s.racers[$(pawn)].status','execute unless score #finished_status ma_ctx matches 0 run return 0','execute unless score #finished_pos ma_ctx matches 30.. run return 0',f'$data modify {S} job set value {{pawn:$(pawn)}}',fn('jobs/finish')+' with storage magical_athlete:engine job'])
+
+def build_survivor_checks():
+    # A finish can leave one racer just as an elimination can. Settle that
+    # remaining place before Hare (or any other racer) gets another turn.
+    # A nested survivor finish must not settle the same race twice.
+    extend('race/survivor',[f'execute unless data {S} s{{phase:3}} run return 0'],prepend=True)
+    extend('jobs/finish',[f'execute if data {S} s{{phase:3}} run '+fn('race/survivor')])
+    # Recover already-stuck saved races through a normal, validated action.
+    # Keep all ownership, pending-choice and queue checks before settlement.
+    start=(ROOT/'turn/start.mcfunction').read_text(encoding='utf-8').splitlines()
+    ix=next(i for i,line in enumerate(start) if 'unless score #valid ma_ctx matches 1' in line)+1
+    start[ix:ix]=[
+        fn('race/survivor'),
+        f'execute unless data {S} s{{phase:3}} run scoreboard players set #ok ma_ctx 1',
+        f'execute unless data {S} s{{phase:3}} run return 1',
+    ]
+    put('turn/start',start)
+
 
 def build_activation_timing():
     # A skill's separate physical movements are not separate activations. A
