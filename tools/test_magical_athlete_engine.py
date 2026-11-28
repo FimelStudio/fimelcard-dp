@@ -82,10 +82,51 @@ def build_suite():
     b=s.race([21,22,23])+[f'scoreboard players set {TABLE} ct_paused 1']+bad('pause_lock',s.action(1,3,0),13)
     b+=s.setup(3)+s.setup(4,table=202,reset=False)+s.snapshot(202)+s.set('turn',1)+s.action(1,1,35)+s.unchanged('other_table_unchanged',202)
     s.case('pause_isolation',b)
+    add_survivor_regressions(s)
     add_skills(s)
     add_loop_and_two_player(s)
     add_match(s)
     s.finish();return s
+
+def add_survivor_regressions(s):
+    # Four racers: Mouth removes two opponents, then finishes before Hare.
+    # Also cover the two-player variant with two racers per owner.
+    for n in (4,2):
+        prefix=f'mouth_hare_{n}p'
+        b=s.race([25,14,21,22],[0,26,5,10],n=n)
+        if n==2:b+=s.set('racers[2].owner',1)+s.set('racers[3].owner',2)
+        b+=s.job('move',pawn=0,amount=5,source=-2)+s.flush()
+        b+=s.data('racers[2].status',2,prefix+'_first_eliminated')
+        b+=s.job('move',pawn=0,amount=5,source=-2)+s.flush()
+        b+=s.data('racers[3].status',2,prefix+'_second_eliminated')
+        b+=s.data('phase',3,prefix+'_two_still_racing')+s.data('finishers',0,prefix+'_no_premature_award')
+        b+=s.job('move',pawn=0,amount=20,source=-2)+s.flush()
+        b+=s.data('phase',4,prefix+'_race_ends')+s.data('finishers',2,prefix+'_two_awards')
+        b+=s.data('finishers[0]',0,prefix+'_mouth_gold')+s.data('finishers[1]',1,prefix+'_hare_silver')
+        b+=s.data('p1.points',3,prefix+'_gold_points')+s.data('p2.points',1,prefix+'_silver_points')
+        b+=s.data('racers[1].status',1,prefix+'_hare_finished')
+        b+=s.data('queue',0,prefix+'_queue_cleared')+s.data('pending.options',0,prefix+'_no_prompt')
+        if n==4:b+=s.data('p3.points',0,prefix+'_eliminated_no_points')+s.data('p4.points',0,prefix+'_other_eliminated_no_points')
+        s.case(prefix,b)
+    # A save made by the old engine can already have a winner, two eliminated
+    # racers and a lone Hare waiting forever. Its next valid action must settle.
+    b=s.race([25,14,21,22],[30,26,5,10])+s.set('racers[0].status',1)
+    b+=s.set('racers[2].status',2)+s.set('racers[3].status',2)+s.set('finishers',[0])+s.set('eliminated',[2,3])
+    b+=s.set('p1.points',3)+s.set('p1.race_points',3)+s.set('turn',2)+s.set('forced',1)
+    b+=s.action(2,3,1)+s.flush()+s.score('#ok','ma_ctx',1,'lone_hare_recovery_accepted')
+    b+=s.data('phase',4,'lone_hare_recovery_ends')+s.data('finishers[1]',1,'lone_hare_recovery_silver')
+    b+=s.data('p1.points',3,'lone_hare_recovery_gold_unchanged')+s.data('p2.points',1,'lone_hare_recovery_award')
+    b+=s.call('context')+s.call('race/survivor')+s.call('commit')
+    b+=s.data('p2.points',1,'lone_hare_recovery_no_double_award')+s.data('history',1,'lone_hare_recovery_one_history')
+    b+=s.data('finishers',2,'lone_hare_recovery_no_duplicate')+s.data('queue',0,'lone_hare_recovery_no_sleep_loop')
+    s.case('lone_hare_saved_game',b)
+    # Eliminating the last opponent before anyone finishes still awards only
+    # the survivor's championship, without inventing a runner-up.
+    b=s.race([25,14,21],[0,5,10])+s.job('move',pawn=0,amount=5,source=-2)+s.flush()
+    b+=s.job('move',pawn=0,amount=5,source=-2)+s.flush()
+    b+=s.data('phase',4,'mouth_only_survivor_ends')+s.data('finishers',1,'mouth_only_survivor_single_award')
+    b+=s.data('p1.points',3,'mouth_only_survivor_gold')+s.data('p2.points',0,'mouth_only_survivor_no_silver')
+    s.case('mouth_only_survivor',b)
 
 def add_skills(s):
     def ok(n):return s.score('#ok','ma_ctx',1,n)
@@ -126,7 +167,7 @@ def add_skills(s):
     s.case('optional_dice_powers',b)
     b=s.race([24,21,22],[0,28,20])+s.action(1,3,0)+s.action(1,4,1)+s.flush()+s.job('move',pawn=1,amount=2,source=-2)+s.flush()+s.data('phase',4,'mastermind_ends_on_prediction')+s.data('p1.points',1,'mastermind_silver')+s.data('p2.points',3,'mastermind_predicted_gold')
     b+=s.race([24,21,22],[28,2,3])+s.set('racers[0].prediction',0)+s.job('move',pawn=0,amount=2,source=-2)+s.flush()+s.data('p1.points',4,'mastermind_self_both')+s.data('finishers',2,'mastermind_two_awards')
-    b+=s.race([24,21,22],[0,28,20])+s.set('racers[0].prediction',1)+s.set('racers[0].status',2)+s.job('move',pawn=1,amount=2,source=-2)+s.flush()+s.data('phase',3,'eliminated_mastermind_inactive')+s.data('p1.points',0,'eliminated_mastermind_no_award')
+    b+=s.race([24,21,22,3],[0,28,20,10])+s.set('racers[0].prediction',1)+s.set('racers[0].status',2)+s.job('move',pawn=1,amount=2,source=-2)+s.flush()+s.data('phase',3,'eliminated_mastermind_inactive')+s.data('p1.points',0,'eliminated_mastermind_no_award')
     b+=s.race([25,21,22],[2,5,5])+s.job('move',pawn=0,amount=3,source=-2)+s.flush()+s.data('racers[1].status',0,'mouth_not_two')+s.data('racers[2].status',0,'mouth_not_two_other')
     b+=s.race([16,2,22],[2,5,10])+s.job('move',pawn=0,amount=3,source=-2)+s.flush()+s.data('racers[0].trip',1,'baby_passes_displaced_banana')
     b+=s.race([16,21,22],[10,2,20])+s.job('warp',pawn=1,to=10,source=17)+s.flush()+s.data('racers[1].pos',9,'warp_stops_behind_baby')
