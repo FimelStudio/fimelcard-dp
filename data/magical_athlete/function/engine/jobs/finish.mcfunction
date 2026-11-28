@@ -15,3 +15,4 @@ function magical_athlete:engine/jobs/points with storage magical_athlete:engine 
 execute if score #finishers ma_ctx matches 1 run function magical_athlete:engine/race/mastermind
 execute store result score #finishers ma_ctx run data get storage magical_athlete:engine s.finishers
 execute if score #finishers ma_ctx matches 2.. run function magical_athlete:engine/race/end
+execute if data storage magical_athlete:engine s{phase:3} run function magical_athlete:engine/race/survivor
